@@ -1,11 +1,115 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>异常、模块、包与虚拟环境｜AAI 学习手册</title><link rel="stylesheet" href="../assets/style.css"></head><body><header class="site-header"><div class="header-inner"><a class="brand" href="../index.html"><span>AAI</span> 学习手册</a><a class="header-link" href="../index.html">全部章节</a></div></header><div class="chapter-layout"><aside class="toc"><div class="toc-title">前十章</div><nav class="chapter-links"><a href="01-basics.html">01 基本类型与 Casting</a><a href="02-containers.html">02 容器</a><a href="03-control-flow.html">03 判断与循环</a><a href="04-functions.html">04 函数</a><a href="05-files-json.html">05 文件与 JSON</a><a class="active" href="06-errors-env.html">06 报错与环境</a><a href="07-numpy-vectors.html">07 NumPy 与向量</a><a href="08-api.html">08 API</a><a href="09-embedding.html">09 Embedding</a><a href="10-mini-rag.html">10 迷你 RAG</a></nav><div class="toc-divider"></div><a href="#terms">必须掌握的术语</a><a href="#core">核心知识</a><a href="#errors">常见错误</a><a href="#practice">练习</a></aside><main class="chapter"><header class="chapter-hero"><div class="chapter-kicker">CHAPTER 06</div><h1>异常、模块、包与虚拟环境</h1><p class="chapter-summary">可靠程序必须明确失败方式。你需要读懂 Traceback、只捕获预期异常、组织模块，并用虚拟环境保证依赖可复现。</p><div class="outcomes"><strong>学完你应该能够：</strong>系统阅读 Traceback；正确使用 try/except/else/finally 和 raise；理解模块导入、venv、pip 与 requirements。</div></header>
-<section class="content-section" id="terms"><h2>必须掌握的术语</h2><table class="terms"><tr><th>术语</th><th>准确理解</th></tr><tr><td>exception</td><td>运行时发生的异常对象，会沿调用栈向上传播。</td></tr><tr><td>Traceback</td><td>异常发生前的函数调用路径。</td></tr><tr><td>raise</td><td>主动抛出异常。</td></tr><tr><td>try / except</td><td>包围可能失败的代码并处理特定异常。</td></tr><tr><td>else / finally</td><td>无异常时执行；无论是否异常都执行。</td></tr><tr><td>module</td><td>一个可导入的 Python 文件。</td></tr><tr><td>package</td><td>组织多个模块的包。</td></tr><tr><td>dependency</td><td>项目依赖的外部软件包。</td></tr><tr><td>virtual environment</td><td>隔离 Python 解释器与依赖安装位置。</td></tr><tr><td>version pinning</td><td>固定依赖版本以提高复现性。</td></tr></table></section>
-<section class="content-section" id="core"><h2>1. 阅读 Traceback</h2><p>先看最后一行，确定异常类型和消息；再从下往上找第一处属于你项目的文件和行号；最后检查传入该行的数据。</p>
-<pre>Traceback (most recent call last):
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>异常、模块、包与虚拟环境｜AAI 学习手册</title>
+    <link rel="stylesheet" href="../assets/style.css" />
+    <script src="../assets/copy-code.js" defer></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="header-inner">
+        <a class="brand" href="../index.html"><span>AAI</span> 学习手册</a
+        ><a class="header-link" href="../index.html">全部章节</a>
+      </div>
+    </header>
+    <div class="chapter-layout">
+      <aside class="toc">
+        <div class="toc-title">前十章</div>
+        <nav class="chapter-links">
+          <a href="01-basics.html">01 基本类型与 Casting</a
+          ><a href="02-containers.html">02 容器</a
+          ><a href="03-control-flow.html">03 判断与循环</a
+          ><a href="04-functions.html">04 函数</a
+          ><a href="05-files-json.html">05 文件与 JSON</a
+          ><a class="active" href="06-errors-env.html">06 报错与环境</a
+          ><a href="07-numpy-vectors.html">07 NumPy 与向量</a
+          ><a href="08-api.html">08 API</a
+          ><a href="09-embedding.html">09 Embedding</a
+          ><a href="10-mini-rag.html">10 迷你 RAG</a>
+        </nav>
+        <div class="toc-divider"></div>
+        <a href="#terms">必须掌握的术语</a><a href="#core">核心知识</a
+        ><a href="#errors">常见错误</a><a href="#practice">练习</a>
+      </aside>
+      <main class="chapter">
+        <header class="chapter-hero">
+          <div class="chapter-kicker">CHAPTER 06</div>
+          <h1>异常、模块、包与虚拟环境</h1>
+          <p class="chapter-summary">
+            可靠程序必须明确失败方式。你需要读懂
+            Traceback、只捕获预期异常、组织模块，并用虚拟环境保证依赖可复现。
+          </p>
+          <div class="outcomes">
+            <strong>学完你应该能够：</strong>系统阅读 Traceback；正确使用
+            try/except/else/finally 和 raise；理解模块导入、venv、pip 与
+            requirements。
+          </div>
+        </header>
+        <section class="content-section" id="terms">
+          <h2>必须掌握的术语</h2>
+          <table class="terms">
+            <tr>
+              <th>术语</th>
+              <th>准确理解</th>
+            </tr>
+            <tr>
+              <td>exception</td>
+              <td>运行时发生的异常对象，会沿调用栈向上传播。</td>
+            </tr>
+            <tr>
+              <td>Traceback</td>
+              <td>异常发生前的函数调用路径。</td>
+            </tr>
+            <tr>
+              <td>raise</td>
+              <td>主动抛出异常。</td>
+            </tr>
+            <tr>
+              <td>try / except</td>
+              <td>包围可能失败的代码并处理特定异常。</td>
+            </tr>
+            <tr>
+              <td>else / finally</td>
+              <td>无异常时执行；无论是否异常都执行。</td>
+            </tr>
+            <tr>
+              <td>module</td>
+              <td>一个可导入的 Python 文件。</td>
+            </tr>
+            <tr>
+              <td>package</td>
+              <td>组织多个模块的包。</td>
+            </tr>
+            <tr>
+              <td>dependency</td>
+              <td>项目依赖的外部软件包。</td>
+            </tr>
+            <tr>
+              <td>virtual environment</td>
+              <td>隔离 Python 解释器与依赖安装位置。</td>
+            </tr>
+            <tr>
+              <td>version pinning</td>
+              <td>固定依赖版本以提高复现性。</td>
+            </tr>
+          </table>
+        </section>
+        <section class="content-section" id="core">
+          <h2>1. 阅读 Traceback</h2>
+          <p>
+            先看最后一行，确定异常类型和消息；再从下往上找第一处属于你项目的文件和行号；最后检查传入该行的数据。
+          </p>
+          <pre>
+Traceback (most recent call last):
   File "app.py", line 12, in &lt;module&gt;
     top_k = int(raw)
-ValueError: invalid literal for int() with base 10: 'abc'</pre>
-<h3>2. 捕获具体异常</h3><pre>from pathlib import Path
+ValueError: invalid literal for int() with base 10: 'abc'</pre
+          >
+          <h3>2. 捕获具体异常</h3>
+          <pre>
+from pathlib import Path
 import json
 
 try:
@@ -18,14 +122,23 @@ except json.JSONDecodeError as error:
 else:
     print("配置加载成功")
 finally:
-    print("配置阶段结束")</pre>
-<p>不要使用空的 <code>except:</code>。它会把 KeyboardInterrupt 等也吞掉，让程序看似继续、实际状态错误。</p>
-<h3>3. 主动验证和自定义消息</h3><pre>def validate_top_k(top_k):
+    print("配置阶段结束")</pre
+          >
+          <p>
+            不要使用空的 <code>except:</code>。它会把 KeyboardInterrupt
+            等也吞掉，让程序看似继续、实际状态错误。
+          </p>
+          <h3>3. 主动验证和自定义消息</h3>
+          <pre>
+def validate_top_k(top_k):
     if not isinstance(top_k, int):
         raise TypeError("top_k 必须是 int")
     if top_k <= 0:
-        raise ValueError("top_k 必须大于 0")</pre>
-<h3>4. 模块组织</h3><pre>project/
+        raise ValueError("top_k 必须大于 0")</pre
+          >
+          <h3>4. 模块组织</h3>
+          <pre>
+project/
 ├─ app.py
 ├─ rag/
 │  ├─ __init__.py
@@ -33,15 +146,69 @@ finally:
 │  ├─ retrieval.py
 │  └─ generation.py
 ├─ tests/
-└─ requirements.txt</pre>
-<pre># app.py
+└─ requirements.txt</pre
+          >
+          <pre>
+# app.py
 from rag.chunking import chunk_text
-from rag.retrieval import retrieve</pre>
-<h3>5. 虚拟环境和依赖</h3><pre># Windows PowerShell
+from rag.retrieval import retrieve</pre
+          >
+          <h3>5. 虚拟环境和依赖</h3>
+          <pre>
+# Windows PowerShell
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install numpy requests pytest
-python -m pip freeze > requirements.txt</pre>
-<div class="note">API Key 应放环境变量或本地 <code>.env</code>，并把 <code>.env</code> 加入 <code>.gitignore</code>。永远不要提交真实密钥。</div></section>
-<section class="content-section" id="errors"><h2>常见错误</h2><ul class="error-list"><li>用 <code>except Exception: pass</code> 吞掉所有错误。</li><li>把过大代码块放进 try，无法判断是哪一步失败。</li><li>使用错误的 Python 解释器安装包，导致“已安装但无法 import”。</li><li>直接运行包内部文件导致相对导入错误。</li><li>requirements 不固定关键版本，换机器后结果不同。</li><li>把 .venv 或 API Key 提交到 Git。</li></ul></section>
-<section class="content-section" id="practice"><h2>分层练习</h2><div class="exercise"><strong>基础</strong><ol><li>分别触发并识别 NameError、TypeError、ValueError、KeyError。</li><li>安全读取一个可能不存在的 JSON 文件。</li></ol></div><div class="exercise"><strong>进阶</strong><ol><li>把迷你 RAG 拆成 chunking.py 和 retrieval.py。</li><li>创建干净 venv，仅用 requirements 重装依赖。</li></ol></div><div class="exercise"><strong>掌握标准</strong><ol><li>根据完整 Traceback 解释异常传播路径。</li><li>设计错误策略：哪些异常重试、哪些拒答、哪些立即终止。</li></ol></div></section><nav class="chapter-nav"><a href="05-files-json.html">← 05 文件与 JSON</a><a href="07-numpy-vectors.html">07 NumPy 与向量 →</a></nav></main></div></body></html>
+python -m pip freeze > requirements.txt</pre
+          >
+          <div class="note">
+            API Key 应放环境变量或本地 <code>.env</code>，并把
+            <code>.env</code> 加入
+            <code>.gitignore</code>。永远不要提交真实密钥。
+          </div>
+        </section>
+        <section class="content-section" id="errors">
+          <h2>常见错误</h2>
+          <ul class="error-list">
+            <li>用 <code>except Exception: pass</code> 吞掉所有错误。</li>
+            <li>把过大代码块放进 try，无法判断是哪一步失败。</li>
+            <li>使用错误的 Python 解释器安装包，导致“已安装但无法 import”。</li>
+            <li>直接运行包内部文件导致相对导入错误。</li>
+            <li>requirements 不固定关键版本，换机器后结果不同。</li>
+            <li>把 .venv 或 API Key 提交到 Git。</li>
+          </ul>
+        </section>
+        <section class="content-section" id="practice">
+          <h2>分层练习</h2>
+          <div class="exercise">
+            <strong>基础</strong>
+            <ol>
+              <li>
+                分别触发并识别 NameError、TypeError、ValueError、KeyError。
+              </li>
+              <li>安全读取一个可能不存在的 JSON 文件。</li>
+            </ol>
+          </div>
+          <div class="exercise">
+            <strong>进阶</strong>
+            <ol>
+              <li>把迷你 RAG 拆成 chunking.py 和 retrieval.py。</li>
+              <li>创建干净 venv，仅用 requirements 重装依赖。</li>
+            </ol>
+          </div>
+          <div class="exercise">
+            <strong>掌握标准</strong>
+            <ol>
+              <li>根据完整 Traceback 解释异常传播路径。</li>
+              <li>设计错误策略：哪些异常重试、哪些拒答、哪些立即终止。</li>
+            </ol>
+          </div>
+        </section>
+        <nav class="chapter-nav">
+          <a href="05-files-json.html">← 05 文件与 JSON</a
+          ><a href="07-numpy-vectors.html">07 NumPy 与向量 →</a>
+        </nav>
+      </main>
+    </div>
+  </body>
+</html>

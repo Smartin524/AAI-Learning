@@ -1,30 +1,142 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>函数：抽象、参数与作用域｜AAI 学习手册</title><link rel="stylesheet" href="../assets/style.css"></head><body><header class="site-header"><div class="header-inner"><a class="brand" href="../index.html"><span>AAI</span> 学习手册</a><a class="header-link" href="../index.html">全部章节</a></div></header><div class="chapter-layout"><aside class="toc"><div class="toc-title">前十章</div><nav class="chapter-links"><a href="01-basics.html">01 基本类型与 Casting</a><a href="02-containers.html">02 容器</a><a href="03-control-flow.html">03 判断与循环</a><a class="active" href="04-functions.html">04 函数</a><a href="05-files-json.html">05 文件与 JSON</a><a href="06-errors-env.html">06 报错与环境</a><a href="07-numpy-vectors.html">07 NumPy 与向量</a><a href="08-api.html">08 API</a><a href="09-embedding.html">09 Embedding</a><a href="10-mini-rag.html">10 迷你 RAG</a></nav><div class="toc-divider"></div><a href="#terms">必须掌握的术语</a><a href="#core">核心知识</a><a href="#errors">常见错误</a><a href="#practice">练习</a></aside><main class="chapter"><header class="chapter-hero"><div class="chapter-kicker">CHAPTER 04</div><h1>函数：抽象、参数与作用域</h1><p class="chapter-summary">函数是组织程序的核心单位。高质量函数应该职责单一、输入输出清楚、容易测试，并通过名称表达意图。</p><div class="outcomes"><strong>学完你应该能够：</strong>设计和调用函数；理解参数类型、返回值、作用域和可变默认参数；能把 RAG 流程拆成可测试的小函数。</div></header>
-<section class="content-section" id="terms"><h2>必须掌握的术语</h2><table class="terms"><tr><th>术语</th><th>准确理解</th></tr><tr><td>function</td><td>封装一段可复用逻辑的对象。</td></tr><tr><td>parameter / argument</td><td>定义函数时的形参；调用时传入的实参。</td></tr><tr><td>return value</td><td>函数交还给调用方的结果；没有 return 时返回 None。</td></tr><tr><td>positional / keyword</td><td>按位置传参与按参数名传参。</td></tr><tr><td>default parameter</td><td>调用时省略可使用的默认值。</td></tr><tr><td>*args / **kwargs</td><td>收集额外位置参数与关键字参数。</td></tr><tr><td>scope</td><td>名字可见的范围，包括局部和全局作用域。</td></tr><tr><td>pure function</td><td>结果只依赖输入且无外部副作用的函数。</td></tr><tr><td>docstring</td><td>函数的内置说明文档。</td></tr><tr><td>type hint</td><td>类型标注，帮助阅读和静态检查，不强制运行时类型。</td></tr></table></section>
-<section class="content-section" id="core"><h2>1. 输入、处理、输出</h2><pre>def cosine_label(score: float, threshold: float = 0.8) -> str:
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>函数：抽象、参数与作用域｜AAI 学习手册</title>
+    <link rel="stylesheet" href="../assets/style.css" />
+    <script src="../assets/copy-code.js" defer></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="header-inner">
+        <a class="brand" href="../index.html"><span>AAI</span> 学习手册</a
+        ><a class="header-link" href="../index.html">全部章节</a>
+      </div>
+    </header>
+    <div class="chapter-layout">
+      <aside class="toc">
+        <div class="toc-title">前十章</div>
+        <nav class="chapter-links">
+          <a href="01-basics.html">01 基本类型与 Casting</a
+          ><a href="02-containers.html">02 容器</a
+          ><a href="03-control-flow.html">03 判断与循环</a
+          ><a class="active" href="04-functions.html">04 函数</a
+          ><a href="05-files-json.html">05 文件与 JSON</a
+          ><a href="06-errors-env.html">06 报错与环境</a
+          ><a href="07-numpy-vectors.html">07 NumPy 与向量</a
+          ><a href="08-api.html">08 API</a
+          ><a href="09-embedding.html">09 Embedding</a
+          ><a href="10-mini-rag.html">10 迷你 RAG</a>
+        </nav>
+        <div class="toc-divider"></div>
+        <a href="#terms">必须掌握的术语</a><a href="#core">核心知识</a
+        ><a href="#errors">常见错误</a><a href="#practice">练习</a>
+      </aside>
+      <main class="chapter">
+        <header class="chapter-hero">
+          <div class="chapter-kicker">CHAPTER 04</div>
+          <h1>函数：抽象、参数与作用域</h1>
+          <p class="chapter-summary">
+            函数是组织程序的核心单位。高质量函数应该职责单一、输入输出清楚、容易测试，并通过名称表达意图。
+          </p>
+          <div class="outcomes">
+            <strong>学完你应该能够：</strong
+            >设计和调用函数；理解参数类型、返回值、作用域和可变默认参数；能把
+            RAG 流程拆成可测试的小函数。
+          </div>
+        </header>
+        <section class="content-section" id="terms">
+          <h2>必须掌握的术语</h2>
+          <table class="terms">
+            <tr>
+              <th>术语</th>
+              <th>准确理解</th>
+            </tr>
+            <tr>
+              <td>function</td>
+              <td>封装一段可复用逻辑的对象。</td>
+            </tr>
+            <tr>
+              <td>parameter / argument</td>
+              <td>定义函数时的形参；调用时传入的实参。</td>
+            </tr>
+            <tr>
+              <td>return value</td>
+              <td>函数交还给调用方的结果；没有 return 时返回 None。</td>
+            </tr>
+            <tr>
+              <td>positional / keyword</td>
+              <td>按位置传参与按参数名传参。</td>
+            </tr>
+            <tr>
+              <td>default parameter</td>
+              <td>调用时省略可使用的默认值。</td>
+            </tr>
+            <tr>
+              <td>*args / **kwargs</td>
+              <td>收集额外位置参数与关键字参数。</td>
+            </tr>
+            <tr>
+              <td>scope</td>
+              <td>名字可见的范围，包括局部和全局作用域。</td>
+            </tr>
+            <tr>
+              <td>pure function</td>
+              <td>结果只依赖输入且无外部副作用的函数。</td>
+            </tr>
+            <tr>
+              <td>docstring</td>
+              <td>函数的内置说明文档。</td>
+            </tr>
+            <tr>
+              <td>type hint</td>
+              <td>类型标注，帮助阅读和静态检查，不强制运行时类型。</td>
+            </tr>
+          </table>
+        </section>
+        <section class="content-section" id="core">
+          <h2>1. 输入、处理、输出</h2>
+          <pre>
+def cosine_label(score: float, threshold: float = 0.8) -> str:
     """根据相似度返回可读标签。"""
     if not 0 <= score <= 1:
         raise ValueError("score 必须在 0 到 1 之间")
     return "相关" if score >= threshold else "不相关"
 
-label = cosine_label(0.86, threshold=0.75)</pre>
-<p>好的函数会验证关键前置条件，并返回稳定、可预测的类型。</p>
-<h3>2. 位置参数和关键字参数</h3><pre>def search(query, top_k=5, min_score=0.0):
+label = cosine_label(0.86, threshold=0.75)</pre
+          >
+          <p>好的函数会验证关键前置条件，并返回稳定、可预测的类型。</p>
+          <h3>2. 位置参数和关键字参数</h3>
+          <pre>
+def search(query, top_k=5, min_score=0.0):
     return {"query": query, "top_k": top_k, "min_score": min_score}
 
 search("什么是 RAG", 3)
-search("什么是 RAG", top_k=3, min_score=0.7)</pre>
-<h3>3. 多个返回值本质是 tuple</h3><pre>def split_train_test(data, ratio=0.8):
+search("什么是 RAG", top_k=3, min_score=0.7)</pre
+          >
+          <h3>3. 多个返回值本质是 tuple</h3>
+          <pre>
+def split_train_test(data, ratio=0.8):
     cut = int(len(data) * ratio)
     return data[:cut], data[cut:]
 
-train, test = split_train_test(list(range(10)))</pre>
-<h3>4. 作用域</h3><pre>model_name = "qwen"       # 全局名字
+train, test = split_train_test(list(range(10)))</pre
+          >
+          <h3>4. 作用域</h3>
+          <pre>
+model_name = "qwen"       # 全局名字
 
 def build_config():
     temperature = 0.2     # 局部名字
-    return {"model": model_name, "temperature": temperature}</pre>
-<p>函数内部读取全局配置是允许的，但大量依赖隐藏的全局状态会让测试和复现变困难。更好的方式是显式传参。</p>
-<h3>5. 可变默认参数陷阱</h3><pre># 错误：同一个 list 会在多次调用间共享
+    return {"model": model_name, "temperature": temperature}</pre
+          >
+          <p>
+            函数内部读取全局配置是允许的，但大量依赖隐藏的全局状态会让测试和复现变困难。更好的方式是显式传参。
+          </p>
+          <h3>5. 可变默认参数陷阱</h3>
+          <pre>
+# 错误：同一个 list 会在多次调用间共享
 def add_item_bad(item, items=[]):
     items.append(item)
     return items
@@ -34,13 +146,64 @@ def add_item(item, items=None):
     if items is None:
         items = []
     items.append(item)
-    return items</pre>
-<h3>6. 拆分 RAG 流程</h3><pre>def load_documents(path): ...
+    return items</pre
+          >
+          <h3>6. 拆分 RAG 流程</h3>
+          <pre>
+def load_documents(path): ...
 def chunk_documents(documents, chunk_size=500): ...
 def embed_chunks(chunks, model): ...
 def retrieve(query, index, top_k=5): ...
 def build_prompt(query, hits): ...
-def generate_answer(prompt, llm): ...</pre>
-<p>这种拆分让每一步都能单独测试、替换和记录指标。</p></section>
-<section class="content-section" id="errors"><h2>常见错误</h2><ul class="error-list"><li>函数既读文件、调用模型、打印结果又修改全局变量，职责过多。</li><li>忘记 return，调用方得到 None。</li><li>修改传入的 list/dict，却没有在函数名或文档中说明副作用。</li><li>使用可变默认参数。</li><li>捕获所有异常后直接返回空值，掩盖真正错误。</li><li>函数名使用模糊的 <code>process_data</code>，无法表达具体动作。</li></ul></section>
-<section class="content-section" id="practice"><h2>分层练习</h2><div class="exercise"><strong>基础</strong><ol><li>写 <code>clean_text(text)</code> 和 <code>chunk_text(text,size)</code>。</li><li>用类型标注和 docstring 说明函数。</li></ol></div><div class="exercise"><strong>进阶</strong><ol><li>将一段 40 行脚本拆成 4 个职责单一的函数。</li><li>写测试证明可变默认参数问题。</li></ol></div><div class="exercise"><strong>掌握标准</strong><ol><li>为迷你 RAG 设计完整函数边界和数据结构。</li><li>指出哪些函数应保持纯函数，哪些不可避免有 I/O 副作用。</li></ol></div></section><nav class="chapter-nav"><a href="03-control-flow.html">← 03 判断与循环</a><a href="05-files-json.html">05 文件与 JSON →</a></nav></main></div></body></html>
+def generate_answer(prompt, llm): ...</pre
+          >
+          <p>这种拆分让每一步都能单独测试、替换和记录指标。</p>
+        </section>
+        <section class="content-section" id="errors">
+          <h2>常见错误</h2>
+          <ul class="error-list">
+            <li>函数既读文件、调用模型、打印结果又修改全局变量，职责过多。</li>
+            <li>忘记 return，调用方得到 None。</li>
+            <li>修改传入的 list/dict，却没有在函数名或文档中说明副作用。</li>
+            <li>使用可变默认参数。</li>
+            <li>捕获所有异常后直接返回空值，掩盖真正错误。</li>
+            <li>
+              函数名使用模糊的 <code>process_data</code>，无法表达具体动作。
+            </li>
+          </ul>
+        </section>
+        <section class="content-section" id="practice">
+          <h2>分层练习</h2>
+          <div class="exercise">
+            <strong>基础</strong>
+            <ol>
+              <li>
+                写 <code>clean_text(text)</code> 和
+                <code>chunk_text(text,size)</code>。
+              </li>
+              <li>用类型标注和 docstring 说明函数。</li>
+            </ol>
+          </div>
+          <div class="exercise">
+            <strong>进阶</strong>
+            <ol>
+              <li>将一段 40 行脚本拆成 4 个职责单一的函数。</li>
+              <li>写测试证明可变默认参数问题。</li>
+            </ol>
+          </div>
+          <div class="exercise">
+            <strong>掌握标准</strong>
+            <ol>
+              <li>为迷你 RAG 设计完整函数边界和数据结构。</li>
+              <li>指出哪些函数应保持纯函数，哪些不可避免有 I/O 副作用。</li>
+            </ol>
+          </div>
+        </section>
+        <nav class="chapter-nav">
+          <a href="03-control-flow.html">← 03 判断与循环</a
+          ><a href="05-files-json.html">05 文件与 JSON →</a>
+        </nav>
+      </main>
+    </div>
+  </body>
+</html>
