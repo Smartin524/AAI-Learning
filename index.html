@@ -1,16 +1,95 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>AAI 研究生高性价比知识手册</title><link rel="stylesheet" href="assets/style.css"></head><body>
-<header class="site-header"><div class="header-inner"><a class="brand" href="index.html"><span>AAI</span> 学习手册</a><a class="header-link" href="https://github.com/Smartin524/AAI-Learning">GitHub</a></div></header>
-<main class="home"><h1>从 Python 基础，到独立完成 RAG 项目</h1><p class="lead">前十章已经展开为独立课程页。每章不只告诉你“怎么写”，还要求你掌握必要术语、理解运行机制、识别常见错误，并用练习验证是否真的掌握。</p>
-<div class="path">建议顺序：基本类型 → 容器 → 控制流 → 函数 → 文件 → 异常与环境 → NumPy → API → Embedding → RAG</div>
-<div class="chapter-grid"><a class="chapter-card" href="chapters/01-basics.html"><div class="chapter-no">CHAPTER 01</div><h2>变量、基本类型与 Casting</h2><p>变量、对象、类型、真假值、None、安全输入转换。</p></a>
-<a class="chapter-card" href="chapters/02-containers.html"><div class="chapter-no">CHAPTER 02</div><h2>list、dict、set、tuple</h2><p>索引、切片、映射、哈希、推导式、浅拷贝。</p></a>
-<a class="chapter-card" href="chapters/03-control-flow.html"><div class="chapter-no">CHAPTER 03</div><h2>判断、循环与程序流程</h2><p>分支、迭代、短路、break、continue、enumerate、zip。</p></a>
-<a class="chapter-card" href="chapters/04-functions.html"><div class="chapter-no">CHAPTER 04</div><h2>函数、参数与作用域</h2><p>返回值、默认参数、作用域、纯函数、类型标注。</p></a>
-<a class="chapter-card" href="chapters/05-files-json.html"><div class="chapter-no">CHAPTER 05</div><h2>字符串、文件、路径与 JSON</h2><p>UTF-8、pathlib、序列化、metadata、JSONL。</p></a>
-<a class="chapter-card" href="chapters/06-errors-env.html"><div class="chapter-no">CHAPTER 06</div><h2>异常、模块与虚拟环境</h2><p>Traceback、raise、模块、包、venv、依赖复现。</p></a>
-<a class="chapter-card" href="chapters/07-numpy-vectors.html"><div class="chapter-no">CHAPTER 07</div><h2>NumPy、矩阵与向量</h2><p>shape、axis、dtype、广播、点积、余弦相似度。</p></a>
-<a class="chapter-card" href="chapters/08-api.html"><div class="chapter-no">CHAPTER 08</div><h2>HTTP、API 与模型调用</h2><p>endpoint、状态码、认证、超时、限流、重试。</p></a>
-<a class="chapter-card" href="chapters/09-embedding.html"><div class="chapter-no">CHAPTER 09</div><h2>Embedding 与语义检索</h2><p>向量空间、度量、归一化、top-k、ANN、评估。</p></a>
-<a class="chapter-card" href="chapters/10-mini-rag.html"><div class="chapter-no">CHAPTER 10</div><h2>迷你 RAG</h2><p>切块、索引、检索、context、引用、拒答、评估。</p></a></div>
-<section class="later"><h2>第 11–20 章：下一阶段</h2><p>完成前十章后，再进入必要数学、复杂度与代码质量、Pandas 与 SQL、机器学习、评估与实验、PyTorch、Transformer 与 LLM、进阶 RAG、AI 工程化和研究能力。</p><p>这些章节目前保留为后续扩展方向；学习时不要跳过前十章的练习和掌握标准。</p></section>
-</main></body></html>
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>AAI 研究生高性价比知识手册</title>
+    <link rel="stylesheet" href="assets/style.css" />
+    <script src="assets/copy-code.js" defer></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="header-inner">
+        <a class="brand" href="index.html"><span>AAI</span> 学习手册</a
+        ><a
+          class="header-link"
+          href="https://github.com/Smartin524/AAI-Learning"
+          >GitHub</a
+        >
+      </div>
+    </header>
+    <main class="home">
+      <h1>从 Python 基础，到独立完成 RAG 项目</h1>
+      <p class="lead">
+        前十章已经展开为独立课程页。每章不只告诉你“怎么写”，还要求你掌握必要术语、理解运行机制、识别常见错误，并用练习验证是否真的掌握。
+      </p>
+      <div class="path">
+        建议顺序：基本类型 → 容器 → 控制流 → 函数 → 文件 → 异常与环境 → NumPy →
+        API → Embedding → RAG
+      </div>
+      <div class="chapter-grid">
+        <a class="chapter-card" href="chapters/01-basics.html"
+          ><div class="chapter-no">CHAPTER 01</div>
+          <h2>变量、基本类型与 Casting</h2>
+          <p>变量、对象、类型、真假值、None、安全输入转换。</p></a
+        >
+        <a class="chapter-card" href="chapters/02-containers.html"
+          ><div class="chapter-no">CHAPTER 02</div>
+          <h2>list、dict、set、tuple</h2>
+          <p>索引、切片、映射、哈希、推导式、浅拷贝。</p></a
+        >
+        <a class="chapter-card" href="chapters/03-control-flow.html"
+          ><div class="chapter-no">CHAPTER 03</div>
+          <h2>判断、循环与程序流程</h2>
+          <p>分支、迭代、短路、break、continue、enumerate、zip。</p></a
+        >
+        <a class="chapter-card" href="chapters/04-functions.html"
+          ><div class="chapter-no">CHAPTER 04</div>
+          <h2>函数、参数与作用域</h2>
+          <p>返回值、默认参数、作用域、纯函数、类型标注。</p></a
+        >
+        <a class="chapter-card" href="chapters/05-files-json.html"
+          ><div class="chapter-no">CHAPTER 05</div>
+          <h2>字符串、文件、路径与 JSON</h2>
+          <p>UTF-8、pathlib、序列化、metadata、JSONL。</p></a
+        >
+        <a class="chapter-card" href="chapters/06-errors-env.html"
+          ><div class="chapter-no">CHAPTER 06</div>
+          <h2>异常、模块与虚拟环境</h2>
+          <p>Traceback、raise、模块、包、venv、依赖复现。</p></a
+        >
+        <a class="chapter-card" href="chapters/07-numpy-vectors.html"
+          ><div class="chapter-no">CHAPTER 07</div>
+          <h2>NumPy、矩阵与向量</h2>
+          <p>shape、axis、dtype、广播、点积、余弦相似度。</p></a
+        >
+        <a class="chapter-card" href="chapters/08-api.html"
+          ><div class="chapter-no">CHAPTER 08</div>
+          <h2>HTTP、API 与模型调用</h2>
+          <p>endpoint、状态码、认证、超时、限流、重试。</p></a
+        >
+        <a class="chapter-card" href="chapters/09-embedding.html"
+          ><div class="chapter-no">CHAPTER 09</div>
+          <h2>Embedding 与语义检索</h2>
+          <p>向量空间、度量、归一化、top-k、ANN、评估。</p></a
+        >
+        <a class="chapter-card" href="chapters/10-mini-rag.html"
+          ><div class="chapter-no">CHAPTER 10</div>
+          <h2>迷你 RAG</h2>
+          <p>切块、索引、检索、context、引用、拒答、评估。</p></a
+        >
+      </div>
+      <section class="later">
+        <h2>第 11–20 章：下一阶段</h2>
+        <p>
+          完成前十章后，再进入必要数学、复杂度与代码质量、Pandas 与
+          SQL、机器学习、评估与实验、PyTorch、Transformer 与 LLM、进阶 RAG、AI
+          工程化和研究能力。
+        </p>
+        <p>
+          这些章节目前保留为后续扩展方向；学习时不要跳过前十章的练习和掌握标准。
+        </p>
+      </section>
+    </main>
+  </body>
+</html>

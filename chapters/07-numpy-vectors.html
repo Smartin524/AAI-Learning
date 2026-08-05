@@ -1,6 +1,104 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>NumPy、数组、矩阵与向量｜AAI 学习手册</title><link rel="stylesheet" href="../assets/style.css"></head><body><header class="site-header"><div class="header-inner"><a class="brand" href="../index.html"><span>AAI</span> 学习手册</a><a class="header-link" href="../index.html">全部章节</a></div></header><div class="chapter-layout"><aside class="toc"><div class="toc-title">前十章</div><nav class="chapter-links"><a href="01-basics.html">01 基本类型与 Casting</a><a href="02-containers.html">02 容器</a><a href="03-control-flow.html">03 判断与循环</a><a href="04-functions.html">04 函数</a><a href="05-files-json.html">05 文件与 JSON</a><a href="06-errors-env.html">06 报错与环境</a><a class="active" href="07-numpy-vectors.html">07 NumPy 与向量</a><a href="08-api.html">08 API</a><a href="09-embedding.html">09 Embedding</a><a href="10-mini-rag.html">10 迷你 RAG</a></nav><div class="toc-divider"></div><a href="#terms">必须掌握的术语</a><a href="#core">核心知识</a><a href="#errors">常见错误</a><a href="#practice">练习</a></aside><main class="chapter"><header class="chapter-hero"><div class="chapter-kicker">CHAPTER 07</div><h1>NumPy、数组、矩阵与向量</h1><p class="chapter-summary">NumPy 是 Python 数值计算的基础。深度学习张量、Embedding 和数据矩阵都延续了它的 shape、广播和向量化思维。</p><div class="outcomes"><strong>学完你应该能够：</strong>创建和变换 ndarray；准确追踪 shape、axis 和 dtype；使用向量化、广播、矩阵乘法和余弦相似度。</div></header>
-<section class="content-section" id="terms"><h2>必须掌握的术语</h2><table class="terms"><tr><th>术语</th><th>准确理解</th></tr><tr><td>ndarray</td><td>同质、多维 NumPy 数组。</td></tr><tr><td>shape</td><td>每个维度的长度，例如 (batch, features)。</td></tr><tr><td>ndim</td><td>数组维度数量。</td></tr><tr><td>dtype</td><td>元素的数据类型，影响精度和内存。</td></tr><tr><td>axis</td><td>运算沿哪个维度进行。</td></tr><tr><td>vectorization</td><td>用底层批量运算替代 Python 循环。</td></tr><tr><td>broadcasting</td><td>按兼容规则扩展较小数组参与运算。</td></tr><tr><td>dot product</td><td>对应元素乘积之和。</td></tr><tr><td>norm</td><td>向量长度，常用 L2 范数。</td></tr><tr><td>cosine similarity</td><td>用夹角衡量方向相似度。</td></tr></table></section>
-<section class="content-section" id="core"><h2>1. shape 是第一调试信息</h2><pre>import numpy as np
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>NumPy、数组、矩阵与向量｜AAI 学习手册</title>
+    <link rel="stylesheet" href="../assets/style.css" />
+    <script src="../assets/copy-code.js" defer></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="header-inner">
+        <a class="brand" href="../index.html"><span>AAI</span> 学习手册</a
+        ><a class="header-link" href="../index.html">全部章节</a>
+      </div>
+    </header>
+    <div class="chapter-layout">
+      <aside class="toc">
+        <div class="toc-title">前十章</div>
+        <nav class="chapter-links">
+          <a href="01-basics.html">01 基本类型与 Casting</a
+          ><a href="02-containers.html">02 容器</a
+          ><a href="03-control-flow.html">03 判断与循环</a
+          ><a href="04-functions.html">04 函数</a
+          ><a href="05-files-json.html">05 文件与 JSON</a
+          ><a href="06-errors-env.html">06 报错与环境</a
+          ><a class="active" href="07-numpy-vectors.html">07 NumPy 与向量</a
+          ><a href="08-api.html">08 API</a
+          ><a href="09-embedding.html">09 Embedding</a
+          ><a href="10-mini-rag.html">10 迷你 RAG</a>
+        </nav>
+        <div class="toc-divider"></div>
+        <a href="#terms">必须掌握的术语</a><a href="#core">核心知识</a
+        ><a href="#errors">常见错误</a><a href="#practice">练习</a>
+      </aside>
+      <main class="chapter">
+        <header class="chapter-hero">
+          <div class="chapter-kicker">CHAPTER 07</div>
+          <h1>NumPy、数组、矩阵与向量</h1>
+          <p class="chapter-summary">
+            NumPy 是 Python 数值计算的基础。深度学习张量、Embedding
+            和数据矩阵都延续了它的 shape、广播和向量化思维。
+          </p>
+          <div class="outcomes">
+            <strong>学完你应该能够：</strong>创建和变换 ndarray；准确追踪
+            shape、axis 和 dtype；使用向量化、广播、矩阵乘法和余弦相似度。
+          </div>
+        </header>
+        <section class="content-section" id="terms">
+          <h2>必须掌握的术语</h2>
+          <table class="terms">
+            <tr>
+              <th>术语</th>
+              <th>准确理解</th>
+            </tr>
+            <tr>
+              <td>ndarray</td>
+              <td>同质、多维 NumPy 数组。</td>
+            </tr>
+            <tr>
+              <td>shape</td>
+              <td>每个维度的长度，例如 (batch, features)。</td>
+            </tr>
+            <tr>
+              <td>ndim</td>
+              <td>数组维度数量。</td>
+            </tr>
+            <tr>
+              <td>dtype</td>
+              <td>元素的数据类型，影响精度和内存。</td>
+            </tr>
+            <tr>
+              <td>axis</td>
+              <td>运算沿哪个维度进行。</td>
+            </tr>
+            <tr>
+              <td>vectorization</td>
+              <td>用底层批量运算替代 Python 循环。</td>
+            </tr>
+            <tr>
+              <td>broadcasting</td>
+              <td>按兼容规则扩展较小数组参与运算。</td>
+            </tr>
+            <tr>
+              <td>dot product</td>
+              <td>对应元素乘积之和。</td>
+            </tr>
+            <tr>
+              <td>norm</td>
+              <td>向量长度，常用 L2 范数。</td>
+            </tr>
+            <tr>
+              <td>cosine similarity</td>
+              <td>用夹角衡量方向相似度。</td>
+            </tr>
+          </table>
+        </section>
+        <section class="content-section" id="core">
+          <h2>1. shape 是第一调试信息</h2>
+          <pre>
+import numpy as np
 
 X = np.array([[1, 2, 3], [4, 5, 6]], dtype=np.float32)
 print(X.shape)   # (2, 3)：2 个样本，每个 3 个特征
@@ -8,21 +106,36 @@ print(X.ndim)    # 2
 print(X.dtype)   # float32
 
 row = X[0]       # shape (3,)
-col = X[:, 0]    # shape (2,)</pre>
-<h3>2. reshape 与维度</h3><pre>values = np.arange(12)
+col = X[:, 0]    # shape (2,)</pre
+          >
+          <h3>2. reshape 与维度</h3>
+          <pre>
+values = np.arange(12)
 matrix = values.reshape(3, 4)
 column = values.reshape(-1, 1)
-print(matrix.shape, column.shape)</pre>
-<p><code>-1</code> 让 NumPy 自动推断该维长度。reshape 前后元素总数必须一致。</p>
-<h3>3. axis</h3><pre>X = np.array([[1, 2, 3], [4, 5, 6]])
+print(matrix.shape, column.shape)</pre
+          >
+          <p>
+            <code>-1</code> 让 NumPy 自动推断该维长度。reshape
+            前后元素总数必须一致。
+          </p>
+          <h3>3. axis</h3>
+          <pre>
+X = np.array([[1, 2, 3], [4, 5, 6]])
 print(X.mean(axis=0))  # 每个特征跨样本求均值，shape (3,)
-print(X.mean(axis=1))  # 每个样本跨特征求均值，shape (2,)</pre>
-<h3>4. 广播</h3><pre>X = np.array([[1., 2.], [3., 4.]])
+print(X.mean(axis=1))  # 每个样本跨特征求均值，shape (2,)</pre
+          >
+          <h3>4. 广播</h3>
+          <pre>
+X = np.array([[1., 2.], [3., 4.]])
 mean = X.mean(axis=0)
 std = X.std(axis=0)
-normalized = (X - mean) / (std + 1e-8)</pre>
-<p>从右向左比较 shape；维度相等或其中一个为 1 时通常可以广播。</p>
-<h3>5. 点积、矩阵乘法与余弦相似度</h3><pre>a = np.array([1., 2., 3.])
+normalized = (X - mean) / (std + 1e-8)</pre
+          >
+          <p>从右向左比较 shape；维度相等或其中一个为 1 时通常可以广播。</p>
+          <h3>5. 点积、矩阵乘法与余弦相似度</h3>
+          <pre>
+a = np.array([1., 2., 3.])
 b = np.array([2., 1., 0.])
 dot = np.dot(a, b)
 length = np.linalg.norm(a)
@@ -31,8 +144,11 @@ def cosine_similarity(a, b):
     denominator = np.linalg.norm(a) * np.linalg.norm(b)
     if denominator == 0:
         raise ValueError("零向量没有方向")
-    return np.dot(a, b) / denominator</pre>
-<h3>6. 批量计算检索分数</h3><pre>doc_vectors = np.array([
+    return np.dot(a, b) / denominator</pre
+          >
+          <h3>6. 批量计算检索分数</h3>
+          <pre>
+doc_vectors = np.array([
     [0.9, 0.1, 0.2],
     [0.1, 0.9, 0.2],
     [0.7, 0.2, 0.3]
@@ -42,6 +158,49 @@ query = np.array([0.8, 0.1, 0.2])
 docs_unit = doc_vectors / np.linalg.norm(doc_vectors, axis=1, keepdims=True)
 query_unit = query / np.linalg.norm(query)
 scores = docs_unit @ query_unit
-top_indices = np.argsort(scores)[::-1]</pre></section>
-<section class="content-section" id="errors"><h2>常见错误</h2><ul class="error-list"><li>混淆 (n,) 和 (n,1)，导致矩阵乘法结果意外。</li><li>axis 选错但代码仍能运行，产生语义错误。</li><li>整数数组做除法或赋小数时产生 dtype 问题。</li><li>对零向量归一化，得到 NaN。</li><li>在大数组上使用 Python for 循环而不是向量化。</li><li>只看数值不打印 shape，难以定位广播错误。</li></ul></section>
-<section class="content-section" id="practice"><h2>分层练习</h2><div class="exercise"><strong>基础</strong><ol><li>构造 shape=(4,3) 的数组，分别沿 axis 0 和 1 求均值。</li><li>手算两个向量点积并验证。</li></ol></div><div class="exercise"><strong>进阶</strong><ol><li>不使用循环，计算一个 query 与 100 个文档的余弦分数。</li><li>返回 top 5 的索引和分数。</li></ol></div><div class="exercise"><strong>掌握标准</strong><ol><li>为每个中间数组标注 shape。</li><li>解释广播规则，并修复一个 shape mismatch。</li></ol></div></section><nav class="chapter-nav"><a href="06-errors-env.html">← 06 报错与环境</a><a href="08-api.html">08 API →</a></nav></main></div></body></html>
+top_indices = np.argsort(scores)[::-1]</pre
+          >
+        </section>
+        <section class="content-section" id="errors">
+          <h2>常见错误</h2>
+          <ul class="error-list">
+            <li>混淆 (n,) 和 (n,1)，导致矩阵乘法结果意外。</li>
+            <li>axis 选错但代码仍能运行，产生语义错误。</li>
+            <li>整数数组做除法或赋小数时产生 dtype 问题。</li>
+            <li>对零向量归一化，得到 NaN。</li>
+            <li>在大数组上使用 Python for 循环而不是向量化。</li>
+            <li>只看数值不打印 shape，难以定位广播错误。</li>
+          </ul>
+        </section>
+        <section class="content-section" id="practice">
+          <h2>分层练习</h2>
+          <div class="exercise">
+            <strong>基础</strong>
+            <ol>
+              <li>构造 shape=(4,3) 的数组，分别沿 axis 0 和 1 求均值。</li>
+              <li>手算两个向量点积并验证。</li>
+            </ol>
+          </div>
+          <div class="exercise">
+            <strong>进阶</strong>
+            <ol>
+              <li>不使用循环，计算一个 query 与 100 个文档的余弦分数。</li>
+              <li>返回 top 5 的索引和分数。</li>
+            </ol>
+          </div>
+          <div class="exercise">
+            <strong>掌握标准</strong>
+            <ol>
+              <li>为每个中间数组标注 shape。</li>
+              <li>解释广播规则，并修复一个 shape mismatch。</li>
+            </ol>
+          </div>
+        </section>
+        <nav class="chapter-nav">
+          <a href="06-errors-env.html">← 06 报错与环境</a
+          ><a href="08-api.html">08 API →</a>
+        </nav>
+      </main>
+    </div>
+  </body>
+</html>

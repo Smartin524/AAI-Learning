@@ -1,6 +1,104 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>HTTP、API 与模型调用｜AAI 学习手册</title><link rel="stylesheet" href="../assets/style.css"></head><body><header class="site-header"><div class="header-inner"><a class="brand" href="../index.html"><span>AAI</span> 学习手册</a><a class="header-link" href="../index.html">全部章节</a></div></header><div class="chapter-layout"><aside class="toc"><div class="toc-title">前十章</div><nav class="chapter-links"><a href="01-basics.html">01 基本类型与 Casting</a><a href="02-containers.html">02 容器</a><a href="03-control-flow.html">03 判断与循环</a><a href="04-functions.html">04 函数</a><a href="05-files-json.html">05 文件与 JSON</a><a href="06-errors-env.html">06 报错与环境</a><a href="07-numpy-vectors.html">07 NumPy 与向量</a><a class="active" href="08-api.html">08 API</a><a href="09-embedding.html">09 Embedding</a><a href="10-mini-rag.html">10 迷你 RAG</a></nav><div class="toc-divider"></div><a href="#terms">必须掌握的术语</a><a href="#core">核心知识</a><a href="#errors">常见错误</a><a href="#practice">练习</a></aside><main class="chapter"><header class="chapter-hero"><div class="chapter-kicker">CHAPTER 08</div><h1>HTTP、API 与模型调用</h1><p class="chapter-summary">API 是应用连接模型、数据库和外部服务的边界。可靠调用需要理解 HTTP、JSON、身份验证、超时、错误码、重试和成本。</p><div class="outcomes"><strong>学完你应该能够：</strong>解释请求和响应；使用 requests 调用 JSON API；安全管理密钥；处理超时、限流、服务端错误与流式响应概念。</div></header>
-<section class="content-section" id="terms"><h2>必须掌握的术语</h2><table class="terms"><tr><th>术语</th><th>准确理解</th></tr><tr><td>API</td><td>软件之间约定的调用接口。</td></tr><tr><td>endpoint</td><td>某项资源或操作的具体 URL。</td></tr><tr><td>HTTP method</td><td>GET、POST、PUT、PATCH、DELETE 等请求语义。</td></tr><tr><td>header</td><td>请求或响应的元数据。</td></tr><tr><td>body / payload</td><td>发送的数据主体，常为 JSON。</td></tr><tr><td>status code</td><td>HTTP 结果分类：2xx、4xx、5xx。</td></tr><tr><td>authentication</td><td>证明调用方身份，常使用 API Key 或 OAuth。</td></tr><tr><td>timeout</td><td>等待连接或响应的最大时间。</td></tr><tr><td>rate limit</td><td>服务允许的调用频率或配额。</td></tr><tr><td>idempotency</td><td>重复执行相同请求是否产生相同副作用。</td></tr></table></section>
-<section class="content-section" id="core"><h2>1. 请求与响应结构</h2><pre>import requests
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>HTTP、API 与模型调用｜AAI 学习手册</title>
+    <link rel="stylesheet" href="../assets/style.css" />
+    <script src="../assets/copy-code.js" defer></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="header-inner">
+        <a class="brand" href="../index.html"><span>AAI</span> 学习手册</a
+        ><a class="header-link" href="../index.html">全部章节</a>
+      </div>
+    </header>
+    <div class="chapter-layout">
+      <aside class="toc">
+        <div class="toc-title">前十章</div>
+        <nav class="chapter-links">
+          <a href="01-basics.html">01 基本类型与 Casting</a
+          ><a href="02-containers.html">02 容器</a
+          ><a href="03-control-flow.html">03 判断与循环</a
+          ><a href="04-functions.html">04 函数</a
+          ><a href="05-files-json.html">05 文件与 JSON</a
+          ><a href="06-errors-env.html">06 报错与环境</a
+          ><a href="07-numpy-vectors.html">07 NumPy 与向量</a
+          ><a class="active" href="08-api.html">08 API</a
+          ><a href="09-embedding.html">09 Embedding</a
+          ><a href="10-mini-rag.html">10 迷你 RAG</a>
+        </nav>
+        <div class="toc-divider"></div>
+        <a href="#terms">必须掌握的术语</a><a href="#core">核心知识</a
+        ><a href="#errors">常见错误</a><a href="#practice">练习</a>
+      </aside>
+      <main class="chapter">
+        <header class="chapter-hero">
+          <div class="chapter-kicker">CHAPTER 08</div>
+          <h1>HTTP、API 与模型调用</h1>
+          <p class="chapter-summary">
+            API 是应用连接模型、数据库和外部服务的边界。可靠调用需要理解
+            HTTP、JSON、身份验证、超时、错误码、重试和成本。
+          </p>
+          <div class="outcomes">
+            <strong>学完你应该能够：</strong>解释请求和响应；使用 requests 调用
+            JSON API；安全管理密钥；处理超时、限流、服务端错误与流式响应概念。
+          </div>
+        </header>
+        <section class="content-section" id="terms">
+          <h2>必须掌握的术语</h2>
+          <table class="terms">
+            <tr>
+              <th>术语</th>
+              <th>准确理解</th>
+            </tr>
+            <tr>
+              <td>API</td>
+              <td>软件之间约定的调用接口。</td>
+            </tr>
+            <tr>
+              <td>endpoint</td>
+              <td>某项资源或操作的具体 URL。</td>
+            </tr>
+            <tr>
+              <td>HTTP method</td>
+              <td>GET、POST、PUT、PATCH、DELETE 等请求语义。</td>
+            </tr>
+            <tr>
+              <td>header</td>
+              <td>请求或响应的元数据。</td>
+            </tr>
+            <tr>
+              <td>body / payload</td>
+              <td>发送的数据主体，常为 JSON。</td>
+            </tr>
+            <tr>
+              <td>status code</td>
+              <td>HTTP 结果分类：2xx、4xx、5xx。</td>
+            </tr>
+            <tr>
+              <td>authentication</td>
+              <td>证明调用方身份，常使用 API Key 或 OAuth。</td>
+            </tr>
+            <tr>
+              <td>timeout</td>
+              <td>等待连接或响应的最大时间。</td>
+            </tr>
+            <tr>
+              <td>rate limit</td>
+              <td>服务允许的调用频率或配额。</td>
+            </tr>
+            <tr>
+              <td>idempotency</td>
+              <td>重复执行相同请求是否产生相同副作用。</td>
+            </tr>
+          </table>
+        </section>
+        <section class="content-section" id="core">
+          <h2>1. 请求与响应结构</h2>
+          <pre>
+import requests
 
 response = requests.get(
     "https://api.github.com/repos/langgenius/dify",
@@ -9,9 +107,15 @@ response = requests.get(
 )
 response.raise_for_status()
 data = response.json()
-print(data["name"], data["stargazers_count"])</pre>
-<p><code>raise_for_status()</code> 会把 4xx/5xx 转成异常，避免把错误页面当正常数据继续处理。</p>
-<h3>2. POST JSON</h3><pre>payload = {
+print(data["name"], data["stargazers_count"])</pre
+          >
+          <p>
+            <code>raise_for_status()</code> 会把 4xx/5xx
+            转成异常，避免把错误页面当正常数据继续处理。
+          </p>
+          <h3>2. POST JSON</h3>
+          <pre>
+payload = {
     "model": "example-model",
     "messages": [{"role": "user", "content": "解释 RAG"}],
     "temperature": 0.2
@@ -21,15 +125,54 @@ response = requests.post(
     json=payload,
     headers={"Authorization": f"Bearer {api_key}"},
     timeout=(3, 30)
-)</pre>
-<p>使用 <code>json=payload</code> 会自动序列化并设置 Content-Type；<code>data=</code> 的语义不同。</p>
-<h3>3. 环境变量管理密钥</h3><pre>import os
+)</pre
+          >
+          <p>
+            使用 <code>json=payload</code> 会自动序列化并设置
+            Content-Type；<code>data=</code> 的语义不同。
+          </p>
+          <h3>3. 环境变量管理密钥</h3>
+          <pre>
+import os
 
 api_key = os.environ.get("MODEL_API_KEY")
 if not api_key:
-    raise RuntimeError("请设置 MODEL_API_KEY 环境变量")</pre>
-<h3>4. 状态码策略</h3><table class="terms"><tr><th>范围</th><th>含义与处理</th></tr><tr><td>200-299</td><td>成功，仍需验证响应字段。</td></tr><tr><td>400</td><td>请求参数错误，修复请求，不应盲目重试。</td></tr><tr><td>401/403</td><td>认证或权限问题。</td></tr><tr><td>404</td><td>资源不存在或路径错误。</td></tr><tr><td>429</td><td>被限流，按 Retry-After 或退避重试。</td></tr><tr><td>500-599</td><td>服务端暂时错误，可有限重试。</td></tr></table>
-<h3>5. 有限重试与指数退避</h3><pre>import time
+    raise RuntimeError("请设置 MODEL_API_KEY 环境变量")</pre
+          >
+          <h3>4. 状态码策略</h3>
+          <table class="terms">
+            <tr>
+              <th>范围</th>
+              <th>含义与处理</th>
+            </tr>
+            <tr>
+              <td>200-299</td>
+              <td>成功，仍需验证响应字段。</td>
+            </tr>
+            <tr>
+              <td>400</td>
+              <td>请求参数错误，修复请求，不应盲目重试。</td>
+            </tr>
+            <tr>
+              <td>401/403</td>
+              <td>认证或权限问题。</td>
+            </tr>
+            <tr>
+              <td>404</td>
+              <td>资源不存在或路径错误。</td>
+            </tr>
+            <tr>
+              <td>429</td>
+              <td>被限流，按 Retry-After 或退避重试。</td>
+            </tr>
+            <tr>
+              <td>500-599</td>
+              <td>服务端暂时错误，可有限重试。</td>
+            </tr>
+          </table>
+          <h3>5. 有限重试与指数退避</h3>
+          <pre>
+import time
 import requests
 
 for attempt in range(3):
@@ -40,7 +183,55 @@ for attempt in range(3):
     except (requests.Timeout, requests.ConnectionError):
         if attempt == 2:
             raise
-        time.sleep(2 ** attempt)</pre>
-<div class="note"><strong>LLM 调用还要记录：</strong>模型名、输入/输出 token、延迟、费用、请求 ID和错误类型，才能定位质量与成本问题。</div></section>
-<section class="content-section" id="errors"><h2>常见错误</h2><ul class="error-list"><li>不设置 timeout，程序可能无限等待。</li><li>把 API Key 写入代码并推送 GitHub。</li><li>对所有 4xx/5xx 无限重试，造成费用和负载问题。</li><li>只判断 status=200，不验证 JSON schema。</li><li>日志打印完整请求头，泄漏 Authorization。</li><li>混淆网络错误、API 错误和模型内容质量问题。</li></ul></section>
-<section class="content-section" id="practice"><h2>分层练习</h2><div class="exercise"><strong>基础</strong><ol><li>调用 GitHub API，打印状态码和三个字段。</li><li>分别请求一个 404 地址和一个超时地址。</li></ol></div><div class="exercise"><strong>进阶</strong><ol><li>封装 <code>request_json(url)</code>，加入超时、错误处理和重试。</li><li>从环境变量读取密钥，并确认 git status 不包含密钥文件。</li></ol></div><div class="exercise"><strong>掌握标准</strong><ol><li>为 LLM API 设计日志字段和错误分类。</li><li>说明哪些错误可以重试，哪些不能。</li></ol></div></section><nav class="chapter-nav"><a href="07-numpy-vectors.html">← 07 NumPy 与向量</a><a href="09-embedding.html">09 Embedding →</a></nav></main></div></body></html>
+        time.sleep(2 ** attempt)</pre
+          >
+          <div class="note">
+            <strong>LLM 调用还要记录：</strong>模型名、输入/输出
+            token、延迟、费用、请求 ID和错误类型，才能定位质量与成本问题。
+          </div>
+        </section>
+        <section class="content-section" id="errors">
+          <h2>常见错误</h2>
+          <ul class="error-list">
+            <li>不设置 timeout，程序可能无限等待。</li>
+            <li>把 API Key 写入代码并推送 GitHub。</li>
+            <li>对所有 4xx/5xx 无限重试，造成费用和负载问题。</li>
+            <li>只判断 status=200，不验证 JSON schema。</li>
+            <li>日志打印完整请求头，泄漏 Authorization。</li>
+            <li>混淆网络错误、API 错误和模型内容质量问题。</li>
+          </ul>
+        </section>
+        <section class="content-section" id="practice">
+          <h2>分层练习</h2>
+          <div class="exercise">
+            <strong>基础</strong>
+            <ol>
+              <li>调用 GitHub API，打印状态码和三个字段。</li>
+              <li>分别请求一个 404 地址和一个超时地址。</li>
+            </ol>
+          </div>
+          <div class="exercise">
+            <strong>进阶</strong>
+            <ol>
+              <li>
+                封装 <code>request_json(url)</code>，加入超时、错误处理和重试。
+              </li>
+              <li>从环境变量读取密钥，并确认 git status 不包含密钥文件。</li>
+            </ol>
+          </div>
+          <div class="exercise">
+            <strong>掌握标准</strong>
+            <ol>
+              <li>为 LLM API 设计日志字段和错误分类。</li>
+              <li>说明哪些错误可以重试，哪些不能。</li>
+            </ol>
+          </div>
+        </section>
+        <nav class="chapter-nav">
+          <a href="07-numpy-vectors.html">← 07 NumPy 与向量</a
+          ><a href="09-embedding.html">09 Embedding →</a>
+        </nav>
+      </main>
+    </div>
+  </body>
+</html>

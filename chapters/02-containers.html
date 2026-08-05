@@ -1,9 +1,96 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>容器：list、dict、set、tuple｜AAI 学习手册</title><link rel="stylesheet" href="../assets/style.css"></head><body>
-<header class="site-header"><div class="header-inner"><a class="brand" href="../index.html"><span>AAI</span> 学习手册</a><a class="header-link" href="../index.html">全部章节</a></div></header>
-<div class="chapter-layout"><aside class="toc"><div class="toc-title">前十章</div><nav class="chapter-links"><a href="01-basics.html">01 基本类型与 Casting</a><a class="active" href="02-containers.html">02 容器</a><a href="03-control-flow.html">03 判断与循环</a><a href="04-functions.html">04 函数</a><a href="05-files-json.html">05 文件与 JSON</a><a href="06-errors-env.html">06 报错与环境</a><a href="07-numpy-vectors.html">07 NumPy 与向量</a><a href="08-api.html">08 API</a><a href="09-embedding.html">09 Embedding</a><a href="10-mini-rag.html">10 迷你 RAG</a></nav><div class="toc-divider"></div><a href="#terms">必须掌握的术语</a><a href="#core">核心知识</a><a href="#errors">常见错误</a><a href="#practice">练习</a></aside>
-<main class="chapter"><header class="chapter-hero"><div class="chapter-kicker">CHAPTER 02</div><h1>容器：list、dict、set、tuple</h1><p class="chapter-summary">容器决定了数据如何组织、访问和修改。AI 项目中的文档、模型响应、配置和检索结果几乎都建立在这些结构之上。</p><div class="outcomes"><strong>学完你应该能够：</strong>根据需求选择容器；熟练索引、切片、增删改查和遍历；理解浅拷贝、可变性与常见组合。</div></header>
-<section class="content-section" id="terms"><h2>必须掌握的术语</h2><table class="terms"><tr><th>术语</th><th>准确理解</th></tr><tr><td>sequence</td><td>有顺序、可索引的序列，例如 list 和 tuple。</td></tr><tr><td>index / slice</td><td>单个位置访问与区间访问；索引从 0 开始。</td></tr><tr><td>mapping</td><td>键到值的映射，dict 是核心实现。</td></tr><tr><td>hashable</td><td>具有稳定哈希值、可作为 dict 键或 set 元素的对象。</td></tr><tr><td>mutable</td><td>可原地修改，例如 list、dict、set。</td></tr><tr><td>comprehension</td><td>列表、字典和集合推导式。</td></tr><tr><td>shallow copy</td><td>只复制最外层容器，内部对象仍共享。</td></tr><tr><td>unpacking</td><td>把序列或映射拆分到多个变量或参数。</td></tr></table></section>
-<section class="content-section" id="core"><h2>1. list：有序、可修改</h2><pre>chunks = ["第一段", "第二段", "第三段"]
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>容器：list、dict、set、tuple｜AAI 学习手册</title>
+    <link rel="stylesheet" href="../assets/style.css" />
+    <script src="../assets/copy-code.js" defer></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="header-inner">
+        <a class="brand" href="../index.html"><span>AAI</span> 学习手册</a
+        ><a class="header-link" href="../index.html">全部章节</a>
+      </div>
+    </header>
+    <div class="chapter-layout">
+      <aside class="toc">
+        <div class="toc-title">前十章</div>
+        <nav class="chapter-links">
+          <a href="01-basics.html">01 基本类型与 Casting</a
+          ><a class="active" href="02-containers.html">02 容器</a
+          ><a href="03-control-flow.html">03 判断与循环</a
+          ><a href="04-functions.html">04 函数</a
+          ><a href="05-files-json.html">05 文件与 JSON</a
+          ><a href="06-errors-env.html">06 报错与环境</a
+          ><a href="07-numpy-vectors.html">07 NumPy 与向量</a
+          ><a href="08-api.html">08 API</a
+          ><a href="09-embedding.html">09 Embedding</a
+          ><a href="10-mini-rag.html">10 迷你 RAG</a>
+        </nav>
+        <div class="toc-divider"></div>
+        <a href="#terms">必须掌握的术语</a><a href="#core">核心知识</a
+        ><a href="#errors">常见错误</a><a href="#practice">练习</a>
+      </aside>
+      <main class="chapter">
+        <header class="chapter-hero">
+          <div class="chapter-kicker">CHAPTER 02</div>
+          <h1>容器：list、dict、set、tuple</h1>
+          <p class="chapter-summary">
+            容器决定了数据如何组织、访问和修改。AI
+            项目中的文档、模型响应、配置和检索结果几乎都建立在这些结构之上。
+          </p>
+          <div class="outcomes">
+            <strong>学完你应该能够：</strong
+            >根据需求选择容器；熟练索引、切片、增删改查和遍历；理解浅拷贝、可变性与常见组合。
+          </div>
+        </header>
+        <section class="content-section" id="terms">
+          <h2>必须掌握的术语</h2>
+          <table class="terms">
+            <tr>
+              <th>术语</th>
+              <th>准确理解</th>
+            </tr>
+            <tr>
+              <td>sequence</td>
+              <td>有顺序、可索引的序列，例如 list 和 tuple。</td>
+            </tr>
+            <tr>
+              <td>index / slice</td>
+              <td>单个位置访问与区间访问；索引从 0 开始。</td>
+            </tr>
+            <tr>
+              <td>mapping</td>
+              <td>键到值的映射，dict 是核心实现。</td>
+            </tr>
+            <tr>
+              <td>hashable</td>
+              <td>具有稳定哈希值、可作为 dict 键或 set 元素的对象。</td>
+            </tr>
+            <tr>
+              <td>mutable</td>
+              <td>可原地修改，例如 list、dict、set。</td>
+            </tr>
+            <tr>
+              <td>comprehension</td>
+              <td>列表、字典和集合推导式。</td>
+            </tr>
+            <tr>
+              <td>shallow copy</td>
+              <td>只复制最外层容器，内部对象仍共享。</td>
+            </tr>
+            <tr>
+              <td>unpacking</td>
+              <td>把序列或映射拆分到多个变量或参数。</td>
+            </tr>
+          </table>
+        </section>
+        <section class="content-section" id="core">
+          <h2>1. list：有序、可修改</h2>
+          <pre>
+chunks = ["第一段", "第二段", "第三段"]
 print(chunks[0])       # 第一段
 print(chunks[-1])      # 第三段
 print(chunks[0:2])     # 新列表
@@ -11,8 +98,11 @@ print(chunks[0:2])     # 新列表
 chunks.append("第四段")
 chunks.extend(["第五段", "第六段"])
 removed = chunks.pop()
-print(len(chunks), removed)</pre>
-<h3>2. dict：用键表达数据含义</h3><pre>document = {
+print(len(chunks), removed)</pre
+          >
+          <h3>2. dict：用键表达数据含义</h3>
+          <pre>
+document = {
     "text": "Embedding 是文本的向量表示",
     "source": "notes.md",
     "score": 0.91
@@ -22,36 +112,98 @@ print(document.get("page", "未知页码"))
 
 document["page"] = 3
 for key, value in document.items():
-    print(key, value)</pre>
-<p><code>document["page"]</code> 在键不存在时抛 KeyError；<code>get()</code> 可以提供默认值。需要发现数据错误时使用前者，需要容错时使用后者。</p>
-<h3>3. set：去重与集合运算</h3><pre>required = {"Python", "NumPy", "Git"}
+    print(key, value)</pre
+          >
+          <p>
+            <code>document["page"]</code> 在键不存在时抛 KeyError；<code
+              >get()</code
+            >
+            可以提供默认值。需要发现数据错误时使用前者，需要容错时使用后者。
+          </p>
+          <h3>3. set：去重与集合运算</h3>
+          <pre>
+required = {"Python", "NumPy", "Git"}
 learned = {"Python", "Git", "RAG"}
 
 print(required & learned)  # 交集
 print(required - learned)  # 尚未掌握
-print(required | learned)  # 并集</pre>
-<h3>4. tuple：固定记录与解包</h3><pre>shape = (32, 768)
+print(required | learned)  # 并集</pre
+          >
+          <h3>4. tuple：固定记录与解包</h3>
+          <pre>
+shape = (32, 768)
 batch_size, embedding_dim = shape
 print(batch_size, embedding_dim)
 
 def min_max(values):
     return min(values), max(values)
 
-low, high = min_max([3, 8, 1])</pre>
-<h3>5. 推导式与排序</h3><pre>scores = [0.52, 0.91, 0.78]
+low, high = min_max([3, 8, 1])</pre
+          >
+          <h3>5. 推导式与排序</h3>
+          <pre>
+scores = [0.52, 0.91, 0.78]
 high_scores = [s for s in scores if s >= 0.75]
 
 results = [
     {"text": "A", "score": 0.52},
     {"text": "B", "score": 0.91}
 ]
-ranked = sorted(results, key=lambda item: item["score"], reverse=True)</pre>
-<h3>6. 浅拷贝问题</h3><pre>original = [{"score": 0.8}]
+ranked = sorted(results, key=lambda item: item["score"], reverse=True)</pre
+          >
+          <h3>6. 浅拷贝问题</h3>
+          <pre>
+original = [{"score": 0.8}]
 copied = original.copy()
 copied[0]["score"] = 1.0
 print(original)  # 也变成 1.0，因为内部 dict 共享
 
 import copy
-deep = copy.deepcopy(original)</pre></section>
-<section class="content-section" id="errors"><h2>常见错误</h2><ul class="error-list"><li>遍历 list 时同时删除元素，导致跳项。</li><li>把 list 作为 dict 的键：list 不可哈希。</li><li>认为 set 保持业务顺序；集合不应承担顺序语义。</li><li>用 <code>{}</code> 创建空 set；它实际是空 dict，空集合应写 <code>set()</code>。</li><li>混淆 <code>append</code> 和 <code>extend</code>。</li></ul></section>
-<section class="content-section" id="practice"><h2>分层练习</h2><div class="exercise"><strong>基础</strong><ol><li>用 list 保存课程，用 dict 保存课程详情。</li><li>用 set 找出必修技能中尚未掌握的技能。</li></ol></div><div class="exercise"><strong>进阶</strong><ol><li>将 list[dict] 按 score 降序排列，返回 top 3。</li><li>按 source 对检索结果分组。</li></ol></div><div class="exercise"><strong>掌握标准</strong><ol><li>解释为什么 tuple 可作 dict 键而 list 通常不行。</li><li>构造并修复一个浅拷贝导致的数据污染问题。</li></ol></div></section><nav class="chapter-nav"><a href="01-basics.html">← 01 基本类型与 Casting</a><a href="03-control-flow.html">03 判断与循环 →</a></nav></main></div></body></html>
+deep = copy.deepcopy(original)</pre
+          >
+        </section>
+        <section class="content-section" id="errors">
+          <h2>常见错误</h2>
+          <ul class="error-list">
+            <li>遍历 list 时同时删除元素，导致跳项。</li>
+            <li>把 list 作为 dict 的键：list 不可哈希。</li>
+            <li>认为 set 保持业务顺序；集合不应承担顺序语义。</li>
+            <li>
+              用 <code>{}</code> 创建空 set；它实际是空 dict，空集合应写
+              <code>set()</code>。
+            </li>
+            <li>混淆 <code>append</code> 和 <code>extend</code>。</li>
+          </ul>
+        </section>
+        <section class="content-section" id="practice">
+          <h2>分层练习</h2>
+          <div class="exercise">
+            <strong>基础</strong>
+            <ol>
+              <li>用 list 保存课程，用 dict 保存课程详情。</li>
+              <li>用 set 找出必修技能中尚未掌握的技能。</li>
+            </ol>
+          </div>
+          <div class="exercise">
+            <strong>进阶</strong>
+            <ol>
+              <li>将 list[dict] 按 score 降序排列，返回 top 3。</li>
+              <li>按 source 对检索结果分组。</li>
+            </ol>
+          </div>
+          <div class="exercise">
+            <strong>掌握标准</strong>
+            <ol>
+              <li>解释为什么 tuple 可作 dict 键而 list 通常不行。</li>
+              <li>构造并修复一个浅拷贝导致的数据污染问题。</li>
+            </ol>
+          </div>
+        </section>
+        <nav class="chapter-nav">
+          <a href="01-basics.html">← 01 基本类型与 Casting</a
+          ><a href="03-control-flow.html">03 判断与循环 →</a>
+        </nav>
+      </main>
+    </div>
+  </body>
+</html>

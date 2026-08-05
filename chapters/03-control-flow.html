@@ -1,33 +1,135 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>判断、循环与程序流程｜AAI 学习手册</title><link rel="stylesheet" href="../assets/style.css"></head><body>
-<header class="site-header"><div class="header-inner"><a class="brand" href="../index.html"><span>AAI</span> 学习手册</a><a class="header-link" href="../index.html">全部章节</a></div></header>
-<div class="chapter-layout"><aside class="toc"><div class="toc-title">前十章</div><nav class="chapter-links"><a href="01-basics.html">01 基本类型与 Casting</a><a href="02-containers.html">02 容器</a><a class="active" href="03-control-flow.html">03 判断与循环</a><a href="04-functions.html">04 函数</a><a href="05-files-json.html">05 文件与 JSON</a><a href="06-errors-env.html">06 报错与环境</a><a href="07-numpy-vectors.html">07 NumPy 与向量</a><a href="08-api.html">08 API</a><a href="09-embedding.html">09 Embedding</a><a href="10-mini-rag.html">10 迷你 RAG</a></nav><div class="toc-divider"></div><a href="#terms">必须掌握的术语</a><a href="#core">核心知识</a><a href="#errors">常见错误</a><a href="#practice">练习</a></aside>
-<main class="chapter"><header class="chapter-hero"><div class="chapter-kicker">CHAPTER 03</div><h1>判断、循环与程序流程</h1><p class="chapter-summary">控制流让程序根据条件选择路径，并重复处理一组数据。写对控制流的关键不是记语法，而是明确状态、边界和停止条件。</p><div class="outcomes"><strong>学完你应该能够：</strong>组合 if/elif/else；正确遍历容器；使用 break、continue、range、enumerate、zip；避免死循环和边界错误。</div></header>
-<section class="content-section" id="terms"><h2>必须掌握的术语</h2><table class="terms"><tr><th>术语</th><th>准确理解</th></tr><tr><td>condition</td><td>求值为真或假的表达式。</td></tr><tr><td>branch</td><td>根据条件选择的执行分支。</td></tr><tr><td>iteration</td><td>循环的一次执行。</td></tr><tr><td>iterable</td><td>可以逐个取出元素的对象。</td></tr><tr><td>break</td><td>立即退出当前循环。</td></tr><tr><td>continue</td><td>跳过本次循环剩余代码。</td></tr><tr><td>range</td><td>惰性产生整数序列。</td></tr><tr><td>enumerate / zip</td><td>同时取得索引；并行遍历多个序列。</td></tr><tr><td>short-circuit</td><td><code>and</code>/<code>or</code> 在结果已确定时停止计算。</td></tr></table></section>
-<section class="content-section" id="core"><h2>1. 条件分支</h2><pre>score = 0.82
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>判断、循环与程序流程｜AAI 学习手册</title>
+    <link rel="stylesheet" href="../assets/style.css" />
+    <script src="../assets/copy-code.js" defer></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="header-inner">
+        <a class="brand" href="../index.html"><span>AAI</span> 学习手册</a
+        ><a class="header-link" href="../index.html">全部章节</a>
+      </div>
+    </header>
+    <div class="chapter-layout">
+      <aside class="toc">
+        <div class="toc-title">前十章</div>
+        <nav class="chapter-links">
+          <a href="01-basics.html">01 基本类型与 Casting</a
+          ><a href="02-containers.html">02 容器</a
+          ><a class="active" href="03-control-flow.html">03 判断与循环</a
+          ><a href="04-functions.html">04 函数</a
+          ><a href="05-files-json.html">05 文件与 JSON</a
+          ><a href="06-errors-env.html">06 报错与环境</a
+          ><a href="07-numpy-vectors.html">07 NumPy 与向量</a
+          ><a href="08-api.html">08 API</a
+          ><a href="09-embedding.html">09 Embedding</a
+          ><a href="10-mini-rag.html">10 迷你 RAG</a>
+        </nav>
+        <div class="toc-divider"></div>
+        <a href="#terms">必须掌握的术语</a><a href="#core">核心知识</a
+        ><a href="#errors">常见错误</a><a href="#practice">练习</a>
+      </aside>
+      <main class="chapter">
+        <header class="chapter-hero">
+          <div class="chapter-kicker">CHAPTER 03</div>
+          <h1>判断、循环与程序流程</h1>
+          <p class="chapter-summary">
+            控制流让程序根据条件选择路径，并重复处理一组数据。写对控制流的关键不是记语法，而是明确状态、边界和停止条件。
+          </p>
+          <div class="outcomes">
+            <strong>学完你应该能够：</strong>组合
+            if/elif/else；正确遍历容器；使用
+            break、continue、range、enumerate、zip；避免死循环和边界错误。
+          </div>
+        </header>
+        <section class="content-section" id="terms">
+          <h2>必须掌握的术语</h2>
+          <table class="terms">
+            <tr>
+              <th>术语</th>
+              <th>准确理解</th>
+            </tr>
+            <tr>
+              <td>condition</td>
+              <td>求值为真或假的表达式。</td>
+            </tr>
+            <tr>
+              <td>branch</td>
+              <td>根据条件选择的执行分支。</td>
+            </tr>
+            <tr>
+              <td>iteration</td>
+              <td>循环的一次执行。</td>
+            </tr>
+            <tr>
+              <td>iterable</td>
+              <td>可以逐个取出元素的对象。</td>
+            </tr>
+            <tr>
+              <td>break</td>
+              <td>立即退出当前循环。</td>
+            </tr>
+            <tr>
+              <td>continue</td>
+              <td>跳过本次循环剩余代码。</td>
+            </tr>
+            <tr>
+              <td>range</td>
+              <td>惰性产生整数序列。</td>
+            </tr>
+            <tr>
+              <td>enumerate / zip</td>
+              <td>同时取得索引；并行遍历多个序列。</td>
+            </tr>
+            <tr>
+              <td>short-circuit</td>
+              <td><code>and</code>/<code>or</code> 在结果已确定时停止计算。</td>
+            </tr>
+          </table>
+        </section>
+        <section class="content-section" id="core">
+          <h2>1. 条件分支</h2>
+          <pre>
+score = 0.82
 if score >= 0.8:
     label = "高度相关"
 elif score >= 0.5:
     label = "可能相关"
 else:
     label = "不相关"
-print(label)</pre>
-<p>条件按顺序检查，命中第一个真分支后停止。因此范围更严格的条件通常写在前面。</p>
-<h3>2. 布尔组合与短路</h3><pre>text = "RAG"
+print(label)</pre
+          >
+          <p>
+            条件按顺序检查，命中第一个真分支后停止。因此范围更严格的条件通常写在前面。
+          </p>
+          <h3>2. 布尔组合与短路</h3>
+          <pre>
+text = "RAG"
 score = 0.9
 
 if text and score >= 0.8:
     print("有效的高分结果")
 
 user = None
-name = user.get("name") if user is not None else "匿名"</pre>
-<h3>3. for：遍历而不是手动管理索引</h3><pre>chunks = ["第一段", "第二段", "第三段"]
+name = user.get("name") if user is not None else "匿名"</pre
+          >
+          <h3>3. for：遍历而不是手动管理索引</h3>
+          <pre>
+chunks = ["第一段", "第二段", "第三段"]
 for index, chunk in enumerate(chunks, start=1):
     print(index, chunk)
 
 scores = [0.7, 0.9, 0.8]
 for chunk, score in zip(chunks, scores):
-    print(chunk, score)</pre>
-<h3>4. break、continue 和循环 else</h3><pre>results = [0.4, 0.65, 0.92]
+    print(chunk, score)</pre
+          >
+          <h3>4. break、continue 和循环 else</h3>
+          <pre>
+results = [0.4, 0.65, 0.92]
 for score in results:
     if score < 0.5:
         continue
@@ -35,16 +137,74 @@ for score in results:
         print("找到高置信结果")
         break
 else:
-    print("没有找到高置信结果")</pre>
-<p>循环的 <code>else</code> 只在循环没有被 <code>break</code> 终止时运行。</p>
-<h3>5. while：依赖状态停止</h3><pre>attempts = 0
+    print("没有找到高置信结果")</pre
+          >
+          <p>
+            循环的 <code>else</code> 只在循环没有被
+            <code>break</code> 终止时运行。
+          </p>
+          <h3>5. while：依赖状态停止</h3>
+          <pre>
+attempts = 0
 max_attempts = 3
 success = False
 
 while attempts < max_attempts and not success:
     attempts += 1
     success = call_service()
-print("尝试次数：", attempts)</pre>
-<div class="note">当遍历已知集合时优先使用 for；当重复次数取决于动态状态时才使用 while。</div></section>
-<section class="content-section" id="errors"><h2>常见错误</h2><ul class="error-list"><li><code>if score:</code> 只能检查真假，不能代替明确阈值。</li><li>多个独立 <code>if</code> 与 <code>if/elif</code> 语义不同：前者可能执行多个分支。</li><li>range 右边界不包含在内。</li><li>while 忘记更新状态，形成死循环。</li><li>用 <code>for i in range(len(items))</code> 处理普通遍历，增加越界风险；优先直接遍历或 enumerate。</li></ul></section>
-<section class="content-section" id="practice"><h2>分层练习</h2><div class="exercise"><strong>基础</strong><ol><li>将分数分类为高、中、低三个等级。</li><li>使用 enumerate 打印文档编号。</li></ol></div><div class="exercise"><strong>进阶</strong><ol><li>从检索结果中找第一个超过阈值的结果，否则输出拒答。</li><li>实现最多三次重试，成功后立即停止。</li></ol></div><div class="exercise"><strong>掌握标准</strong><ol><li>解释循环 else 的触发条件。</li><li>重构一个嵌套三层的条件流程，使其更易读。</li></ol></div></section><nav class="chapter-nav"><a href="02-containers.html">← 02 容器</a><a href="04-functions.html">04 函数 →</a></nav></main></div></body></html>
+print("尝试次数：", attempts)</pre
+          >
+          <div class="note">
+            当遍历已知集合时优先使用 for；当重复次数取决于动态状态时才使用
+            while。
+          </div>
+        </section>
+        <section class="content-section" id="errors">
+          <h2>常见错误</h2>
+          <ul class="error-list">
+            <li><code>if score:</code> 只能检查真假，不能代替明确阈值。</li>
+            <li>
+              多个独立 <code>if</code> 与
+              <code>if/elif</code> 语义不同：前者可能执行多个分支。
+            </li>
+            <li>range 右边界不包含在内。</li>
+            <li>while 忘记更新状态，形成死循环。</li>
+            <li>
+              用
+              <code>for i in range(len(items))</code>
+              处理普通遍历，增加越界风险；优先直接遍历或 enumerate。
+            </li>
+          </ul>
+        </section>
+        <section class="content-section" id="practice">
+          <h2>分层练习</h2>
+          <div class="exercise">
+            <strong>基础</strong>
+            <ol>
+              <li>将分数分类为高、中、低三个等级。</li>
+              <li>使用 enumerate 打印文档编号。</li>
+            </ol>
+          </div>
+          <div class="exercise">
+            <strong>进阶</strong>
+            <ol>
+              <li>从检索结果中找第一个超过阈值的结果，否则输出拒答。</li>
+              <li>实现最多三次重试，成功后立即停止。</li>
+            </ol>
+          </div>
+          <div class="exercise">
+            <strong>掌握标准</strong>
+            <ol>
+              <li>解释循环 else 的触发条件。</li>
+              <li>重构一个嵌套三层的条件流程，使其更易读。</li>
+            </ol>
+          </div>
+        </section>
+        <nav class="chapter-nav">
+          <a href="02-containers.html">← 02 容器</a
+          ><a href="04-functions.html">04 函数 →</a>
+        </nav>
+      </main>
+    </div>
+  </body>
+</html>

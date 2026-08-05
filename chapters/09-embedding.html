@@ -1,30 +1,217 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Embedding、向量空间与语义检索｜AAI 学习手册</title><link rel="stylesheet" href="../assets/style.css"></head><body><header class="site-header"><div class="header-inner"><a class="brand" href="../index.html"><span>AAI</span> 学习手册</a><a class="header-link" href="../index.html">全部章节</a></div></header><div class="chapter-layout"><aside class="toc"><div class="toc-title">前十章</div><nav class="chapter-links"><a href="01-basics.html">01 基本类型与 Casting</a><a href="02-containers.html">02 容器</a><a href="03-control-flow.html">03 判断与循环</a><a href="04-functions.html">04 函数</a><a href="05-files-json.html">05 文件与 JSON</a><a href="06-errors-env.html">06 报错与环境</a><a href="07-numpy-vectors.html">07 NumPy 与向量</a><a href="08-api.html">08 API</a><a class="active" href="09-embedding.html">09 Embedding</a><a href="10-mini-rag.html">10 迷你 RAG</a></nav><div class="toc-divider"></div><a href="#terms">必须掌握的术语</a><a href="#core">核心知识</a><a href="#errors">常见错误</a><a href="#practice">练习</a></aside><main class="chapter"><header class="chapter-hero"><div class="chapter-kicker">CHAPTER 09</div><h1>Embedding、向量空间与语义检索</h1><p class="chapter-summary">Embedding 将文本映射到向量空间，使语义可以被距离函数比较。真正掌握它，需要理解模型一致性、归一化、相似度、索引、维度与评估。</p><div class="outcomes"><strong>学完你应该能够：</strong>解释 embedding 的输入输出和限制；正确计算相似度；理解向量数据库、top-k、阈值、索引与检索评估。</div></header>
-<section class="content-section" id="terms"><h2>必须掌握的术语</h2><table class="terms"><tr><th>术语</th><th>准确理解</th></tr><tr><td>embedding</td><td>对象的稠密数值表示。</td></tr><tr><td>embedding model</td><td>把文本映射为固定维向量的模型。</td></tr><tr><td>vector space</td><td>向量存在并可进行距离运算的空间。</td></tr><tr><td>dimension</td><td>向量元素个数，由模型决定。</td></tr><tr><td>similarity metric</td><td>比较向量的规则，如 cosine、dot product、L2。</td></tr><tr><td>normalization</td><td>将向量缩放为单位长度。</td></tr><tr><td>top-k</td><td>返回分数最高的 k 个候选。</td></tr><tr><td>threshold</td><td>过滤低于最低相关性的候选。</td></tr><tr><td>vector index</td><td>加速最近邻搜索的数据结构。</td></tr><tr><td>ANN</td><td>近似最近邻，用少量精度换速度与规模。</td></tr><tr><td>metadata filter</td><td>在向量检索前后按来源、权限等过滤。</td></tr></table></section>
-<section class="content-section" id="core"><h2>1. Embedding 不是“给每个词一个固定意思”</h2><p>现代文本 embedding 往往对整段文本编码。向量单个维度通常没有可直接命名的含义；有意义的是向量之间的相对位置。</p>
-<pre>texts = [
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Embedding、向量空间与语义检索｜AAI 学习手册</title>
+    <link rel="stylesheet" href="../assets/style.css" />
+    <script src="../assets/copy-code.js" defer></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="header-inner">
+        <a class="brand" href="../index.html"><span>AAI</span> 学习手册</a
+        ><a class="header-link" href="../index.html">全部章节</a>
+      </div>
+    </header>
+    <div class="chapter-layout">
+      <aside class="toc">
+        <div class="toc-title">前十章</div>
+        <nav class="chapter-links">
+          <a href="01-basics.html">01 基本类型与 Casting</a
+          ><a href="02-containers.html">02 容器</a
+          ><a href="03-control-flow.html">03 判断与循环</a
+          ><a href="04-functions.html">04 函数</a
+          ><a href="05-files-json.html">05 文件与 JSON</a
+          ><a href="06-errors-env.html">06 报错与环境</a
+          ><a href="07-numpy-vectors.html">07 NumPy 与向量</a
+          ><a href="08-api.html">08 API</a
+          ><a class="active" href="09-embedding.html">09 Embedding</a
+          ><a href="10-mini-rag.html">10 迷你 RAG</a>
+        </nav>
+        <div class="toc-divider"></div>
+        <a href="#terms">必须掌握的术语</a><a href="#core">核心知识</a
+        ><a href="#errors">常见错误</a><a href="#practice">练习</a>
+      </aside>
+      <main class="chapter">
+        <header class="chapter-hero">
+          <div class="chapter-kicker">CHAPTER 09</div>
+          <h1>Embedding、向量空间与语义检索</h1>
+          <p class="chapter-summary">
+            Embedding
+            将文本映射到向量空间，使语义可以被距离函数比较。真正掌握它，需要理解模型一致性、归一化、相似度、索引、维度与评估。
+          </p>
+          <div class="outcomes">
+            <strong>学完你应该能够：</strong>解释 embedding
+            的输入输出和限制；正确计算相似度；理解向量数据库、top-k、阈值、索引与检索评估。
+          </div>
+        </header>
+        <section class="content-section" id="terms">
+          <h2>必须掌握的术语</h2>
+          <table class="terms">
+            <tr>
+              <th>术语</th>
+              <th>准确理解</th>
+            </tr>
+            <tr>
+              <td>embedding</td>
+              <td>对象的稠密数值表示。</td>
+            </tr>
+            <tr>
+              <td>embedding model</td>
+              <td>把文本映射为固定维向量的模型。</td>
+            </tr>
+            <tr>
+              <td>vector space</td>
+              <td>向量存在并可进行距离运算的空间。</td>
+            </tr>
+            <tr>
+              <td>dimension</td>
+              <td>向量元素个数，由模型决定。</td>
+            </tr>
+            <tr>
+              <td>similarity metric</td>
+              <td>比较向量的规则，如 cosine、dot product、L2。</td>
+            </tr>
+            <tr>
+              <td>normalization</td>
+              <td>将向量缩放为单位长度。</td>
+            </tr>
+            <tr>
+              <td>top-k</td>
+              <td>返回分数最高的 k 个候选。</td>
+            </tr>
+            <tr>
+              <td>threshold</td>
+              <td>过滤低于最低相关性的候选。</td>
+            </tr>
+            <tr>
+              <td>vector index</td>
+              <td>加速最近邻搜索的数据结构。</td>
+            </tr>
+            <tr>
+              <td>ANN</td>
+              <td>近似最近邻，用少量精度换速度与规模。</td>
+            </tr>
+            <tr>
+              <td>metadata filter</td>
+              <td>在向量检索前后按来源、权限等过滤。</td>
+            </tr>
+          </table>
+        </section>
+        <section class="content-section" id="core">
+          <h2>1. Embedding 不是“给每个词一个固定意思”</h2>
+          <p>
+            现代文本 embedding
+            往往对整段文本编码。向量单个维度通常没有可直接命名的含义；有意义的是向量之间的相对位置。
+          </p>
+          <pre>
+texts = [
     "如何申请补考？",
     "补考申请流程是什么？",
     "今天会下雨吗？"
 ]
 vectors = embedding_model.encode(texts)
-print(vectors.shape)  # (3, embedding_dim)</pre>
-<h3>2. 文档和查询必须使用兼容模型</h3><p>知识库建索引和用户查询通常必须使用同一个 embedding 模型及相同预处理。换模型后维度或空间发生变化，需要重建索引。</p>
-<h3>3. 三种常见度量</h3><pre>import numpy as np
+print(vectors.shape)  # (3, embedding_dim)</pre
+          >
+          <h3>2. 文档和查询必须使用兼容模型</h3>
+          <p>
+            知识库建索引和用户查询通常必须使用同一个 embedding
+            模型及相同预处理。换模型后维度或空间发生变化，需要重建索引。
+          </p>
+          <h3>3. 三种常见度量</h3>
+          <pre>
+import numpy as np
 
 def cosine(a, b):
     return np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b))
 
 dot_score = np.dot(a, b)
-l2_distance = np.linalg.norm(a - b)</pre>
-<table class="terms"><tr><th>度量</th><th>分数解释</th></tr><tr><td>cosine</td><td>方向越相近分数越高；弱化长度影响。</td></tr><tr><td>dot product</td><td>方向和长度共同影响；归一化后与 cosine 接近。</td></tr><tr><td>L2 distance</td><td>距离越小越相近。</td></tr></table>
-<h3>4. 从暴力搜索到向量索引</h3><pre># 小规模：对全部文档向量计算分数
+l2_distance = np.linalg.norm(a - b)</pre
+          >
+          <table class="terms">
+            <tr>
+              <th>度量</th>
+              <th>分数解释</th>
+            </tr>
+            <tr>
+              <td>cosine</td>
+              <td>方向越相近分数越高；弱化长度影响。</td>
+            </tr>
+            <tr>
+              <td>dot product</td>
+              <td>方向和长度共同影响；归一化后与 cosine 接近。</td>
+            </tr>
+            <tr>
+              <td>L2 distance</td>
+              <td>距离越小越相近。</td>
+            </tr>
+          </table>
+          <h3>4. 从暴力搜索到向量索引</h3>
+          <pre>
+# 小规模：对全部文档向量计算分数
 scores = doc_vectors @ query_vector
 top_ids = np.argsort(scores)[-5:][::-1]
 
 # 大规模：FAISS / Qdrant / Milvus / pgvector 等索引
-hits = index.search(query_vector, top_k=5)</pre>
-<h3>5. top-k 和阈值不是固定答案</h3><p>top-k 太小可能漏掉证据，太大则引入噪声并占用上下文。阈值依赖模型、语料和度量，必须通过标注问题集评估，而不是照抄网上数值。</p>
-<h3>6. Embedding 的局限</h3><ul><li>精确数字、ID、专有名词可能不如关键词检索。</li><li>长文本被截断或语义混合。</li><li>领域术语和跨语言能力取决于模型。</li><li>语义相近不等于事实支持答案。</li></ul>
-<div class="note">因此生产 RAG 常结合 BM25 关键词检索、metadata filter 和 reranker。</div></section>
-<section class="content-section" id="errors"><h2>常见错误</h2><ul class="error-list"><li>文档和查询使用不同 embedding 模型。</li><li>换模型后继续使用旧索引。</li><li>不确认向量是否已归一化，却混用 dot product 与 cosine。</li><li>只凭几个问题主观判断检索效果。</li><li>把相似度分数当作概率或置信度。</li><li>忽略权限和 metadata，检索到用户无权查看的内容。</li></ul></section>
-<section class="content-section" id="practice"><h2>分层练习</h2><div class="exercise"><strong>基础</strong><ol><li>计算三个演示向量两两之间的 cosine。</li><li>比较 cosine、dot 和 L2 的排序。</li></ol></div><div class="exercise"><strong>进阶</strong><ol><li>用本地 embedding 模型编码 100 段笔记并检索。</li><li>比较归一化前后的分数。</li></ol></div><div class="exercise"><strong>掌握标准</strong><ol><li>构造 30 个带相关文档标注的问题，评估 Recall@5。</li><li>解释 top-k 与阈值如何通过实验确定。</li></ol></div></section><nav class="chapter-nav"><a href="08-api.html">← 08 API</a><a href="10-mini-rag.html">10 迷你 RAG →</a></nav></main></div></body></html>
+hits = index.search(query_vector, top_k=5)</pre
+          >
+          <h3>5. top-k 和阈值不是固定答案</h3>
+          <p>
+            top-k
+            太小可能漏掉证据，太大则引入噪声并占用上下文。阈值依赖模型、语料和度量，必须通过标注问题集评估，而不是照抄网上数值。
+          </p>
+          <h3>6. Embedding 的局限</h3>
+          <ul>
+            <li>精确数字、ID、专有名词可能不如关键词检索。</li>
+            <li>长文本被截断或语义混合。</li>
+            <li>领域术语和跨语言能力取决于模型。</li>
+            <li>语义相近不等于事实支持答案。</li>
+          </ul>
+          <div class="note">
+            因此生产 RAG 常结合 BM25 关键词检索、metadata filter 和 reranker。
+          </div>
+        </section>
+        <section class="content-section" id="errors">
+          <h2>常见错误</h2>
+          <ul class="error-list">
+            <li>文档和查询使用不同 embedding 模型。</li>
+            <li>换模型后继续使用旧索引。</li>
+            <li>不确认向量是否已归一化，却混用 dot product 与 cosine。</li>
+            <li>只凭几个问题主观判断检索效果。</li>
+            <li>把相似度分数当作概率或置信度。</li>
+            <li>忽略权限和 metadata，检索到用户无权查看的内容。</li>
+          </ul>
+        </section>
+        <section class="content-section" id="practice">
+          <h2>分层练习</h2>
+          <div class="exercise">
+            <strong>基础</strong>
+            <ol>
+              <li>计算三个演示向量两两之间的 cosine。</li>
+              <li>比较 cosine、dot 和 L2 的排序。</li>
+            </ol>
+          </div>
+          <div class="exercise">
+            <strong>进阶</strong>
+            <ol>
+              <li>用本地 embedding 模型编码 100 段笔记并检索。</li>
+              <li>比较归一化前后的分数。</li>
+            </ol>
+          </div>
+          <div class="exercise">
+            <strong>掌握标准</strong>
+            <ol>
+              <li>构造 30 个带相关文档标注的问题，评估 Recall@5。</li>
+              <li>解释 top-k 与阈值如何通过实验确定。</li>
+            </ol>
+          </div>
+        </section>
+        <nav class="chapter-nav">
+          <a href="08-api.html">← 08 API</a
+          ><a href="10-mini-rag.html">10 迷你 RAG →</a>
+        </nav>
+      </main>
+    </div>
+  </body>
+</html>
