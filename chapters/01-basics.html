@@ -1,0 +1,51 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>变量、基本类型与 Casting｜AAI 学习手册</title><link rel="stylesheet" href="../assets/style.css"></head><body>
+<header class="site-header"><div class="header-inner"><a class="brand" href="../index.html"><span>AAI</span> 学习手册</a><a class="header-link" href="../index.html">全部章节</a></div></header>
+<div class="chapter-layout"><aside class="toc"><div class="toc-title">前十章</div><nav class="chapter-links"><a class="active" href="01-basics.html">01 基本类型与 Casting</a><a href="02-containers.html">02 容器</a><a href="03-control-flow.html">03 判断与循环</a><a href="04-functions.html">04 函数</a><a href="05-files-json.html">05 文件与 JSON</a><a href="06-errors-env.html">06 报错与环境</a><a href="07-numpy-vectors.html">07 NumPy 与向量</a><a href="08-api.html">08 API</a><a href="09-embedding.html">09 Embedding</a><a href="10-mini-rag.html">10 迷你 RAG</a></nav><div class="toc-divider"></div><a href="#terms">必须掌握的术语</a><a href="#core">核心知识</a><a href="#errors">常见错误</a><a href="#practice">练习</a></aside>
+<main class="chapter"><header class="chapter-hero"><div class="chapter-kicker">CHAPTER 01</div><h1>变量、基本类型与 Casting</h1><p class="chapter-summary">变量和类型决定了程序如何理解数据。你不仅要会写赋值，还要能预测表达式结果、识别隐式行为，并安全处理用户输入。</p><div class="outcomes"><strong>学完你应该能够：</strong>解释变量、对象、类型与赋值；正确使用 int、float、str、bool 和 None；完成安全类型转换。</div></header>
+<section class="content-section" id="terms"><h2>必须掌握的术语</h2><table class="terms"><tr><th>术语</th><th>准确理解</th></tr>
+<tr><td>variable</td><td>变量是绑定到对象的名字，不是一个固定类型的“盒子”。</td></tr><tr><td>assignment</td><td>赋值，用 <code>=</code> 把名字绑定到右侧表达式的结果。</td></tr><tr><td>expression</td><td>可以求值并产生结果的代码，例如 <code>age + 1</code>。</td></tr><tr><td>int / float</td><td>整数与浮点数；浮点数存在二进制精度限制。</td></tr><tr><td>str</td><td>不可变的 Unicode 文本序列。</td></tr><tr><td>bool</td><td><code>True</code> 或 <code>False</code>；比较表达式会产生布尔值。</td></tr><tr><td>None</td><td>表示“没有值”或“尚无结果”的特殊对象。</td></tr><tr><td>type casting</td><td>显式调用 <code>int()</code> 等函数进行类型转换。</td></tr><tr><td>truthy / falsy</td><td>对象在条件判断中的真假表现。</td></tr><tr><td>mutable / immutable</td><td>对象创建后能否原地修改；数字和字符串不可变。</td></tr></table></section>
+<section class="content-section" id="core"><h2>1. 变量、对象与类型</h2><p>Python 是动态类型语言：类型属于对象，变量只是名字。同一个名字之后可以绑定不同类型，但工程代码中不建议随意改变语义。</p>
+<pre>age = 20
+print(type(age))       # &lt;class 'int'&gt;
+
+age = "twenty"         # 合法，但会让代码难理解
+print(type(age))       # &lt;class 'str'&gt;</pre>
+<h3>2. 数字和运算</h3><pre>a = 7
+b = 2
+print(a + b)    # 9
+print(a / b)    # 3.5，普通除法总是产生 float
+print(a // b)   # 3，向下取整除法
+print(a % b)    # 1，余数
+print(a ** b)   # 49，幂</pre>
+<div class="note"><strong>浮点精度：</strong><code>0.1 + 0.2</code> 可能显示为 <code>0.30000000000000004</code>。这是二进制浮点表示的结果，不是 Python 算错。金额应考虑 <code>Decimal</code>。</div>
+<h3>3. 字符串与 f-string</h3><pre>name = "Smartin"
+score = 91.5
+message = f"{name} 的成绩是 {score:.1f}"
+print(message)
+
+text = "  RAG Learning  "
+print(text.strip().lower())
+print(text.replace("RAG", "LLM"))
+print(text.split())</pre>
+<h3>4. 布尔值与 None</h3><pre>score = 0.82
+is_relevant = score >= 0.8
+answer = None
+
+if is_relevant and answer is None:
+    print("资料相关，但尚未生成答案")</pre>
+<p>检查 <code>None</code> 推荐使用 <code>is None</code>，而不是 <code>== None</code>。</p>
+<h3>5. Casting 与用户输入</h3><pre>age_text = "20"
+age = int(age_text)
+height = float("1.75")
+label = str(3)
+
+raw = input("请输入 top_k：")  # input 永远返回 str
+try:
+    top_k = int(raw)
+    if top_k <= 0:
+        raise ValueError("top_k 必须大于 0")
+except ValueError as error:
+    print("输入无效：", error)</pre>
+<div class="warning"><strong>真假转换的坑：</strong><code>bool("False")</code> 是 <code>True</code>，因为任何非空字符串都是真值。要解析文本布尔值，应自己比较，例如 <code>text.lower() == "true"</code>。</div></section>
+<section class="content-section" id="errors"><h2>常见错误</h2><ul class="error-list"><li>把 <code>=</code>（赋值）写成 <code>==</code>（比较），或反过来。</li><li>直接拼接字符串和数字：<code>"score: " + 90</code> 会报 TypeError。</li><li>认为 <code>int("3.14")</code> 会得到 3；它会报 ValueError，应先转 float。</li><li>使用 <code>type(x) == int</code> 处理一般类型判断；通常 <code>isinstance(x, int)</code> 更合适。</li><li>变量名覆盖内置函数，例如 <code>str = "hello"</code>，之后无法调用 <code>str()</code>。</li></ul></section>
+<section class="content-section" id="practice"><h2>分层练习</h2><div class="exercise"><strong>基础</strong><ol><li>输入姓名和出生年份，输出估算年龄。</li><li>分别预测 <code>7/2</code>、<code>7//2</code>、<code>7%2</code> 的结果并验证。</li></ol></div><div class="exercise"><strong>进阶</strong><ol><li>写一个温度转换程序，安全处理非数字输入。</li><li>解释 <code>bool(0)</code>、<code>bool([])</code>、<code>bool("0")</code> 的差异。</li></ol></div><div class="exercise"><strong>掌握标准</strong><ol><li>不用运行，判断一个混合数字、字符串、布尔表达式的类型和结果。</li><li>为 RAG 的 <code>top_k</code>、<code>min_score</code> 写完整输入验证。</li></ol></div></section><nav class="chapter-nav"><span></span><a href="02-containers.html">02 容器 →</a></nav></main></div></body></html>
