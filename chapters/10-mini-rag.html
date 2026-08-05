@@ -1,0 +1,71 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>迷你 RAG：从文档到可引用答案｜AAI 学习手册</title><link rel="stylesheet" href="../assets/style.css"></head><body><header class="site-header"><div class="header-inner"><a class="brand" href="../index.html"><span>AAI</span> 学习手册</a><a class="header-link" href="../index.html">全部章节</a></div></header><div class="chapter-layout"><aside class="toc"><div class="toc-title">前十章</div><nav class="chapter-links"><a href="01-basics.html">01 基本类型与 Casting</a><a href="02-containers.html">02 容器</a><a href="03-control-flow.html">03 判断与循环</a><a href="04-functions.html">04 函数</a><a href="05-files-json.html">05 文件与 JSON</a><a href="06-errors-env.html">06 报错与环境</a><a href="07-numpy-vectors.html">07 NumPy 与向量</a><a href="08-api.html">08 API</a><a href="09-embedding.html">09 Embedding</a><a class="active" href="10-mini-rag.html">10 迷你 RAG</a></nav><div class="toc-divider"></div><a href="#terms">必须掌握的术语</a><a href="#core">核心知识</a><a href="#errors">常见错误</a><a href="#practice">练习</a></aside><main class="chapter"><header class="chapter-hero"><div class="chapter-kicker">CHAPTER 10</div><h1>迷你 RAG：从文档到可引用答案</h1><p class="chapter-summary">RAG 不是单一模型，而是一条数据与推理流水线。完整系统必须处理摄取、切块、索引、查询、召回、提示词、生成、引用、拒答和评估。</p><div class="outcomes"><strong>学完你应该能够：</strong>手写端到端迷你 RAG；理解每一步输入输出；加入引用和拒答；用检索指标与答案指标验证系统。</div></header>
+<section class="content-section" id="terms"><h2>必须掌握的术语</h2><table class="terms"><tr><th>术语</th><th>准确理解</th></tr><tr><td>RAG</td><td>Retrieval-Augmented Generation，检索增强生成。</td></tr><tr><td>ingestion</td><td>文档进入系统的解析、清洗和索引过程。</td></tr><tr><td>chunk</td><td>作为检索单位的文档片段。</td></tr><tr><td>chunk overlap</td><td>相邻片段重复内容，减少边界信息丢失。</td></tr><tr><td>retriever</td><td>根据查询返回候选证据的组件。</td></tr><tr><td>reranker</td><td>对候选进行更精细的相关性重排。</td></tr><tr><td>context</td><td>交给生成模型的检索证据。</td></tr><tr><td>grounding</td><td>答案被提供证据支持。</td></tr><tr><td>citation</td><td>答案对应的来源引用。</td></tr><tr><td>hallucination</td><td>模型生成缺乏证据或错误的内容。</td></tr><tr><td>faithfulness</td><td>答案是否忠实于检索上下文。</td></tr><tr><td>retrieval evaluation</td><td>衡量相关证据是否被召回。</td></tr></table></section>
+<section class="content-section" id="core"><h2>1. 端到端结构</h2><pre>文件
+  → 解析与清洗
+  → 切块 + metadata
+  → embedding
+  → 向量索引
+用户问题
+  → query embedding
+  → top-k 检索
+  → 可选 rerank
+  → 组织 context
+  → LLM 生成
+  → 答案 + 引用</pre>
+<h3>2. 文档数据结构</h3><pre>documents = [
+    {
+        "chunk_id": "python-01-003",
+        "text": "input() 返回字符串。",
+        "source": "python_notes.md",
+        "section": "Casting"
+    }
+]</pre>
+<p>metadata 必须在切块时保留，生成引用时才能回到原文。</p>
+<h3>3. 切块</h3><pre>def chunk_text(text, size=400, overlap=60):
+    if not 0 <= overlap < size:
+        raise ValueError("overlap 必须小于 size")
+    chunks = []
+    start = 0
+    while start < len(text):
+        chunks.append(text[start:start + size])
+        start += size - overlap
+    return chunks</pre>
+<p>固定字符切块便于学习，但真实项目应考虑标题、段落、表格、代码和语义边界。</p>
+<h3>4. 建索引和检索</h3><pre>import numpy as np
+
+doc_vectors = embed([doc["text"] for doc in documents])
+doc_vectors /= np.linalg.norm(doc_vectors, axis=1, keepdims=True)
+
+def retrieve(query, top_k=3):
+    q = embed([query])[0]
+    q = q / np.linalg.norm(q)
+    scores = doc_vectors @ q
+    ids = np.argsort(scores)[-top_k:][::-1]
+    return [
+        {**documents[i], "score": float(scores[i])}
+        for i in ids
+    ]</pre>
+<h3>5. 构造提示词与引用</h3><pre>def build_prompt(question, hits):
+    context = "\n\n".join(
+        f"[{i}] 来源：{hit['source']}\n{hit['text']}"
+        for i, hit in enumerate(hits, start=1)
+    )
+    return f"""只根据资料回答。
+如果资料不足，请明确说不知道。
+引用格式使用 [1]、[2]。
+
+资料：
+{context}
+
+问题：{question}
+"""</pre>
+<h3>6. 拒答策略</h3><pre>hits = retrieve(question, top_k=3)
+if not hits or hits[0]["score"] < min_score:
+    answer = "现有资料不足以回答这个问题。"
+else:
+    answer = generate(build_prompt(question, hits))</pre>
+<div class="warning">相似度阈值不能保证答案正确。它只是一层保护；还需要评估检索相关性、答案忠实度和引用是否真的支持主张。</div>
+<h3>7. 评估拆成两层</h3><table class="terms"><tr><th>层</th><th>问题与指标</th></tr><tr><td>检索</td><td>正确证据是否进入 top-k？Recall@k、MRR、nDCG。</td></tr><tr><td>生成</td><td>答案是否正确、忠实、完整、引用准确？人工标注或可信评审。</td></tr></table>
+<h3>8. 调试顺序</h3><ol><li>先查看切块是否完整可读。</li><li>再查看 top-k 是否包含正确证据。</li><li>然后检查 context 是否超长或顺序混乱。</li><li>最后才修改 prompt 或更换 LLM。</li></ol></section>
+<section class="content-section" id="errors"><h2>常见错误</h2><ul class="error-list"><li>把所有问题都归因于“大模型不够好”，不检查检索结果。</li><li>切块过大导致主题混杂，过小导致证据残缺。</li><li>只显示文件名，不保留页码或章节。</li><li>没有“资料不足”的拒答路径。</li><li>把检索到的恶意指令当系统指令执行，忽略 prompt injection。</li><li>没有测试集，只凭演示问题评价系统。</li><li>更新文档后未同步重建索引。</li></ul></section>
+<section class="content-section" id="practice"><h2>分层练习</h2><div class="exercise"><strong>基础</strong><ol><li>用五段假向量文档完成 top-3 检索。</li><li>为每个结果保留 source 和 score。</li></ol></div><div class="exercise"><strong>进阶</strong><ol><li>接入真实 embedding，索引自己的十篇笔记。</li><li>实现带 [1] 引用和无证据拒答的回答。</li></ol></div><div class="exercise"><strong>掌握标准</strong><ol><li>创建至少 30 个问题的评估集，计算 Recall@3。</li><li>比较两种 chunk size、top-k 和是否 rerank。</li><li>写一页误差分析：检索失败、生成失败、数据失败分别占多少。</li></ol></div></section><nav class="chapter-nav"><a href="09-embedding.html">← 09 Embedding</a><a href="../index.html">返回课程首页 →</a></nav></main></div></body></html>
