@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AAI 研究生高性价比知识手册</title>
+<style>
+:root{--ink:#14213d;--muted:#657085;--blue:#155eef;--line:#dce3ee;--code:#101827;--green:#147a55;--soft:#eef4ff}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;color:var(--ink);font:16px/1.75 "Microsoft YaHei","PingFang SC",system-ui,sans-serif}
+.layout{max-width:1260px;margin:auto;display:grid;grid-template-columns:250px minmax(0,1fr);gap:58px;padding:42px 34px 90px}
+aside{position:sticky;top:20px;align-self:start;max-height:calc(100vh - 40px);overflow:auto;padding-right:10px}.brand{font-size:20px;font-weight:850;margin-bottom:20px}.brand span,.term{color:var(--blue)}
+.nav a{display:block;padding:6px 9px;margin-left:-9px;border-left:2px solid transparent;color:#536078;text-decoration:none;font-size:14px}.nav a:hover{color:var(--blue);border-color:var(--blue);background:#f7f9fd}.aside-note{margin-top:20px;padding-top:16px;border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
+main{min-width:0}.hero{padding:8px 0 42px;border-bottom:1px solid var(--line)}h1{font-size:44px;line-height:1.18;letter-spacing:-1.2px;margin:0 0 16px}.lead,.goal{color:var(--muted)}.lead{font-size:18px;max-width:780px}.route{margin-top:22px;font-weight:700}.route b{color:var(--blue)}
+section{padding:46px 0;border-bottom:1px solid var(--line);scroll-margin-top:20px}h2{font-size:27px;line-height:1.3;margin:0 0 7px}h3{font-size:18px;margin:28px 0 8px}.goal{margin:0 0 24px}
+table{width:100%;border-collapse:collapse;margin:16px 0 22px;font-size:15px}th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}th{background:#f7f9fc;color:#526079;font-size:13px}
+pre{margin:14px 0 20px;padding:18px 20px;overflow:auto;background:var(--code);color:#e8eef8;border-radius:7px;font:14px/1.65 Consolas,"Cascadia Code",monospace}code{font-family:Consolas,"Cascadia Code",monospace}
+.note{border-left:4px solid var(--blue);background:var(--soft);padding:14px 18px;margin:18px 0}.exercise{margin-top:22px;border-left:4px solid var(--green);background:#f3faf7;padding:16px 20px}.exercise strong{display:block;color:var(--green)}.exercise ol{margin:5px 0 0;padding-left:21px}
+.checklist{padding:0;list-style:none}.checklist li{padding:7px 0 7px 27px;position:relative}.checklist li:before{content:"□";position:absolute;left:0;color:var(--blue);font-size:19px}.finish{padding:23px;background:#f7f9fc;border:1px solid var(--line)}
+@media(max-width:820px){.layout{display:block;padding:24px 18px 65px}aside{position:static;max-height:none;overflow:visible;border-bottom:1px solid var(--line);padding-bottom:20px}.nav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.nav a{margin:0;padding:5px 7px;font-size:13px}.aside-note{display:none}.hero{padding-top:27px}h1{font-size:34px}.route{overflow-wrap:anywhere}section{padding:37px 0}h2{font-size:24px}pre{font-size:12.5px;padding:15px 13px;max-width:100%}table{display:block;overflow-x:auto;font-size:13px}th,td{padding:8px}}
+</style>
+</head>
+<body><div class="layout">
+<aside><div class="brand"><span>AAI</span> Python 补课手册</div><nav class="nav">
+<a href="#types">01 基本类型与 Casting</a><a href="#containers">02 容器</a><a href="#flow">03 判断与循环</a><a href="#functions">04 函数</a><a href="#files">05 文件与 JSON</a><a href="#errors">06 报错与环境</a><a href="#numpy">07 NumPy 与向量</a><a href="#api">08 API</a><a href="#embedding">09 Embedding</a><a href="#rag">10 迷你 RAG</a><a href="#math">11 必要数学</a><a href="#complexity">12 复杂度与代码质量</a><a href="#data">13 Pandas 与 SQL</a><a href="#ml">14 机器学习</a><a href="#evaluation">15 评估与实验</a><a href="#pytorch">16 PyTorch</a><a href="#transformer">17 Transformer 与 LLM</a><a href="#advanced-rag">18 进阶 RAG</a><a href="#engineering">19 AI 工程化</a><a href="#research">20 研究能力</a>
+</nav><p class="aside-note">每章：读懂概念 → 运行示例 → 不看答案完成练习。</p></aside>
+<main>
+<header class="hero"><h1>AAI 研究生高性价比知识手册</h1><p class="lead">从代码薄弱到能完成课程项目、读论文、复现实验和构建 LLM/RAG 应用。只保留研究生阶段高频、能产生复利的知识。</p><div class="route"><b>顺序：</b>Python → 数学与数据 → 机器学习 → 深度学习 → LLM/RAG → 实验与工程</div></header>
+
+<section id="types"><h2>01 · 变量、基本类型与 Casting</h2><p class="goal">知道数据是什么类型，以及如何安全转换类型。</p>
+<table><tr><th>类型</th><th>含义</th><th>AI 场景</th></tr><tr><td><code>int</code></td><td>整数</td><td>top_k、数量</td></tr><tr><td><code>float</code></td><td>小数</td><td>相似度、概率</td></tr><tr><td><code>str</code></td><td>文字</td><td>问题、文档</td></tr><tr><td><code>bool</code></td><td>真或假</td><td>是否命中</td></tr></table>
+<pre>age = 20
+similarity = 0.86
+question = "什么是 RAG？"
+is_relevant = similarity > 0.8
+print(f"问题：{question}，是否相关：{is_relevant}")</pre>
+<h3>Casting：类型转换</h3><p><span class="term">Casting</span> 是把一种类型转换成另一种类型，常用 <code>int()</code>、<code>float()</code>、<code>str()</code>、<code>bool()</code>。</p>
+<pre>age = int("20")
+height = float("1.75")
+message = "明年我 " + str(age + 1) + " 岁"
+
+try:
+    top_k = int(input("请输入检索数量："))
+except ValueError:
+    print("请输入整数，例如 3")</pre>
+<div class="note"><strong>常见坑：</strong><code>input()</code> 永远返回字符串；<code>int("3.14")</code> 会报错；<code>bool("False")</code> 是 True，因为非空字符串都是真值。</div>
+<div class="exercise"><strong>练习</strong><ol><li>把字符串 "90" 转成整数后加 5。</li><li>输入身高并转换成 float。</li><li>比较 bool(0)、bool("") 和 bool("False")。</li></ol></div></section>
+
+<section id="containers"><h2>02 · list、dict、set、tuple</h2><p class="goal">根据数据形状选择正确容器。</p>
+<table><tr><th>容器</th><th>特点</th><th>用途</th></tr><tr><td>list</td><td>有序、可修改、可重复</td><td>文档块列表</td></tr><tr><td>dict</td><td>键值对</td><td>文字、来源、分数</td></tr><tr><td>set</td><td>元素不重复</td><td>去重</td></tr><tr><td>tuple</td><td>创建后不可修改</td><td>固定形状或配置</td></tr></table>
+<pre>chunks = ["RAG 是检索增强生成", "Embedding 是文本向量"]
+document = {"text": chunks[0], "source": "note.md", "score": 0.91}
+tags = {"Python", "RAG", "Python"}
+chunks.append("向量可以计算相似度")
+print(document["source"], tags)</pre>
+<div class="exercise"><strong>练习</strong><ol><li>用 list[dict] 保存三门课程。</li><li>用 set 找两份技能列表的交集。</li></ol></div></section>
+
+<section id="flow"><h2>03 · if、for 与 while</h2><p class="goal">让程序做选择，并批量处理数据。</p>
+<pre>scores = [0.82, 0.45, 0.91]
+for index, score in enumerate(scores):
+    if score >= 0.8:
+        print(index, "高度相关")
+    elif score >= 0.5:
+        print(index, "可能相关")
+    else:
+        print(index, "不相关")</pre>
+<div class="exercise"><strong>练习</strong><ol><li>只打印大于 0.8 的分数。</li><li>统计文本中“AI”出现几次。</li></ol></div></section>
+
+<section id="functions"><h2>04 · 函数</h2><p class="goal">把重复逻辑包装成可测试的小工具。</p>
+<pre>def chunk_text(text, size=10):
+    """把长文本按固定字符数切块。"""
+    return [text[i:i + size] for i in range(0, len(text), size)]
+
+print(chunk_text("RAG 会先检索资料，再让模型回答。", 8))</pre>
+<p>看陌生函数先找：输入参数、内部处理、返回值、调用位置。</p>
+<div class="exercise"><strong>练习</strong><ol><li>写 is_pass(score)。</li><li>写 clean_text(text)。</li></ol></div></section>
+
+<section id="files"><h2>05 · 文件、字符串与 JSON</h2><p class="goal">读取笔记并保存结构化数据。</p>
+<pre>from pathlib import Path
+import json
+
+path = Path("notes.txt")
+text = path.read_text(encoding="utf-8").strip()
+data = {"source": path.name, "text": text}
+Path("document.json").write_text(
+    json.dumps(data, ensure_ascii=False, indent=2),
+    encoding="utf-8"
+)</pre>
+<div class="exercise"><strong>练习</strong><ol><li>读取一份 txt。</li><li>把文件名、字符数、正文保存成 JSON。</li></ol></div></section>
+
+<section id="errors"><h2>06 · 报错、模块与虚拟环境</h2><p class="goal">能根据 Traceback 定位问题，并隔离项目依赖。</p>
+<pre>from pathlib import Path
+try:
+    text = Path("missing.txt").read_text(encoding="utf-8")
+except FileNotFoundError:
+    print("文件不存在，请检查路径")</pre>
+<pre># Windows PowerShell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install numpy requests</pre>
+<p>先读 Traceback 最后一行，再定位最靠近底部的自己代码行。</p></section>
+
+<section id="numpy"><h2>07 · NumPy、数组与向量</h2><p class="goal">理解 shape、点积、范数和余弦相似度。</p>
+<pre>import numpy as np
+
+a = np.array([1.0, 2.0, 3.0])
+b = np.array([2.0, 4.0, 6.0])
+similarity = np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b))
+print(a.shape, similarity)</pre>
+<div class="exercise"><strong>练习</strong><ol><li>计算 [1,0] 和 [0,1] 的余弦相似度。</li><li>把计算写成函数。</li></ol></div></section>
+
+<section id="api"><h2>08 · API、请求与响应</h2><p class="goal">理解程序如何调用远程模型。</p>
+<pre>import requests
+
+response = requests.get("https://api.github.com/repos/langgenius/dify")
+print(response.status_code)
+data = response.json()
+print(data["name"], data["description"])</pre>
+<table><tr><th>概念</th><th>理解</th></tr><tr><td>Endpoint</td><td>服务地址</td></tr><tr><td>Request</td><td>发送的问题与参数</td></tr><tr><td>Response</td><td>返回的状态码与数据</td></tr><tr><td>API Key</td><td>身份密钥，不能提交到 GitHub</td></tr></table></section>
+
+<section id="embedding"><h2>09 · Embedding 与语义检索</h2><p class="goal">知道文字如何变成可比较的向量。</p>
+<p>Embedding 模型把文本转换成固定长度的浮点数向量。语义相近的文本通常在向量空间中更接近。</p>
+<pre>question = [0.9, 0.1, 0.2]
+doc_a = [0.8, 0.1, 0.3]  # 如何申请补考
+doc_b = [0.1, 0.9, 0.2]  # 今天的天气</pre>
+<p><strong>流程：</strong>文档切块 → 生成向量 → 存储 → 问题向量化 → 计算相似度 → 排序 → top-k。</p></section>
+
+<section id="rag"><h2>10 · 迷你 RAG 检索器</h2><p class="goal">把容器、函数、向量与排序串起来。</p>
+<pre>import numpy as np
+
+documents = [
+    {"text": "RAG 会先检索资料。", "vector": np.array([0.9, 0.2])},
+    {"text": "list 是可修改容器。", "vector": np.array([0.2, 0.9])}
+]
+question_vector = np.array([1.0, 0.1])
+
+def cosine(a, b):
+    return np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b))
+
+for doc in documents:
+    doc["score"] = cosine(question_vector, doc["vector"])
+
+best = max(documents, key=lambda doc: doc["score"])
+print(best["text"])</pre>
+<div class="exercise"><strong>综合练习</strong><ol><li>扩展到 5 条文档。</li><li>返回最高的 3 条并拼成 context。</li></ol></div></section>
+
+<section id="math"><h2>11 · 必要数学</h2><p class="goal">只学会在模型与论文中反复出现的部分。</p>
+<table><tr><th>主题</th><th>必须掌握</th><th>应用</th></tr><tr><td>线性代数</td><td>向量、矩阵乘法、转置、范数、特征值</td><td>网络、PCA、Embedding</td></tr><tr><td>微积分</td><td>导数、偏导、链式法则、梯度</td><td>反向传播</td></tr><tr><td>概率统计</td><td>条件概率、期望、方差、常见分布、最大似然</td><td>建模与实验</td></tr><tr><td>信息论</td><td>熵、交叉熵、KL 散度</td><td>分类与语言模型</td></tr></table>
+<pre>import numpy as np
+X = np.array([[1, 2], [3, 4]])
+W = np.array([[0.5], [-0.2]])
+y_hat = X @ W
+
+def mse(y, y_hat):
+    return np.mean((y - y_hat) ** 2)</pre></section>
+
+<section id="complexity"><h2>12 · 数据结构、复杂度与代码质量</h2><p class="goal">知道程序为何变慢，并写出可读、可测试的代码。</p>
+<table><tr><th>知识</th><th>够用标准</th></tr><tr><td>复杂度</td><td>认识 O(1)、O(n)、O(n log n)、O(n²)</td></tr><tr><td>结构</td><td>数组、哈希表、栈、队列、堆、树的用途</td></tr><tr><td>代码质量</td><td>清晰命名、类型标注、小函数、避免重复、测试</td></tr></table>
+<pre>results = [{"text": "A", "score": 0.72}, {"text": "B", "score": 0.93}]
+top = sorted(results, key=lambda x: x["score"], reverse=True)
+seen = set()</pre></section>
+
+<section id="data"><h2>13 · Pandas、数据清洗与 SQL</h2><p class="goal">多数 AI 项目的时间花在数据上。</p>
+<pre>import pandas as pd
+
+df = pd.read_csv("experiments.csv")
+df = df.drop_duplicates()
+df["score"] = pd.to_numeric(df["score"], errors="coerce")
+summary = df.groupby("model")["score"].agg(["mean", "std", "count"])
+print(summary)</pre>
+<pre>SELECT model, AVG(score), COUNT(*)
+FROM experiments
+WHERE score IS NOT NULL
+GROUP BY model;</pre>
+<p>重点：缺失值、重复值、异常值、数据泄漏、merge、groupby，以及 SELECT、WHERE、JOIN、GROUP BY。</p></section>
+
+<section id="ml"><h2>14 · 经典机器学习</h2><p class="goal">掌握特征、模型、损失、泛化和完整建模流程。</p>
+<pre>from sklearn.model_selection import train_test_split
+from sklearn.pipeline import make_pipeline
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LogisticRegression
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42, stratify=y
+)
+model = make_pipeline(StandardScaler(), LogisticRegression())
+model.fit(X_train, y_train)
+print(model.score(X_test, y_test))</pre>
+<div class="note">常见错误：提前看 test set、全量归一化造成泄漏、只报 accuracy、不做简单基线。</div></section>
+
+<section id="evaluation"><h2>15 · 评估、实验设计与误差分析</h2><p class="goal">模型会跑不等于结论可信。</p>
+<table><tr><th>任务</th><th>指标</th></tr><tr><td>分类</td><td>Precision、Recall、F1、ROC-AUC、PR-AUC</td></tr><tr><td>回归</td><td>MAE、RMSE、R²</td></tr><tr><td>检索</td><td>Recall@k、MRR、nDCG</td></tr><tr><td>RAG</td><td>正确性、忠实度、引用准确性、延迟、成本</td></tr></table>
+<p>先写假设和指标；固定随机种子；保存配置；报告均值和波动；做消融实验；分析失败样本。</p></section>
+
+<section id="pytorch"><h2>16 · PyTorch 与深度学习</h2><p class="goal">能读懂张量形状和训练循环。</p>
+<pre>import torch
+from torch import nn
+
+model = nn.Sequential(nn.Linear(10, 32), nn.ReLU(), nn.Linear(32, 2))
+optimizer = torch.optim.AdamW(model.parameters(), lr=1e-3)
+loss_fn = nn.CrossEntropyLoss()
+
+for X_batch, y_batch in loader:
+    optimizer.zero_grad()
+    logits = model(X_batch)
+    loss = loss_fn(logits, y_batch)
+    loss.backward()
+    optimizer.step()</pre>
+<p>必须掌握：Tensor、shape、batch、forward、loss、backward、optimizer、学习率、epoch、DataLoader、GPU、train/eval 模式。</p></section>
+
+<section id="transformer"><h2>17 · Transformer、NLP 与 LLM</h2><p class="goal">够你读论文、调 API 和使用开源模型。</p>
+<table><tr><th>概念</th><th>必须会解释</th></tr><tr><td>Tokenization</td><td>文本如何变成 token id</td></tr><tr><td>Attention</td><td>Q、K、V 如何聚合信息</td></tr><tr><td>训练阶段</td><td>预训练、指令微调、偏好对齐</td></tr><tr><td>推理</td><td>temperature、top-p、上下文、KV cache、量化</td></tr></table>
+<pre>scores = Q @ K.transpose(-2, -1) / (d_k ** 0.5)
+weights = torch.softmax(scores, dim=-1)
+output = weights @ V</pre></section>
+
+<section id="advanced-rag"><h2>18 · 进阶 RAG</h2><p class="goal">从“能回答”走到可评估、可追溯、可靠。</p>
+<table><tr><th>环节</th><th>高性价比知识</th></tr><tr><td>摄取</td><td>解析、清洗、chunk、metadata</td></tr><tr><td>召回</td><td>向量、BM25、混合检索、过滤</td></tr><tr><td>排序</td><td>reranker、top-k</td></tr><tr><td>查询</td><td>query rewrite、multi-query、HyDE</td></tr><tr><td>生成</td><td>拒答、引用、结构化输出</td></tr></table>
+<pre>dense_hits = vector_search(query, top_k=20)
+keyword_hits = bm25_search(query, top_k=20)
+candidates = reciprocal_rank_fusion(dense_hits, keyword_hits)
+final_hits = rerank(query, candidates)[:5]</pre></section>
+
+<section id="engineering"><h2>19 · AI 工程化</h2><p class="goal">让别人能安装、测试、复现和使用你的项目。</p>
+<table><tr><th>工具</th><th>够用标准</th></tr><tr><td>Git/GitHub</td><td>commit、branch、merge、PR</td></tr><tr><td>Linux/Shell</td><td>路径、进程、权限、环境变量、日志</td></tr><tr><td>测试</td><td>pytest、边界情况</td></tr><tr><td>服务</td><td>FastAPI、验证、错误处理</td></tr><tr><td>Docker</td><td>镜像、容器、端口、volume、Compose</td></tr></table>
+<pre>from fastapi import FastAPI
+from pydantic import BaseModel
+
+app = FastAPI()
+class Query(BaseModel):
+    question: str
+
+@app.post("/ask")
+def ask(body: Query):
+    return {"answer": retrieve_and_generate(body.question)}</pre></section>
+
+<section id="research"><h2>20 · 研究能力</h2><p class="goal">提出问题、形成证据、复现实验并解释结果。</p>
+<table><tr><th>能力</th><th>具体动作</th></tr><tr><td>读论文</td><td>问题、方法、数据、指标、基线、局限</td></tr><tr><td>文献管理</td><td>Zotero、标签、笔记、BibTeX</td></tr><tr><td>复现</td><td>锁定数据和版本，先主结果再改变量</td></tr><tr><td>实验记录</td><td>假设、配置、代码版本、种子、结果、失败原因</td></tr><tr><td>写作</td><td>结论先行，每个主张对应证据</td></tr><tr><td>规范</td><td>引用、许可、隐私、偏差、AI 使用披露</td></tr></table>
+<div class="note"><strong>读论文五问：</strong>解决什么问题？为什么重要？方法与基线是什么？证据支持结论吗？在哪些条件下会失败？</div></section>
+
+<section><h2>达到什么程度才算够用？</h2><div class="finish"><ul class="checklist"><li>能独立清洗数据、建立基线、选择指标并解释误差。</li><li>能读懂 PyTorch 训练循环和 Transformer 张量形状。</li><li>能构建和评估 RAG，而不只是让它“看起来能回答”。</li><li>能用 Git、测试、API 和 Docker 交付可复现项目。</li><li>能读论文、复现结果、做消融并报告局限。</li></ul></div></section>
+</main></div></body></html>

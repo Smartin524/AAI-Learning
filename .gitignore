@@ -1,0 +1,5 @@
+work/
+outputs/*.png
+.DS_Store
+Thumbs.db
+
