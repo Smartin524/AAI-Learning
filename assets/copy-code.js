@@ -29,6 +29,51 @@
     button.replaceChildren(svg, text);
   };
 
+  const pythonKeywords = new Set([
+    "False", "None", "True", "and", "as", "assert", "async", "await", "break",
+    "class", "continue", "def", "del", "elif", "else", "except", "finally", "for",
+    "from", "global", "if", "import", "in", "is", "lambda", "nonlocal", "not", "or",
+    "pass", "raise", "return", "try", "while", "with", "yield",
+  ]);
+  const pythonBuiltins = new Set([
+    "abs", "all", "any", "bool", "dict", "enumerate", "filter", "float", "int",
+    "isinstance", "len", "list", "map", "max", "min", "open", "print", "range",
+    "repr", "reversed", "round", "set", "sorted", "str", "sum", "tuple", "type", "zip",
+  ]);
+  const tokenPattern = /'''[\s\S]*?'''|"""[\s\S]*?"""|'(?:\\.|[^'\\])*'|"(?:\\.|[^"\\])*"|#[^\n]*|\$[A-Za-z_]\w*|\b(?:False|None|True|and|as|assert|async|await|break|class|continue|def|del|elif|else|except|finally|for|from|global|if|import|in|is|lambda|nonlocal|not|or|pass|raise|return|try|while|with|yield)\b|\b(?:abs|all|any|bool|dict|enumerate|filter|float|int|isinstance|len|list|map|max|min|open|print|range|repr|reversed|round|set|sorted|str|sum|tuple|type|zip)\b|\b[A-Za-z_]\w*(?=\s*\()|\b\d+(?:\.\d+)?\b|(?:==|!=|<=|>=|:=|->|\*\*|\/\/|[+\-*\/%@<>=])/g;
+
+  const tokenType = (token) => {
+    if (token.startsWith("#")) return "comment";
+    if (/^['"]/.test(token)) return "string";
+    if (pythonKeywords.has(token)) return "keyword";
+    if (pythonBuiltins.has(token)) return "builtin";
+    if (/^\$/.test(token)) return "variable";
+    if (/^\d/.test(token)) return "number";
+    if (/^[A-Za-z_]/.test(token)) return "function";
+    return "operator";
+  };
+
+  const highlightCode = (codeBlock) => {
+    const source = codeBlock.textContent;
+    const fragment = document.createDocumentFragment();
+    let cursor = 0;
+
+    tokenPattern.lastIndex = 0;
+    for (const match of source.matchAll(tokenPattern)) {
+      if (match.index > cursor) fragment.append(source.slice(cursor, match.index));
+
+      const token = document.createElement("span");
+      token.className = `syntax-${tokenType(match[0])}`;
+      token.textContent = match[0];
+      fragment.append(token);
+      cursor = match.index + match[0].length;
+    }
+
+    if (cursor < source.length) fragment.append(source.slice(cursor));
+    codeBlock.replaceChildren(fragment);
+    codeBlock.dataset.highlighted = "true";
+  };
+
   const copyText = async (text) => {
     if (navigator.clipboard && window.isSecureContext) {
       await navigator.clipboard.writeText(text);
@@ -50,6 +95,8 @@
 
   document.querySelectorAll("pre").forEach((codeBlock) => {
     if (codeBlock.closest(".code-block")) return;
+
+    highlightCode(codeBlock);
 
     const wrapper = document.createElement("div");
     wrapper.className = "code-block";
