@@ -1,4 +1,9 @@
-(() => {
+((global) => {
+  const config = Object.freeze({
+    selector: "pre",
+    defaultLanguage: "python",
+    resetDelay: 1600,
+  });
   const icons = {
     copy: [
       ["rect", { x: "9", y: "9", width: "11", height: "11", rx: "2" }],
@@ -55,6 +60,13 @@
 
   const highlightCode = (codeBlock) => {
     const source = codeBlock.textContent;
+    const language = codeBlock.dataset.language || config.defaultLanguage;
+
+    if (language === "plain") {
+      codeBlock.dataset.highlighted = "plain";
+      return;
+    }
+
     const fragment = document.createDocumentFragment();
     let cursor = 0;
 
@@ -93,8 +105,8 @@
     if (!copied) throw new Error("Copy command failed");
   };
 
-  document.querySelectorAll("pre").forEach((codeBlock) => {
-    if (codeBlock.closest(".code-block")) return;
+  const enhance = (codeBlock) => {
+    if (!(codeBlock instanceof HTMLElement) || codeBlock.dataset.codeEnhanced === "true") return;
 
     highlightCode(codeBlock);
 
@@ -127,7 +139,26 @@
         button.setAttribute("aria-label", "复制代码");
         setButtonContent(button, "复制", "copy");
         button.classList.remove("is-copied");
-      }, 1600);
+      }, config.resetDelay);
+    });
+
+    codeBlock.dataset.codeEnhanced = "true";
+  };
+
+  const init = (root = document) => {
+    if (root.matches?.(config.selector)) enhance(root);
+    root.querySelectorAll?.(config.selector).forEach(enhance);
+  };
+
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      mutation.addedNodes.forEach((node) => {
+        if (node.nodeType === Node.ELEMENT_NODE) init(node);
+      });
     });
   });
-})();
+
+  global.CodeBlocks = Object.freeze({ init, enhance, config });
+  init();
+  observer.observe(document.body, { childList: true, subtree: true });
+})(window);

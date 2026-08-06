@@ -1,0 +1,79 @@
+:root {
+  --code-block-background: #101827;
+  --code-block-text: #e8eef8;
+  --code-token-comment: #7f8da8;
+  --code-token-string: #a5d6a7;
+  --code-token-keyword: #c792ea;
+  --code-token-builtin: #82aaff;
+  --code-token-function: #ffcb6b;
+  --code-token-number: #f78c6c;
+  --code-token-operator: #89ddff;
+  --code-token-variable: #f07178;
+}
+
+pre {
+  margin: 15px 0 21px;
+  padding: 19px 21px;
+  overflow: auto;
+  background: var(--code-block-background);
+  color: var(--code-block-text);
+  border-radius: 7px;
+  font: 14px/1.66 Consolas, "Cascadia Code", monospace;
+  tab-size: 4;
+}
+
+.syntax-comment { color: var(--code-token-comment); font-style: italic; }
+.syntax-string { color: var(--code-token-string); }
+.syntax-keyword { color: var(--code-token-keyword); font-weight: 700; }
+.syntax-builtin { color: var(--code-token-builtin); }
+.syntax-function { color: var(--code-token-function); }
+.syntax-number { color: var(--code-token-number); }
+.syntax-operator { color: var(--code-token-operator); }
+.syntax-variable { color: var(--code-token-variable); }
+
+.code-block { position: relative; margin: 15px 0 21px; }
+.code-block pre { margin: 0; padding-top: 51px; }
+.copy-code-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 11px;
+  border: 1px solid #41506a;
+  border-radius: 5px;
+  background: #1c2940;
+  color: #dfe8f7;
+  font: 700 12px/1.2 "Microsoft YaHei", "PingFang SC", system-ui, sans-serif;
+  cursor: pointer;
+  transition: background .15s, border-color .15s, color .15s;
+}
+.copy-code-button svg {
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.copy-code-button:hover,
+.copy-code-button:focus-visible {
+  border-color: #7ca5f8;
+  background: #263955;
+  color: #fff;
+  outline: none;
+}
+.copy-code-button.is-copied {
+  border-color: #38a479;
+  background: #153e32;
+  color: #bff4dd;
+}
+
+@media (max-width: 800px) {
+  pre { max-width: 100%; padding: 15px 13px; font-size: 12.5px; }
+  .code-block pre { padding-top: 49px; }
+  .copy-code-button { top: 9px; right: 9px; }
+}
