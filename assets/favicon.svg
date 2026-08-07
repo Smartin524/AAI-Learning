@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title">
+  <title>AAI Learning</title>
+  <rect width="64" height="64" rx="16" fill="#14213d"/>
+  <g transform="skewX(-6)">
+    <path d="M10.5 45 15.4 17h7.4l4.9 28h-6l-.9-5.5h-3.7l-.9 5.5h-5.7Zm7.3-10.5h2.3L19 24.2l-1.2 10.3Z" fill="#fff"/>
+    <path d="M26 45 30.9 17h7.4l4.9 28h-6l-.9-5.5h-3.7l-.9 5.5H26Zm7.3-10.5h2.3l-1.1-10.3-1.2 10.3Z" fill="#fff"/>
+    <path d="M45.2 17h7.4v28h-7.4V17Z" fill="#fff"/>
+  </g>
+  <rect x="10" y="50" width="44" height="3.5" rx="1.75" fill="#155eef"/>
+</svg>

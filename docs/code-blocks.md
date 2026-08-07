@@ -10,8 +10,7 @@
 ## 引入
 
 ```html
-<link rel="stylesheet" href="assets/code-blocks.css" />
-<script src="assets/code-blocks.js" defer></script>
+<!-- 由 scripts/build.mjs 根据页面的 code 配置自动插入哈希资源。 -->
 ```
 
 组件默认增强页面中的所有 `<pre>`，不需要逐个初始化：
@@ -54,11 +53,11 @@ CodeBlocks.config               // 查看默认配置
 }
 ```
 
-完整变量列表位于 `assets/code-blocks.css` 顶部。
+完整变量列表位于 `src/styles/code-blocks.css` 顶部。
 
 ## 维护约定
 
 - 站点通用布局不要写进组件样式。
-- 新语言高亮逻辑集中添加到 `assets/code-blocks.js`。
+- 新语言高亮逻辑集中添加到 `src/client/code-blocks.js`。
 - 修改组件后同步更新资源 URL 的版本参数，避免 GitHub Pages 缓存旧文件。
 - 发布前至少验证桌面、手机、复制状态、控制台以及所有章节代码块数量。

@@ -1,0 +1,16 @@
+{
+  "name": "aai-learning",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.16.0",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "check": "node scripts/check.mjs",
+    "test:smoke": "node tests/smoke.mjs",
+    "test": "node scripts/build.mjs && node scripts/check.mjs && node tests/smoke.mjs"
+  },
+  "devDependencies": {
+    "playwright": "^1.62.1"
+  }
+}
