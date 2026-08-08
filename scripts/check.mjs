@@ -35,6 +35,8 @@ for (const page of pages) {
   const html = await readFile(absolutePage, "utf8");
   if (!html.includes(generatedNotice)) errors.push(`${page}: generated-file notice is missing`);
   if (html.includes("?v=")) errors.push(`${page}: contains a manual cache version`);
+  if (html.indexOf("<title>") > html.indexOf("<script")) errors.push(`${page}: title appears after a blocking script`);
+  if (!html.includes('rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,')) errors.push(`${page}: inline favicon is missing`);
   if ((html.match(/<main\b/g) || []).length !== (html.match(/<\/main>/g) || []).length) {
     errors.push(`${page}: main element is not balanced`);
   }
