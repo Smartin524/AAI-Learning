@@ -12,6 +12,7 @@
   let sections = [];
   let frameRequested = false;
   let navigationController;
+  let renderedPath = window.location.pathname;
 
   const setCurrentSection = (currentId) => {
     sectionLinks.forEach((link) => {
@@ -57,6 +58,25 @@
       frameRequested = false;
       syncWithScroll();
     });
+  };
+
+  const goToSection = (url, updateHistory = true) => {
+    const targetId = url.hash.slice(1);
+    const target = targetId ? document.getElementById(targetId) : null;
+    if (!target) return false;
+
+    if (updateHistory) window.history.pushState({ chapter: url.pathname }, "", url);
+    const alignTarget = () => {
+      target.scrollIntoView({ behavior: "auto", block: "start" });
+      setCurrentSection(targetId);
+      requestScrollSync();
+    };
+
+    alignTarget();
+    // Browsers can restore a stale scroll position after popstate; align once
+    // more on the next frame so backward/forward navigation lands consistently.
+    window.requestAnimationFrame(alignTarget);
+    return true;
   };
 
   const activateChapter = (url) => {
@@ -133,13 +153,11 @@
     }
 
     document.title = nextDocument.title || document.title;
+    renderedPath = url.pathname;
     if (updateHistory) window.history.pushState({ chapter: url.pathname }, "", url);
 
     refreshSections();
-    const target = url.hash ? document.getElementById(url.hash.slice(1)) : null;
-    if (target) {
-      target.scrollIntoView();
-    } else {
+    if (!goToSection(url, false)) {
       window.scrollTo({ top: 0, behavior: "auto" });
     }
     requestScrollSync();
@@ -167,10 +185,9 @@
 
     const url = new URL(link.href, window.location.href);
     if (url.origin !== window.location.origin || !chapterPaths.has(url.pathname)) return;
-    if (url.pathname === window.location.pathname && url.hash) return;
-
     event.preventDefault();
     if (url.pathname === window.location.pathname) {
+      if (url.hash && goToSection(url)) return;
       window.history.pushState({ chapter: url.pathname }, "", url);
       window.scrollTo({ top: 0, behavior: "auto" });
       requestScrollSync();
@@ -181,7 +198,12 @@
 
   window.addEventListener("popstate", () => {
     const url = new URL(window.location.href);
-    if (chapterPaths.has(url.pathname)) navigate(url, false);
+    if (!chapterPaths.has(url.pathname)) return;
+    if (url.pathname === renderedPath && url.hash) {
+      goToSection(url, false);
+      return;
+    }
+    navigate(url, false);
   });
   window.addEventListener("scroll", requestScrollSync, { passive: true });
   window.addEventListener("resize", requestScrollSync);
