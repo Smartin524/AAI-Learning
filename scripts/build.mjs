@@ -166,13 +166,13 @@ const renderToc = (course, currentPage) => {
     const active = page.output === currentPage.output;
     const pageSections = page.subsections ?? config.sections;
     const sections = pageSections.map((section) => `
-              <a href="#${section.id}" data-toc-section="${section.id}">${escapeHtml(section.label)}</a>`).join("");
+              <a href="${relativePageHref(currentPage.output, page.output)}#${section.id}" data-toc-section="${section.id}">${escapeHtml(section.label)}</a>`).join("");
 
     return `
           <div class="chapter-group${active ? " active" : ""}" data-chapter-group>
             <a class="chapter-link${active ? " active" : ""}"${active ? ' aria-current="page"' : ""} href="${relativePageHref(currentPage.output, page.output)}">${escapeHtml(page.navLabel)}</a>
             <div class="chapter-subnav"${active ? "" : ' aria-hidden="true" inert'}>
-              <div class="chapter-subnav-inner">${active ? sections : ""}
+              <div class="chapter-subnav-inner">${sections}
               </div>
             </div>
           </div>`;

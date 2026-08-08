@@ -472,13 +472,20 @@ a {
   grid-template-rows: 0fr;
   opacity: 0;
   visibility: hidden;
+  transform: translateY(-4px);
+  transition:
+    grid-template-rows 0.2s ease-out,
+    opacity 0.16s ease-out,
+    transform 0.2s ease-out,
+    visibility 0s linear 0.2s;
 }
 
 .chapter-group.active .chapter-subnav {
   grid-template-rows: 1fr;
   opacity: 1;
   visibility: visible;
-  animation: toc-subnav-reveal 0.2s ease-out both;
+  transform: translateY(0);
+  transition-delay: 0s;
 }
 
 .chapter-subnav-inner {
@@ -496,22 +503,31 @@ a {
   font-size: 13px;
 }
 
-@keyframes toc-subnav-reveal {
-  from {
-    grid-template-rows: 0fr;
-    opacity: 0;
-    transform: translateY(-4px);
-  }
+.chapter {
+  min-width: 0;
+  view-transition-name: chapter-content;
+}
 
+::view-transition-old(chapter-content) {
+  animation: chapter-content-out 0.14s ease-in both;
+}
+
+::view-transition-new(chapter-content) {
+  animation: chapter-content-in 0.2s ease-out both;
+}
+
+@keyframes chapter-content-out {
   to {
-    grid-template-rows: 1fr;
-    opacity: 1;
-    transform: translateY(0);
+    opacity: 0;
+    transform: translateY(4px);
   }
 }
 
-.chapter {
-  min-width: 0;
+@keyframes chapter-content-in {
+  from {
+    opacity: 0;
+    transform: translateY(7px);
+  }
 }
 
 .chapter-hero {

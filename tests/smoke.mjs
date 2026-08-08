@@ -62,7 +62,7 @@ try {
   assert(await page.locator("body").getAttribute("data-course-id") === config.courses[1].id, "AI UX course identity is incorrect");
   const aiUxPage = config.courses[1].pages[0];
   assert(await page.locator(".chapter-group.active .chapter-subnav a").count() === aiUxPage.subsections.length, "AI UX source chapter subtitles are incomplete");
-  assert(await page.getByRole("link", { name: "1.4 Comparison Plots", exact: true }).getAttribute("href") === "#chapter-1-4", "AI UX source chapter anchor is incorrect");
+  assert(new URL(await page.getByRole("link", { name: "1.4 Comparison Plots", exact: true }).getAttribute("href"), page.url()).hash === "#chapter-1-4", "AI UX source chapter anchor is incorrect");
   await page.locator("#chapter-1-7").evaluate((heading) => window.scrollTo(0, heading.offsetTop - 82));
   await page.waitForFunction(() => document.querySelector('[data-toc-section="chapter-1-7"]')?.getAttribute("aria-current") === "location");
   assert(new URL(page.url()).hash === "", "Scroll spy should not rewrite the URL hash");
@@ -76,15 +76,31 @@ try {
   assert(await page.locator(".chapter-group.active").count() === 1, "Exactly one chapter should be expanded");
   assert(await page.locator(".chapter-group.active .chapter-subnav a").count() === config.sections.length, "Current chapter subtitles are incomplete");
   assert(await page.locator(".chapter-group:not(.active) .chapter-subnav[inert]").count() === config.courses[0].pages.length - 1, "Inactive chapter subtitles are not collapsed");
-  const tocAnimation = await page.locator(".chapter-group.active .chapter-subnav").evaluate((element) => getComputedStyle(element).animationName);
-  assert(tocAnimation === "toc-subnav-reveal", "Current chapter subtitle animation is missing");
+  const tocTransition = await page.locator(".chapter-group.active .chapter-subnav").evaluate((element) => getComputedStyle(element).transitionDuration);
+  assert(tocTransition.includes("0.2s"), "Current chapter subtitle transition is missing");
+
+  const navigationEntries = await page.evaluate(() => performance.getEntriesByType("navigation").length);
+  const faviconBeforeChapterSwitch = await page.locator('link[rel="icon"]').getAttribute("href");
+  await page.getByRole("link", { name: "02 容器", exact: true }).click();
+  await page.waitForURL("**/chapters/02-containers.html");
+  await page.getByRole("heading", { name: "容器：list、dict、set、tuple" }).waitFor();
+  assert(await page.evaluate(() => performance.getEntriesByType("navigation").length) === navigationEntries, "Chapter switch performed a full-page navigation");
+  assert(await page.locator('link[rel="icon"]').getAttribute("href") === faviconBeforeChapterSwitch, "Chapter switch replaced the favicon");
+  assert(await page.locator(".chapter-group.active .chapter-link").innerText() === "02 容器", "New chapter did not expand in the table of contents");
+  assert(await page.locator(".code-block").count() === await page.getByRole("button", { name: "复制代码" }).count(), "Code blocks were not enhanced after the chapter switch");
+
+  await page.goBack();
+  await page.waitForURL("**/chapters/01-basics.html");
+  await page.getByRole("heading", { name: "变量、基本类型与 Casting" }).waitFor();
+  assert(await page.locator(".chapter-group.active .chapter-link").innerText() === "01 基本类型与 Casting", "Browser history did not restore the previous chapter");
+  assert(await page.evaluate(() => performance.getEntriesByType("navigation").length) === navigationEntries, "Browser history caused a full-page navigation");
 
   await page.getByRole("button", { name: /模式$/ }).click();
   await page.getByRole("menuitemradio", { name: "夜间模式" }).click();
   assert(await page.locator("html").getAttribute("data-color-mode") === "dark", "Theme did not switch to dark mode");
 
   await page.getByRole("link", { name: "练习", exact: true }).click();
-  await page.waitForFunction(() => document.querySelector('a[href="#practice"]')?.getAttribute("aria-current") === "location");
+  await page.waitForFunction(() => document.querySelector('.chapter-group.active [data-toc-section="practice"]')?.getAttribute("aria-current") === "location");
   const anchorState = await page.evaluate(() => ({
     hash: location.hash,
     behavior: getComputedStyle(document.documentElement).scrollBehavior,
