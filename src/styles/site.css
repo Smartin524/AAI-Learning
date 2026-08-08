@@ -599,6 +599,17 @@ a {
   font-size: 16px;
 }
 
+.chapter-chart-map {
+  margin: 8px 0 16px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.chapter-chart-map strong {
+  color: var(--ink);
+}
+
 .content-section p {
   margin: 9px 0;
 }

@@ -35,6 +35,7 @@
             <tr><td>relationship / distribution</td><td>关系图关注变量之间的关联或模式；分布图关注数值在范围内如何展开。</td></tr>
             <tr><td>bin / frequency</td><td>直方图把数值范围切成区间（bin），用柱高表示落入区间的数据点频数。</td></tr>
             <tr><td>histogram</td><td>用连续数值区间及其频数展示单个数值变量的分布。它能帮助识别峰、偏态、离群值和双峰等结构；它不是把类别逐项计数的普通柱状图。</td></tr>
+            <tr><td>box plot / whisker plot</td><td>用箱体、中位数线、须和单独标记的异常值压缩展示一个或多个数值变量的统计摘要，特别适合并列比较多组分布。</td></tr>
             <tr><td>quartile / IQR</td><td>四分位数把数据分成四部分；IQR 是 Q3 − Q1，箱线图用它表达中间 50% 的范围。</td></tr>
             <tr><td>zero baseline</td><td>以 0 作为数值轴起点。柱状图通常应使用零基线，因为柱长直接编码数值；折线图可在必要时使用非零起点，但必须明确范围并避免夸大变化。</td></tr>
             <tr><td>aspect ratio</td><td>绘图区宽度与高度的比例。它会改变折线斜率的视觉角度，使相同数据看起来更陡或更平。</td></tr>
@@ -52,6 +53,7 @@
         <section class="content-section" id="core">
           <h2>核心知识</h2>
           <h3 id="chapter-1-1">1.1 Introduction｜为什么需要数据可视化</h3>
+          <p class="chapter-chart-map"><strong>本章图表 / 案例：</strong>DataSaurus Dozen 与 Anscombe’s Quartet 的散点图案例；机器学习数据中的异常值、类别不平衡与特征关系可视化。</p>
           <p>可视化不是把数据“装饰得更漂亮”，而是把数据转化为更容易被人观察、比较和理解的形式。它帮助我们发现文字或基础统计量不容易暴露的趋势、异常值、模式和关系。</p>
           <p>Anscombe’s Quartet 和 DataSaurus Dozen 说明：统计参数相近的数据集，形状和关系可能完全不同。因此，统计分析与可视化需要互相补充。</p>
           <p>在 AI 和机器学习数据集中，可视化还能帮助发现异常值、类别不平衡和特征之间的关系，从而辅助特征选择与数据质量判断。</p>
@@ -61,6 +63,7 @@
           </figure>
 
           <h3 id="chapter-1-2">1.2 Data Attributes｜先理解数据，再决定怎么画</h3>
+          <p class="chapter-chart-map"><strong>本章图表 / 方法：</strong>Gauge、Thermometer、Bullet Graph；饼图、柱状图、直方图、散点图与堆叠柱图；层级图、Treemap、Sunburst、Circle Packing；地图、点密度图、气泡地图与热力图。</p>
           <p>数据模型告诉你数据长什么样，概念模型告诉你数据意味着什么。相同的数值，若代表温度、日期或地理坐标，后续的运算和可视化选择可能完全不同。</p>
           <p>判断数据时至少要问三件事：</p>
           <ol>
@@ -82,6 +85,7 @@
           <p>层级数据适合树状图、Treemap、Sunburst 和 Circle Packing；时间数据可以使用折线图、柱状图、堆叠面积图或周期性的 Polar Area Chart；空间数据通常需要地图、点密度图、气泡地图或热力图。</p>
 
           <h3 id="chapter-1-3">1.3 Visual Encoding｜把数据映射成图像</h3>
+          <p class="chapter-chart-map"><strong>本章图表 / 方法：</strong>2D Scatter Plot、双 Y 轴柱图；Import / Export 折线与面积图、Treemap，以及用点、线、面和视觉通道拆解现有图表的方法。</p>
           <p>视觉化过程可以理解为：数据与概念模型 → 选择视觉标记 → 选择视觉通道 → 生成图像。点、线、面是标记；位置、大小、颜色等是控制标记外观的通道。</p>
           <p>标记还要区分 item mark 与 link mark：前者表示单个对象，后者表示对象之间的连接。选择标记之前必须先判断你是在画“项目”，还是在画“关系”。</p>
           <figure class="course-example">
@@ -98,6 +102,7 @@
           <p>不要只追求“能放下更多维度”。应让每个数据属性都使用与其尺度匹配、前后一致的视觉变量；高度和宽度会共同影响面积感知，因此不能只改变柱宽来暗示并不存在的数值差异。</p>
 
           <h3 id="chapter-1-4">1.4 Comparison Plots｜柱状图、折线图与零基线</h3>
+          <p class="chapter-chart-map"><strong>本章图表 / 方法：</strong>折线图、垂直与水平柱状图，以及用于观察长期趋势的滑动平均平滑线。</p>
           <p>横轴是无序类别、目标是比较离散数值时，优先考虑柱状图；横轴是时间或其他 interval / ratio 尺度、目标是观察连续变化趋势时，折线图通常更合适。类别标签很长时，横向柱状图比旋转文字更容易阅读。</p>
           <p><strong>Zero baseline 不是对所有图表“一刀切”的规定。</strong>柱状图用长度表达数值，截断数值轴会破坏柱长之间的比例，因此通常应从 0 开始。折线图主要通过位置、斜率和变化形态表达趋势；若零基线让真实变化无法辨认，可以收窄纵轴范围，但必须清楚标示刻度与范围，并避免用不合理的范围制造夸张趋势。</p>
           <figure class="course-example">
@@ -141,12 +146,14 @@ daily_cases["mean_21d"] = daily_cases["new_cases"].rolling(
           <p>不要把 Excel 的“smoothed line”外观选项当作数据平滑：它可能只改变曲线插值并制造原数据中不存在的走势。可靠做法是明确计算窗口统计量，同时把原始序列作为参照。</p>
 
           <h3 id="chapter-1-5">1.5 Composition Plots｜共同基线决定比较精度</h3>
+          <p class="chapter-chart-map"><strong>本章图表 / 方法：</strong>Pie Chart、Donut Chart、Stacked Bar Chart、100% Stacked Bar Chart 与 Stacked Area Chart；必要时回退到柱状图或多条折线图。</p>
           <p>饼图适合类别较少、差异明显的静态构成；切片差异很小或类别过多时，柱状图通常更容易比较。百分比堆叠柱状图便于比较占比，但会隐藏总量差异。</p>
           <p>饼图应保持简单：类别没有固有顺序时可以按切片大小排序；过小类别可在不破坏含义的前提下合并为 “Other”。Exploded pie 的间隙会扭曲部分与整体的判断，3D 透视还会让靠近观察者的切片显得更大。Donut 与饼图的可读性没有本质差异，但中心区域可以放置总量等补充信息。</p>
           <p>堆叠柱状图的类别颜色必须与变量类型匹配：无序类别用 qualitative palette，有序类别使用 sequential palette，存在有意义中点时才考虑 diverging palette。默认按总量从大到小排列；若横轴具有时间等固有顺序，则保留该顺序。</p>
           <p>堆叠面积图适合同时观察总量与随时间变化的构成。最底层共享固定基线，其他层位于 moving baseline 上，因此中间类别难以精确比较；若每个类别的准确变化都重要，应改用多条折线图。</p>
 
           <h3 id="chapter-1-6">1.6 Relationship Plots｜位置、大小与颜色共同编码模式</h3>
+          <p class="chapter-chart-map"><strong>本章图表 / 方法：</strong>Scatter Plot、Linear Regression Trend Line、LOWESS、Bubble Plot 与 Heatmap。</p>
           <p>散点图使用二维位置展示两个定量变量之间的关系；线性回归和 LOWESS 可以辅助观察趋势。气泡图可以增加一个定量维度，但面积比较不如位置精确，因此应谨慎使用。</p>
           <h4>Linear Regression Trend Line：一条直线在概括什么</h4>
           <p>趋势线尝试用一条数学上的最佳拟合直线概括散点整体的线性关系。它适合回答“随着 <em>x</em> 增加，<em>y</em> 是否总体上升或下降、上升或下降得有多快”，但不能把相关直接解释成因果，也不能替代对异常值、分组和数据生成机制的检查。</p>
@@ -177,6 +184,7 @@ ax = sns.lineplot(x=trend[:, 0], y=trend[:, 1])</pre>
           <p>热力图用网格中的颜色表达数值，两条轴通常是类别，或把定量变量分箱后形成离散单元格。必须提供可解释的颜色图例，并根据数据选择 sequential 或 diverging 色阶。</p>
 
           <h3 id="chapter-1-7">1.7 Distribution Plots｜分箱与统计摘要改变可见结构</h3>
+          <p class="chapter-chart-map"><strong>本章图表 / 方法：</strong>Standard Histogram、Histogram with Multiple Categories、Box Plot（Whisker Plot）与 Violin Plot。</p>
           <p>直方图的 bin 数量和边界会改变人们对分布形状的理解；太多会产生噪声，太少会隐藏细节。箱线图突出中位数、四分位数和异常值；小提琴图进一步展示核密度曲线的形状。</p>
           <h4>Histogram：先定义区间，再读取形状</h4>
           <p>直方图把一个数值变量切成连续的区间（bin），每根柱的高度是落入该区间的数据点频数。读图时先看峰在哪里、分布是否对称或偏斜、是否有多个峰，以及是否出现远离主体的值；这些结构往往比均值和方差更直观。</p>
@@ -193,7 +201,23 @@ ax = sns.histplot(
 ax.set(xlabel="Math score", ylabel="Frequency")</pre>
           <p>先根据数据可取的值和分析任务设定 bin：例如整数分数应避免 1.5 这样的分数宽度；然后比较不同 bin 数量与边界下的形状是否仍然成立。不要把多个类别的直方图随意重叠在一张图上，课件指出这容易造成遮挡与混乱；需要比较多组分布时，优先配合箱线图、小提琴图或分面图。</p>
           <p>bin 宽度还要匹配数据可取的值。整数变量若使用 1.5 之类的分数宽度，不同 bin 能容纳的有效整数数量可能不一致，图形会出现人为的凹凸。</p>
+          <h4>Box Plot：用统计摘要并列比较多组分布</h4>
           <p>箱线图的箱体从 Q1 到 Q3，中线是中位数 Q2；IQR = Q3 − Q1。上下须延伸到不超过 <code>Q1 − 1.5 × IQR</code> 与 <code>Q3 + 1.5 × IQR</code> 的最远实际数据点，范围外的数据单独标记为异常值。</p>
+          <p>它把每组的中间 50%、中心位置、整体范围与异常值压缩到同一尺度，适合快速比较多组数值变量，也可以横向或纵向排列。代价是它不展示分布的完整形状：两组数据的四分位数相同，峰、谷或双峰结构仍可能完全不同；这时要配合直方图或小提琴图。</p>
+          <pre>
+import seaborn as sns
+
+# 每个 gender 一只箱体：比较数学分数的中位数、IQR 与异常值
+ax = sns.boxplot(
+    data=students,
+    x="gender",
+    y="math score",
+)
+ax.set(xlabel="Gender", ylabel="Math score")</pre>
+          <figure class="course-example">
+            <img src="../assets/courseware/module-01/box-plot.png" alt="课件的箱线图示例：箱体表示中间 50% 的数据，中线为中位数，箱线之外的单独点表示异常值" loading="lazy" />
+            <figcaption><strong>示例：箱线图让多组数据的中位数、离散程度与异常值能在同一尺度上对照。</strong><span>来源：Chapter 1.7 Distribution Plots，Slide 5</span></figcaption>
+          </figure>
           <p>小提琴图的宽度表示核密度估计的近似频率，因此可以看到箱线图不显示的峰、谷和尾部。它可以叠加箱线图或四分位线；左右半边还可分别编码两个互补类别。</p>
           <figure class="course-example">
             <img src="../assets/courseware/module-01/histogram-distributions.png" alt="直方图课件示例：展示 bin、频数，以及对称单峰、左偏、右偏、均匀、双峰和多峰分布" loading="lazy" />
@@ -201,6 +225,7 @@ ax.set(xlabel="Math score", ylabel="Frequency")</pre>
           </figure>
 
           <h3 id="chapter-1-8">1.8 Know The Right Chart Type｜选择图表前先问问题</h3>
+          <p class="chapter-chart-map"><strong>本章图表 / 方法：</strong>Andrew Abela’s Chart Chooser；以 Comparison、Composition、Relationship、Distribution 四个任务类别组织候选图表。</p>
           <table class="terms">
             <tr><th>目的</th><th>常见图表</th><th>适合回答的问题</th></tr>
             <tr><td>Comparison 比较</td><td>柱状图、折线图等</td><td>谁更高？变化有多大？不同组或时期如何比较？</td></tr>
