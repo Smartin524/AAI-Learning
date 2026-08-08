@@ -106,6 +106,7 @@
             <tr><td>bin / frequency</td><td>直方图把数值范围切成区间（bin），用柱高表示落入区间的数据点频数。</td></tr>
             <tr><td>histogram</td><td>用连续数值区间及其频数展示单个数值变量的分布。它能帮助识别峰、偏态、离群值和双峰等结构；它不是把类别逐项计数的普通柱状图。</td></tr>
             <tr><td>box plot / whisker plot</td><td>用箱体、中位数线、须和单独标记的异常值压缩展示一个或多个数值变量的统计摘要，特别适合并列比较多组分布。</td></tr>
+            <tr><td>violin plot / kernel density</td><td>以核密度曲线的镜像轮廓展示数值分布；某一数值位置越宽，表示该区域的近似频率越高。它保留了箱线图难以表达的峰、谷和尾部形状。</td></tr>
             <tr><td>quartile / IQR</td><td>四分位数把数据分成四部分；IQR 是 Q3 − Q1，箱线图用它表达中间 50% 的范围。</td></tr>
             <tr><td>zero baseline</td><td>以 0 作为数值轴起点。柱状图通常应使用零基线，因为柱长直接编码数值；折线图可在必要时使用非零起点，但必须明确范围并避免夸大变化。</td></tr>
             <tr><td>aspect ratio</td><td>绘图区宽度与高度的比例。它会改变折线斜率的视觉角度，使相同数据看起来更陡或更平。</td></tr>
@@ -288,7 +289,37 @@ ax.set(xlabel="Gender", ylabel="Math score")</pre>
             <img src="../assets/courseware/module-01/box-plot.png" alt="课件的箱线图示例：箱体表示中间 50% 的数据，中线为中位数，箱线之外的单独点表示异常值" loading="lazy" />
             <figcaption><strong>示例：箱线图让多组数据的中位数、离散程度与异常值能在同一尺度上对照。</strong><span>来源：Chapter 1.7 Distribution Plots，Slide 5</span></figcaption>
           </figure>
-          <p>小提琴图的宽度表示核密度估计的近似频率，因此可以看到箱线图不显示的峰、谷和尾部。它可以叠加箱线图或四分位线；左右半边还可分别编码两个互补类别。</p>
+          <h4>Violin Plot：让分布形状重新可见</h4>
+          <p>小提琴图以核密度曲线的镜像轮廓展示一个或多个数值变量；在某个数值位置越宽，代表该区域的近似频率越高。把多组小提琴并排后，可以直接对照各组的峰、谷、偏态与尾部，而不仅是对照中位数和四分位数。</p>
+          <p>这正好补上箱线图的边界：不同数据集可以拥有相同的四分位数，却有完全不同的分布形状。小提琴图可以在内部叠加箱线图或四分位线，让统计摘要和形状信息同时可见。</p>
+          <pre>
+import seaborn as sns
+
+# inner="box" 在每组密度轮廓中叠加箱线图摘要
+ax = sns.violinplot(
+    data=students,
+    x="gender",
+    y="math score",
+    inner="box",
+    cut=0,
+)
+ax.set(xlabel="Gender", ylabel="Math score")</pre>
+          <p>这里的 <code>inner="box"</code> 把箱线图摘要放进密度轮廓；<code>cut=0</code> 让轮廓不延伸到观测数据范围之外。两者不改变原始数据，只改变对分布的呈现方式。</p>
+          <p>需要比较两个互补类别在同一组内的分布时，可使用 split violin：左右半边各编码一个类别。它适用于清晰的二分类对照；若类别更多，应改为并排的小提琴图，避免把读图任务塞进同一轮廓。</p>
+          <pre>
+# 每个 lunch 组内，对比 female 与 male 的数学分数分布
+sns.violinplot(
+    data=students,
+    x="lunch",
+    y="math score",
+    hue="gender",
+    split=True,
+    inner="quartile",
+)</pre>
+          <figure class="course-example">
+            <img src="../assets/courseware/module-01/violin-plot.png" alt="课件的小提琴图示例：轮廓宽度编码近似频率，并对比原始数据、箱线图和小提琴图如何揭示不同分布形状" loading="lazy" />
+            <figcaption><strong>示例：四分位数相同不代表分布相同；小提琴图能显示箱线图遗漏的峰、谷和尾部。</strong><span>来源：Chapter 1.7 Distribution Plots，Slide 7</span></figcaption>
+          </figure>
           <figure class="course-example">
             <img src="../assets/courseware/module-01/histogram-distributions.png" alt="直方图课件示例：展示 bin、频数，以及对称单峰、左偏、右偏、均匀、双峰和多峰分布" loading="lazy" />
             <figcaption><strong>示例：直方图的形状揭示偏态、峰数与异常结构。</strong><span>来源：Chapter 1.7 Distribution Plots，Slide 3</span></figcaption>
