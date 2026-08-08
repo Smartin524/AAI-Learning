@@ -60,6 +60,9 @@ try {
   await page.getByRole("link", { name: /AI UX & Data Visualisation Design Principles/ }).click();
   await page.waitForURL(`**/${config.courses[1].entry}`);
   assert(await page.locator("body").getAttribute("data-course-id") === config.courses[1].id, "AI UX course identity is incorrect");
+  const aiUxPage = config.courses[1].pages[0];
+  assert(await page.locator(".chapter-group.active .chapter-subnav a").count() === aiUxPage.subsections.length, "AI UX source chapter subtitles are incomplete");
+  assert(await page.getByRole("link", { name: "1.4 Comparison Plots", exact: true }).getAttribute("href") === "#chapter-1-4", "AI UX source chapter anchor is incorrect");
 
   await page.getByRole("button", { name: "课程切换" }).click();
   const pythonLink = page.getByRole("link", { name: /Python 通识/ });

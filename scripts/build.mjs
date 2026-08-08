@@ -163,7 +163,8 @@ const renderScripts = ({ prefix, home = false, course = false, code = false }) =
 const renderToc = (course, currentPage) => {
   const pages = course.pages.map((page) => {
     const active = page.output === currentPage.output;
-    const sections = config.sections.map((section) => `
+    const pageSections = page.subsections ?? config.sections;
+    const sections = pageSections.map((section) => `
               <a href="#${section.id}" data-toc-section="${section.id}">${escapeHtml(section.label)}</a>`).join("");
 
     return `

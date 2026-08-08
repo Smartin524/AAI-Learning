@@ -557,6 +557,11 @@ a {
   scroll-margin-top: 82px;
 }
 
+.chapter h3[id],
+.chapter h4[id] {
+  scroll-margin-top: 82px;
+}
+
 .content-section h2 {
   margin: 0 0 11px;
   font-size: 25px;
