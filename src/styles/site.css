@@ -594,6 +594,11 @@ a {
   font-size: 18px;
 }
 
+.content-section h4 {
+  margin: 22px 0 8px;
+  font-size: 16px;
+}
+
 .content-section p {
   margin: 9px 0;
 }
