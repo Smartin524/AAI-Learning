@@ -458,6 +458,10 @@ a {
   transition: background-color 0.16s ease, color 0.16s ease, border-color 0.16s ease;
 }
 
+.toc .chapter-link {
+  margin-left: 0;
+}
+
 .toc .chapter-link:hover,
 .toc .chapter-link.active,
 .toc .chapter-subnav a:hover,
