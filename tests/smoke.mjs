@@ -67,18 +67,25 @@ try {
   await pythonLink.click();
   await page.waitForURL("**/chapters/01-basics.html");
   assert(await page.getByRole("heading", { name: "变量、基本类型与 Casting" }).isVisible(), "Python first chapter did not render");
+  assert(await page.locator(".chapter-group.active").count() === 1, "Exactly one chapter should be expanded");
+  assert(await page.locator(".chapter-group.active .chapter-subnav a").count() === config.sections.length, "Current chapter subtitles are incomplete");
+  assert(await page.locator(".chapter-group:not(.active) .chapter-subnav[inert]").count() === config.courses[0].pages.length - 1, "Inactive chapter subtitles are not collapsed");
+  const tocAnimation = await page.locator(".chapter-group.active .chapter-subnav").evaluate((element) => getComputedStyle(element).animationName);
+  assert(tocAnimation === "toc-subnav-reveal", "Current chapter subtitle animation is missing");
 
   await page.getByRole("button", { name: /模式$/ }).click();
   await page.getByRole("menuitemradio", { name: "夜间模式" }).click();
   assert(await page.locator("html").getAttribute("data-color-mode") === "dark", "Theme did not switch to dark mode");
 
   await page.getByRole("link", { name: "练习", exact: true }).click();
+  await page.waitForFunction(() => document.querySelector('a[href="#practice"]')?.getAttribute("aria-current") === "location");
   const anchorState = await page.evaluate(() => ({
     hash: location.hash,
     behavior: getComputedStyle(document.documentElement).scrollBehavior,
     targetTop: document.querySelector("#practice").getBoundingClientRect().top,
   }));
   assert(anchorState.hash === "#practice", "Section anchor did not update the URL");
+  assert(await page.getByRole("link", { name: "练习", exact: true }).getAttribute("aria-current") === "location", "Current subtitle state did not follow the URL hash");
   assert(anchorState.behavior === "auto", "Section navigation is not immediate");
   assert(Math.abs(anchorState.targetTop - 82) < 3, "Section anchor landed at the wrong offset");
 

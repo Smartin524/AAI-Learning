@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg" />
     <script src="../assets/build/theme-init.cef5d9adb5.js"></script>
-    <link rel="stylesheet" href="../assets/build/site.34805af138.css" />
+    <link rel="stylesheet" href="../assets/build/site.070a08598d.css" />
     <link rel="stylesheet" href="../assets/build/code-blocks.78f9810aa1.css" />
     <title>AAI 学习手册</title>
   </head>
@@ -51,22 +51,81 @@
       <aside class="toc">
         <div class="toc-title">PYTHON 通识</div>
         <nav class="chapter-links" aria-label="Python 通识页面">
-          <a href="01-basics.html">01 基本类型与 Casting</a>
-          <a href="02-containers.html">02 容器</a>
-          <a href="03-control-flow.html">03 判断与循环</a>
-          <a href="04-functions.html">04 函数</a>
-          <a class="active" aria-current="page" href="05-files-json.html">05 文件与 JSON</a>
-          <a href="06-errors-env.html">06 报错与环境</a>
-          <a href="07-numpy-vectors.html">07 NumPy 与向量</a>
-          <a href="08-api.html">08 API</a>
-          <a href="09-embedding.html">09 Embedding</a>
-          <a href="10-mini-rag.html">10 迷你 RAG</a>
+          <div class="chapter-group" data-chapter-group>
+            <a class="chapter-link" href="01-basics.html">01 基本类型与 Casting</a>
+            <div class="chapter-subnav" aria-hidden="true" inert>
+              <div class="chapter-subnav-inner">
+              </div>
+            </div>
+          </div>
+          <div class="chapter-group" data-chapter-group>
+            <a class="chapter-link" href="02-containers.html">02 容器</a>
+            <div class="chapter-subnav" aria-hidden="true" inert>
+              <div class="chapter-subnav-inner">
+              </div>
+            </div>
+          </div>
+          <div class="chapter-group" data-chapter-group>
+            <a class="chapter-link" href="03-control-flow.html">03 判断与循环</a>
+            <div class="chapter-subnav" aria-hidden="true" inert>
+              <div class="chapter-subnav-inner">
+              </div>
+            </div>
+          </div>
+          <div class="chapter-group" data-chapter-group>
+            <a class="chapter-link" href="04-functions.html">04 函数</a>
+            <div class="chapter-subnav" aria-hidden="true" inert>
+              <div class="chapter-subnav-inner">
+              </div>
+            </div>
+          </div>
+          <div class="chapter-group active" data-chapter-group>
+            <a class="chapter-link active" aria-current="page" href="05-files-json.html">05 文件与 JSON</a>
+            <div class="chapter-subnav">
+              <div class="chapter-subnav-inner">
+              <a href="#terms" data-toc-section="terms">必须掌握的术语</a>
+              <a href="#core" data-toc-section="core">核心知识</a>
+              <a href="#errors" data-toc-section="errors">常见错误</a>
+              <a href="#practice" data-toc-section="practice">练习</a>
+              </div>
+            </div>
+          </div>
+          <div class="chapter-group" data-chapter-group>
+            <a class="chapter-link" href="06-errors-env.html">06 报错与环境</a>
+            <div class="chapter-subnav" aria-hidden="true" inert>
+              <div class="chapter-subnav-inner">
+              </div>
+            </div>
+          </div>
+          <div class="chapter-group" data-chapter-group>
+            <a class="chapter-link" href="07-numpy-vectors.html">07 NumPy 与向量</a>
+            <div class="chapter-subnav" aria-hidden="true" inert>
+              <div class="chapter-subnav-inner">
+              </div>
+            </div>
+          </div>
+          <div class="chapter-group" data-chapter-group>
+            <a class="chapter-link" href="08-api.html">08 API</a>
+            <div class="chapter-subnav" aria-hidden="true" inert>
+              <div class="chapter-subnav-inner">
+              </div>
+            </div>
+          </div>
+          <div class="chapter-group" data-chapter-group>
+            <a class="chapter-link" href="09-embedding.html">09 Embedding</a>
+            <div class="chapter-subnav" aria-hidden="true" inert>
+              <div class="chapter-subnav-inner">
+              </div>
+            </div>
+          </div>
+          <div class="chapter-group" data-chapter-group>
+            <a class="chapter-link" href="10-mini-rag.html">10 迷你 RAG</a>
+            <div class="chapter-subnav" aria-hidden="true" inert>
+              <div class="chapter-subnav-inner">
+              </div>
+            </div>
+          </div>
         </nav>
-        <div class="toc-divider"></div>
-        <a href="#terms">必须掌握的术语</a>
-        <a href="#core">核心知识</a>
-        <a href="#errors">常见错误</a>
-        <a href="#practice">练习</a>
       </aside>
       <main class="chapter">
         <header class="chapter-hero">
@@ -259,6 +318,7 @@ with (data_dir / "chunks.jsonl").open("w", encoding="utf-8") as f:
       </main>
     </div>
     <script src="../assets/build/header.2844f8e3a5.js" defer></script>
+    <script src="../assets/build/toc.ec1d3c0fa3.js" defer></script>
     <script src="../assets/build/code-blocks.e87c3652f8.js" defer></script>
   </body>
 </html>

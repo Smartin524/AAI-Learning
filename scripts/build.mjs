@@ -65,6 +65,7 @@ const assetSources = {
   codeCss: "src/styles/code-blocks.css",
   themeInit: "src/client/theme-init.js",
   headerJs: "src/client/header.js",
+  tocJs: "src/client/toc.js",
   homeJs: "src/client/home.js",
   codeJs: "src/client/code-blocks.js",
 };
@@ -151,24 +152,34 @@ const renderHead = ({ prefix, code = false }) => {
     <link rel="stylesheet" href="${prefix}${assetManifest.siteCss}" />${codeStyle}`;
 };
 
-const renderScripts = ({ prefix, home = false, code = false }) => {
+const renderScripts = ({ prefix, home = false, course = false, code = false }) => {
   const scripts = [`<script src="${prefix}${assetManifest.headerJs}" defer></script>`];
   if (home) scripts.push(`<script src="${prefix}${assetManifest.homeJs}" defer></script>`);
+  if (course) scripts.push(`<script src="${prefix}${assetManifest.tocJs}" defer></script>`);
   if (code) scripts.push(`<script src="${prefix}${assetManifest.codeJs}" defer></script>`);
   return scripts.join("\n    ");
 };
 
 const renderToc = (course, currentPage) => {
-  const pages = course.pages.map((page) => `
-          <a${page.output === currentPage.output ? ' class="active" aria-current="page"' : ""} href="${relativePageHref(currentPage.output, page.output)}">${escapeHtml(page.navLabel)}</a>`).join("");
-  const sections = config.sections.map((section) => `
-        <a href="#${section.id}">${escapeHtml(section.label)}</a>`).join("");
+  const pages = course.pages.map((page) => {
+    const active = page.output === currentPage.output;
+    const sections = config.sections.map((section) => `
+              <a href="#${section.id}" data-toc-section="${section.id}">${escapeHtml(section.label)}</a>`).join("");
+
+    return `
+          <div class="chapter-group${active ? " active" : ""}" data-chapter-group>
+            <a class="chapter-link${active ? " active" : ""}"${active ? ' aria-current="page"' : ""} href="${relativePageHref(currentPage.output, page.output)}">${escapeHtml(page.navLabel)}</a>
+            <div class="chapter-subnav"${active ? "" : ' aria-hidden="true" inert'}>
+              <div class="chapter-subnav-inner">${active ? sections : ""}
+              </div>
+            </div>
+          </div>`;
+  }).join("");
 
   return `<aside class="toc">
         <div class="toc-title">${escapeHtml(course.tocTitle)}</div>
         <nav class="chapter-links" aria-label="${escapeHtml(course.name)}页面">${pages}
         </nav>
-        <div class="toc-divider"></div>${sections}
       </aside>`;
 };
 
@@ -221,7 +232,7 @@ for (const course of config.courses) {
       HEADER: renderHeader({ prefix, currentCourse: course }),
       TOC: renderToc(course, page),
       CONTENT: content.trim(),
-      SCRIPTS: renderScripts({ prefix, code: page.code }),
+      SCRIPTS: renderScripts({ prefix, course: true, code: page.code }),
     });
     const outputPath = fromRoot(page.output);
     await mkdir(path.dirname(outputPath), { recursive: true });
