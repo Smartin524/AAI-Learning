@@ -460,6 +460,7 @@ a {
 
 .toc .chapter-link {
   margin-left: 0;
+  border-left-width: 0;
 }
 
 .toc .chapter-link:hover,
