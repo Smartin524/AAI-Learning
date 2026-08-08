@@ -105,6 +105,7 @@
             <tr><td>relationship / distribution</td><td>关系图关注变量之间的关联或模式；分布图关注数值在范围内如何展开。</td></tr>
             <tr><td>bin / frequency</td><td>直方图把数值范围切成区间（bin），用柱高表示落入区间的数据点频数。</td></tr>
             <tr><td>histogram</td><td>用连续数值区间及其频数展示单个数值变量的分布。它能帮助识别峰、偏态、离群值和双峰等结构；它不是把类别逐项计数的普通柱状图。</td></tr>
+            <tr><td>KDE plot / bandwidth</td><td>核密度估计图用连续平滑曲线近似数值分布；bandwidth 决定平滑程度。带宽太大可能抹去真实结构，太小可能把随机波动画成假峰。</td></tr>
             <tr><td>box plot / whisker plot</td><td>用箱体、中位数线、须和单独标记的异常值压缩展示一个或多个数值变量的统计摘要，特别适合并列比较多组分布。</td></tr>
             <tr><td>violin plot / kernel density</td><td>以核密度曲线的镜像轮廓展示数值分布；某一数值位置越宽，表示该区域的近似频率越高。它保留了箱线图难以表达的峰、谷和尾部形状。</td></tr>
             <tr><td>quartile / IQR</td><td>四分位数把数据分成四部分；IQR 是 Q3 − Q1，箱线图用它表达中间 50% 的范围。</td></tr>
@@ -255,7 +256,7 @@ ax = sns.lineplot(x=trend[:, 0], y=trend[:, 1])</pre>
           <p>热力图用网格中的颜色表达数值，两条轴通常是类别，或把定量变量分箱后形成离散单元格。必须提供可解释的颜色图例，并根据数据选择 sequential 或 diverging 色阶。</p>
 
           <h3 id="chapter-1-7">1.7 Distribution Plots｜分箱与统计摘要改变可见结构</h3>
-          <p class="chapter-chart-map"><strong>本章图表 / 方法：</strong>Standard Histogram、Histogram with Multiple Categories、Box Plot（Whisker Plot）与 Violin Plot。</p>
+          <p class="chapter-chart-map"><strong>本章图表 / 方法：</strong>Standard Histogram、Histogram with Multiple Categories、KDE Plot、Box Plot（Whisker Plot）与 Violin Plot。</p>
           <p>直方图的 bin 数量和边界会改变人们对分布形状的理解；太多会产生噪声，太少会隐藏细节。箱线图突出中位数、四分位数和异常值；小提琴图进一步展示核密度曲线的形状。</p>
           <h4>Histogram：先定义区间，再读取形状</h4>
           <p>直方图把一个数值变量切成连续的区间（bin），每根柱的高度是落入该区间的数据点频数。读图时先看峰在哪里、分布是否对称或偏斜、是否有多个峰，以及是否出现远离主体的值；这些结构往往比均值和方差更直观。</p>
@@ -272,6 +273,20 @@ ax = sns.histplot(
 ax.set(xlabel="Math score", ylabel="Frequency")</pre>
           <p>先根据数据可取的值和分析任务设定 bin：例如整数分数应避免 1.5 这样的分数宽度；然后比较不同 bin 数量与边界下的形状是否仍然成立。不要把多个类别的直方图随意重叠在一张图上，课件指出这容易造成遮挡与混乱；需要比较多组分布时，优先配合箱线图、小提琴图或分面图。</p>
           <p>bin 宽度还要匹配数据可取的值。整数变量若使用 1.5 之类的分数宽度，不同 bin 能容纳的有效整数数量可能不一致，图形会出现人为的凹凸。</p>
+          <h4>KDE Plot：用连续曲线估计分布</h4>
+          <p>KDE（Kernel Density Estimation）与直方图一样用于观察数值分布，但它不把数据切成柱状区间，而是把每个观测值平滑合成为连续的密度曲线。因此，它在叠加或比较多组分布时通常更清爽；纵轴表示的是 <strong>density</strong>，不是频数，也不是某个数值点的概率。曲线下的总面积才等于 1。</p>
+          <pre>
+import seaborn as sns
+
+# 连续密度曲线：bw_adjust=1 使用默认带宽，cut=0 不超出观测范围
+ax = sns.kdeplot(
+    data=students,
+    x="math score",
+    bw_adjust=1,
+    cut=0,
+)
+ax.set(xlabel="Math score", ylabel="Density")</pre>
+          <p><code>bw_adjust</code> 是最重要的检查项：增大它会让曲线更平滑，可能合并真实的双峰；减小它会保留更多局部起伏，也可能把随机波动误画成峰。<code>cut=0</code> 可避免平滑曲线延伸到观察范围之外；对于只能为正、有天然边界，或大量重复整数的离散数据，KDE 仍可能误导，应和直方图一起核对。</p>
           <h4>Box Plot：用统计摘要并列比较多组分布</h4>
           <p>箱线图的箱体从 Q1 到 Q3，中线是中位数 Q2；IQR = Q3 − Q1。上下须延伸到不超过 <code>Q1 − 1.5 × IQR</code> 与 <code>Q3 + 1.5 × IQR</code> 的最远实际数据点，范围外的数据单独标记为异常值。</p>
           <p>它把每组的中间 50%、中心位置、整体范围与异常值压缩到同一尺度，适合快速比较多组数值变量，也可以横向或纵向排列。代价是它不展示分布的完整形状：两组数据的四分位数相同，峰、谷或双峰结构仍可能完全不同；这时要配合直方图或小提琴图。</p>
