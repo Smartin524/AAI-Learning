@@ -104,6 +104,7 @@
             <tr><td>comparison / composition</td><td>比较图关注数值之间的差异；构成图关注整体由哪些部分组成。</td></tr>
             <tr><td>relationship / distribution</td><td>关系图关注变量之间的关联或模式；分布图关注数值在范围内如何展开。</td></tr>
             <tr><td>bin / frequency</td><td>直方图把数值范围切成区间（bin），用柱高表示落入区间的数据点频数。</td></tr>
+            <tr><td>histogram</td><td>用连续数值区间及其频数展示单个数值变量的分布。它能帮助识别峰、偏态、离群值和双峰等结构；它不是把类别逐项计数的普通柱状图。</td></tr>
             <tr><td>quartile / IQR</td><td>四分位数把数据分成四部分；IQR 是 Q3 − Q1，箱线图用它表达中间 50% 的范围。</td></tr>
             <tr><td>zero baseline</td><td>以 0 作为数值轴起点。柱状图通常应使用零基线，因为柱长直接编码数值；折线图可在必要时使用非零起点，但必须明确范围并避免夸大变化。</td></tr>
             <tr><td>aspect ratio</td><td>绘图区宽度与高度的比例。它会改变折线斜率的视觉角度，使相同数据看起来更陡或更平。</td></tr>
@@ -112,6 +113,7 @@
             <tr><td>window / center / win_type</td><td><code>rolling()</code> 的三个关键参数：窗口宽度、结果对齐到窗口中央还是右边缘，以及窗口内各点采用相等或特定形状的权重。</td></tr>
             <tr><td>moving baseline</td><td>堆叠图中某一层以前一层的上边界作为不断变化的基线；除最底层外，各层因缺少共同基线而难以精确比较。</td></tr>
             <tr><td>regression / confidence interval</td><td>回归线估计变量关系的趋势；线周围的置信区间表达估计的不确定性，而不是所有未来观测必然落入的范围。</td></tr>
+            <tr><td>linear regression trend line</td><td>通过一条直线概括散点中最符合线性假设的总体趋势。它描述关联的最佳线性拟合，不证明因果，也不保证每个点都靠近这条线。</td></tr>
             <tr><td>LOWESS</td><td>Locally Weighted Scatterplot Smoothing，使用邻近数据点的局部加权回归估计变化趋势的非参数方法。</td></tr>
             <tr><td>frac</td><td>LOWESS 每次局部拟合使用的数据比例，取值在 0 到 1 之间；越小越能追踪局部波动，但曲线越不平滑。</td></tr>
           </table>
@@ -216,7 +218,25 @@ daily_cases["mean_21d"] = daily_cases["new_cases"].rolling(
 
           <h3 id="chapter-1-6">1.6 Relationship Plots｜位置、大小与颜色共同编码模式</h3>
           <p>散点图使用二维位置展示两个定量变量之间的关系；线性回归和 LOWESS 可以辅助观察趋势。气泡图可以增加一个定量维度，但面积比较不如位置精确，因此应谨慎使用。</p>
-          <p><code>seaborn.regplot()</code> 可以拟合线性回归并显示置信区间；只有在数据机制支持时才使用更高阶多项式。高阶曲线可能追随噪声和端点异常值，不能因为“更贴近散点”就认定模型更正确。</p>
+          <h4>Linear Regression Trend Line：一条直线在概括什么</h4>
+          <p>趋势线尝试用一条数学上的最佳拟合直线概括散点整体的线性关系。它适合回答“随着 <em>x</em> 增加，<em>y</em> 是否总体上升或下降、上升或下降得有多快”，但不能把相关直接解释成因果，也不能替代对异常值、分组和数据生成机制的检查。</p>
+          <p><code>seaborn.regplot()</code> 可以拟合线性回归并显示置信区间；阴影带表达的是趋势线估计的不确定性，不是单个新观测值的预测范围。课件的 tips 数据中，线性模型给出大约 13% 的稳定小费比例；高阶曲线虽然更贴近部分散点，却会在数据噪声与两端异常值的影响下制造缺乏解释依据的弯折。</p>
+          <pre>
+import seaborn as sns
+
+# 散点 + 线性趋势线；ci=95 显示 95% 置信区间
+ax = sns.regplot(
+    data=tips,
+    x="total_bill",
+    y="tip",
+    ci=95,
+)
+ax.set(title="Total bill versus tip")</pre>
+          <figure class="course-example">
+            <img src="../assets/courseware/module-01/linear-regression-trend.png" alt="课件用 total bill 与 tips 的散点图展示线性趋势线和其周围的置信区间，并对比不一定合理的二阶与三阶多项式曲线" loading="lazy" />
+            <figcaption><strong>示例：趋势线应由数据机制支持，而不以贴合散点程度取胜。</strong><span>来源：Chapter 1.6 Relationship Plots，Slide 5</span></figcaption>
+          </figure>
+          <p>只有在数据机制支持时才使用更高阶多项式。高阶曲线可能追随噪声和端点异常值，不能因为“更贴近散点”就认定模型更正确；当关系明显不是单一直线时，再比较 LOWESS 等局部方法。</p>
           <p>LOWESS 不预设一条全局函数，而是从左到右对邻近点反复做局部加权最小二乘拟合。邻近点通常使用三立方权重 <code>w(x) = (1 − |d|³)³</code>，距离越远权重越低。Statsmodels 的 <code>frac</code> 决定每次使用的数据比例：课件示例中 <code>frac=0.4</code> 较平滑，降低到 <code>0.2</code> 会更贴近局部变化，但也更容易呈现噪声。</p>
           <pre>
 from statsmodels.nonparametric.smoothers_lowess import lowess
@@ -228,6 +248,20 @@ ax = sns.lineplot(x=trend[:, 0], y=trend[:, 1])</pre>
 
           <h3 id="chapter-1-7">1.7 Distribution Plots｜分箱与统计摘要改变可见结构</h3>
           <p>直方图的 bin 数量和边界会改变人们对分布形状的理解；太多会产生噪声，太少会隐藏细节。箱线图突出中位数、四分位数和异常值；小提琴图进一步展示核密度曲线的形状。</p>
+          <h4>Histogram：先定义区间，再读取形状</h4>
+          <p>直方图把一个数值变量切成连续的区间（bin），每根柱的高度是落入该区间的数据点频数。读图时先看峰在哪里、分布是否对称或偏斜、是否有多个峰，以及是否出现远离主体的值；这些结构往往比均值和方差更直观。</p>
+          <pre>
+import seaborn as sns
+
+# 对单个数值变量分箱；柱高表示每个区间中的观测数
+ax = sns.histplot(
+    data=students,
+    x="math score",
+    bins=10,
+    stat="count",
+)
+ax.set(xlabel="Math score", ylabel="Frequency")</pre>
+          <p>先根据数据可取的值和分析任务设定 bin：例如整数分数应避免 1.5 这样的分数宽度；然后比较不同 bin 数量与边界下的形状是否仍然成立。不要把多个类别的直方图随意重叠在一张图上，课件指出这容易造成遮挡与混乱；需要比较多组分布时，优先配合箱线图、小提琴图或分面图。</p>
           <p>bin 宽度还要匹配数据可取的值。整数变量若使用 1.5 之类的分数宽度，不同 bin 能容纳的有效整数数量可能不一致，图形会出现人为的凹凸。</p>
           <p>箱线图的箱体从 Q1 到 Q3，中线是中位数 Q2；IQR = Q3 − Q1。上下须延伸到不超过 <code>Q1 − 1.5 × IQR</code> 与 <code>Q3 + 1.5 × IQR</code> 的最远实际数据点，范围外的数据单独标记为异常值。</p>
           <p>小提琴图的宽度表示核密度估计的近似频率，因此可以看到箱线图不显示的峰、谷和尾部。它可以叠加箱线图或四分位线；左右半边还可分别编码两个互补类别。</p>
