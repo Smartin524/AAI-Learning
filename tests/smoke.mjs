@@ -63,6 +63,9 @@ try {
   const aiUxPage = config.courses[1].pages[0];
   assert(await page.locator(".chapter-group.active .chapter-subnav a").count() === aiUxPage.subsections.length, "AI UX source chapter subtitles are incomplete");
   assert(await page.getByRole("link", { name: "1.4 Comparison Plots", exact: true }).getAttribute("href") === "#chapter-1-4", "AI UX source chapter anchor is incorrect");
+  await page.locator("#chapter-1-7").evaluate((heading) => window.scrollTo(0, heading.offsetTop - 82));
+  await page.waitForFunction(() => document.querySelector('[data-toc-section="chapter-1-7"]')?.getAttribute("aria-current") === "location");
+  assert(new URL(page.url()).hash === "", "Scroll spy should not rewrite the URL hash");
 
   await page.getByRole("button", { name: "课程切换" }).click();
   const pythonLink = page.getByRole("link", { name: /Python 通识/ });
