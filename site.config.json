@@ -15,7 +15,7 @@
       "index": "01",
       "name": "Python 通识",
       "menuLabel": "Python 通识",
-      "description": "基础语法、代码组织、文件、对象与 AI 应用基础",
+      "description": "基础语法、数据结构、API 与 AI 应用基础",
       "entry": "chapters/01-basics.html",
       "tocTitle": "PYTHON 通识",
       "pages": [
@@ -25,18 +25,6 @@
         { "output": "chapters/04-functions.html", "content": "src/content/chapters/04-functions.html", "navLabel": "04 函数", "code": true },
         { "output": "chapters/05-files-json.html", "content": "src/content/chapters/05-files-json.html", "navLabel": "05 文件与 JSON", "code": true },
         { "output": "chapters/06-errors-env.html", "content": "src/content/chapters/06-errors-env.html", "navLabel": "06 报错与环境", "code": true },
-        {
-          "output": "chapters/module-02-week-2.html",
-          "content": "src/content/chapters/module-02-week-2.html",
-          "navLabel": "Module 2 第二周：代码组织与对象",
-          "code": true,
-          "subsections": [
-            { "id": "topic-4", "label": "Topic 4 Modules and Packages" },
-            { "id": "topic-6", "label": "Topic 6 File I/O" },
-            { "id": "topic-7", "label": "Topic 7 Error Handling" },
-            { "id": "topic-10", "label": "Topic 10 Python Class" }
-          ]
-        },
         { "output": "chapters/07-numpy-vectors.html", "content": "src/content/chapters/07-numpy-vectors.html", "navLabel": "07 NumPy 与向量", "code": true },
         { "output": "chapters/08-api.html", "content": "src/content/chapters/08-api.html", "navLabel": "08 API", "code": true },
         { "output": "chapters/09-embedding.html", "content": "src/content/chapters/09-embedding.html", "navLabel": "09 Embedding", "code": true },
@@ -66,6 +54,29 @@
             { "id": "chapter-1-6", "label": "1.6 Relationship Plots" },
             { "id": "chapter-1-7", "label": "1.7 Distribution Plots" },
             { "id": "chapter-1-8", "label": "1.8 Know The Right Chart Type" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ca6000",
+      "index": "03",
+      "name": "CA6000 · Python Programming",
+      "menuLabel": "CA6000 Python",
+      "description": "第二周：模块、文件、异常与对象",
+      "entry": "courses/ca6000-week-2.html",
+      "tocTitle": "CA6000",
+      "pages": [
+        {
+          "output": "courses/ca6000-week-2.html",
+          "content": "src/content/courses/ca6000-week-2.html",
+          "navLabel": "Module 2 第二周：代码组织与对象",
+          "code": true,
+          "subsections": [
+            { "id": "topic-4", "label": "Topic 4 Modules and Packages" },
+            { "id": "topic-6", "label": "Topic 6 File I/O" },
+            { "id": "topic-7", "label": "Topic 7 Error Handling" },
+            { "id": "topic-10", "label": "Topic 10 Python Class" }
           ]
         }
       ]

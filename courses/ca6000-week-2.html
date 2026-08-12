@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="../assets/build/site.3577519e85.css" />
     <link rel="stylesheet" href="../assets/build/code-blocks.78f9810aa1.css" />
   </head>
-  <body data-page-kind="course" data-course-id="python">
+  <body data-page-kind="course" data-course-id="ca6000">
 
     <header class="site-header">
       <div class="header-inner">
@@ -33,13 +33,17 @@
           <div class="course-menu-panel" id="course-menu-panel" data-popover-panel hidden>
             <div class="course-menu-label">COURSES</div>
             <nav class="course-switcher" aria-label="课程切换">
-              <a class="course-switcher-item active" href="../chapters/01-basics.html" aria-current="page">
+              <a class="course-switcher-item" href="../chapters/01-basics.html">
                 <span class="course-switcher-dot" aria-hidden="true"></span>
-                <span><strong>Python 通识</strong><small>基础语法、代码组织、文件、对象与 AI 应用基础</small></span>
+                <span><strong>Python 通识</strong><small>基础语法、数据结构、API 与 AI 应用基础</small></span>
               </a>
               <a class="course-switcher-item" href="../courses/ai-ux-data-visualisation.html">
                 <span class="course-switcher-dot" aria-hidden="true"></span>
                 <span><strong>AI UX &amp; Data Visualisation</strong><small>AI 用户体验与数据可视化设计原则</small></span>
+              </a>
+              <a class="course-switcher-item active" href="../courses/ca6000-week-2.html" aria-current="page">
+                <span class="course-switcher-dot" aria-hidden="true"></span>
+                <span><strong>CA6000 Python</strong><small>第二周：模块、文件、异常与对象</small></span>
               </a>
             </nav>
           </div>
@@ -49,126 +53,16 @@
     </header>
     <div class="chapter-layout">
       <aside class="toc">
-        <div class="toc-title">PYTHON 通识</div>
-        <nav class="chapter-links" aria-label="Python 通识页面">
-          <div class="chapter-group" data-chapter-group>
-            <a class="chapter-link" href="01-basics.html">01 基本类型与 Casting</a>
-            <div class="chapter-subnav" aria-hidden="true" inert>
-              <div class="chapter-subnav-inner">
-              <a href="01-basics.html#terms" data-toc-section="terms">必须掌握的术语</a>
-              <a href="01-basics.html#core" data-toc-section="core">核心知识</a>
-              <a href="01-basics.html#errors" data-toc-section="errors">常见错误</a>
-              <a href="01-basics.html#practice" data-toc-section="practice">练习</a>
-              </div>
-            </div>
-          </div>
-          <div class="chapter-group" data-chapter-group>
-            <a class="chapter-link" href="02-containers.html">02 容器</a>
-            <div class="chapter-subnav" aria-hidden="true" inert>
-              <div class="chapter-subnav-inner">
-              <a href="02-containers.html#terms" data-toc-section="terms">必须掌握的术语</a>
-              <a href="02-containers.html#core" data-toc-section="core">核心知识</a>
-              <a href="02-containers.html#errors" data-toc-section="errors">常见错误</a>
-              <a href="02-containers.html#practice" data-toc-section="practice">练习</a>
-              </div>
-            </div>
-          </div>
-          <div class="chapter-group" data-chapter-group>
-            <a class="chapter-link" href="03-control-flow.html">03 判断与循环</a>
-            <div class="chapter-subnav" aria-hidden="true" inert>
-              <div class="chapter-subnav-inner">
-              <a href="03-control-flow.html#terms" data-toc-section="terms">必须掌握的术语</a>
-              <a href="03-control-flow.html#core" data-toc-section="core">核心知识</a>
-              <a href="03-control-flow.html#errors" data-toc-section="errors">常见错误</a>
-              <a href="03-control-flow.html#practice" data-toc-section="practice">练习</a>
-              </div>
-            </div>
-          </div>
-          <div class="chapter-group" data-chapter-group>
-            <a class="chapter-link" href="04-functions.html">04 函数</a>
-            <div class="chapter-subnav" aria-hidden="true" inert>
-              <div class="chapter-subnav-inner">
-              <a href="04-functions.html#terms" data-toc-section="terms">必须掌握的术语</a>
-              <a href="04-functions.html#core" data-toc-section="core">核心知识</a>
-              <a href="04-functions.html#errors" data-toc-section="errors">常见错误</a>
-              <a href="04-functions.html#practice" data-toc-section="practice">练习</a>
-              </div>
-            </div>
-          </div>
-          <div class="chapter-group" data-chapter-group>
-            <a class="chapter-link" href="05-files-json.html">05 文件与 JSON</a>
-            <div class="chapter-subnav" aria-hidden="true" inert>
-              <div class="chapter-subnav-inner">
-              <a href="05-files-json.html#terms" data-toc-section="terms">必须掌握的术语</a>
-              <a href="05-files-json.html#core" data-toc-section="core">核心知识</a>
-              <a href="05-files-json.html#errors" data-toc-section="errors">常见错误</a>
-              <a href="05-files-json.html#practice" data-toc-section="practice">练习</a>
-              </div>
-            </div>
-          </div>
-          <div class="chapter-group" data-chapter-group>
-            <a class="chapter-link" href="06-errors-env.html">06 报错与环境</a>
-            <div class="chapter-subnav" aria-hidden="true" inert>
-              <div class="chapter-subnav-inner">
-              <a href="06-errors-env.html#terms" data-toc-section="terms">必须掌握的术语</a>
-              <a href="06-errors-env.html#core" data-toc-section="core">核心知识</a>
-              <a href="06-errors-env.html#errors" data-toc-section="errors">常见错误</a>
-              <a href="06-errors-env.html#practice" data-toc-section="practice">练习</a>
-              </div>
-            </div>
-          </div>
+        <div class="toc-title">CA6000</div>
+        <nav class="chapter-links" aria-label="CA6000 · Python Programming页面">
           <div class="chapter-group active" data-chapter-group>
-            <a class="chapter-link active" aria-current="page" href="module-02-week-2.html">Module 2 第二周：代码组织与对象</a>
+            <a class="chapter-link active" aria-current="page" href="ca6000-week-2.html">Module 2 第二周：代码组织与对象</a>
             <div class="chapter-subnav">
               <div class="chapter-subnav-inner">
-              <a href="module-02-week-2.html#topic-4" data-toc-section="topic-4">Topic 4 Modules and Packages</a>
-              <a href="module-02-week-2.html#topic-6" data-toc-section="topic-6">Topic 6 File I/O</a>
-              <a href="module-02-week-2.html#topic-7" data-toc-section="topic-7">Topic 7 Error Handling</a>
-              <a href="module-02-week-2.html#topic-10" data-toc-section="topic-10">Topic 10 Python Class</a>
-              </div>
-            </div>
-          </div>
-          <div class="chapter-group" data-chapter-group>
-            <a class="chapter-link" href="07-numpy-vectors.html">07 NumPy 与向量</a>
-            <div class="chapter-subnav" aria-hidden="true" inert>
-              <div class="chapter-subnav-inner">
-              <a href="07-numpy-vectors.html#terms" data-toc-section="terms">必须掌握的术语</a>
-              <a href="07-numpy-vectors.html#core" data-toc-section="core">核心知识</a>
-              <a href="07-numpy-vectors.html#errors" data-toc-section="errors">常见错误</a>
-              <a href="07-numpy-vectors.html#practice" data-toc-section="practice">练习</a>
-              </div>
-            </div>
-          </div>
-          <div class="chapter-group" data-chapter-group>
-            <a class="chapter-link" href="08-api.html">08 API</a>
-            <div class="chapter-subnav" aria-hidden="true" inert>
-              <div class="chapter-subnav-inner">
-              <a href="08-api.html#terms" data-toc-section="terms">必须掌握的术语</a>
-              <a href="08-api.html#core" data-toc-section="core">核心知识</a>
-              <a href="08-api.html#errors" data-toc-section="errors">常见错误</a>
-              <a href="08-api.html#practice" data-toc-section="practice">练习</a>
-              </div>
-            </div>
-          </div>
-          <div class="chapter-group" data-chapter-group>
-            <a class="chapter-link" href="09-embedding.html">09 Embedding</a>
-            <div class="chapter-subnav" aria-hidden="true" inert>
-              <div class="chapter-subnav-inner">
-              <a href="09-embedding.html#terms" data-toc-section="terms">必须掌握的术语</a>
-              <a href="09-embedding.html#core" data-toc-section="core">核心知识</a>
-              <a href="09-embedding.html#errors" data-toc-section="errors">常见错误</a>
-              <a href="09-embedding.html#practice" data-toc-section="practice">练习</a>
-              </div>
-            </div>
-          </div>
-          <div class="chapter-group" data-chapter-group>
-            <a class="chapter-link" href="10-mini-rag.html">10 迷你 RAG</a>
-            <div class="chapter-subnav" aria-hidden="true" inert>
-              <div class="chapter-subnav-inner">
-              <a href="10-mini-rag.html#terms" data-toc-section="terms">必须掌握的术语</a>
-              <a href="10-mini-rag.html#core" data-toc-section="core">核心知识</a>
-              <a href="10-mini-rag.html#errors" data-toc-section="errors">常见错误</a>
-              <a href="10-mini-rag.html#practice" data-toc-section="practice">练习</a>
+              <a href="ca6000-week-2.html#topic-4" data-toc-section="topic-4">Topic 4 Modules and Packages</a>
+              <a href="ca6000-week-2.html#topic-6" data-toc-section="topic-6">Topic 6 File I/O</a>
+              <a href="ca6000-week-2.html#topic-7" data-toc-section="topic-7">Topic 7 Error Handling</a>
+              <a href="ca6000-week-2.html#topic-10" data-toc-section="topic-10">Topic 10 Python Class</a>
               </div>
             </div>
           </div>
@@ -176,8 +70,8 @@
       </aside>
       <main class="chapter">
         <header class="chapter-hero">
-          <div class="chapter-kicker">MODULE 02 · WEEK 2 COURSEWARE</div>
-          <h1>第二周：代码组织、数据文件与对象</h1>
+          <div class="chapter-kicker">CA6000 · MODULE 02 · WEEK 2 COURSEWARE</div>
+          <h1>CA6000 第二周：代码组织与对象</h1>
           <p class="chapter-summary">
             这一周把单文件脚本推进为可维护的 Python 程序：用模块组织代码、用文件保存与交换数据、用异常处理失败路径，并用类封装可复用的对象行为。
           </p>
@@ -396,9 +290,6 @@ class Square(Rectangle):
             <strong>掌握标准：</strong>你能说明模块、文件模式、异常分支和类各自解决什么问题；能写出最小可运行代码，并指出副作用、数据丢失、异常吞没与错误继承关系等风险。
           </div>
         </section>
-        <nav class="chapter-nav" aria-label="上一页和下一页">
-          <a href="06-errors-env.html">← 06 报错与环境</a><a href="07-numpy-vectors.html">07 NumPy 与向量 →</a>
-        </nav>
       </main>
     </div>
     <script src="../assets/build/header.2844f8e3a5.js" defer></script>
