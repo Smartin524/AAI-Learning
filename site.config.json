@@ -15,14 +15,10 @@
       "index": "01",
       "name": "CA6000 · Applied AI Programming",
       "menuLabel": "CA6000 · Applied AI Programming",
-      "description": "Python 基础、数据结构、函数、文件与对象",
-      "entry": "chapters/01-basics.html",
+      "description": "模块、文件、异常处理与 Python 对象",
+      "entry": "courses/ca6000-week-2.html",
       "tocTitle": "CA6000 · APPLIED AI PROGRAMMING",
       "pages": [
-        { "output": "chapters/01-basics.html", "content": "src/content/chapters/01-basics.html", "navLabel": "01 基本类型与 Casting", "code": true },
-        { "output": "chapters/02-containers.html", "content": "src/content/chapters/02-containers.html", "navLabel": "02 容器", "code": true },
-        { "output": "chapters/03-control-flow.html", "content": "src/content/chapters/03-control-flow.html", "navLabel": "03 判断与循环", "code": true },
-        { "output": "chapters/04-functions.html", "content": "src/content/chapters/04-functions.html", "navLabel": "04 函数", "code": true },
         {
           "output": "courses/ca6000-week-2.html",
           "content": "src/content/courses/ca6000-week-2.html",
@@ -34,13 +30,7 @@
             { "id": "topic-7", "label": "Topic 7 Error Handling" },
             { "id": "topic-10", "label": "Topic 10 Python Class" }
           ]
-        },
-        { "output": "chapters/05-files-json.html", "content": "src/content/chapters/05-files-json.html", "navLabel": "05 文件与 JSON", "code": true },
-        { "output": "chapters/06-errors-env.html", "content": "src/content/chapters/06-errors-env.html", "navLabel": "06 报错与环境", "code": true },
-        { "output": "chapters/07-numpy-vectors.html", "content": "src/content/chapters/07-numpy-vectors.html", "navLabel": "07 NumPy 与向量", "code": true },
-        { "output": "chapters/08-api.html", "content": "src/content/chapters/08-api.html", "navLabel": "08 API", "code": true },
-        { "output": "chapters/09-embedding.html", "content": "src/content/chapters/09-embedding.html", "navLabel": "09 Embedding", "code": true },
-        { "output": "chapters/10-mini-rag.html", "content": "src/content/chapters/10-mini-rag.html", "navLabel": "10 迷你 RAG", "code": true }
+        }
       ]
     },
     {
@@ -68,6 +58,27 @@
             { "id": "chapter-1-8", "label": "1.8 Know The Right Chart Type" }
           ]
         }
+      ]
+    },
+    {
+      "id": "python",
+      "index": "03",
+      "name": "Python 通识",
+      "menuLabel": "Python 通识",
+      "description": "基础语法、数据结构、API 与 AI 应用基础",
+      "entry": "chapters/01-basics.html",
+      "tocTitle": "PYTHON 通识",
+      "pages": [
+        { "output": "chapters/01-basics.html", "content": "src/content/chapters/01-basics.html", "navLabel": "01 基本类型与 Casting", "code": true },
+        { "output": "chapters/02-containers.html", "content": "src/content/chapters/02-containers.html", "navLabel": "02 容器", "code": true },
+        { "output": "chapters/03-control-flow.html", "content": "src/content/chapters/03-control-flow.html", "navLabel": "03 判断与循环", "code": true },
+        { "output": "chapters/04-functions.html", "content": "src/content/chapters/04-functions.html", "navLabel": "04 函数", "code": true },
+        { "output": "chapters/05-files-json.html", "content": "src/content/chapters/05-files-json.html", "navLabel": "05 文件与 JSON", "code": true },
+        { "output": "chapters/06-errors-env.html", "content": "src/content/chapters/06-errors-env.html", "navLabel": "06 报错与环境", "code": true },
+        { "output": "chapters/07-numpy-vectors.html", "content": "src/content/chapters/07-numpy-vectors.html", "navLabel": "07 NumPy 与向量", "code": true },
+        { "output": "chapters/08-api.html", "content": "src/content/chapters/08-api.html", "navLabel": "08 API", "code": true },
+        { "output": "chapters/09-embedding.html", "content": "src/content/chapters/09-embedding.html", "navLabel": "09 Embedding", "code": true },
+        { "output": "chapters/10-mini-rag.html", "content": "src/content/chapters/10-mini-rag.html", "navLabel": "10 迷你 RAG", "code": true }
       ]
     }
   ]

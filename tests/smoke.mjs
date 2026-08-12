@@ -68,14 +68,14 @@ try {
   assert(new URL(page.url()).hash === "", "Scroll spy should not rewrite the URL hash");
 
   await page.getByRole("button", { name: "课程切换" }).click();
-  const ca6000Link = page.getByRole("link", { name: /CA6000 · Applied AI Programming/ });
-  assert((await ca6000Link.getAttribute("href")) === "../chapters/01-basics.html", "CA6000 menu link is incorrect");
-  await ca6000Link.click();
+  const pythonLink = page.getByRole("link", { name: /Python 通识/ });
+  assert((await pythonLink.getAttribute("href")) === "../chapters/01-basics.html", "Python menu link is incorrect");
+  await pythonLink.click();
   await page.waitForURL("**/chapters/01-basics.html");
-  assert(await page.getByRole("heading", { name: "变量、基本类型与 Casting" }).isVisible(), "CA6000 first chapter did not render");
+  assert(await page.getByRole("heading", { name: "变量、基本类型与 Casting" }).isVisible(), "Python first chapter did not render");
   assert(await page.locator(".chapter-group.active").count() === 1, "Exactly one chapter should be expanded");
   assert(await page.locator(".chapter-group.active .chapter-subnav a").count() === config.sections.length, "Current chapter subtitles are incomplete");
-  assert(await page.locator(".chapter-group:not(.active) .chapter-subnav[inert]").count() === config.courses[0].pages.length - 1, "Inactive chapter subtitles are not collapsed");
+  assert(await page.locator(".chapter-group:not(.active) .chapter-subnav[inert]").count() === config.courses[2].pages.length - 1, "Inactive chapter subtitles are not collapsed");
   const tocTransition = await page.locator(".chapter-group.active .chapter-subnav").evaluate((element) => getComputedStyle(element).transitionDuration);
   assert(tocTransition.includes("0.2s"), "Current chapter subtitle transition is missing");
 
