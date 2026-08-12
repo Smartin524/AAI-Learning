@@ -4,9 +4,8 @@
 
 ## 课程
 
-- **Python 通识**：基础语法、数据结构、文件与环境、NumPy、API、Embedding 和 RAG 相关章节。
-- **AI UX & Data Visualisation Design Principles**：从数据可视化基础开始，覆盖数据属性、NOIR 测量尺度、视觉编码、图表类型与图表选择原则。
-- **CA6000 · Python Programming**：第二周 Module，覆盖模块与包、文件 I/O、异常处理和 Python 类。
+- **CA6000 · Applied AI Programming**：以第一周的 Python 基础、数据结构与函数为起点；第二周继续学习模块与包、文件 I/O、异常处理和 Python 类，并延伸至 NumPy、API、Embedding 与 RAG。
+- **CA6002 · AI UX & Data Visualisation Design Principles**：从数据可视化基础开始，覆盖数据属性、NOIR 测量尺度、视觉编码、图表类型与图表选择原则。
 
 首页是课程选择看板；进入课程后，可通过顶部的“课程”按钮在不同课程之间切换。课程内容页使用左侧目录和右侧正文的阅读布局。
 
