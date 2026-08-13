@@ -143,6 +143,27 @@ sns.lineplot(data=data, x="Month", y="#Passengers", hue="Year", palette="tab10")
       <figcaption>课件示例：残差应在去除趋势和季节性后不再呈系统模式；按年份比较季节曲线可观察重复结构是否稳定。</figcaption>
     </figure>
     <p>分解后仍有明显结构的残差，说明模型遗漏了信息。不要随机打乱时序数据来验证预测模型；训练集必须早于验证集，避免未来信息泄漏给过去。</p>
+
+    <h3>第二周 Tutorial｜从探索到解释与预测</h3>
+    <p class="chapter-chart-map"><strong>Tutorial 工作流：</strong>每个案例都先检查缺失值与变量类型，再用图发现模式；只有在需要作比较或声明差异时，才选择合适的统计检验或模型评估。最终输出必须写清楚数据、图表、判断和限制。</p>
+
+    <h4>Mid-week #2 · Explore and Confirm｜Automobile.csv 与 Titanic.csv</h4>
+    <p><strong>Automobile.csv：</strong>先统计每列的 <code>NaN</code>，决定删除、填补或在对应分析中排除；再用相关热力图找与价格正、负相关最强的数值特征。比较前驱和后驱的油耗时，先画按 <code>drive-wheels</code> 分组的 pairplot / facet plot，再以 Shapiro-Wilk 检查分布；根据结果选择 t-test、Z-test 或 Mann-Whitney U，而不是由图形直接宣称显著。</p>
+    <figure class="course-example">
+      <img src="../assets/courseware/module-02-ca6002/tutorial-automobile-eda.png" alt="第二周中周 tutorial 的 Automobile 数据探索任务：检查缺失值、寻找价格的正负相关特征，并以不同驱动方式的价格、城市和高速油耗组成分面图进行探索和统计确认" loading="lazy" />
+      <figcaption>课件 Tutorial 示例：分面图将价格、城市/高速油耗与驱动形式并置；先观察分布与分组，再决定是否需要统计确认。</figcaption>
+    </figure>
+    <p>继续以 body style、车门数量、马力与城市油耗为问题：三组 body style 的比较需要先判断分布并选择适合多组比较的检验；车门 × body style × price 适合用小提琴图显示分布与离散程度。无监督部分则以 <strong>price × engine-size</strong> 做 K-means：用 elbow curve 选择候选 <code>K</code>，在散点图上按 cluster 着色并标出 centroid，再解释各簇的均价和价格变异，而非只报告算法输出。</p>
+    <p><strong>Titanic.csv：</strong>这是“Explore and Explain”练习。用 <code>missingno</code> 先展示缺失模式，再围绕登船地、性别、票价/舱等、家庭同行与儿童等叙事问题选图。结论应写成有证据的故事：哪一组的生还率更高、图表是否显示交互作用，以及哪些缺失值或样本量限制了结论。</p>
+
+    <h4>Saturday #2 · Explore and Predict｜iTunes、Cars 与 Singapore Temperature</h4>
+    <p><strong>iTunes：</strong>先用排序并标注数值的 count plot 找出最多的六个 genre，再用 <code>Bytes × Milliseconds</code> 散点图，并以 genre 等变量着色，检查时长与文件大小关系是否因类别而变化。回归练习固定保留 20% 测试集；要说明输入特征的尺度、非数值值如何处理、模型选择原因，以及测试集 <code>R²</code>。最后用实际值 × 预测值的图检查预测误差是否存在系统偏差。</p>
+    <p><strong>Cars：</strong>用可交互的 Plotly 平行坐标图探索品牌、年份、mpg、cylinders、hp、weight 等多变量关系；通过 brushing 和轴重排找出模式，再用 Seaborn <code>regplot</code> 与相关热力图验证。分类任务同样保留 20% 测试集，并比较移除低/高重要性特征后的 accuracy、ROC、Precision-Recall 和 learning curve；KDE 用于解释哪些特征分布重叠，因此为什么类别难以分开。</p>
+    <figure class="course-example">
+      <img src="../assets/courseware/module-02-ca6002/tutorial-model-evaluation.png" alt="第二周周六 tutorial 的模型表现可视化任务：以车辆品牌分类为例，要求用混淆矩阵、不同色图、One-vs-Rest ROC 曲线和机会线诊断模型表现" loading="lazy" />
+      <figcaption>课件 Tutorial 示例：混淆矩阵的颜色应服务于读数；多类别 ROC 应逐类报告 AUC，并与随机机会线比较。</figcaption>
+    </figure>
+    <p><strong>Singapore Temperature：</strong>1982–2021 的月均气温用于完整时序分析：画总体折线，再按月份配色以找重复模式与异常；以季节箱线图比较最热、最冷与变异最大的月份；最后做时序分解，判断加性或乘性结构，并对 trend 使用 linear regression 或 LOWESS。任何关于升温趋势的结论都必须回到 trend component，并说明周期波动与异常月份。</p>
   </section>
 
   <section class="content-section" id="errors">
@@ -158,9 +179,11 @@ sns.lineplot(data=data, x="Month", y="#Passengers", hue="Year", palette="tab10")
 
   <section class="content-section" id="practice">
     <h2>练习</h2>
-    <div class="practice-card"><strong>练习 1：EDA 到验证。</strong><br />选一份含至少三项数值变量的数据，先画散点图和相关热力图，再写出一个值得验证的假设，以及该假设不能由相关性单独证明的原因。</div>
-    <div class="practice-card"><strong>练习 2：模型诊断面板。</strong><br />为一个二分类任务列出四种图，说明每张图回答的具体问题，以及它可能暴露的失败模式。</div>
-    <div class="practice-card"><strong>练习 3：时间序列阅读。</strong><br />选择一个月度数据集，画原始曲线、按年份着色的季节曲线和分解图；分别标出趋势、季节性与残差中仍需追问的现象。</div>
+    <div class="practice-card"><strong>练习 1：Automobile 探索到确认。</strong><br />检查缺失值；用 heatmap 找出与 price 正、负相关最强的两个特征；为 fwd / rwd 的 <code>highway-mpg</code> 画分组图、进行正态性检查，并说明你选择的统计检验与结论边界。</div>
+    <div class="practice-card"><strong>练习 2：把探索写成解释。</strong><br />使用 Titanic 数据，围绕“性别、舱等与票价是否与生还有关”提出一个叙事。至少使用三张互补图，并写出一个不能由图表单独证明的因果限制。</div>
+    <div class="practice-card"><strong>练习 3：iTunes 回归诊断。</strong><br />以 <code>Milliseconds</code> 预测 <code>Bytes</code>，保留 20% 测试集。用 genre 分层的散点图解释特征选择，再用实际值 × 预测值图和 <code>R²</code> 评估模型。</div>
+    <div class="practice-card"><strong>练习 4：Cars 分类面板。</strong><br />先用平行坐标图与热力图提出特征假设；训练品牌分类模型后，给出混淆矩阵、One-vs-Rest ROC、Precision-Recall、learning curve。移除一项特征并比较变化。</div>
+    <div class="practice-card"><strong>练习 5：Singapore Temperature 时序报告。</strong><br />画月度总折线、按月份着色的时间图、季节箱线图和分解图；判断加性/乘性结构，以 regression 或 LOWESS 说明 trend，并保留对异常与周期的解释限制。</div>
   </section>
         <nav class="chapter-nav" aria-label="上一页和下一页">
           <a href="ai-ux-data-visualisation.html">← Module 1 数据可视化基础</a><a href="../index.html">返回课程首页 →</a>
