@@ -7,12 +7,22 @@
     const link = group.querySelector(".chapter-link");
     return link ? new URL(link.href, window.location.href).pathname : "";
   }));
+  const chapterOrder = new Map(chapterGroups.map((group, index) => {
+    const link = group.querySelector(".chapter-link");
+    return [link ? new URL(link.href, window.location.href).pathname : "", index];
+  }));
 
   let sectionLinks = [];
   let sections = [];
   let frameRequested = false;
   let navigationController;
   let renderedPath = window.location.pathname;
+
+  const directionFor = (url) => {
+    const current = chapterOrder.get(renderedPath) ?? 0;
+    const next = chapterOrder.get(url.pathname) ?? current;
+    return next < current ? "back" : "forward";
+  };
 
   const setCurrentSection = (currentId) => {
     sectionLinks.forEach((link) => {
@@ -145,11 +155,25 @@
       throw new Error("Chapter document does not match the current course");
     }
 
-    const replace = () => currentChapter.replaceWith(nextChapter);
+    const direction = directionFor(url);
+    document.documentElement.dataset.navigationDirection = direction;
+    const replace = () => {
+      currentChapter.replaceWith(nextChapter);
+      activateChapter(url);
+    };
     if (document.startViewTransition && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       await document.startViewTransition(replace).finished;
     } else {
+      const leaving = currentChapter.animate(
+        [{ opacity: 1, transform: "translateX(0)" }, { opacity: 0, transform: `translateX(${direction === "forward" ? -12 : 12}px)` }],
+        { duration: 150, easing: "cubic-bezier(.4, 0, 1, 1)", fill: "both" },
+      );
+      await leaving.finished.catch(() => {});
       replace();
+      nextChapter.animate(
+        [{ opacity: 0, transform: `translateX(${direction === "forward" ? 16 : -16}px)` }, { opacity: 1, transform: "translateX(0)" }],
+        { duration: 260, easing: "cubic-bezier(0, 0, .2, 1)", fill: "both" },
+      );
     }
 
     document.title = nextDocument.title || document.title;
@@ -167,8 +191,6 @@
   const navigate = async (url, updateHistory = true) => {
     navigationController?.abort();
     navigationController = new AbortController();
-    activateChapter(url);
-
     try {
       const nextDocument = await loadDocument(url, navigationController.signal);
       await swapChapter(nextDocument, url, updateHistory);

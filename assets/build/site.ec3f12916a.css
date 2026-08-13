@@ -421,6 +421,7 @@ a {
 }
 
 .toc {
+  view-transition-name: chapter-toc;
   position: sticky;
   top: 92px;
   align-self: start;
@@ -513,25 +514,77 @@ a {
   view-transition-name: chapter-content;
 }
 
+::view-transition-group(chapter-content),
+::view-transition-group(chapter-toc) {
+  animation-duration: 0.34s;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
 ::view-transition-old(chapter-content) {
-  animation: chapter-content-out 0.14s ease-in both;
+  z-index: 1;
+  animation: chapter-content-out-forward 0.16s cubic-bezier(0.4, 0, 1, 1) both;
 }
 
 ::view-transition-new(chapter-content) {
-  animation: chapter-content-in 0.2s ease-out both;
+  z-index: 2;
+  animation: chapter-content-in-forward 0.34s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-@keyframes chapter-content-out {
+html[data-navigation-direction="back"]::view-transition-old(chapter-content) {
+  animation-name: chapter-content-out-back;
+}
+
+html[data-navigation-direction="back"]::view-transition-new(chapter-content) {
+  animation-name: chapter-content-in-back;
+}
+
+::view-transition-old(chapter-toc) {
+  animation: chapter-toc-out 0.14s ease-in both;
+}
+
+::view-transition-new(chapter-toc) {
+  animation: chapter-toc-in 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes chapter-content-out-forward {
   to {
     opacity: 0;
-    transform: translateY(4px);
+    transform: translateX(-12px);
   }
 }
 
-@keyframes chapter-content-in {
+@keyframes chapter-content-in-forward {
   from {
     opacity: 0;
-    transform: translateY(7px);
+    transform: translateX(18px);
+  }
+}
+
+@keyframes chapter-content-out-back {
+  to {
+    opacity: 0;
+    transform: translateX(12px);
+  }
+}
+
+@keyframes chapter-content-in-back {
+  from {
+    opacity: 0;
+    transform: translateX(-18px);
+  }
+}
+
+@keyframes chapter-toc-out {
+  to {
+    opacity: 0;
+    transform: translateY(-3px);
+  }
+}
+
+@keyframes chapter-toc-in {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
   }
 }
 
