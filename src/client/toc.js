@@ -156,20 +156,23 @@
     }
 
     const direction = directionFor(url);
-    document.documentElement.dataset.navigationDirection = direction;
-    const replace = () => {
-      currentChapter.replaceWith(nextChapter);
-      activateChapter(url);
-    };
-    if (document.startViewTransition && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      await document.startViewTransition(replace).finished;
-    } else {
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const replace = () => currentChapter.replaceWith(nextChapter);
+
+    // The chapter menu must remain live while it expands and collapses. A
+    // document-level View Transition snapshots it, turning the menu into a
+    // hard cut, so use a small Web Animations transition for the content.
+    activateChapter(url);
+    if (!reducedMotion) {
       const leaving = currentChapter.animate(
         [{ opacity: 1, transform: "translateX(0)" }, { opacity: 0, transform: `translateX(${direction === "forward" ? -12 : 12}px)` }],
         { duration: 150, easing: "cubic-bezier(.4, 0, 1, 1)", fill: "both" },
       );
       await leaving.finished.catch(() => {});
-      replace();
+    }
+
+    replace();
+    if (!reducedMotion) {
       nextChapter.animate(
         [{ opacity: 0, transform: `translateX(${direction === "forward" ? 16 : -16}px)` }, { opacity: 1, transform: "translateX(0)" }],
         { duration: 260, easing: "cubic-bezier(0, 0, .2, 1)", fill: "both" },
