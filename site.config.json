@@ -87,19 +87,11 @@
           "subsections": [
             { "id": "chapter-2-1", "label": "2.1 Correlation Analysis" },
             { "id": "chapter-2-2", "label": "2.2 Visualisation for AI" },
-            { "id": "chapter-2-3", "label": "2.3 Time Series Analysis" }
-          ]
-        },
-        {
-          "output": "courses/ca6002-tutorial-saturday-02.html",
-          "content": "src/content/courses/ca6002-tutorial-saturday-02.html",
-          "navLabel": "Tutorial Saturday 02 逐题解析",
-          "code": true,
-          "subsections": [
-            { "id": "tutorial-s2-1", "label": "S2.1 Explore and Predict" },
-            { "id": "tutorial-s2-2", "label": "S2.2 Parallel Coordinates Plot" },
-            { "id": "tutorial-s2-3", "label": "S2.3 Model Performance" },
-            { "id": "tutorial-s2-4", "label": "S2.4 Time Series Analysis" }
+            { "id": "chapter-2-3", "label": "2.3 Time Series Analysis" },
+            { "id": "tutorial-s2-1", "label": "Tutorial S2.1 Explore and Predict" },
+            { "id": "tutorial-s2-2", "label": "Tutorial S2.2 Parallel Coordinates Plot" },
+            { "id": "tutorial-s2-3", "label": "Tutorial S2.3 Model Performance" },
+            { "id": "tutorial-s2-4", "label": "Tutorial S2.4 Time Series Analysis" }
           ]
         }
       ]

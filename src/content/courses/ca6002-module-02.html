@@ -80,6 +80,46 @@ sns.lineplot(data=data, x="Month", y="#Passengers", hue="Year", palette="tab10")
       <figcaption>课件 Tutorial 示例：混淆矩阵的颜色应服务于读数；多类别 ROC 应逐类报告 AUC，并与随机机会线比较。</figcaption>
     </figure>
     <p><strong>Singapore Temperature：</strong>1982–2021 的月均气温用于完整时序分析：画总体折线，再按月份配色以找重复模式与异常；以季节箱线图比较最热、最冷与变异最大的月份；最后做时序分解，判断加性或乘性结构，并对 trend 使用 linear regression 或 LOWESS。任何关于升温趋势的结论都必须回到 trend component，并说明周期波动与异常月份。</p>
+
+    <h3 id="tutorial-s2-1">Tutorial S2.1 Explore and Predict｜iTunes 回归</h3>
+    <p class="chapter-chart-map"><strong>原题截图：</strong>下图保留 S2.1 的全部任务：缺失值检查、top-6 genre 排序柱状图、<code>Bytes × Milliseconds</code> 分层散点图、20% 测试集回归，以及实际值与预测值比较。</p>
+    <figure class="course-example">
+      <img src="../assets/courseware/module-02-ca6002/saturday-02/original-question-1.png" alt="Saturday 02 Tutorial 原题 S2.1：iTunes 数据集的缺失值、排序柱状图、Bytes 与 Milliseconds 散点图、回归设计和预测准确度可视化任务" loading="lazy" />
+      <figcaption>原题截图 · S2.1 Explore and Predict（完整题目要求）</figcaption>
+    </figure>
+    <p><strong>逐题解析：</strong>先用 <code>info()</code> 与 <code>isna().sum()</code> 判断缺失是否落在目标或输入列；genre 用从大到小且标注 count 的横向柱状图；散点图依次画全量、主导 genre、第一 genre，并以 <code>hue</code> 检查分组斜率。回归至少给出 <code>Milliseconds</code> 的线性基线，固定 20% 测试集与随机种子；若加入 nominal 特征，必须在训练 pipeline 中 one-hot encode。最终用 actual-vs-predicted scatter 加 <code>y=x</code> 线，并用 residual 图检查系统误差；<code>R²</code> 只报告测试集。</p>
+
+    <h3 id="tutorial-s2-2">Tutorial S2.2 Parallel Coordinates Plot｜Cars 多变量探索与分类</h3>
+    <p class="chapter-chart-map"><strong>原题截图：</strong>S2.2 分两页，要求使用 Plotly PCP 的 brushing 与轴重排，随后以 regplot、heatmap、KDE 和分类模型作验证。</p>
+    <figure class="course-example">
+      <img src="../assets/courseware/module-02-ca6002/saturday-02/original-question-2.png" alt="Saturday 02 Tutorial 原题 S2.2 第一页：Cars 数据集检查、Plotly 平行坐标图设计与使用交互过滤探索年份差异" loading="lazy" />
+      <figcaption>原题截图 · S2.2 第一页：PCP 设计与交互式探索</figcaption>
+    </figure>
+    <figure class="course-example">
+      <img src="../assets/courseware/module-02-ca6002/saturday-02/original-question-3.png" alt="Saturday 02 Tutorial 原题 S2.2 第二页：特征相关、热力图、异常点、品牌分类、特征移除与 KDE 分析任务" loading="lazy" />
+      <figcaption>原题截图 · S2.2 第二页：验证、分类与特征解释</figcaption>
+    </figure>
+    <p><strong>逐题解析：</strong>PCP 适合多个数值特征，每条线是一辆车；先处理缺失、明确 <code>brand</code> 只作为颜色/目标。观察 cylinders–mpg、cylinders–hp 时，以线束的平行或交叉提出假设，再用 <code>regplot</code> 和 <code>linregress</code> 验证方向与 <code>r</code>；数值热力图用以 0 为中心的发散色盘。可疑 hp–weight 异常必须在 scatter 中核对是否同一行。分类模型采用分层 80/20 切分；比较移除低/高重要特征后的测试表现，并以 KDE 的类别重叠解释为什么某些特征难以分开品牌。feature importance 不是因果，也可能被共线特征稀释。</p>
+
+    <h3 id="tutorial-s2-3">Tutorial S2.3 Visualising Model Performance｜模型诊断</h3>
+    <p class="chapter-chart-map"><strong>原题截图：</strong>S2.3 逐步要求混淆矩阵、One-vs-Rest ROC、Precision-Recall 和 learning curve，并比较移除不同特征的影响。</p>
+    <figure class="course-example">
+      <img src="../assets/courseware/module-02-ca6002/saturday-02/original-question-4.png" alt="Saturday 02 Tutorial 原题 S2.3 第一页：混淆矩阵色图比较与多类别 One-vs-Rest ROC 曲线任务" loading="lazy" />
+      <figcaption>原题截图 · S2.3 第一页：混淆矩阵与 ROC</figcaption>
+    </figure>
+    <figure class="course-example">
+      <img src="../assets/courseware/module-02-ca6002/saturday-02/original-question-5.png" alt="Saturday 02 Tutorial 原题 S2.3 第二页：Precision-Recall 阈值选择与 learning curve 特征移除任务" loading="lazy" />
+      <figcaption>原题截图 · S2.3 第二页：Precision-Recall 与 learning curve</figcaption>
+    </figure>
+    <p><strong>逐题解析：</strong>混淆矩阵必须标明 actual / predicted，并报告每类 recall、precision、support；连续计数适合 sequential 色盘，不适合 <code>tab10</code> 或 <code>hsv</code>。ROC 将 US、Japan、Europe 分别视为正类，以概率输出绘制三条曲线和 AUC，对照机会线。PR 曲线在 false positive 成本高或类别不平衡时更有解释力；Europe 的 precision 必须保持 1 时，在满足条件的阈值中选 recall 最大者，若测试集无解应如实写出。learning curve 比较训练与交叉验证曲线：高训练、低验证提示高方差；两者均低提示欠拟合。所有特征移除比较必须复用相同切分与评价标准。</p>
+
+    <h3 id="tutorial-s2-4">Tutorial S2.4 Climate Change and Singapore｜时序报告</h3>
+    <p class="chapter-chart-map"><strong>原题截图：</strong>最后一题要求用 1982–2021 新加坡月均气温识别异常、季节性和趋势，并比较加性/乘性分解及 linear regression / LOWESS。</p>
+    <figure class="course-example">
+      <img src="../assets/courseware/module-02-ca6002/saturday-02/original-question-6.png" alt="Saturday 02 Tutorial 原题 S2.4：新加坡月均温度折线与月份配色、异常识别、季节性箱线图、时序分解和趋势回归任务" loading="lazy" />
+      <figcaption>原题截图 · S2.4 Climate Change and Singapore（完整题目要求）</figcaption>
+    </figure>
+    <p><strong>逐题解析：</strong>将日期解析、排序并检查月度连续性后，画总体折线和按月份配色的点；月份为名义类别，优先用 <code>tab10</code>/<code>husl</code> 等类别色盘，避免以顺序色盘表示月份。用月度 boxplot / violin plot 判断通常最热、最冷和变异最大的月份，区分分布中心与单次极值。以 <code>seasonal_decompose(..., period=12)</code> 分解；若季节波动幅度近似恒定，优先 additive，若随整体水平成比例扩大才考虑 multiplicative。趋势回归在 trend component 上进行：linear regression 说明平均线性变化，LOWESS 检查非线性；不能把单月异常或统计趋势直接写成单一气候成因。</p>
   </section>
 
   <section class="content-section" id="errors">
