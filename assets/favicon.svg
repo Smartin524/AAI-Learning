@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title">
-  <title>AAI Learning</title>
+  <title>AAI</title>
   <rect width="64" height="64" rx="16" fill="#14213d"/>
   <g transform="skewX(-6)">
     <path d="M10.5 45 15.4 17h7.4l4.9 28h-6l-.9-5.5h-3.7l-.9 5.5h-5.7Zm7.3-10.5h2.3L19 24.2l-1.2 10.3Z" fill="#fff"/>

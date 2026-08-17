@@ -138,7 +138,7 @@ const renderGithubLink = (prefix) => `
 const renderHeader = ({ prefix, currentCourse = null }) => `
     <header class="site-header">
       <div class="header-inner">
-        <a class="brand" href="${prefix}index.html"><span>AAI</span> 学习手册</a>
+        <a class="brand" href="${prefix}index.html">AAI</a>
         <div class="header-actions">${renderThemeControl()}${currentCourse ? renderCourseMenu(prefix, currentCourse) : renderGithubLink(prefix)}
         </div>
       </div>
