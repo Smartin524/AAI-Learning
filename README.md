@@ -6,7 +6,7 @@
 
 - **Python 通识**：基础语法、数据结构、文件与环境、NumPy、API、Embedding 和 RAG 相关章节。
 - **CA6000 · Applied AI Programming**：课程课件内容；当前收录第二周的模块与包、文件 I/O、异常处理和 Python 类。
-- **CA6002 · AI UX & Data Visualisation Design Principles**：Module 1 覆盖数据属性、视觉编码与图表选择；Module 2 补充相关性分析、AI 模型可视化与时间序列分析。
+- **CA6002 · AI UX & Data Visualisation Design Principles**：Module 1 覆盖数据属性、视觉编码与图表选择；Module 2 补充相关性分析、AI 模型可视化与时间序列分析；Module 3 聚焦 Gestalt 分组、色彩感知、人类视觉感知与有效图形的心理学原则。
 
 首页是课程选择看板；进入课程后，可通过顶部的“课程”按钮在不同课程之间切换。课程内容页使用左侧目录和右侧正文的阅读布局。
 

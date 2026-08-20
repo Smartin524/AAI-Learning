@@ -93,6 +93,18 @@
             { "id": "tutorial-s2-3", "label": "Tutorial S2.3 Model Performance" },
             { "id": "tutorial-s2-4", "label": "Tutorial S2.4 Time Series Analysis" }
           ]
+        },
+        {
+          "output": "courses/ca6002-module-03.html",
+          "content": "src/content/courses/ca6002-module-03.html",
+          "navLabel": "Module 3 感知与有效图形",
+          "code": false,
+          "subsections": [
+            { "id": "chapter-3-1", "label": "3.1 Gestalt Principles in Visualisation" },
+            { "id": "chapter-3-2", "label": "3.2 Colour Perception" },
+            { "id": "chapter-3-3", "label": "3.3 Human Visual Perception" },
+            { "id": "chapter-3-4", "label": "3.4 Psychological Principles of Effective Graphics" }
+          ]
         }
       ]
     }
