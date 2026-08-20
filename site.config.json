@@ -36,20 +36,34 @@
       "index": "02",
       "name": "CA6000 · Applied AI Programming",
       "menuLabel": "CA6000 · Applied AI Programming",
-      "description": "模块、文件、异常处理与 Python 对象",
-      "entry": "courses/ca6000-week-2.html",
+      "description": "Python 基础、数据结构、工程工具与数据处理",
+      "entry": "courses/ca6000-module-01.html",
       "tocTitle": "CA6000 · APPLIED AI PROGRAMMING",
       "pages": [
         {
-          "output": "courses/ca6000-week-2.html",
-          "content": "src/content/courses/ca6000-week-2.html",
-          "navLabel": "Module 2 第二周：代码组织与对象",
+          "output": "courses/ca6000-module-01.html",
+          "content": "src/content/courses/ca6000-module-01.html",
+          "navLabel": "Module 1 第一周：Python 基础",
           "code": true,
           "subsections": [
-            { "id": "topic-4", "label": "Topic 4 Modules and Packages" },
+            { "id": "topic-0", "label": "Topic 0 Course Intro" },
+            { "id": "topic-1", "label": "Topic 1 Python Basics" },
+            { "id": "topic-2", "label": "Topic 2 Data Structures" },
+            { "id": "topic-3", "label": "Topic 3 Functions" }
+          ]
+        },
+        {
+          "output": "courses/ca6000-module-03.html",
+          "content": "src/content/courses/ca6000-module-03.html",
+          "navLabel": "Module 3 第三周：工具与数据处理",
+          "code": true,
+          "subsections": [
             { "id": "topic-6", "label": "Topic 6 File I/O" },
             { "id": "topic-7", "label": "Topic 7 Error Handling" },
-            { "id": "topic-10", "label": "Topic 10 Python Class" }
+            { "id": "topic-8-numpy", "label": "Topic 8 NumPy" },
+            { "id": "topic-8-matplotlib", "label": "Topic 8 Matplotlib" },
+            { "id": "topic-10-pandas", "label": "Topic 10 Pandas" },
+            { "id": "topic-10-class", "label": "Topic 10 Python Class" }
           ]
         }
       ]
