@@ -1,13 +1,13 @@
 <main class="chapter">
         <header class="chapter-hero">
           <div class="chapter-kicker">CA6000 · APPLIED AI PROGRAMMING · MODULE 03</div>
-          <h1>第三周：工程工具、数值计算与数据处理</h1>
+          <h1>第三周：数值计算、可视化与数据处理</h1>
           <p class="chapter-summary">
-            第三周把基础语法推进为可用于 AI 工作流的程序：用文件和异常组织可靠代码；用 NumPy 进行数值计算；用 Matplotlib 观察数据；用 Pandas 读取、清洗和分析表格；并用类封装可复用的对象行为。
+            第三周进入 AI 编程常用的数据工具：用 NumPy 表达特征与数值计算，用 Matplotlib 观察数据，用 Pandas 读取、清洗和分析表格，并用类封装可复用的对象行为。
           </p>
           <div class="outcomes">
             <strong>学完你应该能够：</strong>
-            管理 Jupyter / Conda 环境；安全读写文本、CSV 与 JSON；用具体异常、<code>else</code> 与 <code>finally</code> 组织失败路径；使用 NumPy、Matplotlib 和 Pandas；定义类、实例、方法和继承关系。
+            管理 Jupyter / Conda 环境；使用 NumPy、Matplotlib 和 Pandas；定义类、实例、方法和继承关系；解释清洗、可视化和数值计算中的重要限制。
           </div>
         </header>
 
@@ -15,11 +15,6 @@
           <h2>必须掌握的术语</h2>
           <table class="terms">
             <tr><th>术语</th><th>准确理解</th></tr>
-            <tr><td>file mode</td><td><code>r</code> 读、<code>w</code> 写并截断、<code>a</code> 追加；带 <code>+</code> 的模式同时允许读写。模式决定文件指针位置与是否可能覆盖旧内容。</td></tr>
-            <tr><td>context manager</td><td><code>with open(...)</code> 创建的管理上下文；代码离开区块后文件会自动关闭并写回缓冲区。</td></tr>
-            <tr><td>CSV / JSON</td><td>CSV 用行和列保存表格数据；JSON 用对象和数组保存有命名结构的数据。两者都常用于数据交换。</td></tr>
-            <tr><td>exception</td><td>运行时发生、可被捕获处理的异常对象，如 <code>ValueError</code>、<code>KeyError</code> 与 <code>FileNotFoundError</code>。</td></tr>
-            <tr><td>assert</td><td>开发期断言：条件为假时抛出 <code>AssertionError</code>，用于表达程序不应被破坏的前提或结果。</td></tr>
             <tr><td>class / instance</td><td>class 是创建对象的蓝图；instance 是按蓝图实际创建出来的对象。</td></tr>
             <tr><td>attribute / method</td><td>attribute 是对象保存的状态；method 是定义在类中、通过对象调用的函数。</td></tr>
             <tr><td><code>self</code></td><td>实例方法的第一个参数，用来访问当前对象自身的属性和其他方法。</td></tr>
@@ -35,66 +30,6 @@
 
         <section class="content-section" id="core">
           <h2>核心知识</h2>
-
-          <h3 id="topic-6">Topic 6 · File I/O｜让程序可靠读写文件</h3>
-          <p class="chapter-chart-map"><strong>本章代码 / 格式：</strong><code>open()</code>、<code>read()</code>、<code>readline()</code>、<code>write()</code>；文本模式、CSV 的 <code>reader</code> / <code>DictReader</code> 与 JSON 的 <code>loads()</code>。</p>
-          <p>文件 I/O 的第一件事是明确模式：<code>r</code> 从开头读取，<code>w</code> 会清空已有文件后写入，<code>a</code> 从末尾追加。只要不希望覆盖已有内容，就不要凭习惯使用 <code>w</code>。</p>
-          <table class="terms">
-            <tr><th>模式</th><th>作用</th><th>风险 / 用途</th></tr>
-            <tr><td><code>r</code> / <code>r+</code></td><td>读取；<code>r+</code> 同时可写。</td><td>文件必须存在；指针位于开头。</td></tr>
-            <tr><td><code>w</code> / <code>w+</code></td><td>写入；不存在时创建。</td><td>已有文件会被截断为零长度。</td></tr>
-            <tr><td><code>a</code> / <code>a+</code></td><td>追加；不存在时创建。</td><td>指针位于末尾，适合日志和追加记录。</td></tr>
-          </table>
-          <pre>
-from pathlib import Path
-
-path = Path("notes.txt")
-with path.open("a", encoding="utf-8") as file:
-    file.write("completed topic 6\n")
-
-with path.open("r", encoding="utf-8") as file:
-    for line in file:
-        print(line.rstrip())</pre>
-          <p><code>with</code> 不是装饰：它让文件在读取、写入或发生异常后都能关闭，并把缓冲区内容写回磁盘。CSV 的首行通常是 header；<code>DictReader</code> 将每一行变为“列名 → 字符串值”的字典。JSON 则更适合保留嵌套的 name-value 结构。</p>
-          <pre>
-import csv
-import json
-
-with open("cars.csv", newline="", encoding="utf-8") as file:
-    for row in csv.DictReader(file):
-        print(row["brand"], row["year"])
-
-record = json.loads('{"brand": "Mazda", "year": 2014}')
-print(record["brand"])</pre>
-          <figure class="course-example">
-            <img src="../assets/courseware/module-02/file-modes.png" alt="课件汇总 Python 文件处理模式 r、r+、w、w+、a 和 a+ 的读写行为与文件指针位置" loading="lazy" />
-            <figcaption><strong>示例：先辨认文件模式是否会截断旧文件，再开始写入。</strong><span>来源：CA6000 Topic 6 Files，Slide 8</span></figcaption>
-          </figure>
-
-          <h3 id="topic-7">Topic 7 · Error Handling｜把失败路径设计进程序</h3>
-          <p class="chapter-chart-map"><strong>本章代码 / 工具：</strong><code>try</code>、具体 <code>except</code>、<code>else</code>、<code>finally</code>、<code>assert</code>；<code>time.perf_counter()</code> 与 <code>time.process_time()</code> 性能测量。</p>
-          <p>语法错误让程序无法启动；运行期异常发生在执行过程中。异常处理的目标不是静默吞掉失败，而是把预计会失败的边界放在最小的 <code>try</code> 区块内，并针对可理解的异常给出下一步。</p>
-          <pre>
-try:
-    number = int(input("Enter a value: "))
-except ValueError:
-    print("Please enter an integer.")
-else:
-    print(f"Value is {number}")
-finally:
-    print("Input attempt completed.")</pre>
-          <p><code>else</code> 只在没有异常时运行；<code>finally</code> 无论成功或失败都会运行，适合清理资源。优先捕获 <code>ValueError</code>、<code>KeyError</code>、<code>FileNotFoundError</code> 等具体异常；宽泛的 <code>except:</code> 会把真正的编程错误也伪装成“已处理”。</p>
-          <figure class="course-example">
-            <img src="../assets/courseware/module-02/try-except-finally.png" alt="课件示例展示输入转换中的 try、ValueError except、else 和 finally 分支" loading="lazy" />
-            <figcaption><strong>示例：成功逻辑放在 <code>else</code>，收尾工作放在 <code>finally</code>。</strong><span>来源：CA6000 Topic 7 Error Handling，Slide 6</span></figcaption>
-          </figure>
-          <pre>
-def divide(x, y):
-    assert y != 0, "y must not be zero"
-    return x / y
-
-assert divide(10, 5) == 2</pre>
-          <p><code>assert</code> 用于开发期检查不变量和函数结果，不应用来处理用户可预期的输入错误。课件还介绍 profiling：<code>time.perf_counter()</code> 测量经过的真实时间，<code>time.process_time()</code> 测量当前进程实际消耗的 CPU 时间；它们用于定位瓶颈，而不是猜测哪里慢。</p>
 
           <h3 id="topic-8-numpy">Topic 8 · NumPy｜用数组表达特征与数值计算</h3>
           <p class="chapter-chart-map"><strong>本章代码 / 方法：</strong><code>np.array()</code>、<code>arange()</code>、<code>linspace()</code>、<code>zeros()</code>、<code>ones()</code>、<code>shape</code>、<code>dtype</code>、切片、<code>reshape()</code>、布尔过滤、随机数、normalisation 与 <code>np.linalg.solve()</code>。</p>
@@ -194,12 +129,10 @@ class Square(Rectangle):
         <section class="content-section" id="errors">
           <h2>常见错误</h2>
           <ul class="error-list">
-            <li>用 <code>from module import *</code> 或过短别名掩盖函数来源，导致命名冲突难以排查。</li>
-            <li>把模块自测代码放在顶层，导致其他程序一导入就执行副作用。</li>
-            <li>用 <code>w</code> 打开已有文件却没有意识到它会清空原内容；或不使用 <code>with</code> 而遗漏 <code>close()</code>。</li>
-            <li>把 CSV 的全部字段都当成数值；<code>DictReader</code> 读出的值默认是字符串。</li>
-            <li>用宽泛 <code>except:</code> 吞掉所有异常，或把正常成功路径塞进 <code>try</code>。</li>
-            <li>把 <code>assert</code> 当成用户输入验证或生产期权限控制。</li>
+            <li>在错误的 Conda / Jupyter 环境里安装包，或把解释器、kernel 与终端环境混为一谈。</li>
+            <li>不检查 <code>shape</code>、<code>dtype</code> 和是否 copy / view，导致 NumPy 广播或切片产生意外结果。</li>
+            <li>把类别比较画成 histogram，或用 3D、过多颜色和缺失坐标轴的图表妨碍读数。</li>
+            <li>读入 DataFrame 后不检查类型、缺失和重复；未记录规则就删除 NaN 或把所有异常值替换为均值。</li>
             <li>遗漏实例方法的 <code>self</code>，或把应属于单个对象的状态错放到类属性上。</li>
             <li>把单下划线或双下划线误当成真正的安全加密；它们只表达封装约定或名称改写。</li>
             <li>为了复用代码建立层级很深的继承树，使行为来源难以理解。</li>
@@ -209,28 +142,28 @@ class Square(Rectangle):
         <section class="content-section" id="practice">
           <h2>练习</h2>
           <div class="exercise">
-            <strong>练习 1：模块与正则验证</strong>
+            <strong>练习 1：从数组到特征矩阵</strong>
             <ol>
-              <li>创建一个 <code>validators.py</code>，实现 <code>has_digit(text)</code> 与 <code>has_uppercase(text)</code>。</li>
-              <li>添加 <code>__main__</code> 自测入口；从另一个文件导入它，并确认自测不会被执行。</li>
+              <li>用 NumPy 创建一个 3 × 3 特征矩阵，检查 <code>shape</code> 和 <code>dtype</code>，再把一个数值列缩放到 0–1。</li>
+              <li>解释为什么缩放参数必须只由训练集估计。</li>
             </ol>
           </div>
           <div class="exercise">
-            <strong>练习 2：可恢复的文件读写</strong>
+            <strong>练习 2：让图回答问题</strong>
             <ol>
-              <li>用 <code>with</code> 将三条学习记录追加到 CSV 或 JSON 文件。</li>
-              <li>重新读取文件，明确转换需要是数值的字段，并为文件不存在设计 <code>FileNotFoundError</code> 分支。</li>
+              <li>用 Matplotlib 分别绘制类别比较 bar chart 与连续变量 histogram，并为每张图写一句明确的问题。</li>
+              <li>为两张图补全标题、轴标签与单位，说明为什么不能交换两种图。</li>
             </ol>
           </div>
           <div class="exercise">
-            <strong>练习 3：购物车对象</strong>
+            <strong>练习 3：可审计的 Pandas 清洗</strong>
             <ol>
-              <li>按课件思路实现 <code>ShoppingAgent</code>：保存 budget 和 cart，提供 <code>add_to_cart(item, price)</code>。</li>
-              <li>当价格超过余额时不改变状态；为关键前提写一条 <code>assert</code>，并解释为什么它不能替代用户提示。</li>
+              <li>读取一个 CSV，输出 <code>info()</code>、每列缺失数和重复行数；对一个数值列以 median 填补，并记录填补数量。</li>
+              <li>用 IQR 标记候选异常，不删除；导出清洗版和异常标记版为两个新文件。</li>
             </ol>
           </div>
           <div class="note">
-            <strong>掌握标准：</strong>你能说明模块、文件模式、异常分支和类各自解决什么问题；能写出最小可运行代码，并指出副作用、数据丢失、异常吞没与错误继承关系等风险。
+            <strong>掌握标准：</strong>你能说明数组、图表、DataFrame 与类各自解决什么问题；能写出最小可运行代码，并指出数据泄漏、图表误用、未记录的清洗规则与错误继承关系等风险。
           </div>
         </section>
 </main>

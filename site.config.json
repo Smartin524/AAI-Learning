@@ -4,7 +4,7 @@
     "githubUrl": "https://github.com/Smartin524/AAI-Learning"
   },
   "redirects": {
-    "courses/ca6000-week-2.html": "courses/ca6000-module-03.html"
+    "courses/ca6000-week-2.html": "courses/ca6000-module-02.html"
   },
   "sections": [
     { "id": "terms", "label": "必须掌握的术语" },
@@ -56,13 +56,22 @@
           ]
         },
         {
+          "output": "courses/ca6000-module-02.html",
+          "content": "src/content/courses/ca6000-module-02.html",
+          "navLabel": "Module 2 第二周：模块、文件与异常",
+          "code": true,
+          "subsections": [
+            { "id": "topic-4", "label": "Topic 4 Modules and Packages" },
+            { "id": "topic-6", "label": "Topic 6 File I/O" },
+            { "id": "topic-7", "label": "Topic 7 Error Handling" }
+          ]
+        },
+        {
           "output": "courses/ca6000-module-03.html",
           "content": "src/content/courses/ca6000-module-03.html",
           "navLabel": "Module 3 第三周：工具与数据处理",
           "code": true,
           "subsections": [
-            { "id": "topic-6", "label": "Topic 6 File I/O" },
-            { "id": "topic-7", "label": "Topic 7 Error Handling" },
             { "id": "topic-8-numpy", "label": "Topic 8 NumPy" },
             { "id": "topic-8-matplotlib", "label": "Topic 8 Matplotlib" },
             { "id": "topic-10-pandas", "label": "Topic 10 Pandas" },

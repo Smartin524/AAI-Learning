@@ -1,0 +1,95 @@
+<main class="chapter">
+  <header class="chapter-hero">
+    <div class="chapter-kicker">CA6000 · APPLIED AI PROGRAMMING · MODULE 02</div>
+    <h1>第二周：模块、文件与异常处理</h1>
+    <p class="chapter-summary">第二周把单文件练习推进为可维护程序：用模块拆分功能，用文本、CSV 与 JSON 保存数据，并为可预期的失败路径提供明确处理。</p>
+    <div class="outcomes"><strong>学完你应该能够：</strong>导入与自测模块；安全读写文本、CSV 和 JSON；理解文件模式的覆盖风险；针对具体异常使用 <code>try / except / else / finally</code>。</div>
+  </header>
+
+  <section class="content-section" id="terms">
+    <h2>必须掌握的术语</h2>
+    <table class="terms">
+      <tr><th>术语</th><th>准确理解</th></tr>
+      <tr><td>module / package / library</td><td>module 是可导入的 Python 文件；package 是模块集合；library 是为一类问题提供的可复用代码集合。</td></tr>
+      <tr><td>import / alias</td><td><code>import</code> 引入其他模块；<code>as</code> 在当前作用域给导入名取局部别名。</td></tr>
+      <tr><td><code>__name__ == "__main__"</code></td><td>文件被直接运行时为真；用于保留模块的自测入口，避免被导入时意外执行测试。</td></tr>
+      <tr><td>file mode</td><td><code>r</code> 读、<code>w</code> 写并截断、<code>a</code> 追加；<code>+</code> 表示可读写。模式决定文件指针位置和覆盖风险。</td></tr>
+      <tr><td>context manager</td><td><code>with open(...)</code> 在离开代码块时自动关闭文件，即使代码途中抛出异常也会清理资源。</td></tr>
+      <tr><td>CSV / JSON</td><td>CSV 用行列保存表格；JSON 用对象和数组保存有命名、可嵌套的数据结构。</td></tr>
+      <tr><td>exception / assert</td><td>exception 是运行期可捕获的错误对象；<code>assert</code> 是开发期不变量检查，不能替代用户输入校验。</td></tr>
+    </table>
+  </section>
+
+  <section class="content-section" id="core">
+    <h2>核心知识</h2>
+
+    <h3 id="topic-4">Topic 4 · Modules and Packages｜把代码拆成可复用单元</h3>
+    <p class="chapter-chart-map"><strong>本章代码 / 工具：</strong>标准库 <code>time</code>、<code>random</code>、<code>re</code>；自定义 module；<code>pip</code> / <code>conda</code> 安装第三方 package。</p>
+    <p>导入整个模块可保留命名空间，调用来源清楚；只导入名称会更简短，但要避免来源不可追踪。自定义 module 就是含函数或类的 <code>.py</code> 文件；把自测放在 <code>__main__</code> 条件内，直接运行时测试、被导入时只提供接口。</p>
+    <pre># greeting.py
+def greeting(name):
+    return f"Hello, {name}!"
+
+if __name__ == "__main__":
+    print(greeting("test"))
+
+# app.py
+import greeting
+print(greeting.greeting("Nick"))</pre>
+    <figure class="course-example">
+      <img src="../assets/courseware/module-02/module-test-main.png" alt="课件展示用 __name__ 等于 __main__ 让模块既能单独测试，也能被其他程序导入" loading="lazy" />
+      <figcaption>课件示例：模块代码与自测入口分开，导入时不会发生意外副作用。</figcaption>
+    </figure>
+
+    <h3 id="topic-6">Topic 6 · File I/O｜让程序可靠读写文件</h3>
+    <p class="chapter-chart-map"><strong>本章代码 / 格式：</strong><code>open()</code>、<code>read()</code>、<code>readline()</code>、<code>write()</code>；文本模式、CSV 的 <code>reader</code> / <code>DictReader</code> 与 JSON 的 <code>loads()</code>。</p>
+    <p>使用 <code>w</code> 会清空已有文件，只有明确要覆盖时才使用；日志和增量记录优先 <code>a</code>。<code>with</code> 确保文件关闭并刷新缓冲。CSV 的 <code>DictReader</code> 读出的值默认是字符串，后续计算前要显式转换。</p>
+    <pre>from pathlib import Path
+
+path = Path("notes.txt")
+with path.open("a", encoding="utf-8") as file:
+    file.write("completed topic 6\n")
+
+with path.open("r", encoding="utf-8") as file:
+    for line in file:
+        print(line.rstrip())</pre>
+    <figure class="course-example">
+      <img src="../assets/courseware/module-02/file-modes.png" alt="课件汇总 r、r+、w、w+、a 和 a+ 的读写行为与文件指针位置" loading="lazy" />
+      <figcaption>课件示例：写入前先确认文件模式是否会截断旧内容。</figcaption>
+    </figure>
+
+    <h3 id="topic-7">Topic 7 · Error Handling｜把失败路径设计进程序</h3>
+    <p class="chapter-chart-map"><strong>本章代码 / 工具：</strong><code>try</code>、具体 <code>except</code>、<code>else</code>、<code>finally</code>、<code>assert</code>；<code>time.perf_counter()</code> 与 <code>time.process_time()</code>。</p>
+    <p>把可能失败的最小操作放进 <code>try</code>；用具体异常给用户可理解的下一步；<code>else</code> 放成功路径，<code>finally</code> 放必须执行的清理。不要用宽泛 <code>except:</code> 把真正的编程错误伪装成已处理。</p>
+    <pre>try:
+    number = int(input("Enter a value: "))
+except ValueError:
+    print("Please enter an integer.")
+else:
+    print(f"Value is {number}")
+finally:
+    print("Input attempt completed.")</pre>
+    <figure class="course-example">
+      <img src="../assets/courseware/module-02/try-except-finally.png" alt="课件示例展示输入转换中的 try、ValueError except、else 和 finally 分支" loading="lazy" />
+      <figcaption>课件示例：成功逻辑放在 <code>else</code>，收尾工作放在 <code>finally</code>。</figcaption>
+    </figure>
+  </section>
+
+  <section class="content-section" id="errors">
+    <h2>常见错误</h2>
+    <ul>
+      <li>用 <code>from module import *</code> 或过短别名掩盖函数来源。</li>
+      <li>把自测代码放在模块顶层，导致每次 import 都执行副作用。</li>
+      <li>无意中用 <code>w</code> 覆盖文件，或未使用 <code>with</code> 而遗漏关闭。</li>
+      <li>把 CSV 字段全部当作数值，或把 JSON 当作无需验证的可信结构。</li>
+      <li>捕获所有异常、静默失败，或把 <code>assert</code> 当作正常用户输入处理。</li>
+    </ul>
+  </section>
+
+  <section class="content-section" id="practice">
+    <h2>练习</h2>
+    <div class="practice-card"><strong>练习 1：模块与自测。</strong><br />创建 <code>validators.py</code>，实现 <code>has_digit(text)</code> 与 <code>has_uppercase(text)</code>；添加 <code>__main__</code> 自测，并从另一文件导入验证自测不会运行。</div>
+    <div class="practice-card"><strong>练习 2：可恢复的读写。</strong><br />用 <code>with</code> 将三条学习记录写入 CSV 或 JSON；重新读取并转换数值字段，为文件不存在设计 <code>FileNotFoundError</code> 分支。</div>
+    <div class="practice-card"><strong>练习 3：明确错误边界。</strong><br />实现一个读取整数并计算倒数的函数，分别处理非整数和零；说明为何两种失败需要不同提示。</div>
+  </section>
+</main>
