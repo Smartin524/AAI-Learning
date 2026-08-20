@@ -3,6 +3,9 @@
     "title": "AAI",
     "githubUrl": "https://github.com/Smartin524/AAI-Learning"
   },
+  "redirects": {
+    "courses/ca6000-week-2.html": "courses/ca6000-module-03.html"
+  },
   "sections": [
     { "id": "terms", "label": "必须掌握的术语" },
     { "id": "core", "label": "核心知识" },

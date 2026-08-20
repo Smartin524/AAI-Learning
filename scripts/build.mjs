@@ -57,6 +57,11 @@ const validateConfig = () => {
       outputs.add(page.output);
     }
   }
+
+  for (const [legacyOutput, targetOutput] of Object.entries(config.redirects ?? {})) {
+    if (outputs.has(legacyOutput)) throw new Error(`Redirect output duplicates a course page: ${legacyOutput}`);
+    if (!outputs.has(targetOutput)) throw new Error(`Redirect target is not a course page: ${targetOutput}`);
+  }
 };
 
 validateConfig();
@@ -242,6 +247,31 @@ for (const course of config.courses) {
   }
 }
 
+for (const [legacyOutput, targetOutput] of Object.entries(config.redirects ?? {})) {
+  const targetHref = relativePageHref(legacyOutput, targetOutput);
+  const prefix = relativePrefix(legacyOutput);
+  const legacyHtml = `${generatedNotice}
+<!doctype html>
+<html lang="zh-CN" data-color-mode="auto">
+  <head>
+    <meta charset="utf-8" />
+    <title>${escapeHtml(config.site.title)}</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta http-equiv="refresh" content="0; url=${targetHref}" />
+    <link rel="canonical" href="${targetHref}" />
+    <link rel="icon" type="image/svg+xml" href="${faviconDataUrl}" />
+    <script src="${prefix}${assetManifest.themeInit}"></script>
+  </head>
+  <body>
+    <p>正在打开 <a href="${targetHref}">${escapeHtml(config.site.title)}</a>……</p>
+  </body>
+</html>
+`;
+  const outputPath = fromRoot(legacyOutput);
+  await mkdir(path.dirname(outputPath), { recursive: true });
+  await writeFile(outputPath, `${cleanHtml(legacyHtml)}\n`);
+}
+
 const redirectHtml = `${generatedNotice}
 <!doctype html>
 <html lang="zh-CN" data-color-mode="auto">
@@ -261,5 +291,7 @@ const redirectHtml = `${generatedNotice}
 await mkdir(fromRoot("outputs"), { recursive: true });
 await writeFile(fromRoot("outputs/aai-learning-dashboard.html"), `${cleanHtml(redirectHtml)}\n`);
 
-console.log(`Built ${config.courses.reduce((sum, course) => sum + course.pages.length, 0) + 2} HTML files.`);
+const coursePageCount = config.courses.reduce((sum, course) => sum + course.pages.length, 0);
+const redirectCount = Object.keys(config.redirects ?? {}).length;
+console.log(`Built ${coursePageCount + redirectCount + 2} HTML files.`);
 console.log(`Generated assets: ${Object.values(assetManifest).map(toPosix).join(", ")}`);
