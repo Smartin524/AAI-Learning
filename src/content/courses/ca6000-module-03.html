@@ -46,6 +46,182 @@ weights = np.linalg.solve(features, fare)
 scaled = (fare - fare.min()) / (fare.max() - fare.min())</pre>
           <p>访问、切片和布尔掩码都应检查 <code>shape</code>，不要让二维数组在不知情时被压平成一维。<code>copy()</code> 创建独立数据；切片往往是 view，修改它可能影响原数组。normalisation 应只根据训练集参数拟合，再应用到验证/测试数据，避免未来信息泄漏。</p>
 
+          <h4>NumPy 常用操作详解｜先掌握数组思维</h4>
+          <p>NumPy 最重要的不是记住很多函数，而是理解：一个数组有固定的维度、形状和数据类型；运算通常一次作用于整组元素，并沿指定轴汇总。下面覆盖数据分析和机器学习前处理中最常用的操作。</p>
+
+          <h4>1. 导入与创建数组</h4>
+          <pre>import numpy as np
+
+# 从 Python list 创建
+a = np.array([10, 20, 30])
+matrix = np.array([
+    [1, 2, 3],
+    [4, 5, 6]
+])
+
+# 按规律创建
+np.arange(0, 10, 2)       # [0, 2, 4, 6, 8]，结束值不包含
+np.linspace(0, 1, 5)      # 在 0 到 1 之间均匀取 5 个点
+np.zeros((2, 3))          # 2 × 3 的全 0 数组
+np.ones((2, 3))           # 2 × 3 的全 1 数组
+np.full((2, 3), 7)        # 2 × 3，全部填 7
+np.eye(3)                 # 3 × 3 单位矩阵</pre>
+          <p><code>arange()</code> 的第三个参数是步长，适合整数序列；浮点区间通常优先用 <code>linspace()</code>，因为它明确指定点数，较少受到浮点步长误差影响。</p>
+
+          <h4>2. 看懂数组的维度、形状和类型</h4>
+          <pre>matrix.ndim       # 维度数量：2
+matrix.shape      # 每个维度的长度：(2, 3)
+matrix.size       # 元素总数：6
+matrix.dtype      # 元素类型，例如 int64
+
+matrix.astype(float)  # 转成浮点数组，返回新数组</pre>
+          <p><code>shape=(2, 3)</code> 表示 2 行 3 列，不是“第 2 维有 3 行”。NumPy 数组通常要求元素使用同一种 <code>dtype</code>；混入字符串可能使整组数据转换成字符串或对象类型，从而失去高效数值运算。</p>
+
+          <h4>3. 索引与切片</h4>
+          <pre>a = np.array([10, 20, 30, 40, 50])
+a[0]             # 第一个元素：10
+a[-1]            # 最后一个元素：50
+a[1:4]           # 位置 1 到 3，结束位置 4 不包含
+a[::2]           # 每隔一个元素取一次
+
+matrix = np.array([[1, 2, 3], [4, 5, 6]])
+matrix[0, 1]      # 第一行第二列：2
+matrix[0, :]      # 第一行
+matrix[:, 1]      # 第二列
+matrix[:, 1:3]    # 第 2 到第 3 列，保持二维</pre>
+          <p>二维数组使用 <code>array[行, 列]</code>。<code>matrix[:, 1]</code> 返回一维形状 <code>(2,)</code>，而 <code>matrix[:, 1:2]</code> 保持二维形状 <code>(2, 1)</code>；机器学习模型对这两种形状可能有不同要求。</p>
+
+          <h4>4. 布尔筛选与条件替换</h4>
+          <pre>scores = np.array([55, 72, 88, 61, 95])
+
+scores &gt;= 70                    # 产生 True / False 掩码
+scores[scores &gt;= 70]            # 只保留不低于 70 的值
+scores[(scores &gt;= 60) &amp; (scores &lt; 90)]
+
+np.where(scores &gt;= 70, "Pass", "Fail")
+np.clip(scores, 60, 90)         # 小于 60 变 60，大于 90 变 90</pre>
+          <p>多个数组条件使用 <code>&amp;</code>、<code>|</code>、<code>~</code>，每个条件都要加括号。<code>np.where()</code> 根据条件选择两个结果，<code>clip()</code> 则把数值限制在上下界内；二者含义不同，不应为了方便随意截断真实异常值。</p>
+
+          <h4>5. 向量化运算：一次作用于整个数组</h4>
+          <pre>x = np.array([1, 2, 3])
+
+x + 10            # [11, 12, 13]
+x * 2             # [2, 4, 6]
+x ** 2            # [1, 4, 9]
+np.sqrt(x)         # 平方根
+np.log(x)          # 自然对数
+np.round(x / 3, 2) # 保留两位小数
+
+y = np.array([10, 20, 30])
+x + y              # 对应位置相加</pre>
+          <p>这些表达式不需要自己写 Python <code>for</code> 循环。NumPy 在底层批量执行数值运算，代码更短、通常也更快。前提是数组形状兼容且每个位置的对应关系确实有意义。</p>
+
+          <h4>6. Broadcasting：形状兼容时自动扩展</h4>
+          <pre>matrix = np.array([
+    [10, 20, 30],
+    [40, 50, 60]
+])
+
+matrix + 5                    # 标量扩展到全部元素
+
+column_means = matrix.mean(axis=0)  # 每列均值，shape 为 (3,)
+centered = matrix - column_means    # (2, 3) 减 (3,)
+
+row_offsets = np.array([[100], [200]])  # shape 为 (2, 1)
+adjusted = matrix + row_offsets</pre>
+          <p>Broadcasting 从最后一个维度向前比较：两个维度相等，或其中一个为 1，才可自动扩展。它不会真正复制整份数据，但也可能让形状错误“合法运行”；结果可疑时先打印各数组的 <code>shape</code>。</p>
+
+          <h4>7. 汇总统计与 <code>axis</code></h4>
+          <pre>matrix.sum()           # 全部元素合计
+matrix.mean()          # 全部元素平均值
+matrix.min()           # 最小值
+matrix.max()           # 最大值
+matrix.std()           # 标准差
+matrix.argmin()        # 最小值在展平数组中的位置
+matrix.argmax()        # 最大值在展平数组中的位置
+
+matrix.sum(axis=0)     # 沿行压缩：得到每列合计
+matrix.sum(axis=1)     # 沿列压缩：得到每行合计
+matrix.mean(axis=0, keepdims=True)  # 保留二维形状</pre>
+          <p>理解 <code>axis</code> 的可靠方法不是死背“0 是列、1 是行”，而是看哪个维度被压缩：<code>axis=0</code> 消掉第 0 维（行），留下每列结果；<code>axis=1</code> 消掉第 1 维（列），留下每行结果。</p>
+
+          <h4>8. 改变形状、转置与展平</h4>
+          <pre>a = np.arange(12)
+matrix = a.reshape(3, 4)   # 3 行 4 列
+matrix.reshape(2, -1)      # 自动推断另一维为 6
+matrix.T                   # 转置：shape 从 (3, 4) 变 (4, 3)
+matrix.ravel()             # 展平成一维，可能共享原数据
+matrix.flatten()           # 展平成一维，并创建副本</pre>
+          <p><code>reshape()</code> 前后元素总数必须一致，<code>-1</code> 最多出现一次，让 NumPy 自动推断该维长度。转置只交换轴，不会改变元素值；一维数组 <code>a.T</code> 仍是一维，若需要列向量应使用 <code>a.reshape(-1, 1)</code>。</p>
+
+          <h4>9. 合并、拆分、排序与唯一值</h4>
+          <pre>a = np.array([1, 2, 3])
+b = np.array([4, 5, 6])
+
+np.concatenate([a, b])          # 一维连接
+np.stack([a, b], axis=0)        # 新增轴，shape 为 (2, 3)
+np.vstack([a, b])               # 按行堆叠
+np.column_stack([a, b])         # 按列堆叠
+
+np.sort(np.array([3, 1, 2]))
+np.unique(np.array([2, 1, 2, 3]), return_counts=True)
+np.array_split(np.arange(10), 3)</pre>
+          <p><code>concatenate()</code> 沿已有轴连接，<code>stack()</code> 会新增一个轴。合并前除目标轴外，其余维度必须兼容；经常先检查每个数组的 <code>shape</code>。</p>
+
+          <h4>10. 缺失值与 NaN</h4>
+          <pre>values = np.array([10.0, np.nan, 30.0])
+
+np.isnan(values)        # 哪些位置是 NaN
+np.isnan(values).sum()  # NaN 数量
+np.nanmean(values)      # 忽略 NaN 的平均值
+np.nansum(values)       # 忽略 NaN 的合计
+np.nanmin(values)
+np.nanmax(values)</pre>
+          <p><code>np.nan == np.nan</code> 的结果是 False，所以不能用等号判断 NaN；应使用 <code>np.isnan()</code>。NaN 本质上是浮点缺失标记，整数数组通常不能直接存普通 NaN，需要转成浮点或改用 Pandas 的可空数据类型。</p>
+
+          <h4>11. 随机数与可复现性</h4>
+          <pre>rng = np.random.default_rng(seed=42)
+
+rng.integers(1, 7, size=10)       # 模拟 10 次骰子，结束值 7 不包含
+rng.random(5)                     # 0 到 1 的均匀随机数
+rng.normal(0, 1, size=1000)       # 均值 0、标准差 1 的正态分布
+rng.choice(["A", "B", "C"], size=5)
+rng.shuffle(scores)               # 原地打乱</pre>
+          <p>新代码优先使用 <code>np.random.default_rng()</code>。固定 <code>seed</code> 能让示例、测试和实验结果可复现；正式模拟时也应记录种子，而不是反复运行直到出现喜欢的结果。</p>
+
+          <h4>12. 点积、矩阵乘法与线性方程</h4>
+          <pre>x = np.array([1, 2, 3])
+y = np.array([4, 5, 6])
+np.dot(x, y)                 # 向量点积：32
+
+A = np.array([[1, 2], [3, 4]])
+B = np.array([[5, 6], [7, 8]])
+A @ B                       # 矩阵乘法
+A * B                       # 对应元素相乘，不是矩阵乘法
+
+# 求解 Ax = b；通常不要手动计算逆矩阵再相乘
+b = np.array([5, 11])
+x = np.linalg.solve(A, b)</pre>
+          <p><code>*</code> 是逐元素乘法，<code>@</code> 才是矩阵乘法。解线性方程使用 <code>np.linalg.solve()</code> 通常比 <code>np.linalg.inv(A) @ b</code> 更稳定、也更高效；求解前要确认矩阵维度和数值条件。</p>
+
+          <h4>13. View 与 Copy：最容易制造隐蔽错误的地方</h4>
+          <pre>a = np.array([10, 20, 30, 40])
+
+view = a[1:3]       # 切片通常与 a 共享数据
+view[0] = 999       # a 也可能随之改变
+
+safe = a[1:3].copy()
+safe[0] = 0         # 不影响 a</pre>
+          <p>为了性能，NumPy 切片常返回 view，而布尔或花式索引常返回 copy。不要仅凭语法猜测是否共享数据；准备修改切片且不想影响原数组时，明确调用 <code>copy()</code>。</p>
+
+          <h4>NumPy 学习优先级</h4>
+          <table class="terms">
+            <tr><th>优先级</th><th>应掌握内容</th></tr>
+            <tr><td>★★★★★ 必须会</td><td><code>array()</code>、<code>arange()</code>、<code>linspace()</code>、<code>shape</code>、<code>dtype</code>、索引切片、布尔筛选、向量化运算、<code>sum()</code>、<code>mean()</code> 与 <code>axis</code>。</td></tr>
+            <tr><td>★★★★ 很快会用到</td><td>broadcasting、<code>reshape()</code>、转置、<code>where()</code>、<code>concatenate()</code>、随机数、NaN 统计及 view / copy。</td></tr>
+            <tr><td>★★★ 后面再学</td><td><code>stack()</code>、高级索引、线性代数、多个轴的变换、性能与内存布局。</td></tr>
+          </table>
+
           <h3 id="topic-8-matplotlib">Topic 8 · Matplotlib｜先让图回答一个明确问题</h3>
           <p class="chapter-chart-map"><strong>本章图表：</strong>折线图、subplot、scatter plot、bar / barh、histogram、pie chart 与 3D plot。它们分别用于连续变化、并列比较、关系、类别比较、分布、组成和空间表面；图形选择仍必须回到数据类型与问题。</p>
           <p>Matplotlib 常以 <code>matplotlib.pyplot</code> 作为 <code>plt</code> 导入。每张图都要明确坐标轴、标题、单位与需要时的 grid；marker、line style、颜色和 subplot 应服务于比较，不是装饰。多图时让轴范围、单位和排序可比，避免读者在每个面板重新猜测尺度。</p>
@@ -61,21 +237,700 @@ plt.title("Category comparison")
 plt.show()</pre>
           <p>直方图的柱是连续区间，bar chart 的柱是离散类别；两者不能混用。pie chart 只适用于少数部分组成整体且差异明显的情况；若任务是比较大小或排序，bar chart 通常更准确。课件涵盖 3D，但 3D 透视会干扰精确比较，应只在第三维空间结构本身是问题时采用。</p>
 
+          <h4>Matplotlib 常用操作详解｜从“画出来”到“读得懂”</h4>
+          <p>Matplotlib 的核心流程是：先明确问题与数据类型，再创建 Figure 和 Axes，在指定 Axes 上画图，最后补齐标题、坐标轴、单位、图例和必要标注。下面优先使用更明确的面向对象写法。</p>
+
+          <h4>1. 导入与第一张图</h4>
+          <pre>import matplotlib.pyplot as plt
+
+x = [1, 2, 3, 4, 5]
+y = [2, 5, 4, 8, 10]
+
+fig, ax = plt.subplots(figsize=(8, 5))
+ax.plot(x, y)
+ax.set_title("Value over time")
+ax.set_xlabel("Time (day)")
+ax.set_ylabel("Value (unit)")
+plt.show()</pre>
+          <p><code>fig</code> 是整张画布，<code>ax</code> 是真正承载坐标轴和数据的绘图区。<code>plt.title()</code> 会修改“当前 Axes”，而 <code>ax.set_title()</code> 明确指定目标；只有一张简单图时两者都能用，多子图时优先使用 <code>ax</code> 写法。</p>
+
+          <h4>2. 折线图 <code>plot()</code>：展示连续变化</h4>
+          <pre>fig, ax = plt.subplots(figsize=(8, 5))
+
+ax.plot(
+    months,
+    sales,
+    color="#2563eb",
+    marker="o",
+    linestyle="-",
+    linewidth=2,
+    label="Sales"
+)
+
+ax.set_title("Monthly sales")
+ax.set_xlabel("Month")
+ax.set_ylabel("Sales (units)")
+ax.legend()
+ax.grid(axis="y", linestyle="--", alpha=0.3)
+plt.show()</pre>
+          <p>折线暗示相邻点之间存在连续顺序，因此适合时间、距离等有序数据。无自然顺序的类别不应为了好看随意连线。<code>marker</code> 强调观测点，<code>linestyle</code> 和 <code>linewidth</code> 控制线型与粗细。</p>
+
+          <h4>3. 散点图 <code>scatter()</code>：观察两个变量的关系</h4>
+          <pre>fig, ax = plt.subplots(figsize=(7, 5))
+
+points = ax.scatter(
+    study_hours,
+    exam_scores,
+    c=attendance,
+    s=70,
+    cmap="viridis",
+    alpha=0.8,
+    edgecolors="white"
+)
+
+ax.set_title("Study hours and exam score")
+ax.set_xlabel("Study hours (h)")
+ax.set_ylabel("Exam score")
+fig.colorbar(points, ax=ax, label="Attendance (%)")
+plt.show()</pre>
+          <p><code>x</code> 和 <code>y</code> 决定位置，<code>c</code> 可编码第三个变量的颜色，<code>s</code> 控制点面积。散点趋势只能说明关联，不能单独证明因果；点很多时用较小尺寸和透明度缓解遮挡。</p>
+
+          <h4>4. 柱状图 <code>bar()</code>：比较离散类别</h4>
+          <pre>categories = ["A", "B", "C"]
+values = [18, 31, 24]
+
+fig, ax = plt.subplots(figsize=(7, 5))
+bars = ax.bar(categories, values, color="#2563eb")
+
+ax.set_title("Orders by category")
+ax.set_xlabel("Category")
+ax.set_ylabel("Orders (count)")
+ax.bar_label(bars, padding=3)
+ax.set_ylim(0, 35)
+plt.show()</pre>
+          <p>柱长用于比较数量，通常应从 0 开始，否则微小差异会被视觉夸大。类别很多或名称很长时使用 <code>barh()</code>；若重点是排名，先按数值排序。</p>
+
+          <h4>5. 直方图 <code>hist()</code>：查看连续数据分布</h4>
+          <pre>fig, ax = plt.subplots(figsize=(7, 5))
+
+ax.hist(
+    scores,
+    bins=10,
+    color="#2563eb",
+    edgecolor="white"
+)
+
+ax.set_title("Distribution of exam scores")
+ax.set_xlabel("Exam score")
+ax.set_ylabel("Students (count)")
+plt.show()</pre>
+          <p><code>bins</code> 决定数值被分成多少区间，会显著改变分布外观；应尝试合理区间并公开设置。直方图的柱表示连续区间，通常相连；类别频数应使用 bar chart，而不是 histogram。</p>
+
+          <h4>6. 箱线图 <code>boxplot()</code>：比较分布与候选异常值</h4>
+          <pre>fig, ax = plt.subplots(figsize=(7, 5))
+
+ax.boxplot(
+    [class_a_scores, class_b_scores],
+    tick_labels=["Class A", "Class B"],
+    showmeans=True
+)
+
+ax.set_title("Score distribution by class")
+ax.set_ylabel("Exam score")
+plt.show()</pre>
+          <p>箱体表示四分位范围，中线通常是中位数，须线和离群点取决于规则。落在须线外的点只是值得检查的候选异常值，不等于录入错误，也不应自动删除。</p>
+
+          <h4>7. 堆叠面积图 <code>stackplot()</code>：同时看总量和组成</h4>
+          <pre>fig, ax = plt.subplots(figsize=(8, 5))
+
+ax.stackplot(
+    years,
+    samsung,
+    apple,
+    xiaomi,
+    labels=["Samsung", "Apple", "Xiaomi"],
+    colors=["#1f77b4", "#ff7f0e", "#2ca02c"],
+    alpha=0.85
+)
+
+ax.set_title("Market share")
+ax.set_xlabel("Year")
+ax.set_ylabel("Share (%)")
+ax.legend(loc="upper left")
+plt.show()</pre>
+          <p>各层从下向上累加，最上边界代表总量。除最底层外，中间类别没有共同零基线，所以不适合精确比较细微变化；若重点是每条序列自身趋势，普通折线图通常更清楚。</p>
+
+          <h4>8. 饼图 <code>pie()</code>：只用于简单的整体组成</h4>
+          <pre>fig, ax = plt.subplots(figsize=(6, 6))
+
+ax.pie(
+    values,
+    labels=categories,
+    autopct="%.1f%%",
+    startangle=90
+)
+ax.set_title("Share by category")
+plt.show()</pre>
+          <p>饼图适合少量、互斥且合计构成整体的类别。类别多、数值接近、需要排序或精确比较时，改用排序柱状图；3D 饼图会扭曲面积与角度，应避免使用。</p>
+
+          <h4>9. 子图 <code>subplots()</code>：一张 Figure 放多个 Axes</h4>
+          <pre>fig, axes = plt.subplots(
+    nrows=1,
+    ncols=2,
+    figsize=(12, 4),
+    sharey=True
+)
+
+axes[0].bar(categories, current_values)
+axes[0].set_title("Current year")
+
+axes[1].bar(categories, previous_values)
+axes[1].set_title("Previous year")
+
+for ax in axes:
+    ax.set_xlabel("Category")
+    ax.grid(axis="y", alpha=0.25)
+
+axes[0].set_ylabel("Orders (count)")
+fig.suptitle("Year comparison")
+fig.tight_layout()
+plt.show()</pre>
+          <p><code>plt.subplots()</code> 返回 Figure 和 Axes；多个子图时 <code>axes</code> 通常是数组。<code>sharex</code> / <code>sharey</code> 让面板使用共同尺度，适合直接比较；<code>fig.suptitle()</code> 是整张图标题，各 <code>ax.set_title()</code> 是子图标题。</p>
+
+          <h4>10. 标题、坐标轴、刻度、范围与网格</h4>
+          <pre>ax.set_title("Monthly revenue")
+ax.set_xlabel("Month")
+ax.set_ylabel("Revenue (SGD)")
+
+ax.set_xlim(1, 12)
+ax.set_ylim(0, 100000)
+ax.set_xticks(range(1, 13))
+ax.tick_params(axis="x", rotation=45)
+
+ax.grid(
+    axis="y",
+    linestyle="--",
+    linewidth=0.8,
+    alpha=0.3
+)</pre>
+          <p>标题应说明图在讲什么，坐标轴标签要带单位。设置 <code>xlim</code> / <code>ylim</code> 会改变视觉判断，不应为了制造强烈趋势随意截轴；网格线只用于辅助读数，透明度应低于数据本身。</p>
+
+          <h4>11. 图例、直接标注与参考线</h4>
+          <pre>fig, ax = plt.subplots(figsize=(8, 5))
+
+ax.plot(years, actual, label="Actual")
+ax.plot(years, target, linestyle="--", label="Target")
+ax.axhline(80, color="crimson", linewidth=1, label="Threshold")
+
+ax.annotate(
+    "Peak",
+    xy=(peak_year, peak_value),
+    xytext=(peak_year - 3, peak_value + 10),
+    arrowprops={"arrowstyle": "-&gt;"}
+)
+
+ax.legend(loc="best", frameon=False)
+plt.show()</pre>
+          <p>多条线必须用 <code>label</code> 配合 <code>legend()</code> 说明。只有一个或两个重点时，<code>annotate()</code> 的直接标注通常比让读者反复对照图例更快；参考线应有明确含义和标签。</p>
+
+          <h4>12. 颜色、线型、标记与透明度</h4>
+          <pre>ax.plot(
+    x,
+    y,
+    color="#2563eb",  # 颜色
+    linestyle="--",   # 线型
+    linewidth=2,       # 线宽
+    marker="o",        # 数据点形状
+    markersize=6,      # 数据点大小
+    alpha=0.8           # 透明度
+)</pre>
+          <p>颜色首先用于表达类别、顺序或数值，而不是装饰。不要只靠红绿区分信息；同时使用线型、标记或直接标签，并选择对色觉差异友好的配色。连续数值使用顺序或发散 colormap，离散类别使用彼此可区分的定性色。</p>
+
+          <h4>13. 保存清晰图片</h4>
+          <pre>fig, ax = plt.subplots(figsize=(8, 5), dpi=120)
+ax.plot(x, y)
+ax.set_title("Analysis result")
+
+fig.savefig(
+    "analysis-result.png",
+    dpi=300,
+    bbox_inches="tight",
+    facecolor="white"
+)
+
+fig.savefig("analysis-result.svg", bbox_inches="tight")
+plt.show()</pre>
+          <p><code>figsize</code> 使用英寸，<code>dpi</code> 控制每英寸像素数。PNG 适合包含大量点或要直接插图的场景；SVG、PDF 等矢量格式更适合线条、文字和后续缩放。保存通常放在 <code>show()</code> 前，并使用 <code>bbox_inches="tight"</code> 防止标签被裁切。</p>
+
+          <h4>14. Pandas 与 Matplotlib 配合</h4>
+          <pre>summary = (
+    df.groupby("Major", as_index=False)["Score"]
+      .mean()
+      .sort_values("Score")
+)
+
+fig, ax = plt.subplots(figsize=(7, 5))
+ax.barh(summary["Major"], summary["Score"])
+ax.set_title("Average score by major")
+ax.set_xlabel("Average score")
+ax.set_ylabel("Major")
+plt.show()</pre>
+          <p>Pandas 负责选择、清洗、分组和统计，Matplotlib 负责视觉编码。先生成每一行都具有明确含义的汇总表，再绘图；不要把复杂清洗逻辑藏在绘图语句里。</p>
+
+          <h4>15. 常见问题与调试顺序</h4>
+          <table class="terms">
+            <tr><th>现象</th><th>优先检查</th></tr>
+            <tr><td>没有显示图</td><td>单元格是否仍在运行、是否调用 <code>plt.show()</code>、Jupyter kernel 是否正常。</td></tr>
+            <tr><td><code>x</code>、<code>y</code> 长度报错</td><td>运行 <code>len(x)</code>、<code>len(y)</code>；每个横坐标必须有对应纵坐标。</td></tr>
+            <tr><td>标题加到错误子图</td><td>避免依赖“当前 Axes”，改用 <code>ax.set_title()</code>。</td></tr>
+            <tr><td>重复运行后线条叠加</td><td>每次绘图前创建新的 <code>fig, ax = plt.subplots()</code>，或清理旧 Axes。</td></tr>
+            <tr><td>中文显示方框</td><td>系统缺少或 Matplotlib 未配置可用中文字体；先检查字体，而不是修改数据。</td></tr>
+            <tr><td>图例不出现</td><td>绘图时是否设置 <code>label</code>，之后是否调用 <code>legend()</code>。</td></tr>
+          </table>
+
+          <h4>图表选择速查</h4>
+          <table class="terms">
+            <tr><th>问题</th><th>优先图表</th><th>注意</th></tr>
+            <tr><td>随时间如何变化？</td><td>折线图</td><td>时间顺序正确，标注单位和异常事件。</td></tr>
+            <tr><td>类别谁高谁低？</td><td>柱状图 / 横向柱状图</td><td>通常从 0 开始，必要时排序。</td></tr>
+            <tr><td>两个数值是否相关？</td><td>散点图</td><td>关联不等于因果，注意遮挡和异常点。</td></tr>
+            <tr><td>连续变量如何分布？</td><td>直方图 / 箱线图</td><td>检查 bins，并结合样本量解释。</td></tr>
+            <tr><td>总量由什么组成？</td><td>堆叠面积图 / 堆叠柱状图</td><td>中间层不易精确比较。</td></tr>
+            <tr><td>少数类别如何构成整体？</td><td>饼图（谨慎）</td><td>类别多或差异小时改用柱状图。</td></tr>
+          </table>
+
+          <h4>Matplotlib 学习优先级</h4>
+          <table class="terms">
+            <tr><th>优先级</th><th>应掌握内容</th></tr>
+            <tr><td>★★★★★ 必须会</td><td><code>plt.subplots()</code>、<code>plot()</code>、<code>scatter()</code>、<code>bar()</code>、<code>hist()</code>、标题、轴标签、单位、图例、网格和 <code>show()</code>。</td></tr>
+            <tr><td>★★★★ 很快会用到</td><td>多子图、<code>boxplot()</code>、<code>stackplot()</code>、刻度与轴范围、标注、参考线、配色以及 <code>savefig()</code>。</td></tr>
+            <tr><td>★★★ 后面再学</td><td>自定义主题、日期刻度、复杂布局、动画、交互后端与 3D 图；只有分析问题确实需要时再使用。</td></tr>
+          </table>
+
           <h3 id="topic-10-pandas">Topic 10 · Pandas｜让数据清洗过程可追溯</h3>
-          <p class="chapter-chart-map"><strong>本章代码 / 方法：</strong><code>DataFrame</code>、<code>Series</code>、<code>read_csv()</code>、<code>read_json()</code>、<code>head()</code>、<code>tail()</code>、<code>info()</code>、<code>loc</code>、<code>isin()</code>、<code>isna()</code>、<code>dropna()</code>、<code>fillna()</code>、<code>duplicated()</code>、<code>value_counts()</code>、<code>to_csv()</code>。</p>
+          <p class="chapter-chart-map"><strong>本章代码 / 方法：</strong>创建与读取、检查、列选择、<code>loc</code> / <code>iloc</code>、条件过滤、新列、排序、聚合、缺失值、<code>groupby()</code>、字符串处理、类型转换、去重、拼接与合并，以及透视、长宽表转换、分箱、滚动窗口、重采样和 MultiIndex。</p>
           <p>Pandas DataFrame 是带行/列标签的二维表格，适合读取 CSV、JSON 和时间序列；每列可以有不同 dtype，这一点区别于同质的 NumPy array。加载数据后先看 <code>head()</code>、<code>tail()</code> 和 <code>info()</code>，再决定哪些字段应转换成数值或日期、哪些缺失值要保留、填补或删除。</p>
+          <h4>★★★★★ 必须会：完成一次基本数据分析</h4>
+          <table class="terms">
+            <tr><th>任务</th><th>常用写法</th><th>作用</th></tr>
+            <tr><td>创建 / 读取</td><td><code>pd.DataFrame()</code>、<code>pd.read_csv()</code></td><td>从字典创建表格，或从 CSV 文件读取表格。</td></tr>
+            <tr><td>快速检查</td><td><code>df.head()</code>、<code>df.info()</code>、<code>df.describe()</code></td><td>依次查看前几行、列类型与缺失情况、数值列统计摘要。</td></tr>
+            <tr><td>选择列</td><td><code>df["列名"]</code>、<code>df[["列1", "列2"]]</code></td><td>单中括号通常返回 Series；双层中括号返回 DataFrame。</td></tr>
+            <tr><td>选择行列</td><td><code>df.loc[...]</code>、<code>df.iloc[...]</code></td><td><code>loc</code> 按标签；<code>iloc</code> 按整数位置。</td></tr>
+            <tr><td>条件过滤</td><td><code>df[df["列"] &gt; xxx]</code></td><td>用布尔条件保留满足要求的行；多个条件要分别加括号。</td></tr>
+            <tr><td>创建 / 修改列</td><td><code>df["新列"] = ...</code></td><td>把计算结果写入新列；同名列已存在时会被替换。</td></tr>
+            <tr><td>排序</td><td><code>df.sort_values()</code></td><td>按一列或多列升序或降序排列。</td></tr>
+            <tr><td>聚合</td><td><code>mean()</code>、<code>sum()</code>、<code>max()</code>、<code>min()</code></td><td>对 Series、DataFrame 或分组结果计算摘要。</td></tr>
+            <tr><td>频数</td><td><code>value_counts()</code></td><td>统计每个不同值出现的次数或比例。</td></tr>
+            <tr><td>缺失值</td><td><code>isna()</code>、<code>fillna()</code>、<code>dropna()</code></td><td>先检查缺失，再根据含义填补或删除。</td></tr>
+            <tr><td>分组汇总</td><td><code>groupby()</code></td><td>按类别分组后计算均值、合计、数量等指标。</td></tr>
+          </table>
           <pre>import pandas as pd
 
-df = pd.read_csv("records.csv")
-print(df.info())
-df = df.drop_duplicates()
-df["score"] = pd.to_numeric(df["score"], errors="coerce")
-df["score"] = df["score"].fillna(df["score"].median())</pre>
+df = pd.DataFrame({
+    "name": ["Ana", "Ben", "Chen", "Dia"],
+    "team": ["A", "A", "B", "B"],
+    "score": [82, 67, None, 91]
+})
+
+df.head()                         # 查看前 5 行
+df.info()                         # 查看列类型、非空数量和内存信息
+df.describe()                     # 查看数值列的统计摘要
+
+scores = df["score"]             # 选择一列：返回 Series
+report = df[["name", "score"]]  # 选择多列：返回 DataFrame
+first_two = df.iloc[:2]           # 按整数位置选择前两行
+team_a = df.loc[df["team"] == "A", ["name", "score"]]
+high_scores = df[df["score"] &gt; 80]
+
+df["passed"] = df["score"] &gt;= 70
+df = df.sort_values("score", ascending=False)
+
+average = df["score"].mean()
+team_counts = df["team"].value_counts()
+missing_by_column = df.isna().sum()
+df["score"] = df["score"].fillna(df["score"].median())
+team_summary = df.groupby("team")["score"].agg(["mean", "sum", "max", "min"])</pre>
+          <p><code>loc</code> 的行、列范围由标签决定，标签切片通常包含结束标签；<code>iloc</code> 使用 Python 的整数位置，结束位置不包含。条件过滤不会自动修改原表；赋给新变量可保留筛选结果。多个条件要写成 <code>df[(条件1) &amp; (条件2)]</code>，不能使用普通的 <code>and</code>。</p>
+
+          <h4>★★★★ 很快会用到：整理字段与连接数据</h4>
+          <table class="terms">
+            <tr><th>方法</th><th>典型用途</th></tr>
+            <tr><td><code>apply()</code></td><td>把函数应用到 Series，或沿 DataFrame 的行 / 列处理；能向量化时优先使用直接列运算。</td></tr>
+            <tr><td><code>str.xxx</code></td><td>通过字符串访问器执行 <code>lower()</code>、<code>strip()</code>、<code>contains()</code> 等批量文本操作。</td></tr>
+            <tr><td><code>drop()</code> / <code>rename()</code></td><td>删除指定行列，或重命名标签。</td></tr>
+            <tr><td><code>astype()</code></td><td>转换列的数据类型；转换失败时应先定位脏值。</td></tr>
+            <tr><td><code>drop_duplicates()</code></td><td>按全部列或指定键删除重复记录。</td></tr>
+            <tr><td><code>concat()</code></td><td>沿行或列拼接多个结构相近的对象。</td></tr>
+            <tr><td><code>merge()</code></td><td>根据键进行类似数据库的 inner / left / right / outer join。</td></tr>
+          </table>
+          <pre>df["name"] = df["name"].str.strip().str.title()
+df["score_band"] = df["score"].apply(lambda x: "high" if x &gt;= 80 else "other")
+df = df.rename(columns={"score": "exam_score"})
+df["exam_score"] = df["exam_score"].astype("float64")
+df = df.drop(columns=["passed"]).drop_duplicates(subset=["name"])
+
+all_rows = pd.concat([first_term, second_term], ignore_index=True)
+result = students.merge(scores, on="student_id", how="left", validate="one_to_one")</pre>
+          <p><code>concat()</code> 主要回答“把表接在一起”，<code>merge()</code> 主要回答“根据共同键把信息对齐”。连接前检查键是否唯一，并用 <code>validate</code> 声明预期关系，避免多对多连接悄悄放大行数。</p>
+
+          <h4>★★★ 后面再学：重塑、分箱与时间序列</h4>
+          <table class="terms">
+            <tr><th>方法 / 结构</th><th>典型用途</th></tr>
+            <tr><td><code>pivot_table()</code></td><td>按行、列分类交叉汇总，并指定聚合函数。</td></tr>
+            <tr><td><code>melt()</code></td><td>把多个测量列转换成长表的“变量—值”结构。</td></tr>
+            <tr><td><code>query()</code></td><td>用接近表达式的字符串语法过滤行。</td></tr>
+            <tr><td><code>cut()</code> / <code>qcut()</code></td><td><code>cut</code> 按数值边界分箱；<code>qcut</code> 按分位数尽量等频分箱。</td></tr>
+            <tr><td><code>rolling()</code></td><td>计算移动平均、移动合计等滚动窗口指标。</td></tr>
+            <tr><td><code>resample()</code></td><td>按日、周、月等频率重新聚合时间索引数据。</td></tr>
+            <tr><td>MultiIndex</td><td>用多层行或列索引表达多维分组结果；强大但会增加选择和重塑复杂度。</td></tr>
+          </table>
+          <pre>summary = df.pivot_table(index="team", values="exam_score", aggfunc="mean")
+long_df = wide_df.melt(id_vars="student_id", var_name="subject", value_name="score")
+selected = df.query("exam_score &gt;= 80 and team == 'A'")
+df["score_band"] = pd.cut(df["exam_score"], bins=[0, 60, 80, 100])
+df["quartile"] = pd.qcut(df["exam_score"], q=4, duplicates="drop")
+
+daily = time_df.set_index("date").sort_index()
+daily["rolling_7d"] = daily["value"].rolling(7).mean()
+monthly = daily["value"].resample("MS").sum()</pre>
           <figure class="course-example">
             <img src="../assets/courseware/ca6000-module-03/pandas-iqr-outliers.png" alt="CA6000 Topic 10 Pandas 课件展示使用 quantile 取得 Q1 和 Q3，并以 IQR 的上下围栏检查潜在异常值" loading="lazy" />
             <figcaption><strong>课件示例：IQR = Q3 - Q1；围栏用于标记需要复核的候选异常值。</strong><span>异常值不是自动删除的“脏数据”，应先结合业务含义与记录来源判断。</span></figcaption>
           </figure>
-          <p><code>loc</code> 按标签访问，<code>isin()</code> 用于指定值集合过滤。<code>dropna()</code>、<code>fillna()</code> 与替换明显错误值会改变分析样本，应记录规则及受影响行数；<code>duplicated()</code> 与 <code>drop_duplicates()</code> 同样要先定义“重复”按哪些列判断。清洗后的结果再用 <code>to_csv()</code> 或 <code>to_json()</code> 导出，保留原始文件不覆盖。</p>
+          <p><code>dropna()</code>、<code>fillna()</code> 与替换明显错误值会改变分析样本，应记录规则及受影响行数；<code>duplicated()</code> 与 <code>drop_duplicates()</code> 同样要先定义“重复”按哪些列判断。清洗后的结果再用 <code>to_csv()</code> 或 <code>to_json()</code> 导出，保留原始文件不覆盖。</p>
+
+          <h4>Pandas 常用操作详解｜覆盖学习与作业中的主要场景</h4>
+          <p>上面的表是检索地图，下面逐项解释每个操作解决什么问题、返回什么对象，以及最容易在哪里写错。示例统一使用学生成绩表，便于观察每一步如何改变数据。</p>
+          <pre>import pandas as pd
+
+df = pd.DataFrame({
+    "Name": [" Alice ", "Bob", "Charlie", "Amy", "Bob"],
+    "Age": [20, 22, 19, 21, 22],
+    "Major": ["CS", "CS", "Business", "AI", "CS"],
+    "Score": [85, 72, 91, None, 72],
+    "Date": ["2026-01-10", "2026-01-11", "2026-01-12", "2026-01-13", "2026-01-11"]
+})</pre>
+
+          <h4>1. 导入、创建与读取数据</h4>
+          <pre>import pandas as pd
+
+# Series：一维、带索引的数据
+s = pd.Series([10, 20, 30])
+
+# DataFrame：二维、带行列标签的表格
+df = pd.DataFrame({
+    "Name": ["Alice", "Bob", "Charlie"],
+    "Age": [20, 22, 19],
+    "Score": [85, 72, 91]
+})
+
+# 从文件读取
+df = pd.read_csv("data.csv")
+df = pd.read_excel("data.xlsx")</pre>
+          <p><code>Series</code> 可以理解为一列，<code>DataFrame</code> 可以理解为一张表。<code>read_csv()</code> 最常见的参数包括 <code>sep</code>（分隔符）、<code>encoding</code>（编码）、<code>usecols</code>（只读指定列）和 <code>parse_dates</code>（读取时解析日期）。读取 Excel 通常还需要相应的 Excel 引擎包。</p>
+
+          <h4>2. 先看数据，再开始分析</h4>
+          <pre>df.head()          # 前 5 行
+df.head(10)        # 前 10 行
+df.tail()          # 后 5 行
+df.shape           # (行数, 列数)
+df.columns         # 所有列名
+df.index           # 行索引
+df.dtypes          # 每列的数据类型
+df.info()          # 类型、非空数量和内存信息
+df.describe()      # 数值列的统计摘要
+len(df)            # 行数</pre>
+          <p><code>df.shape</code>、<code>df.columns</code> 和 <code>df.dtypes</code> 是属性，不加括号；<code>head()</code>、<code>info()</code> 和 <code>describe()</code> 是方法，需要括号。<code>info()</code> 自己会打印信息并返回 <code>None</code>，因此通常直接写 <code>df.info()</code>，不用再套 <code>print()</code>。</p>
+
+          <h4>3. 选择一列或多列：先分清 Series 与 DataFrame</h4>
+          <pre>name_series = df["Name"]             # Series
+name_table = df[["Name"]]            # 只有一列的 DataFrame
+report = df[["Name", "Score"]]       # 多列 DataFrame</pre>
+          <p>单层中括号加一个列名通常返回 <code>Series</code>；外层用于选择、内层列出多个列名的双层中括号返回 <code>DataFrame</code>。两者显示相似，但可用方法、维度和后续合并行为并不完全相同。</p>
+
+          <h4>4. <code>loc</code> 与 <code>iloc</code>：标签和位置是两套规则</h4>
+          <pre># loc：按照标签选择
+df.loc[0]                          # 标签为 0 的行
+df.loc[0, "Name"]                  # 标签为 0 的行、Name 列
+df.loc[0:2, ["Name", "Score"]]     # 标签切片通常包含结束标签 2
+
+# iloc：按照第几个位置选择
+df.iloc[0]                         # 第一行
+df.iloc[0, 0]                      # 第一行第一列
+df.iloc[0:3]                       # 前三行，不包含位置 3
+df.iloc[0:3, 0:2]                  # 前三行、前两列</pre>
+          <p>记忆方式是 <code>loc[我要哪些标签, 我要哪些列标签]</code>，<code>iloc[我要哪些行位置, 我要哪些列位置]</code>。默认索引刚好是 0、1、2 时二者看起来很像；换成姓名或日期索引后，区别就很明显。</p>
+
+          <h4>5. 条件筛选：条件先产生 True / False</h4>
+          <pre>df["Score"] &gt; 80                   # 先得到一列 True / False
+df[df["Score"] &gt; 80]              # 再用它过滤行
+df[df["Age"] &gt;= 20]
+df[df["Name"] == "Alice"]
+df[df["Name"] != "Alice"]</pre>
+          <p>方括号中的布尔 Series 必须与 DataFrame 的索引对齐。筛选结果是一个新对象；只写筛选表达式不会删除原表中的行。</p>
+
+          <h4>6. 多条件筛选与 <code>isin()</code></h4>
+          <pre># 并且：&amp;
+df[(df["Score"] &gt; 80) &amp; (df["Age"] &gt;= 20)]
+
+# 或者：|
+df[(df["Score"] &gt; 90) | (df["Age"] &lt; 20)]
+
+# 取反：~
+df[~(df["Major"] == "CS")]
+
+# 是否属于给定集合
+df[df["Major"].isin(["CS", "AI"])]</pre>
+          <p>Pandas 的逐行逻辑使用 <code>&amp;</code>、<code>|</code>、<code>~</code>，每个条件都要加括号。不能写普通 Python 的 <code>and</code> / <code>or</code>，因为一整列 True / False 不能被当成单个布尔值。</p>
+
+          <h4>7. 添加新列与修改数据</h4>
+          <pre># 添加常量列
+df["Passed"] = True
+
+# 根据已有列计算
+df["Score2"] = df["Score"] * 2
+df["AgeNextYear"] = df["Age"] + 1
+
+# 修改一个位置
+df.loc[0, "Score"] = 100
+
+# 条件修改：先找行，再指定列
+df.loc[df["Score"] &lt; 60, "Passed"] = False</pre>
+          <p><code>df["新列"] = ...</code> 会直接修改 <code>df</code>；如果列名已经存在，就会替换该列。条件修改优先使用 <code>loc</code>，避免先切片再赋值导致修改目标不明确。</p>
+
+          <h4>8. 删除、重命名与排序</h4>
+          <pre># 删除列或行；赋值回来才更新 df
+df = df.drop(columns=["AgeNextYear"])
+df = df.drop(columns=["Score2", "Passed"])
+df = df.drop(index=0)
+
+# 重命名指定列
+df = df.rename(columns={
+    "Name": "StudentName",
+    "Score": "ExamScore"
+})
+
+# 排序
+df = df.sort_values("ExamScore")
+df = df.sort_values("ExamScore", ascending=False)
+df = df.sort_values(
+    ["Age", "ExamScore"],
+    ascending=[True, False]
+)</pre>
+          <p>多数 Pandas 方法默认返回新对象，不会修改原表，所以常写成 <code>df = df.method(...)</code>。多列排序按照列名顺序逐层比较：先按 Age 升序，Age 相同时再按 ExamScore 降序。</p>
+
+          <h4>9. 基本统计与 <code>value_counts()</code></h4>
+          <pre>df["ExamScore"].mean()          # 平均值
+df["ExamScore"].sum()           # 总和
+df["ExamScore"].max()           # 最大值
+df["ExamScore"].min()           # 最小值
+df["ExamScore"].median()        # 中位数
+df["ExamScore"].std()           # 标准差
+df["ExamScore"].count()         # 非空值数量
+df["ExamScore"].nunique()       # 不同值数量
+
+df["Major"].value_counts()                  # 每类出现次数
+df["Major"].value_counts(normalize=True)    # 每类所占比例</pre>
+          <p><code>count()</code> 不统计缺失值，<code>len(df)</code> 则统计全部行。<code>value_counts()</code> 默认按频数从高到低排列，适合快速检查类别分布、拼写差异和异常类别。</p>
+
+          <h4>10. 缺失值：先统计，再决定填还是删</h4>
+          <pre>df.isna()                         # 每个位置是否缺失
+df.isna().sum()                   # 每列缺失数量
+
+clean = df.dropna()               # 删除任何列有缺失的行
+clean = df.dropna(subset=["ExamScore"])  # 只检查指定列
+
+df["ExamScore"] = df["ExamScore"].fillna(0)
+df["ExamScore"] = df["ExamScore"].fillna(
+    df["ExamScore"].median()
+)</pre>
+          <p>缺失值不是自动应该删除的错误。删除会改变样本，填补会改变分布；应结合字段含义决定，并记录处理前后的行数、缺失数及填补规则。</p>
+
+          <h4>11. 重复值：先定义什么叫“同一条记录”</h4>
+          <pre>df.duplicated()                         # 每行是否与前面重复
+df.duplicated().sum()                   # 重复行数量
+df.drop_duplicates()                    # 按所有列去重
+df.drop_duplicates(subset=["Name"])    # 按指定业务键去重
+df.drop_duplicates(subset=["Name"], keep="last")</pre>
+          <p>按所有列完全相同和按业务键重复是两件事。学生同名、订单号重复或同一天多次测量是否算重复，必须先根据业务规则判断。</p>
+
+          <h4>12. 字符串操作 <code>.str</code></h4>
+          <pre>df["Name"] = df["Name"].str.strip()       # 去掉首尾空格
+df["Name"].str.lower()                     # 小写
+df["Name"].str.upper()                     # 大写
+df["Name"].str.title()                     # 单词首字母大写
+df["Name"].str.startswith("A")            # 是否以 A 开头
+df["Name"].str.contains("ali", case=False, na=False)</pre>
+          <p><code>.str</code> 是 Series 的字符串访问器，让字符串方法逐元素运行。<code>contains()</code> 默认把模式当正则表达式；数据可能缺失时可设置 <code>na=False</code>，避免筛选条件中出现缺失布尔值。</p>
+
+          <h4>13. <code>apply()</code>：对元素、行或列调用函数</h4>
+          <pre>df["Result"] = df["ExamScore"].apply(
+    lambda x: "Pass" if x &gt;= 60 else "Fail"
+)
+
+def make_label(row):
+    return f"{row['Name']} ({row['Major']})"
+
+df["Label"] = df.apply(make_label, axis=1)</pre>
+          <p>Series 的 <code>apply()</code> 通常逐元素处理；DataFrame 的 <code>axis=1</code> 表示逐行处理。它很灵活，但通常比直接列运算慢；能写成 <code>df["Score"] * 2</code>、<code>str.xxx</code> 或 <code>np.where()</code> 时，优先使用向量化表达式。</p>
+
+          <h4>14. <code>groupby()</code>：拆分、计算、合并</h4>
+          <pre># 每个专业的平均成绩
+df.groupby("Major")["ExamScore"].mean()
+
+# 每个专业的多项统计
+major_summary = (
+    df.groupby("Major")["ExamScore"]
+      .agg(["count", "mean", "max", "min"])
+)
+
+# 多个分组键与命名统计结果
+summary = (
+    df.groupby(["Major", "Result"])
+      .agg(
+          students=("Name", "count"),
+          average_score=("ExamScore", "mean")
+      )
+      .reset_index()
+)</pre>
+          <p>把 <code>groupby()</code> 理解成三步：先按键拆成多组，每组分别计算，最后把结果合并。分组键常变成索引；需要普通列时使用 <code>reset_index()</code>，或在分组时指定 <code>as_index=False</code>。</p>
+
+          <h4>15. <code>concat()</code>：把结构相近的表接起来</h4>
+          <pre># 纵向追加行
+all_students = pd.concat(
+    [class_a, class_b],
+    ignore_index=True
+)
+
+# 横向并排列
+combined = pd.concat(
+    [student_info, student_scores],
+    axis=1
+)</pre>
+          <p><code>axis=0</code>（默认）纵向叠加行，要求列名能合理对齐；<code>axis=1</code> 横向并排列，按照索引对齐。<code>ignore_index=True</code> 会重新生成 0、1、2… 的行索引。</p>
+
+          <h4>16. <code>merge()</code>：按照共同键连接两张表</h4>
+          <pre>students = pd.DataFrame({
+    "ID": [1, 2, 3],
+    "Name": ["Alice", "Bob", "Jack"]
+})
+
+scores = pd.DataFrame({
+    "ID": [1, 2, 3],
+    "Score": [90, 80, 85]
+})
+
+result = pd.merge(
+    students,
+    scores,
+    on="ID",
+    how="left",
+    validate="one_to_one"
+)</pre>
+          <table class="terms">
+            <tr><th><code>how</code></th><th>保留哪些键</th></tr>
+            <tr><td><code>inner</code></td><td>只保留左右两表都有的键。</td></tr>
+            <tr><td><code>left</code></td><td>保留左表全部键，右表匹配不到时出现缺失值。</td></tr>
+            <tr><td><code>right</code></td><td>保留右表全部键。</td></tr>
+            <tr><td><code>outer</code></td><td>保留左右两表出现过的所有键。</td></tr>
+          </table>
+          <p><code>merge()</code> 类似数据库 JOIN。连接前先检查键是否唯一，连接后检查行数；<code>validate="one_to_one"</code>、<code>"one_to_many"</code> 等参数可以在关系不符合预期时直接报错。</p>
+
+          <h4>17. 日期时间与数据类型转换</h4>
+          <pre>df["Date"] = pd.to_datetime(df["Date"], errors="coerce")
+df["Year"] = df["Date"].dt.year
+df["Month"] = df["Date"].dt.month
+df["Day"] = df["Date"].dt.day
+df["Weekday"] = df["Date"].dt.day_name()
+
+df["Age"] = df["Age"].astype("int64")
+df["ExamScore"] = pd.to_numeric(df["ExamScore"], errors="coerce")</pre>
+          <p><code>astype()</code> 适合数据已经干净、转换应该成功的情况；<code>pd.to_numeric(..., errors="coerce")</code> 和 <code>pd.to_datetime(..., errors="coerce")</code> 会把无法解析的值转为缺失，方便随后定位和处理。</p>
+
+          <h4>18. 索引与导出</h4>
+          <pre>indexed = df.set_index("Name")       # 指定某列为索引
+restored = indexed.reset_index()     # 把索引恢复为普通列
+
+df.to_csv("result.csv", index=False)
+df.to_excel("result.xlsx", index=False)</pre>
+          <p><code>index=False</code> 表示不把 Pandas 自动生成的行索引写入文件。除非索引本身具有业务意义，否则导出时通常不需要保存它；原始数据文件应保留不覆盖。</p>
+
+          <h4>19. 进阶重塑：<code>pivot_table()</code>、<code>melt()</code> 与 <code>query()</code></h4>
+          <pre># 透视汇总：每个专业、每种结果的平均分
+pivot = df.pivot_table(
+    index="Major",
+    columns="Result",
+    values="ExamScore",
+    aggfunc="mean"
+)
+
+# 宽表变长表
+long_df = wide_df.melt(
+    id_vars="StudentID",
+    var_name="Subject",
+    value_name="Score"
+)
+
+# 表达式形式的行筛选
+selected = df.query("ExamScore &gt;= 80 and Major == 'CS'")</pre>
+          <p><code>pivot_table()</code> 用于“按行类别 × 列类别”交叉汇总；<code>melt()</code> 把多个测量列变成变量和值两列，常用于整理成适合分析与绘图的长表。<code>query()</code> 可读性较好，但动态列名或外部变量较复杂时，普通布尔筛选往往更明确。</p>
+
+          <h4>20. 分箱、滚动窗口、重采样与 MultiIndex</h4>
+          <pre># cut：按照固定数值边界分组
+df["ScoreBand"] = pd.cut(
+    df["ExamScore"],
+    bins=[0, 60, 80, 100],
+    labels=["Fail", "Pass", "High"]
+)
+
+# qcut：按照分位数尽量分成数量相近的组
+df["Quartile"] = pd.qcut(
+    df["ExamScore"],
+    q=4,
+    duplicates="drop"
+)
+
+# 时间序列必须先转换日期、排序并设为索引
+daily = time_df.copy()
+daily["Date"] = pd.to_datetime(daily["Date"])
+daily = daily.set_index("Date").sort_index()
+daily["Rolling7"] = daily["Value"].rolling(7).mean()
+monthly = daily["Value"].resample("MS").sum()
+
+# 多个分组键常产生 MultiIndex
+multi = df.groupby(["Major", "Result"])["ExamScore"].mean()
+flat = multi.reset_index()</pre>
+          <p><code>cut()</code> 的组由业务边界决定，<code>qcut()</code> 的组由样本分位数决定。<code>rolling(7)</code> 表示连续 7 个观测值，不一定天然等于 7 天；时间含义要结合数据频率。MultiIndex 能表达多层标签，但会增加选择和合并复杂度，不需要层级索引时可用 <code>reset_index()</code> 展平。</p>
+
+          <h4>学习优先级与解题思路</h4>
+          <table class="terms">
+            <tr><th>优先级</th><th>应掌握内容</th></tr>
+            <tr><td>★★★★★ 必须会</td><td><code>DataFrame</code>、<code>read_csv()</code>、<code>head()</code>、<code>info()</code>、<code>describe()</code>、列选择、<code>loc</code>、<code>iloc</code>、条件筛选、新列、排序、基本统计、<code>value_counts()</code>、缺失值和 <code>groupby()</code>。</td></tr>
+            <tr><td>★★★★ 很快会用到</td><td><code>apply()</code>、<code>str.xxx</code>、<code>drop()</code>、<code>rename()</code>、<code>astype()</code>、<code>drop_duplicates()</code>、<code>concat()</code>、<code>merge()</code>。</td></tr>
+            <tr><td>★★★ 后面再学</td><td><code>pivot_table()</code>、<code>melt()</code>、<code>query()</code>、<code>cut()</code>、<code>qcut()</code>、<code>rolling()</code>、<code>resample()</code> 和 MultiIndex。</td></tr>
+          </table>
+          <p>Pandas 最核心的能力不是背函数，而是把需求拆成：我要哪张表 → 哪些行 → 哪些列 → 是否清洗或修改 → 是否分组 → 做什么统计。</p>
+          <pre># 题目：找出 CS 专业中年龄不低于 20 岁的学生，并计算平均成绩
+
+# 第一步：筛选行
+students = df[
+    (df["Major"] == "CS") &amp;
+    (df["Age"] &gt;= 20)
+]
+
+# 第二步：选择成绩列
+scores = students["Score"]
+
+# 第三步：计算平均值
+result = scores.mean()
+print(result)
+
+# 熟练后可以写成方法链，但应先能解释每一步
+result = df[
+    (df["Major"] == "CS") &amp;
+    (df["Age"] &gt;= 20)
+]["Score"].mean()</pre>
 
           <h3 id="topic-10-class">Topic 10 · Python Class｜让状态和行为成为一个对象</h3>
           <p class="chapter-chart-map"><strong>本章代码 / 方法：</strong>class、instance、instance / class attributes、instance methods、封装、dunder methods、abstraction 与 inheritance。</p>

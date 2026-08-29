@@ -77,6 +77,16 @@
             { "id": "topic-10-pandas", "label": "Topic 10 Pandas" },
             { "id": "topic-10-class", "label": "Topic 10 Python Class" }
           ]
+        },
+        {
+          "output": "courses/ca6000-module-04.html",
+          "content": "src/content/courses/ca6000-module-04.html",
+          "navLabel": "Module 4 第四周：EDA 与机器学习",
+          "code": true,
+          "subsections": [
+            { "id": "topic-11-seaborn", "label": "Topic 11 Seaborn" },
+            { "id": "topic-11-sklearn", "label": "Topic 11 Scikit-learn" }
+          ]
         }
       ]
     },
@@ -130,6 +140,19 @@
             { "id": "chapter-3-2", "label": "3.2 Colour Perception" },
             { "id": "chapter-3-3", "label": "3.3 Human Visual Perception" },
             { "id": "chapter-3-4", "label": "3.4 Psychological Principles of Effective Graphics" }
+          ]
+        },
+        {
+          "output": "courses/ca6002-module-04.html",
+          "content": "src/content/courses/ca6002-module-04.html",
+          "navLabel": "Module 4 Human-Centred AI",
+          "code": false,
+          "subsections": [
+            { "id": "chapter-4-1", "label": "4.1 Human-Centred AI" },
+            { "id": "chapter-4-2", "label": "4.2 Human and AI Centred" },
+            { "id": "chapter-4-3", "label": "4.3 Finding AI Opportunities" },
+            { "id": "tutorial-m4", "label": "Tutorial M4 Human-Centred AI" },
+            { "id": "tutorial-s4", "label": "Tutorial S4 Finding AI Opportunities" }
           ]
         }
       ]

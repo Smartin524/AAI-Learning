@@ -105,6 +105,10 @@
         link?.removeAttribute("aria-current");
         subnav?.setAttribute("aria-hidden", "true");
         subnav?.setAttribute("inert", "");
+        subnav?.querySelectorAll("[data-toc-section]").forEach((sectionLink) => {
+          sectionLink.classList.remove("active");
+          sectionLink.removeAttribute("aria-current");
+        });
       }
     });
   };
@@ -235,5 +239,6 @@
   window.addEventListener("hashchange", requestScrollSync);
 
   refreshSections();
-  syncWithScroll();
+  const initialUrl = new URL(window.location.href);
+  if (!initialUrl.hash || !goToSection(initialUrl, false)) syncWithScroll();
 })();
