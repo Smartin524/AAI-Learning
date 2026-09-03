@@ -87,6 +87,17 @@
             { "id": "topic-11-seaborn", "label": "Topic 11 Seaborn" },
             { "id": "topic-11-sklearn", "label": "Topic 11 Scikit-learn" }
           ]
+        },
+        {
+          "output": "courses/ca6000-module-05.html",
+          "content": "src/content/courses/ca6000-module-05.html",
+          "navLabel": "Module 5 第五周：深度学习框架",
+          "code": true,
+          "subsections": [
+            { "id": "topic-13", "label": "Topic 13 Keras & TensorFlow" },
+            { "id": "topic-12-14", "label": "Topic 12/14 PyTorch" },
+            { "id": "notebook-review", "label": "Notebook 填空与代码复盘" }
+          ]
         }
       ]
     },
@@ -153,6 +164,18 @@
             { "id": "chapter-4-3", "label": "4.3 Finding AI Opportunities" },
             { "id": "tutorial-m4", "label": "Tutorial M4 Human-Centred AI" },
             { "id": "tutorial-s4", "label": "Tutorial S4 Finding AI Opportunities" }
+          ]
+        },
+        {
+          "output": "courses/ca6002-module-05.html",
+          "content": "src/content/courses/ca6002-module-05.html",
+          "navLabel": "Module 5 HCAI UX：Usability & Trust",
+          "code": false,
+          "subsections": [
+            { "id": "chapter-5-1", "label": "5.1 Usability" },
+            { "id": "chapter-5-2", "label": "5.2 Trust" },
+            { "id": "tutorial-m5", "label": "Mid-week 05 Tutorial" },
+            { "id": "tutorial-s5", "label": "Saturday 05 Tutorial" }
           ]
         }
       ]

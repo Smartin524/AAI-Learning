@@ -5,8 +5,8 @@
 ## 课程
 
 - **Python 通识**：基础语法、数据结构、文件与环境、NumPy、API、Embedding 和 RAG 相关章节。
-- **CA6000 · Applied AI Programming**：Module 1–3 覆盖 Python 基础、模块与文件、NumPy、Matplotlib、Pandas 与 Python 类；Module 4 进入 Seaborn 探索性分析、数据缩放和 scikit-learn 分类流程。
-- **CA6002 · AI UX & Data Visualisation Design Principles**：Module 1–3 覆盖数据属性、图表选择、AI 模型可视化、时间序列与人类视觉感知；Module 4 聚焦 Human-Centred AI、Human + AI 协作和 AI 机会识别。
+- **CA6000 · Applied AI Programming**：Module 1–3 覆盖 Python 基础、模块与文件、NumPy、Matplotlib、Pandas 与 Python 类；Module 4 进入 Seaborn 探索性分析、数据缩放和 scikit-learn 分类流程；Module 5 系统讲解 Keras、TensorFlow、PyTorch、ANN、CNN 与 MNIST 训练。
+- **CA6002 · AI UX & Data Visualisation Design Principles**：Module 1–3 覆盖数据属性、图表选择、AI 模型可视化、时间序列与人类视觉感知；Module 4 聚焦 Human-Centred AI、Human + AI 协作和 AI 机会识别；Module 5 深入 AI usability、error handling、trust calibration、explanation、user control 与 feedback。
 
 首页是课程选择看板；进入课程后，可通过顶部的“课程”按钮在不同课程之间切换。课程内容页使用左侧目录和右侧正文的阅读布局。
 
