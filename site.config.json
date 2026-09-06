@@ -94,6 +94,7 @@
           "navLabel": "Module 5 第五周：深度学习框架",
           "code": true,
           "subsections": [
+            { "id": "conceptual-map", "label": "概念地图：神经网络与 CNN" },
             { "id": "topic-13", "label": "Topic 13 Keras & TensorFlow" },
             { "id": "topic-12-14", "label": "Topic 12/14 PyTorch" },
             { "id": "notebook-review", "label": "Notebook 填空与代码复盘" }

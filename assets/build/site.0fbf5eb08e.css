@@ -591,6 +591,36 @@ a {
   margin: 9px 0;
 }
 
+.chapter details {
+  margin: 14px 0;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+}
+
+.chapter details summary {
+  padding: 12px 15px;
+  color: var(--blue);
+  font-weight: 750;
+  cursor: pointer;
+  user-select: none;
+}
+
+.chapter details summary:hover {
+  background: var(--surface-hover);
+}
+
+.chapter details[open] summary {
+  border-bottom: 1px solid var(--line);
+}
+
+.chapter details pre {
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+}
+
 .term {
   color: var(--blue);
   font-weight: 800;
