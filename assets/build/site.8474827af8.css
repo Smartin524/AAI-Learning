@@ -479,10 +479,10 @@ a {
   visibility: hidden;
   transform: translateY(-4px);
   transition:
-    grid-template-rows 0.2s ease-out,
-    opacity 0.16s ease-out,
-    transform 0.2s ease-out,
-    visibility 0s linear 0.2s;
+    grid-template-rows 0.12s ease-out,
+    opacity 0.1s ease-out,
+    transform 0.12s ease-out,
+    visibility 0s linear 0.12s;
 }
 
 .chapter-group.active .chapter-subnav {

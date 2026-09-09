@@ -77,7 +77,7 @@ try {
   assert(await page.locator(".chapter-group.active .chapter-subnav a").count() === config.sections.length, "Current chapter subtitles are incomplete");
   assert(await page.locator(".chapter-group:not(.active) .chapter-subnav[inert]").count() === config.courses[0].pages.length - 1, "Inactive chapter subtitles are not collapsed");
   const tocTransition = await page.locator(".chapter-group.active .chapter-subnav").evaluate((element) => getComputedStyle(element).transitionDuration);
-  assert(tocTransition.includes("0.2s"), "Current chapter subtitle transition is missing");
+  assert(tocTransition.includes("0.12s"), "Current chapter subtitle transition is missing");
 
   const navigationEntries = await page.evaluate(() => performance.getEntriesByType("navigation").length);
   const faviconBeforeChapterSwitch = await page.locator('link[rel="icon"]').getAttribute("href");

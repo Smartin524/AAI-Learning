@@ -151,7 +151,7 @@
     return new DOMParser().parseFromString(await response.text(), "text/html");
   };
 
-  const swapChapter = async (nextDocument, url, updateHistory) => {
+  const swapChapter = (nextDocument, url, updateHistory) => {
     const currentChapter = document.querySelector(".chapter");
     const nextChapter = nextDocument.querySelector(".chapter");
     const nextCourseId = nextDocument.body.dataset.courseId;
@@ -161,25 +161,19 @@
 
     const direction = directionFor(url);
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const replace = () => currentChapter.replaceWith(nextChapter);
 
     // The chapter menu must remain live while it expands and collapses. A
     // document-level View Transition snapshots it, turning the menu into a
     // hard cut, so use a small Web Animations transition for the content.
     activateChapter(url);
-    if (!reducedMotion) {
-      const leaving = currentChapter.animate(
-        [{ opacity: 1, transform: "translateX(0)" }, { opacity: 0, transform: `translateX(${direction === "forward" ? -12 : 12}px)` }],
-        { duration: 150, easing: "cubic-bezier(.4, 0, 1, 1)", fill: "both" },
-      );
-      await leaving.finished.catch(() => {});
-    }
-
-    replace();
+    // Commit immediately: waiting for an exit animation delays feedback and
+    // allows an older navigation to finish after a newer click.
+    currentChapter.getAnimations().forEach((animation) => animation.cancel());
+    currentChapter.replaceWith(nextChapter);
     if (!reducedMotion) {
       nextChapter.animate(
-        [{ opacity: 0, transform: `translateX(${direction === "forward" ? 16 : -16}px)` }, { opacity: 1, transform: "translateX(0)" }],
-        { duration: 260, easing: "cubic-bezier(0, 0, .2, 1)", fill: "both" },
+        [{ opacity: 0.65, transform: `translateX(${direction === "forward" ? 6 : -6}px)` }, { opacity: 1, transform: "translateX(0)" }],
+        { duration: 120, easing: "cubic-bezier(0, 0, .2, 1)" },
       );
     }
 
@@ -200,7 +194,7 @@
     navigationController = new AbortController();
     try {
       const nextDocument = await loadDocument(url, navigationController.signal);
-      await swapChapter(nextDocument, url, updateHistory);
+      swapChapter(nextDocument, url, updateHistory);
     } catch (error) {
       if (error.name === "AbortError") return;
       window.location.assign(url.href);
