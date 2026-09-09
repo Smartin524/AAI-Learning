@@ -99,6 +99,19 @@
             { "id": "topic-12-14", "label": "Topic 12/14 PyTorch" },
             { "id": "notebook-review", "label": "Notebook 填空与代码复盘" }
           ]
+        },
+        {
+          "output": "courses/ca6000-module-06.html",
+          "content": "src/content/courses/ca6000-module-06.html",
+          "navLabel": "Module 6 第六周：RNN 与时间序列",
+          "code": true,
+          "subsections": [
+            { "id": "topic-15-architecture", "label": "Topic 15 RNN Architecture" },
+            { "id": "topic-15-input", "label": "Topic 15 Features & Input Shape" },
+            { "id": "topic-15-many-to-one", "label": "Topic 15 Many-to-One" },
+            { "id": "topic-15-many-to-many", "label": "Topic 15 Many-to-Many" },
+            { "id": "topic-15-lstm", "label": "Topic 15 Limitations & LSTM" }
+          ]
         }
       ]
     },
