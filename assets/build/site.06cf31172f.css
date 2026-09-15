@@ -898,28 +898,3 @@ body[data-course-id="python"] .chapter pre {
   overflow-wrap: anywhere;
 }
 
-@media (min-width: 1100px) {
-  body[data-course-id="python"] .chapter-layout {
-    max-width: 1560px;
-    grid-template-columns: 200px minmax(0, 1fr);
-    gap: 32px;
-  }
-
-  body[data-course-id="python"] .chapter {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    column-gap: 24px;
-    align-items: start;
-  }
-
-  body[data-course-id="python"] .chapter > .chapter-hero,
-  body[data-course-id="python"] .chapter > p,
-  body[data-course-id="python"] .chapter > .chapter-nav {
-    grid-column: 1 / -1;
-  }
-
-  body[data-course-id="python"] .chapter > .content-section {
-    min-width: 0;
-    margin-top: 0;
-  }
-}
