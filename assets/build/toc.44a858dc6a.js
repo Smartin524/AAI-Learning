@@ -151,6 +151,68 @@
     return new DOMParser().parseFromString(await response.text(), "text/html");
   };
 
+  // Keep fetched documents immutable: each navigation receives a fresh clone.
+  // In-flight requests are shared by preloading and clicks, so cancelling a
+  // navigation must not cancel a request another navigation may still need.
+  const documents = new Map();
+  const pendingDocuments = new Map();
+  const documentKey = (url) => `${url.origin}${url.pathname}${url.search}`;
+  documents.set(documentKey(new URL(window.location.href)), document.cloneNode(true));
+
+  const getDocument = (url, signal) => {
+    if (url.protocol === "file:") return loadDocument(url, signal);
+    const key = documentKey(url);
+    if (documents.has(key)) return Promise.resolve(documents.get(key).cloneNode(true));
+    if (!pendingDocuments.has(key)) {
+      const controller = new AbortController();
+      const timeout = window.setTimeout(() => controller.abort(), 15000);
+      const request = loadDocument(url, controller.signal).then((nextDocument) => {
+        if (!nextDocument.querySelector(".chapter") ||
+            nextDocument.body.dataset.courseId !== document.body.dataset.courseId) {
+          throw new Error("Chapter document does not match the current course");
+        }
+        documents.set(key, nextDocument);
+        return nextDocument;
+      }).finally(() => {
+        window.clearTimeout(timeout);
+        pendingDocuments.delete(key);
+      });
+      pendingDocuments.set(key, request);
+    }
+    return pendingDocuments.get(key).then((nextDocument) => nextDocument.cloneNode(true));
+  };
+
+  const preloadChapters = () => {
+    if (!/^https?:$/.test(window.location.protocol)) return;
+    const currentIndex = chapterOrder.get(renderedPath) ?? 0;
+    const queue = [...chapterPaths]
+      .filter((pathname) => pathname && pathname !== renderedPath)
+      .sort((a, b) => Math.abs(chapterOrder.get(a) - currentIndex) - Math.abs(chapterOrder.get(b) - currentIndex));
+    const worker = async () => {
+      while (queue.length) {
+        const url = new URL(queue.shift(), window.location.href);
+        try {
+          await getDocument(url);
+        } catch {
+          // A failed speculative request is retried by a later click.
+        }
+      }
+    };
+    // Two workers bound background network traffic; adjacent chapters go first.
+    void worker();
+    void worker();
+  };
+
+  const schedulePreload = () => {
+    if ("requestIdleCallback" in window) {
+      window.requestIdleCallback(preloadChapters, { timeout: 2000 });
+    } else {
+      window.setTimeout(preloadChapters, 200);
+    }
+  };
+  if (document.readyState === "complete") schedulePreload();
+  else window.addEventListener("load", schedulePreload, { once: true });
+
   const swapChapter = (nextDocument, url, updateHistory) => {
     const currentChapter = document.querySelector(".chapter");
     const nextChapter = nextDocument.querySelector(".chapter");
@@ -191,12 +253,14 @@
 
   const navigate = async (url, updateHistory = true) => {
     navigationController?.abort();
-    navigationController = new AbortController();
+    const controller = new AbortController();
+    navigationController = controller;
     try {
-      const nextDocument = await loadDocument(url, navigationController.signal);
+      const nextDocument = await getDocument(url, controller.signal);
+      if (controller.signal.aborted) return;
       swapChapter(nextDocument, url, updateHistory);
     } catch (error) {
-      if (error.name === "AbortError") return;
+      if (controller.signal.aborted) return;
       window.location.assign(url.href);
     }
   };
@@ -210,6 +274,7 @@
     if (url.origin !== window.location.origin || !chapterPaths.has(url.pathname)) return;
     event.preventDefault();
     if (url.pathname === window.location.pathname) {
+      navigationController?.abort();
       if (url.hash && goToSection(url)) return;
       window.history.pushState({ chapter: url.pathname }, "", url);
       window.scrollTo({ top: 0, behavior: "auto" });

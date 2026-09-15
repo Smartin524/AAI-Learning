@@ -112,6 +112,72 @@ try {
   assert(anchorState.behavior === "auto", "Section navigation is not immediate");
   assert(Math.abs(anchorState.targetTop - 82) < 3, "Section anchor landed at the wrong offset");
 
+  // Verify speculative loads, shared requests, retries and stale navigation.
+  const warmContext = await browser.newContext();
+  const warm = await warmContext.newPage();
+  const chapterRequests = new Map();
+  let releaseSlow;
+  const slowGate = new Promise((resolve) => { releaseSlow = resolve; });
+  let slowStarted = false;
+  let slowCompleted = false;
+  const failedPath = '/chapters/03-control-flow.html';
+  const slowPath = '/chapters/04-functions.html';
+  await warm.route('**/chapters/*.html', async (route) => {
+    const pathname = new URL(route.request().url()).pathname;
+    const count = (chapterRequests.get(pathname) ?? 0) + 1;
+    chapterRequests.set(pathname, count);
+    if (pathname === failedPath && count === 1) {
+      await route.fulfill({ status: 503, body: 'Temporary failure' });
+      return;
+    }
+    if (pathname === slowPath) {
+      slowStarted = true;
+      await slowGate;
+    }
+    const body = await readFile(path.join(root, pathname.slice(1)), 'utf8');
+    await route.fulfill({ status: 200, contentType: 'text/html', body });
+    if (pathname === slowPath) slowCompleted = true;
+  });
+  const until = async (condition, message) => {
+    const deadline = Date.now() + 10000;
+    while (!condition() && Date.now() < deadline) await new Promise(resolve => setTimeout(resolve, 20));
+    assert(condition(), message);
+  };
+  try {
+    await warm.goto(`${baseUrl}/chapters/01-basics.html`);
+    await until(() => chapterRequests.size === config.courses[0].pages.length && slowStarted, 'Other chapters were not loaded in the background');
+    assert(new URL(warm.url()).pathname === '/chapters/01-basics.html', 'Preloading changed the current page');
+    await warm.getByRole('link', {name:'04 遍历与函数工具', exact:true}).click();
+    await warm.getByRole('link', {name:'01 内置函数', exact:true}).click();
+    releaseSlow();
+    await until(() => slowCompleted, 'Slow preload did not finish');
+    await warm.waitForTimeout(100);
+    assert(new URL(warm.url()).pathname === '/chapters/01-basics.html', 'Cancelled navigation replaced the current chapter');
+    await warm.getByRole('link', {name:'03 字符串', exact:true}).click();
+    await warm.getByRole('heading', {name:'字符串常用方法', exact:true}).waitFor();
+    assert(chapterRequests.get(failedPath) === 2, 'Failed preload was not retried on click');
+    await warm.getByRole('link', {name:'04 遍历与函数工具', exact:true}).click();
+    await warm.getByRole('heading', {name:'遍历、排序与函数工具', exact:true}).waitFor();
+    assert(chapterRequests.get(slowPath) === 1, 'Click duplicated the in-flight preload request');
+    await warm.unroute('**/chapters/*.html');
+    const unexpectedRequests = [];
+    await warm.route('**/chapters/*.html', route => {
+      unexpectedRequests.push(route.request().url());
+      return route.abort();
+    });
+    await warmContext.setOffline(true);
+    for (const label of ['02 容器方法', '01 内置函数', '02 容器方法']) {
+      await warm.getByRole('link', {name:label, exact:true}).click();
+      await warm.waitForFunction(expected => document.querySelector('.chapter-link[aria-current="page"]')?.textContent === expected, label);
+      assert(await warm.locator('.chapter .code-block').count() > 0, 'Cached document lost its chapter content');
+      assert(await warm.locator('.chapter .code-block .code-block').count() === 0, 'Cached code wrappers were duplicated');
+    }
+    assert(unexpectedRequests.length === 0, 'A cached chapter attempted another network request');
+  } finally {
+    releaseSlow();
+    await warmContext.close();
+  }
+
   assert(browserErrors.length === 0, `Browser errors: ${browserErrors.join(" | ")}`);
   console.log("Smoke test passed: home, course switch, theme, and section navigation.");
 } finally {
