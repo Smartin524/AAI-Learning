@@ -1,167 +1,72 @@
 <main class="chapter">
-        <header class="chapter-hero">
-          <div class="chapter-kicker">CHAPTER 02</div>
-          <h1>容器：list、dict、set、tuple</h1>
-          <p class="chapter-summary">
-            容器决定了数据如何组织、访问和修改。AI
-            项目中的文档、模型响应、配置和检索结果几乎都建立在这些结构之上。
-          </p>
-          <div class="outcomes">
-            <strong>学完你应该能够：</strong
-            >根据需求选择容器；熟练索引、切片、增删改查和遍历；理解浅拷贝、可变性与常见组合。
-          </div>
-        </header>
-        <section class="content-section" id="terms">
-          <h2>必须掌握的术语</h2>
-          <table class="terms">
-            <tr>
-              <th>术语</th>
-              <th>准确理解</th>
-            </tr>
-            <tr>
-              <td>sequence</td>
-              <td>有顺序、可索引的序列，例如 list 和 tuple。</td>
-            </tr>
-            <tr>
-              <td>index / slice</td>
-              <td>单个位置访问与区间访问；索引从 0 开始。</td>
-            </tr>
-            <tr>
-              <td>mapping</td>
-              <td>键到值的映射，dict 是核心实现。</td>
-            </tr>
-            <tr>
-              <td>hashable</td>
-              <td>具有稳定哈希值、可作为 dict 键或 set 元素的对象。</td>
-            </tr>
-            <tr>
-              <td>mutable</td>
-              <td>可原地修改，例如 list、dict、set。</td>
-            </tr>
-            <tr>
-              <td>comprehension</td>
-              <td>列表、字典和集合推导式。</td>
-            </tr>
-            <tr>
-              <td>shallow copy</td>
-              <td>只复制最外层容器，内部对象仍共享。</td>
-            </tr>
-            <tr>
-              <td>unpacking</td>
-              <td>把序列或映射拆分到多个变量或参数。</td>
-            </tr>
-          </table>
-        </section>
-        <section class="content-section" id="core">
-          <h2>1. list：有序、可修改</h2>
-          <pre>
-chunks = ["第一段", "第二段", "第三段"]
-print(chunks[0])       # 第一段
-print(chunks[-1])      # 第三段
-print(chunks[0:2])     # 新列表
-
-chunks.append("第四段")
-chunks.extend(["第五段", "第六段"])
-removed = chunks.pop()
-print(len(chunks), removed)</pre
-          >
-          <h3>2. dict：用键表达数据含义</h3>
-          <pre>
-document = {
-    "text": "Embedding 是文本的向量表示",
-    "source": "notes.md",
-    "score": 0.91
-}
-print(document["text"])
-print(document.get("page", "未知页码"))
-
-document["page"] = 3
-for key, value in document.items():
-    print(key, value)</pre
-          >
-          <p>
-            <code>document["page"]</code> 在键不存在时抛 KeyError；<code
-              >get()</code
-            >
-            可以提供默认值。需要发现数据错误时使用前者，需要容错时使用后者。
-          </p>
-          <h3>3. set：去重与集合运算</h3>
-          <pre>
-required = {"Python", "NumPy", "Git"}
-learned = {"Python", "Git", "RAG"}
-
-print(required & learned)  # 交集
-print(required - learned)  # 尚未掌握
-print(required | learned)  # 并集</pre
-          >
-          <h3>4. tuple：固定记录与解包</h3>
-          <pre>
-shape = (32, 768)
-batch_size, embedding_dim = shape
-print(batch_size, embedding_dim)
-
-def min_max(values):
-    return min(values), max(values)
-
-low, high = min_max([3, 8, 1])</pre
-          >
-          <h3>5. 推导式与排序</h3>
-          <pre>
-scores = [0.52, 0.91, 0.78]
-high_scores = [s for s in scores if s >= 0.75]
-
-results = [
-    {"text": "A", "score": 0.52},
-    {"text": "B", "score": 0.91}
-]
-ranked = sorted(results, key=lambda item: item["score"], reverse=True)</pre
-          >
-          <h3>6. 浅拷贝问题</h3>
-          <pre>
-original = [{"score": 0.8}]
-copied = original.copy()
-copied[0]["score"] = 1.0
-print(original)  # 也变成 1.0，因为内部 dict 共享
-
-import copy
-deep = copy.deepcopy(original)</pre
-          >
-        </section>
-        <section class="content-section" id="errors">
-          <h2>常见错误</h2>
-          <ul class="error-list">
-            <li>遍历 list 时同时删除元素，导致跳项。</li>
-            <li>把 list 作为 dict 的键：list 不可哈希。</li>
-            <li>认为 set 保持业务顺序；集合不应承担顺序语义。</li>
-            <li>
-              用 <code>{}</code> 创建空 set；它实际是空 dict，空集合应写
-              <code>set()</code>。
-            </li>
-            <li>混淆 <code>append</code> 和 <code>extend</code>。</li>
-          </ul>
-        </section>
-        <section class="content-section" id="practice">
-          <h2>分层练习</h2>
-          <div class="exercise">
-            <strong>基础</strong>
-            <ol>
-              <li>用 list 保存课程，用 dict 保存课程详情。</li>
-              <li>用 set 找出必修技能中尚未掌握的技能。</li>
-            </ol>
-          </div>
-          <div class="exercise">
-            <strong>进阶</strong>
-            <ol>
-              <li>将 list[dict] 按 score 降序排列，返回 top 3。</li>
-              <li>按 source 对检索结果分组。</li>
-            </ol>
-          </div>
-          <div class="exercise">
-            <strong>掌握标准</strong>
-            <ol>
-              <li>解释为什么 tuple 可作 dict 键而 list 通常不行。</li>
-              <li>构造并修复一个浅拷贝导致的数据污染问题。</li>
-            </ol>
-          </div>
-        </section>
+  <header class="chapter-hero">
+    <div class="chapter-kicker">PYTHON REFERENCE · 02</div>
+    <h1>容器：list、dict、set、tuple</h1>
+    <p class="chapter-summary">常用调用格式与一句用途。</p>
+    <p>括号内为传入参数；<code>name=value</code> 为关键字传参，<code>*args</code> / <code>**kwargs</code> 为多个位置 / 关键字参数。以下列出常用调用写法，默认值与示例值以条目说明为准。</p>
+  </header>
+  <section class="content-section" id="lists">
+    <h2>列表 list</h2>
+    <ul>
+      <li><code>items.append(value)</code> — 末尾追加一个元素</li>
+      <li><code>items.extend(iterable)</code> — 末尾追加多个元素</li>
+      <li><code>items.insert(index, value)</code> — 在索引处插入</li>
+      <li><code>items.remove(value)</code> — 删除首个匹配值</li>
+      <li><code>items.pop(index=-1)</code> — 删除并返回指定元素</li>
+      <li><code>items.index(value, start, stop)</code> — 在指定范围查找首个索引；start、stop 可省略</li>
+      <li><code>items.count(value)</code> — 统计出现次数</li>
+      <li><code>items.sort(key=None, reverse=False)</code> — 原地排序，返回 None</li>
+      <li><code>items.reverse()</code> — 原地反转，返回 None</li>
+      <li><code>items.copy()</code> — 浅复制</li>
+      <li><code>items.clear()</code> — 清空列表</li>
+    </ul>
+  </section>
+  <section class="content-section" id="dicts">
+    <h2>字典 dict</h2>
+    <ul>
+      <li><code>d.get(key, default=None)</code> — 读取键，不存在时返回默认值</li>
+      <li><code>d.keys()</code> — 取得键视图</li>
+      <li><code>d.values()</code> — 取得值视图</li>
+      <li><code>d.items()</code> — 取得键值对视图</li>
+      <li><code>d.update(other, **kwargs)</code> — 合并键值对，原地更新</li>
+      <li><code>d.setdefault(key, default=None)</code> — 键不存在时写入默认值，返回该键的值</li>
+      <li><code>d.pop(key, default)</code> — 删除并返回值；可省略 default，缺键时报错</li>
+      <li><code>d.popitem()</code> — 删除并返回最后插入的键值对</li>
+      <li><code>d.copy()</code> — 浅复制</li>
+      <li><code>d.clear()</code> — 清空字典</li>
+      <li><code>dict.fromkeys(iterable, value=None)</code> — 用多个键创建字典，共享同一个 value</li>
+    </ul>
+  </section>
+  <section class="content-section" id="sets">
+    <h2>集合 set</h2>
+    <ul>
+      <li><code>s.add(value)</code> — 添加一个元素</li>
+      <li><code>s.update(*iterables)</code> — 添加多个集合或可迭代对象的元素</li>
+      <li><code>s.remove(value)</code> — 删除元素，不存在时报错</li>
+      <li><code>s.discard(value)</code> — 删除元素，不存在时忽略</li>
+      <li><code>s.pop()</code> — 删除并返回任意一个元素</li>
+      <li><code>s.union(*others)</code> — 返回并集</li>
+      <li><code>s.intersection(*others)</code> — 返回交集</li>
+      <li><code>s.difference(*others)</code> — 返回差集</li>
+      <li><code>s.symmetric_difference(other)</code> — 返回对称差集</li>
+      <li><code>s.intersection_update(*others)</code> — 原地保留交集</li>
+      <li><code>s.difference_update(*others)</code> — 原地删除其他集合中的元素</li>
+      <li><code>s.symmetric_difference_update(other)</code> — 原地改为对称差集</li>
+      <li><code>s.issubset(other)</code> — 是否为子集</li>
+      <li><code>s.issuperset(other)</code> — 是否为超集</li>
+      <li><code>s.isdisjoint(other)</code> — 是否没有共同元素</li>
+      <li><code>s.copy()</code> — 浅复制</li>
+      <li><code>s.clear()</code> — 清空集合</li>
+    </ul>
+  </section>
+  <section class="content-section" id="tuples">
+    <h2>元组与序列</h2>
+    <ul>
+      <li><code>t.count(value)</code> — 统计元组中的出现次数</li>
+      <li><code>t.index(value, start, stop)</code> — 查找元组中的首个索引；start、stop 可省略</li>
+      <li><code>len(sequence)</code> — 取得元素数量</li>
+      <li><code>sequence[start:stop:step]</code> — 切片；边界不包含 stop，三项均可省略</li>
+    </ul>
+  </section>
+  <p><a href="https://docs.python.org/3/library/stdtypes.html" target="_blank" rel="noreferrer">官方 API 参考</a></p>
 </main>

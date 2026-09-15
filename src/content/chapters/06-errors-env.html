@@ -1,172 +1,62 @@
 <main class="chapter">
-        <header class="chapter-hero">
-          <div class="chapter-kicker">CHAPTER 06</div>
-          <h1>异常、模块、包与虚拟环境</h1>
-          <p class="chapter-summary">
-            可靠程序必须明确失败方式。你需要读懂
-            Traceback、只捕获预期异常、组织模块，并用虚拟环境保证依赖可复现。
-          </p>
-          <div class="outcomes">
-            <strong>学完你应该能够：</strong>系统阅读 Traceback；正确使用
-            try/except/else/finally 和 raise；理解模块导入、venv、pip 与
-            requirements。
-          </div>
-        </header>
-        <section class="content-section" id="terms">
-          <h2>必须掌握的术语</h2>
-          <table class="terms">
-            <tr>
-              <th>术语</th>
-              <th>准确理解</th>
-            </tr>
-            <tr>
-              <td>exception</td>
-              <td>运行时发生的异常对象，会沿调用栈向上传播。</td>
-            </tr>
-            <tr>
-              <td>Traceback</td>
-              <td>异常发生前的函数调用路径。</td>
-            </tr>
-            <tr>
-              <td>raise</td>
-              <td>主动抛出异常。</td>
-            </tr>
-            <tr>
-              <td>try / except</td>
-              <td>包围可能失败的代码并处理特定异常。</td>
-            </tr>
-            <tr>
-              <td>else / finally</td>
-              <td>无异常时执行；无论是否异常都执行。</td>
-            </tr>
-            <tr>
-              <td>module</td>
-              <td>一个可导入的 Python 文件。</td>
-            </tr>
-            <tr>
-              <td>package</td>
-              <td>组织多个模块的包。</td>
-            </tr>
-            <tr>
-              <td>dependency</td>
-              <td>项目依赖的外部软件包。</td>
-            </tr>
-            <tr>
-              <td>virtual environment</td>
-              <td>隔离 Python 解释器与依赖安装位置。</td>
-            </tr>
-            <tr>
-              <td>version pinning</td>
-              <td>固定依赖版本以提高复现性。</td>
-            </tr>
-          </table>
-        </section>
-        <section class="content-section" id="core">
-          <h2>1. 阅读 Traceback</h2>
-          <p>
-            先看最后一行，确定异常类型和消息；再从下往上找第一处属于你项目的文件和行号；最后检查传入该行的数据。
-          </p>
-          <pre>
-Traceback (most recent call last):
-  File "app.py", line 12, in &lt;module&gt;
-    top_k = int(raw)
-ValueError: invalid literal for int() with base 10: 'abc'</pre
-          >
-          <h3>2. 捕获具体异常</h3>
-          <pre>
-from pathlib import Path
-import json
-
-try:
-    text = Path("config.json").read_text(encoding="utf-8")
-    config = json.loads(text)
-except FileNotFoundError:
-    config = {"top_k": 5}
-except json.JSONDecodeError as error:
-    raise ValueError(f"配置文件不是合法 JSON：{error}") from error
-else:
-    print("配置加载成功")
-finally:
-    print("配置阶段结束")</pre
-          >
-          <p>
-            不要使用空的 <code>except:</code>。它会把 KeyboardInterrupt
-            等也吞掉，让程序看似继续、实际状态错误。
-          </p>
-          <h3>3. 主动验证和自定义消息</h3>
-          <pre>
-def validate_top_k(top_k):
-    if not isinstance(top_k, int):
-        raise TypeError("top_k 必须是 int")
-    if top_k <= 0:
-        raise ValueError("top_k 必须大于 0")</pre
-          >
-          <h3>4. 模块组织</h3>
-          <pre data-language="plain">
-project/
-├─ app.py
-├─ rag/
-│  ├─ __init__.py
-│  ├─ chunking.py
-│  ├─ retrieval.py
-│  └─ generation.py
-├─ tests/
-└─ requirements.txt</pre
-          >
-          <pre>
-# app.py
-from rag.chunking import chunk_text
-from rag.retrieval import retrieve</pre
-          >
-          <h3>5. 虚拟环境和依赖</h3>
-          <pre>
-# Windows PowerShell
-python -m venv .venv
-.\.venv\Scripts\Activate.ps1
-python -m pip install numpy requests pytest
-python -m pip freeze > requirements.txt</pre
-          >
-          <div class="note">
-            API Key 应放环境变量或本地 <code>.env</code>，并把
-            <code>.env</code> 加入
-            <code>.gitignore</code>。永远不要提交真实密钥。
-          </div>
-        </section>
-        <section class="content-section" id="errors">
-          <h2>常见错误</h2>
-          <ul class="error-list">
-            <li>用 <code>except Exception: pass</code> 吞掉所有错误。</li>
-            <li>把过大代码块放进 try，无法判断是哪一步失败。</li>
-            <li>使用错误的 Python 解释器安装包，导致“已安装但无法 import”。</li>
-            <li>直接运行包内部文件导致相对导入错误。</li>
-            <li>requirements 不固定关键版本，换机器后结果不同。</li>
-            <li>把 .venv 或 API Key 提交到 Git。</li>
-          </ul>
-        </section>
-        <section class="content-section" id="practice">
-          <h2>分层练习</h2>
-          <div class="exercise">
-            <strong>基础</strong>
-            <ol>
-              <li>
-                分别触发并识别 NameError、TypeError、ValueError、KeyError。
-              </li>
-              <li>安全读取一个可能不存在的 JSON 文件。</li>
-            </ol>
-          </div>
-          <div class="exercise">
-            <strong>进阶</strong>
-            <ol>
-              <li>把迷你 RAG 拆成 chunking.py 和 retrieval.py。</li>
-              <li>创建干净 venv，仅用 requirements 重装依赖。</li>
-            </ol>
-          </div>
-          <div class="exercise">
-            <strong>掌握标准</strong>
-            <ol>
-              <li>根据完整 Traceback 解释异常传播路径。</li>
-              <li>设计错误策略：哪些异常重试、哪些拒答、哪些立即终止。</li>
-            </ol>
-          </div>
-        </section>
+  <header class="chapter-hero">
+    <div class="chapter-kicker">PYTHON REFERENCE · 06</div>
+    <h1>路径、系统与复制</h1>
+    <p class="chapter-summary">常用调用格式与一句用途。from pathlib import Path；其余工具先导入 os、shutil、copy 或 subprocess。</p>
+    <p>括号内为传入参数；<code>name=value</code> 为关键字传参，<code>*args</code> / <code>**kwargs</code> 为多个位置 / 关键字参数。以下列出常用调用写法，默认值与示例值以条目说明为准。</p>
+  </header>
+  <section class="content-section" id="paths">
+    <h2>构造与查询路径</h2>
+    <ul>
+      <li><code>Path(path)</code> — 创建路径对象</li>
+      <li><code>Path.cwd()</code> — 当前工作目录</li>
+      <li><code>Path.home()</code> — 用户主目录</li>
+      <li><code>p.resolve()</code> — 转为绝对路径并解析符号链接</li>
+      <li><code>p.exists()</code> — 路径是否存在</li>
+      <li><code>p.is_file()</code> — 是否为文件</li>
+      <li><code>p.is_dir()</code> — 是否为目录</li>
+      <li><code>p.joinpath(*parts)</code> — 拼接路径</li>
+      <li><code>p.with_name(name)</code> — 替换文件名</li>
+      <li><code>p.with_suffix(suffix)</code> — 替换扩展名</li>
+    </ul>
+  </section>
+  <section class="content-section" id="directory">
+    <h2>目录与文件操作</h2>
+    <ul>
+      <li><code>p.iterdir()</code> — 遍历目录直接子项</li>
+      <li><code>p.glob(pattern)</code> — 按模式查找</li>
+      <li><code>p.rglob(pattern)</code> — 递归查找</li>
+      <li><code>p.mkdir(mode=0o777, parents=False, exist_ok=False)</code> — 创建目录</li>
+      <li><code>p.rename(target)</code> — 重命名或移动</li>
+      <li><code>p.unlink(missing_ok=False)</code> — 删除文件或符号链接</li>
+      <li><code>p.rmdir()</code> — 删除空目录</li>
+      <li><code>p.read_text(encoding=&quot;utf-8&quot;)</code> — 读取文本</li>
+      <li><code>p.write_text(text, encoding=&quot;utf-8&quot;)</code> — 覆盖写入文本</li>
+      <li><code>p.read_bytes()</code> — 读取二进制</li>
+      <li><code>p.write_bytes(data)</code> — 覆盖写入二进制</li>
+    </ul>
+  </section>
+  <section class="content-section" id="system">
+    <h2>系统与进程</h2>
+    <ul>
+      <li><code>os.getenv(key, default=None)</code> — 读取环境变量</li>
+      <li><code>os.getcwd()</code> — 当前工作目录</li>
+      <li><code>os.chdir(path)</code> — 切换工作目录</li>
+      <li><code>os.listdir(path=&quot;.&quot;)</code> — 列出目录项名称</li>
+      <li><code>os.walk(top)</code> — 递归取得目录、子目录与文件名</li>
+      <li><code>subprocess.run(args, capture_output=True, text=True, check=True)</code> — 以参数列表运行命令并取得结果</li>
+    </ul>
+  </section>
+  <section class="content-section" id="copy">
+    <h2>复制与移动</h2>
+    <ul>
+      <li><code>shutil.copy2(src, dst)</code> — 复制文件并尽可能保留元数据</li>
+      <li><code>shutil.copytree(src, dst, dirs_exist_ok=False)</code> — 复制目录树</li>
+      <li><code>shutil.move(src, dst)</code> — 移动文件或目录</li>
+      <li><code>shutil.rmtree(path)</code> — 递归删除目录及全部内容</li>
+      <li><code>copy.copy(obj)</code> — 浅复制</li>
+      <li><code>copy.deepcopy(obj)</code> — 深复制</li>
+    </ul>
+  </section>
+  <p><a href="https://docs.python.org/3/library/pathlib.html" target="_blank" rel="noreferrer">官方 API 参考</a></p>
 </main>

@@ -35,7 +35,7 @@
             <nav class="course-switcher" aria-label="课程切换">
               <a class="course-switcher-item active" href="../chapters/01-basics.html" aria-current="page">
                 <span class="course-switcher-dot" aria-hidden="true"></span>
-                <span><strong>Python 通识</strong><small>基础语法、数据结构、API 与 AI 应用基础</small></span>
+                <span><strong>Python 常用方法</strong><small>内置函数、容器、标准库与数据分析常用方法 · 参数格式速查</small></span>
               </a>
               <a class="course-switcher-item" href="../courses/ca6000-module-01.html">
                 <span class="course-switcher-dot" aria-hidden="true"></span>
@@ -53,49 +53,49 @@
     </header>
     <div class="chapter-layout">
       <aside class="toc">
-        <div class="toc-title">PYTHON 通识</div>
-        <nav class="chapter-links" aria-label="Python 通识页面">
+        <div class="toc-title">PYTHON 常用方法</div>
+        <nav class="chapter-links" aria-label="Python 常用方法页面">
           <div class="chapter-group" data-chapter-group>
-            <a class="chapter-link" href="01-basics.html">01 基本类型与 Casting</a>
+            <a class="chapter-link" href="01-basics.html">01 内置函数</a>
             <div class="chapter-subnav" aria-hidden="true" inert>
               <div class="chapter-subnav-inner">
-              <a href="01-basics.html#terms" data-toc-section="terms">必须掌握的术语</a>
-              <a href="01-basics.html#core" data-toc-section="core">核心知识</a>
-              <a href="01-basics.html#errors" data-toc-section="errors">常见错误</a>
-              <a href="01-basics.html#practice" data-toc-section="practice">练习</a>
+              <a href="01-basics.html#convert" data-toc-section="convert">类型转换</a>
+              <a href="01-basics.html#numbers" data-toc-section="numbers">数字与进制</a>
+              <a href="01-basics.html#inspect" data-toc-section="inspect">类型与对象查询</a>
+              <a href="01-basics.html#io-help" data-toc-section="io-help">输入、输出与帮助</a>
               </div>
             </div>
           </div>
           <div class="chapter-group" data-chapter-group>
-            <a class="chapter-link" href="02-containers.html">02 容器</a>
+            <a class="chapter-link" href="02-containers.html">02 容器方法</a>
             <div class="chapter-subnav" aria-hidden="true" inert>
               <div class="chapter-subnav-inner">
-              <a href="02-containers.html#terms" data-toc-section="terms">必须掌握的术语</a>
-              <a href="02-containers.html#core" data-toc-section="core">核心知识</a>
-              <a href="02-containers.html#errors" data-toc-section="errors">常见错误</a>
-              <a href="02-containers.html#practice" data-toc-section="practice">练习</a>
+              <a href="02-containers.html#lists" data-toc-section="lists">列表 list</a>
+              <a href="02-containers.html#dicts" data-toc-section="dicts">字典 dict</a>
+              <a href="02-containers.html#sets" data-toc-section="sets">集合 set</a>
+              <a href="02-containers.html#tuples" data-toc-section="tuples">元组与序列</a>
               </div>
             </div>
           </div>
           <div class="chapter-group" data-chapter-group>
-            <a class="chapter-link" href="03-control-flow.html">03 判断与循环</a>
+            <a class="chapter-link" href="03-control-flow.html">03 字符串</a>
             <div class="chapter-subnav" aria-hidden="true" inert>
               <div class="chapter-subnav-inner">
-              <a href="03-control-flow.html#terms" data-toc-section="terms">必须掌握的术语</a>
-              <a href="03-control-flow.html#core" data-toc-section="core">核心知识</a>
-              <a href="03-control-flow.html#errors" data-toc-section="errors">常见错误</a>
-              <a href="03-control-flow.html#practice" data-toc-section="practice">练习</a>
+              <a href="03-control-flow.html#case" data-toc-section="case">大小写与清理</a>
+              <a href="03-control-flow.html#find" data-toc-section="find">查找与替换</a>
+              <a href="03-control-flow.html#split" data-toc-section="split">拆分、拼接与格式化</a>
+              <a href="03-control-flow.html#check" data-toc-section="check">内容判断</a>
               </div>
             </div>
           </div>
           <div class="chapter-group" data-chapter-group>
-            <a class="chapter-link" href="04-functions.html">04 函数</a>
+            <a class="chapter-link" href="04-functions.html">04 遍历与函数工具</a>
             <div class="chapter-subnav" aria-hidden="true" inert>
               <div class="chapter-subnav-inner">
-              <a href="04-functions.html#terms" data-toc-section="terms">必须掌握的术语</a>
-              <a href="04-functions.html#core" data-toc-section="core">核心知识</a>
-              <a href="04-functions.html#errors" data-toc-section="errors">常见错误</a>
-              <a href="04-functions.html#practice" data-toc-section="practice">练习</a>
+              <a href="04-functions.html#iterate" data-toc-section="iterate">遍历</a>
+              <a href="04-functions.html#aggregate" data-toc-section="aggregate">排序与汇总</a>
+              <a href="04-functions.html#itertools" data-toc-section="itertools">itertools</a>
+              <a href="04-functions.html#functional" data-toc-section="functional">functools 与 operator</a>
               </div>
             </div>
           </div>
@@ -103,246 +103,128 @@
             <a class="chapter-link" href="05-files-json.html">05 文件与 JSON</a>
             <div class="chapter-subnav" aria-hidden="true" inert>
               <div class="chapter-subnav-inner">
-              <a href="05-files-json.html#terms" data-toc-section="terms">必须掌握的术语</a>
-              <a href="05-files-json.html#core" data-toc-section="core">核心知识</a>
-              <a href="05-files-json.html#errors" data-toc-section="errors">常见错误</a>
-              <a href="05-files-json.html#practice" data-toc-section="practice">练习</a>
+              <a href="05-files-json.html#open" data-toc-section="open">打开与关闭</a>
+              <a href="05-files-json.html#file" data-toc-section="file">读写与定位</a>
+              <a href="05-files-json.html#json" data-toc-section="json">JSON</a>
+              <a href="05-files-json.html#csv" data-toc-section="csv">CSV</a>
               </div>
             </div>
           </div>
           <div class="chapter-group" data-chapter-group>
-            <a class="chapter-link" href="06-errors-env.html">06 报错与环境</a>
+            <a class="chapter-link" href="06-errors-env.html">06 路径与系统</a>
             <div class="chapter-subnav" aria-hidden="true" inert>
               <div class="chapter-subnav-inner">
-              <a href="06-errors-env.html#terms" data-toc-section="terms">必须掌握的术语</a>
-              <a href="06-errors-env.html#core" data-toc-section="core">核心知识</a>
-              <a href="06-errors-env.html#errors" data-toc-section="errors">常见错误</a>
-              <a href="06-errors-env.html#practice" data-toc-section="practice">练习</a>
+              <a href="06-errors-env.html#paths" data-toc-section="paths">构造与查询路径</a>
+              <a href="06-errors-env.html#directory" data-toc-section="directory">目录与文件操作</a>
+              <a href="06-errors-env.html#system" data-toc-section="system">系统与进程</a>
+              <a href="06-errors-env.html#copy" data-toc-section="copy">复制与移动</a>
               </div>
             </div>
           </div>
           <div class="chapter-group" data-chapter-group>
-            <a class="chapter-link" href="07-numpy-vectors.html">07 NumPy 与向量</a>
+            <a class="chapter-link" href="07-numpy-vectors.html">07 NumPy</a>
             <div class="chapter-subnav" aria-hidden="true" inert>
               <div class="chapter-subnav-inner">
-              <a href="07-numpy-vectors.html#terms" data-toc-section="terms">必须掌握的术语</a>
-              <a href="07-numpy-vectors.html#core" data-toc-section="core">核心知识</a>
-              <a href="07-numpy-vectors.html#errors" data-toc-section="errors">常见错误</a>
-              <a href="07-numpy-vectors.html#practice" data-toc-section="practice">练习</a>
+              <a href="07-numpy-vectors.html#create" data-toc-section="create">创建数组</a>
+              <a href="07-numpy-vectors.html#shape" data-toc-section="shape">形状与组合</a>
+              <a href="07-numpy-vectors.html#calculate" data-toc-section="calculate">计算与筛选</a>
+              <a href="07-numpy-vectors.html#random" data-toc-section="random">随机数与保存</a>
               </div>
             </div>
           </div>
           <div class="chapter-group" data-chapter-group>
-            <a class="chapter-link" href="08-api.html">08 API</a>
+            <a class="chapter-link" href="08-api.html">08 Pandas</a>
             <div class="chapter-subnav" aria-hidden="true" inert>
               <div class="chapter-subnav-inner">
-              <a href="08-api.html#terms" data-toc-section="terms">必须掌握的术语</a>
-              <a href="08-api.html#core" data-toc-section="core">核心知识</a>
-              <a href="08-api.html#errors" data-toc-section="errors">常见错误</a>
-              <a href="08-api.html#practice" data-toc-section="practice">练习</a>
+              <a href="08-api.html#read" data-toc-section="read">创建、读取与查看</a>
+              <a href="08-api.html#clean" data-toc-section="clean">选择与清理</a>
+              <a href="08-api.html#analyze" data-toc-section="analyze">计算、分组与排序</a>
+              <a href="08-api.html#combine" data-toc-section="combine">合并与重塑</a>
               </div>
             </div>
           </div>
           <div class="chapter-group active" data-chapter-group>
-            <a class="chapter-link active" aria-current="page" href="09-embedding.html">09 Embedding</a>
+            <a class="chapter-link active" aria-current="page" href="09-embedding.html">09 Matplotlib</a>
             <div class="chapter-subnav">
               <div class="chapter-subnav-inner">
-              <a href="09-embedding.html#terms" data-toc-section="terms">必须掌握的术语</a>
-              <a href="09-embedding.html#core" data-toc-section="core">核心知识</a>
-              <a href="09-embedding.html#errors" data-toc-section="errors">常见错误</a>
-              <a href="09-embedding.html#practice" data-toc-section="practice">练习</a>
+              <a href="09-embedding.html#figure" data-toc-section="figure">画布</a>
+              <a href="09-embedding.html#plot" data-toc-section="plot">常见图形</a>
+              <a href="09-embedding.html#labels" data-toc-section="labels">标题、坐标与图例</a>
+              <a href="09-embedding.html#export" data-toc-section="export">显示与保存</a>
               </div>
             </div>
           </div>
           <div class="chapter-group" data-chapter-group>
-            <a class="chapter-link" href="10-mini-rag.html">10 迷你 RAG</a>
+            <a class="chapter-link" href="10-mini-rag.html">10 常用标准库</a>
             <div class="chapter-subnav" aria-hidden="true" inert>
               <div class="chapter-subnav-inner">
-              <a href="10-mini-rag.html#terms" data-toc-section="terms">必须掌握的术语</a>
-              <a href="10-mini-rag.html#core" data-toc-section="core">核心知识</a>
-              <a href="10-mini-rag.html#errors" data-toc-section="errors">常见错误</a>
-              <a href="10-mini-rag.html#practice" data-toc-section="practice">练习</a>
+              <a href="10-mini-rag.html#math" data-toc-section="math">数学与统计</a>
+              <a href="10-mini-rag.html#random" data-toc-section="random">随机与计数</a>
+              <a href="10-mini-rag.html#datetime" data-toc-section="datetime">日期与时间</a>
+              <a href="10-mini-rag.html#regex" data-toc-section="regex">正则表达式</a>
               </div>
             </div>
           </div>
         </nav>
       </aside>
       <main class="chapter">
-        <header class="chapter-hero">
-          <div class="chapter-kicker">CHAPTER 09</div>
-          <h1>Embedding、向量空间与语义检索</h1>
-          <p class="chapter-summary">
-            Embedding
-            将文本映射到向量空间，使语义可以被距离函数比较。真正掌握它，需要理解模型一致性、归一化、相似度、索引、维度与评估。
-          </p>
-          <div class="outcomes">
-            <strong>学完你应该能够：</strong>解释 embedding
-            的输入输出和限制；正确计算相似度；理解向量数据库、top-k、阈值、索引与检索评估。
-          </div>
-        </header>
-        <section class="content-section" id="terms">
-          <h2>必须掌握的术语</h2>
-          <table class="terms">
-            <tr>
-              <th>术语</th>
-              <th>准确理解</th>
-            </tr>
-            <tr>
-              <td>embedding</td>
-              <td>对象的稠密数值表示。</td>
-            </tr>
-            <tr>
-              <td>embedding model</td>
-              <td>把文本映射为固定维向量的模型。</td>
-            </tr>
-            <tr>
-              <td>vector space</td>
-              <td>向量存在并可进行距离运算的空间。</td>
-            </tr>
-            <tr>
-              <td>dimension</td>
-              <td>向量元素个数，由模型决定。</td>
-            </tr>
-            <tr>
-              <td>similarity metric</td>
-              <td>比较向量的规则，如 cosine、dot product、L2。</td>
-            </tr>
-            <tr>
-              <td>normalization</td>
-              <td>将向量缩放为单位长度。</td>
-            </tr>
-            <tr>
-              <td>top-k</td>
-              <td>返回分数最高的 k 个候选。</td>
-            </tr>
-            <tr>
-              <td>threshold</td>
-              <td>过滤低于最低相关性的候选。</td>
-            </tr>
-            <tr>
-              <td>vector index</td>
-              <td>加速最近邻搜索的数据结构。</td>
-            </tr>
-            <tr>
-              <td>ANN</td>
-              <td>近似最近邻，用少量精度换速度与规模。</td>
-            </tr>
-            <tr>
-              <td>metadata filter</td>
-              <td>在向量检索前后按来源、权限等过滤。</td>
-            </tr>
-          </table>
-        </section>
-        <section class="content-section" id="core">
-          <h2>1. Embedding 不是“给每个词一个固定意思”</h2>
-          <p>
-            现代文本 embedding
-            往往对整段文本编码。向量单个维度通常没有可直接命名的含义；有意义的是向量之间的相对位置。
-          </p>
-          <pre>
-texts = [
-    "如何申请补考？",
-    "补考申请流程是什么？",
-    "今天会下雨吗？"
-]
-vectors = embedding_model.encode(texts)
-print(vectors.shape)  # (3, embedding_dim)</pre
-          >
-          <h3>2. 文档和查询必须使用兼容模型</h3>
-          <p>
-            知识库建索引和用户查询通常必须使用同一个 embedding
-            模型及相同预处理。换模型后维度或空间发生变化，需要重建索引。
-          </p>
-          <h3>3. 三种常见度量</h3>
-          <pre>
-import numpy as np
-
-def cosine(a, b):
-    return np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b))
-
-dot_score = np.dot(a, b)
-l2_distance = np.linalg.norm(a - b)</pre
-          >
-          <table class="terms">
-            <tr>
-              <th>度量</th>
-              <th>分数解释</th>
-            </tr>
-            <tr>
-              <td>cosine</td>
-              <td>方向越相近分数越高；弱化长度影响。</td>
-            </tr>
-            <tr>
-              <td>dot product</td>
-              <td>方向和长度共同影响；归一化后与 cosine 接近。</td>
-            </tr>
-            <tr>
-              <td>L2 distance</td>
-              <td>距离越小越相近。</td>
-            </tr>
-          </table>
-          <h3>4. 从暴力搜索到向量索引</h3>
-          <pre>
-# 小规模：对全部文档向量计算分数
-scores = doc_vectors @ query_vector
-top_ids = np.argsort(scores)[-5:][::-1]
-
-# 大规模：FAISS / Qdrant / Milvus / pgvector 等索引
-hits = index.search(query_vector, top_k=5)</pre
-          >
-          <h3>5. top-k 和阈值不是固定答案</h3>
-          <p>
-            top-k
-            太小可能漏掉证据，太大则引入噪声并占用上下文。阈值依赖模型、语料和度量，必须通过标注问题集评估，而不是照抄网上数值。
-          </p>
-          <h3>6. Embedding 的局限</h3>
-          <ul>
-            <li>精确数字、ID、专有名词可能不如关键词检索。</li>
-            <li>长文本被截断或语义混合。</li>
-            <li>领域术语和跨语言能力取决于模型。</li>
-            <li>语义相近不等于事实支持答案。</li>
-          </ul>
-          <div class="note">
-            因此生产 RAG 常结合 BM25 关键词检索、metadata filter 和 reranker。
-          </div>
-        </section>
-        <section class="content-section" id="errors">
-          <h2>常见错误</h2>
-          <ul class="error-list">
-            <li>文档和查询使用不同 embedding 模型。</li>
-            <li>换模型后继续使用旧索引。</li>
-            <li>不确认向量是否已归一化，却混用 dot product 与 cosine。</li>
-            <li>只凭几个问题主观判断检索效果。</li>
-            <li>把相似度分数当作概率或置信度。</li>
-            <li>忽略权限和 metadata，检索到用户无权查看的内容。</li>
-          </ul>
-        </section>
-        <section class="content-section" id="practice">
-          <h2>分层练习</h2>
-          <div class="exercise">
-            <strong>基础</strong>
-            <ol>
-              <li>计算三个演示向量两两之间的 cosine。</li>
-              <li>比较 cosine、dot 和 L2 的排序。</li>
-            </ol>
-          </div>
-          <div class="exercise">
-            <strong>进阶</strong>
-            <ol>
-              <li>用本地 embedding 模型编码 100 段笔记并检索。</li>
-              <li>比较归一化前后的分数。</li>
-            </ol>
-          </div>
-          <div class="exercise">
-            <strong>掌握标准</strong>
-            <ol>
-              <li>构造 30 个带相关文档标注的问题，评估 Recall@5。</li>
-              <li>解释 top-k 与阈值如何通过实验确定。</li>
-            </ol>
-          </div>
-        </section>
+  <header class="chapter-hero">
+    <div class="chapter-kicker">PYTHON REFERENCE · 09</div>
+    <h1>Matplotlib 常用方法</h1>
+    <p class="chapter-summary">常用调用格式与一句用途。import matplotlib.pyplot as plt；fig、ax 来自 plt.subplots()。参数中的颜色、标签等是示例值。</p>
+    <p>括号内为传入参数；<code>name=value</code> 为关键字传参，<code>*args</code> / <code>**kwargs</code> 为多个位置 / 关键字参数。以下列出常用调用写法，默认值与示例值以条目说明为准。</p>
+  </header>
+  <section class="content-section" id="figure">
+    <h2>画布</h2>
+    <ul>
+      <li><code>plt.figure(figsize=(8, 5), dpi=100)</code> — 创建画布</li>
+      <li><code>plt.subplots(nrows=1, ncols=1, figsize=(8, 5))</code> — 返回画布和坐标轴</li>
+      <li><code>fig.add_subplot(nrows, ncols, index)</code> — 添加子图</li>
+      <li><code>fig.tight_layout()</code> — 自动调整间距</li>
+    </ul>
+  </section>
+  <section class="content-section" id="plot">
+    <h2>常见图形</h2>
+    <ul>
+      <li><code>ax.plot(x, y, color=&quot;C0&quot;, linestyle=&quot;-&quot;, marker=&quot;o&quot;, label=&quot;data&quot;)</code> — 折线图</li>
+      <li><code>ax.scatter(x, y, s=20, c=&quot;C0&quot;, alpha=0.7)</code> — 散点图</li>
+      <li><code>ax.bar(x, height, width=0.8, label=&quot;data&quot;)</code> — 柱状图</li>
+      <li><code>ax.barh(y, width, height=0.8)</code> — 横向柱状图</li>
+      <li><code>ax.hist(x, bins=10, density=False, alpha=0.7)</code> — 直方图</li>
+      <li><code>ax.boxplot(x)</code> — 箱线图</li>
+      <li><code>ax.pie(x, labels=labels, autopct=&quot;%1.1f%%&quot;)</code> — 饼图</li>
+      <li><code>ax.imshow(X, cmap=&quot;viridis&quot;, aspect=&quot;auto&quot;)</code> — 图像或热力图</li>
+      <li><code>ax.fill_between(x, y1, y2=0, alpha=0.3)</code> — 填充两条曲线之间区域</li>
+    </ul>
+  </section>
+  <section class="content-section" id="labels">
+    <h2>标题、坐标与图例</h2>
+    <ul>
+      <li><code>ax.set_title(label)</code> — 设置子图标题</li>
+      <li><code>ax.set_xlabel(label)</code> — 设置 x 轴名称</li>
+      <li><code>ax.set_ylabel(label)</code> — 设置 y 轴名称</li>
+      <li><code>ax.set_xlim(left=None, right=None)</code> — 设置 x 轴范围</li>
+      <li><code>ax.set_ylim(bottom=None, top=None)</code> — 设置 y 轴范围</li>
+      <li><code>ax.set_xticks(ticks, labels=None)</code> — 设置 x 轴刻度及文本</li>
+      <li><code>ax.set_yticks(ticks, labels=None)</code> — 设置 y 轴刻度及文本</li>
+      <li><code>ax.legend(loc=&quot;best&quot;)</code> — 显示图例</li>
+      <li><code>ax.grid(visible=True, axis=&quot;both&quot;, alpha=0.3)</code> — 显示网格</li>
+      <li><code>ax.annotate(text, xy, xytext=None, arrowprops=None)</code> — 添加注释</li>
+      <li><code>fig.colorbar(mappable, ax=ax)</code> — 为 imshow 等返回对象添加色标</li>
+      <li><code>fig.suptitle(text)</code> — 设置整张画布标题</li>
+    </ul>
+  </section>
+  <section class="content-section" id="export">
+    <h2>显示与保存</h2>
+    <ul>
+      <li><code>plt.show()</code> — 显示图形</li>
+      <li><code>fig.savefig(fname, dpi=300, bbox_inches=&quot;tight&quot;)</code> — 保存图片</li>
+      <li><code>plt.close(fig)</code> — 关闭画布</li>
+    </ul>
+  </section>
+  <p><a href="https://matplotlib.org/stable/api/pyplot_summary.html" target="_blank" rel="noreferrer">官方 API 参考</a></p>
         <nav class="chapter-nav" aria-label="上一页和下一页">
-          <a href="08-api.html">← 08 API</a><a href="10-mini-rag.html">10 迷你 RAG →</a>
+          <a href="08-api.html">← 08 Pandas</a><a href="10-mini-rag.html">10 常用标准库 →</a>
         </nav>
       </main>
     </div>

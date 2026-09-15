@@ -68,46 +68,46 @@ try {
   assert(new URL(page.url()).hash === "", "Scroll spy should not rewrite the URL hash");
 
   await page.getByRole("button", { name: "课程切换" }).click();
-  const pythonLink = page.getByRole("link", { name: /Python 通识/ });
+  const pythonLink = page.getByRole("link", { name: /Python 常用方法/ });
   assert((await pythonLink.getAttribute("href")) === "../chapters/01-basics.html", "Python menu link is incorrect");
   await pythonLink.click();
   await page.waitForURL("**/chapters/01-basics.html");
-  assert(await page.getByRole("heading", { name: "变量、基本类型与 Casting" }).isVisible(), "Python first chapter did not render");
+  assert(await page.getByRole("heading", { name: "内置函数与类型转换" }).isVisible(), "Python first chapter did not render");
   assert(await page.locator(".chapter-group.active").count() === 1, "Exactly one chapter should be expanded");
-  assert(await page.locator(".chapter-group.active .chapter-subnav a").count() === config.sections.length, "Current chapter subtitles are incomplete");
+  assert(await page.locator(".chapter-group.active .chapter-subnav a").count() === config.courses[0].pages[0].subsections.length, "Current chapter subtitles are incomplete");
   assert(await page.locator(".chapter-group:not(.active) .chapter-subnav[inert]").count() === config.courses[0].pages.length - 1, "Inactive chapter subtitles are not collapsed");
   const tocTransition = await page.locator(".chapter-group.active .chapter-subnav").evaluate((element) => getComputedStyle(element).transitionDuration);
   assert(tocTransition.includes("0.12s"), "Current chapter subtitle transition is missing");
 
   const navigationEntries = await page.evaluate(() => performance.getEntriesByType("navigation").length);
   const faviconBeforeChapterSwitch = await page.locator('link[rel="icon"]').getAttribute("href");
-  await page.getByRole("link", { name: "02 容器", exact: true }).click();
+  await page.getByRole("link", { name: "02 容器方法", exact: true }).click();
   await page.waitForURL("**/chapters/02-containers.html");
   await page.getByRole("heading", { name: "容器：list、dict、set、tuple" }).waitFor();
   assert(await page.evaluate(() => performance.getEntriesByType("navigation").length) === navigationEntries, "Chapter switch performed a full-page navigation");
   assert(await page.locator('link[rel="icon"]').getAttribute("href") === faviconBeforeChapterSwitch, "Chapter switch replaced the favicon");
-  assert(await page.locator(".chapter-group.active .chapter-link").innerText() === "02 容器", "New chapter did not expand in the table of contents");
+  assert(await page.locator(".chapter-group.active .chapter-link").innerText() === "02 容器方法", "New chapter did not expand in the table of contents");
   assert(await page.locator(".code-block").count() === await page.getByRole("button", { name: "复制代码" }).count(), "Code blocks were not enhanced after the chapter switch");
 
   await page.goBack();
   await page.waitForURL("**/chapters/01-basics.html");
-  await page.getByRole("heading", { name: "变量、基本类型与 Casting" }).waitFor();
-  assert(await page.locator(".chapter-group.active .chapter-link").innerText() === "01 基本类型与 Casting", "Browser history did not restore the previous chapter");
+  await page.getByRole("heading", { name: "内置函数与类型转换" }).waitFor();
+  assert(await page.locator(".chapter-group.active .chapter-link").innerText() === "01 内置函数", "Browser history did not restore the previous chapter");
   assert(await page.evaluate(() => performance.getEntriesByType("navigation").length) === navigationEntries, "Browser history caused a full-page navigation");
 
   await page.getByRole("button", { name: /模式$/ }).click();
   await page.getByRole("menuitemradio", { name: "夜间模式" }).click();
   assert(await page.locator("html").getAttribute("data-color-mode") === "dark", "Theme did not switch to dark mode");
 
-  await page.getByRole("link", { name: "练习", exact: true }).click();
-  await page.waitForFunction(() => document.querySelector('.chapter-group.active [data-toc-section="practice"]')?.getAttribute("aria-current") === "location");
+  await page.getByRole("link", { name: "数字与进制", exact: true }).click();
+  await page.waitForFunction(() => document.querySelector('.chapter-group.active [data-toc-section="numbers"]')?.getAttribute("aria-current") === "location");
   const anchorState = await page.evaluate(() => ({
     hash: location.hash,
     behavior: getComputedStyle(document.documentElement).scrollBehavior,
-    targetTop: document.querySelector("#practice").getBoundingClientRect().top,
+    targetTop: document.querySelector("#numbers").getBoundingClientRect().top,
   }));
-  assert(anchorState.hash === "#practice", "Section anchor did not update the URL");
-  assert(await page.getByRole("link", { name: "练习", exact: true }).getAttribute("aria-current") === "location", "Current subtitle state did not follow the URL hash");
+  assert(anchorState.hash === "#numbers", "Section anchor did not update the URL");
+  assert(await page.getByRole("link", { name: "数字与进制", exact: true }).getAttribute("aria-current") === "location", "Current subtitle state did not follow the URL hash");
   assert(anchorState.behavior === "auto", "Section navigation is not immediate");
   assert(Math.abs(anchorState.targetTop - 82) < 3, "Section anchor landed at the wrong offset");
 

@@ -1,175 +1,57 @@
 <main class="chapter">
-        <header class="chapter-hero">
-          <div class="chapter-kicker">CHAPTER 09</div>
-          <h1>Embedding、向量空间与语义检索</h1>
-          <p class="chapter-summary">
-            Embedding
-            将文本映射到向量空间，使语义可以被距离函数比较。真正掌握它，需要理解模型一致性、归一化、相似度、索引、维度与评估。
-          </p>
-          <div class="outcomes">
-            <strong>学完你应该能够：</strong>解释 embedding
-            的输入输出和限制；正确计算相似度；理解向量数据库、top-k、阈值、索引与检索评估。
-          </div>
-        </header>
-        <section class="content-section" id="terms">
-          <h2>必须掌握的术语</h2>
-          <table class="terms">
-            <tr>
-              <th>术语</th>
-              <th>准确理解</th>
-            </tr>
-            <tr>
-              <td>embedding</td>
-              <td>对象的稠密数值表示。</td>
-            </tr>
-            <tr>
-              <td>embedding model</td>
-              <td>把文本映射为固定维向量的模型。</td>
-            </tr>
-            <tr>
-              <td>vector space</td>
-              <td>向量存在并可进行距离运算的空间。</td>
-            </tr>
-            <tr>
-              <td>dimension</td>
-              <td>向量元素个数，由模型决定。</td>
-            </tr>
-            <tr>
-              <td>similarity metric</td>
-              <td>比较向量的规则，如 cosine、dot product、L2。</td>
-            </tr>
-            <tr>
-              <td>normalization</td>
-              <td>将向量缩放为单位长度。</td>
-            </tr>
-            <tr>
-              <td>top-k</td>
-              <td>返回分数最高的 k 个候选。</td>
-            </tr>
-            <tr>
-              <td>threshold</td>
-              <td>过滤低于最低相关性的候选。</td>
-            </tr>
-            <tr>
-              <td>vector index</td>
-              <td>加速最近邻搜索的数据结构。</td>
-            </tr>
-            <tr>
-              <td>ANN</td>
-              <td>近似最近邻，用少量精度换速度与规模。</td>
-            </tr>
-            <tr>
-              <td>metadata filter</td>
-              <td>在向量检索前后按来源、权限等过滤。</td>
-            </tr>
-          </table>
-        </section>
-        <section class="content-section" id="core">
-          <h2>1. Embedding 不是“给每个词一个固定意思”</h2>
-          <p>
-            现代文本 embedding
-            往往对整段文本编码。向量单个维度通常没有可直接命名的含义；有意义的是向量之间的相对位置。
-          </p>
-          <pre>
-texts = [
-    "如何申请补考？",
-    "补考申请流程是什么？",
-    "今天会下雨吗？"
-]
-vectors = embedding_model.encode(texts)
-print(vectors.shape)  # (3, embedding_dim)</pre
-          >
-          <h3>2. 文档和查询必须使用兼容模型</h3>
-          <p>
-            知识库建索引和用户查询通常必须使用同一个 embedding
-            模型及相同预处理。换模型后维度或空间发生变化，需要重建索引。
-          </p>
-          <h3>3. 三种常见度量</h3>
-          <pre>
-import numpy as np
-
-def cosine(a, b):
-    return np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b))
-
-dot_score = np.dot(a, b)
-l2_distance = np.linalg.norm(a - b)</pre
-          >
-          <table class="terms">
-            <tr>
-              <th>度量</th>
-              <th>分数解释</th>
-            </tr>
-            <tr>
-              <td>cosine</td>
-              <td>方向越相近分数越高；弱化长度影响。</td>
-            </tr>
-            <tr>
-              <td>dot product</td>
-              <td>方向和长度共同影响；归一化后与 cosine 接近。</td>
-            </tr>
-            <tr>
-              <td>L2 distance</td>
-              <td>距离越小越相近。</td>
-            </tr>
-          </table>
-          <h3>4. 从暴力搜索到向量索引</h3>
-          <pre>
-# 小规模：对全部文档向量计算分数
-scores = doc_vectors @ query_vector
-top_ids = np.argsort(scores)[-5:][::-1]
-
-# 大规模：FAISS / Qdrant / Milvus / pgvector 等索引
-hits = index.search(query_vector, top_k=5)</pre
-          >
-          <h3>5. top-k 和阈值不是固定答案</h3>
-          <p>
-            top-k
-            太小可能漏掉证据，太大则引入噪声并占用上下文。阈值依赖模型、语料和度量，必须通过标注问题集评估，而不是照抄网上数值。
-          </p>
-          <h3>6. Embedding 的局限</h3>
-          <ul>
-            <li>精确数字、ID、专有名词可能不如关键词检索。</li>
-            <li>长文本被截断或语义混合。</li>
-            <li>领域术语和跨语言能力取决于模型。</li>
-            <li>语义相近不等于事实支持答案。</li>
-          </ul>
-          <div class="note">
-            因此生产 RAG 常结合 BM25 关键词检索、metadata filter 和 reranker。
-          </div>
-        </section>
-        <section class="content-section" id="errors">
-          <h2>常见错误</h2>
-          <ul class="error-list">
-            <li>文档和查询使用不同 embedding 模型。</li>
-            <li>换模型后继续使用旧索引。</li>
-            <li>不确认向量是否已归一化，却混用 dot product 与 cosine。</li>
-            <li>只凭几个问题主观判断检索效果。</li>
-            <li>把相似度分数当作概率或置信度。</li>
-            <li>忽略权限和 metadata，检索到用户无权查看的内容。</li>
-          </ul>
-        </section>
-        <section class="content-section" id="practice">
-          <h2>分层练习</h2>
-          <div class="exercise">
-            <strong>基础</strong>
-            <ol>
-              <li>计算三个演示向量两两之间的 cosine。</li>
-              <li>比较 cosine、dot 和 L2 的排序。</li>
-            </ol>
-          </div>
-          <div class="exercise">
-            <strong>进阶</strong>
-            <ol>
-              <li>用本地 embedding 模型编码 100 段笔记并检索。</li>
-              <li>比较归一化前后的分数。</li>
-            </ol>
-          </div>
-          <div class="exercise">
-            <strong>掌握标准</strong>
-            <ol>
-              <li>构造 30 个带相关文档标注的问题，评估 Recall@5。</li>
-              <li>解释 top-k 与阈值如何通过实验确定。</li>
-            </ol>
-          </div>
-        </section>
+  <header class="chapter-hero">
+    <div class="chapter-kicker">PYTHON REFERENCE · 09</div>
+    <h1>Matplotlib 常用方法</h1>
+    <p class="chapter-summary">常用调用格式与一句用途。import matplotlib.pyplot as plt；fig、ax 来自 plt.subplots()。参数中的颜色、标签等是示例值。</p>
+    <p>括号内为传入参数；<code>name=value</code> 为关键字传参，<code>*args</code> / <code>**kwargs</code> 为多个位置 / 关键字参数。以下列出常用调用写法，默认值与示例值以条目说明为准。</p>
+  </header>
+  <section class="content-section" id="figure">
+    <h2>画布</h2>
+    <ul>
+      <li><code>plt.figure(figsize=(8, 5), dpi=100)</code> — 创建画布</li>
+      <li><code>plt.subplots(nrows=1, ncols=1, figsize=(8, 5))</code> — 返回画布和坐标轴</li>
+      <li><code>fig.add_subplot(nrows, ncols, index)</code> — 添加子图</li>
+      <li><code>fig.tight_layout()</code> — 自动调整间距</li>
+    </ul>
+  </section>
+  <section class="content-section" id="plot">
+    <h2>常见图形</h2>
+    <ul>
+      <li><code>ax.plot(x, y, color=&quot;C0&quot;, linestyle=&quot;-&quot;, marker=&quot;o&quot;, label=&quot;data&quot;)</code> — 折线图</li>
+      <li><code>ax.scatter(x, y, s=20, c=&quot;C0&quot;, alpha=0.7)</code> — 散点图</li>
+      <li><code>ax.bar(x, height, width=0.8, label=&quot;data&quot;)</code> — 柱状图</li>
+      <li><code>ax.barh(y, width, height=0.8)</code> — 横向柱状图</li>
+      <li><code>ax.hist(x, bins=10, density=False, alpha=0.7)</code> — 直方图</li>
+      <li><code>ax.boxplot(x)</code> — 箱线图</li>
+      <li><code>ax.pie(x, labels=labels, autopct=&quot;%1.1f%%&quot;)</code> — 饼图</li>
+      <li><code>ax.imshow(X, cmap=&quot;viridis&quot;, aspect=&quot;auto&quot;)</code> — 图像或热力图</li>
+      <li><code>ax.fill_between(x, y1, y2=0, alpha=0.3)</code> — 填充两条曲线之间区域</li>
+    </ul>
+  </section>
+  <section class="content-section" id="labels">
+    <h2>标题、坐标与图例</h2>
+    <ul>
+      <li><code>ax.set_title(label)</code> — 设置子图标题</li>
+      <li><code>ax.set_xlabel(label)</code> — 设置 x 轴名称</li>
+      <li><code>ax.set_ylabel(label)</code> — 设置 y 轴名称</li>
+      <li><code>ax.set_xlim(left=None, right=None)</code> — 设置 x 轴范围</li>
+      <li><code>ax.set_ylim(bottom=None, top=None)</code> — 设置 y 轴范围</li>
+      <li><code>ax.set_xticks(ticks, labels=None)</code> — 设置 x 轴刻度及文本</li>
+      <li><code>ax.set_yticks(ticks, labels=None)</code> — 设置 y 轴刻度及文本</li>
+      <li><code>ax.legend(loc=&quot;best&quot;)</code> — 显示图例</li>
+      <li><code>ax.grid(visible=True, axis=&quot;both&quot;, alpha=0.3)</code> — 显示网格</li>
+      <li><code>ax.annotate(text, xy, xytext=None, arrowprops=None)</code> — 添加注释</li>
+      <li><code>fig.colorbar(mappable, ax=ax)</code> — 为 imshow 等返回对象添加色标</li>
+      <li><code>fig.suptitle(text)</code> — 设置整张画布标题</li>
+    </ul>
+  </section>
+  <section class="content-section" id="export">
+    <h2>显示与保存</h2>
+    <ul>
+      <li><code>plt.show()</code> — 显示图形</li>
+      <li><code>fig.savefig(fname, dpi=300, bbox_inches=&quot;tight&quot;)</code> — 保存图片</li>
+      <li><code>plt.close(fig)</code> — 关闭画布</li>
+    </ul>
+  </section>
+  <p><a href="https://matplotlib.org/stable/api/pyplot_summary.html" target="_blank" rel="noreferrer">官方 API 参考</a></p>
 </main>

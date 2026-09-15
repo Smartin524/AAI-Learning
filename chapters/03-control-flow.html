@@ -35,7 +35,7 @@
             <nav class="course-switcher" aria-label="课程切换">
               <a class="course-switcher-item active" href="../chapters/01-basics.html" aria-current="page">
                 <span class="course-switcher-dot" aria-hidden="true"></span>
-                <span><strong>Python 通识</strong><small>基础语法、数据结构、API 与 AI 应用基础</small></span>
+                <span><strong>Python 常用方法</strong><small>内置函数、容器、标准库与数据分析常用方法 · 参数格式速查</small></span>
               </a>
               <a class="course-switcher-item" href="../courses/ca6000-module-01.html">
                 <span class="course-switcher-dot" aria-hidden="true"></span>
@@ -53,49 +53,49 @@
     </header>
     <div class="chapter-layout">
       <aside class="toc">
-        <div class="toc-title">PYTHON 通识</div>
-        <nav class="chapter-links" aria-label="Python 通识页面">
+        <div class="toc-title">PYTHON 常用方法</div>
+        <nav class="chapter-links" aria-label="Python 常用方法页面">
           <div class="chapter-group" data-chapter-group>
-            <a class="chapter-link" href="01-basics.html">01 基本类型与 Casting</a>
+            <a class="chapter-link" href="01-basics.html">01 内置函数</a>
             <div class="chapter-subnav" aria-hidden="true" inert>
               <div class="chapter-subnav-inner">
-              <a href="01-basics.html#terms" data-toc-section="terms">必须掌握的术语</a>
-              <a href="01-basics.html#core" data-toc-section="core">核心知识</a>
-              <a href="01-basics.html#errors" data-toc-section="errors">常见错误</a>
-              <a href="01-basics.html#practice" data-toc-section="practice">练习</a>
+              <a href="01-basics.html#convert" data-toc-section="convert">类型转换</a>
+              <a href="01-basics.html#numbers" data-toc-section="numbers">数字与进制</a>
+              <a href="01-basics.html#inspect" data-toc-section="inspect">类型与对象查询</a>
+              <a href="01-basics.html#io-help" data-toc-section="io-help">输入、输出与帮助</a>
               </div>
             </div>
           </div>
           <div class="chapter-group" data-chapter-group>
-            <a class="chapter-link" href="02-containers.html">02 容器</a>
+            <a class="chapter-link" href="02-containers.html">02 容器方法</a>
             <div class="chapter-subnav" aria-hidden="true" inert>
               <div class="chapter-subnav-inner">
-              <a href="02-containers.html#terms" data-toc-section="terms">必须掌握的术语</a>
-              <a href="02-containers.html#core" data-toc-section="core">核心知识</a>
-              <a href="02-containers.html#errors" data-toc-section="errors">常见错误</a>
-              <a href="02-containers.html#practice" data-toc-section="practice">练习</a>
+              <a href="02-containers.html#lists" data-toc-section="lists">列表 list</a>
+              <a href="02-containers.html#dicts" data-toc-section="dicts">字典 dict</a>
+              <a href="02-containers.html#sets" data-toc-section="sets">集合 set</a>
+              <a href="02-containers.html#tuples" data-toc-section="tuples">元组与序列</a>
               </div>
             </div>
           </div>
           <div class="chapter-group active" data-chapter-group>
-            <a class="chapter-link active" aria-current="page" href="03-control-flow.html">03 判断与循环</a>
+            <a class="chapter-link active" aria-current="page" href="03-control-flow.html">03 字符串</a>
             <div class="chapter-subnav">
               <div class="chapter-subnav-inner">
-              <a href="03-control-flow.html#terms" data-toc-section="terms">必须掌握的术语</a>
-              <a href="03-control-flow.html#core" data-toc-section="core">核心知识</a>
-              <a href="03-control-flow.html#errors" data-toc-section="errors">常见错误</a>
-              <a href="03-control-flow.html#practice" data-toc-section="practice">练习</a>
+              <a href="03-control-flow.html#case" data-toc-section="case">大小写与清理</a>
+              <a href="03-control-flow.html#find" data-toc-section="find">查找与替换</a>
+              <a href="03-control-flow.html#split" data-toc-section="split">拆分、拼接与格式化</a>
+              <a href="03-control-flow.html#check" data-toc-section="check">内容判断</a>
               </div>
             </div>
           </div>
           <div class="chapter-group" data-chapter-group>
-            <a class="chapter-link" href="04-functions.html">04 函数</a>
+            <a class="chapter-link" href="04-functions.html">04 遍历与函数工具</a>
             <div class="chapter-subnav" aria-hidden="true" inert>
               <div class="chapter-subnav-inner">
-              <a href="04-functions.html#terms" data-toc-section="terms">必须掌握的术语</a>
-              <a href="04-functions.html#core" data-toc-section="core">核心知识</a>
-              <a href="04-functions.html#errors" data-toc-section="errors">常见错误</a>
-              <a href="04-functions.html#practice" data-toc-section="practice">练习</a>
+              <a href="04-functions.html#iterate" data-toc-section="iterate">遍历</a>
+              <a href="04-functions.html#aggregate" data-toc-section="aggregate">排序与汇总</a>
+              <a href="04-functions.html#itertools" data-toc-section="itertools">itertools</a>
+              <a href="04-functions.html#functional" data-toc-section="functional">functools 与 operator</a>
               </div>
             </div>
           </div>
@@ -103,239 +103,140 @@
             <a class="chapter-link" href="05-files-json.html">05 文件与 JSON</a>
             <div class="chapter-subnav" aria-hidden="true" inert>
               <div class="chapter-subnav-inner">
-              <a href="05-files-json.html#terms" data-toc-section="terms">必须掌握的术语</a>
-              <a href="05-files-json.html#core" data-toc-section="core">核心知识</a>
-              <a href="05-files-json.html#errors" data-toc-section="errors">常见错误</a>
-              <a href="05-files-json.html#practice" data-toc-section="practice">练习</a>
+              <a href="05-files-json.html#open" data-toc-section="open">打开与关闭</a>
+              <a href="05-files-json.html#file" data-toc-section="file">读写与定位</a>
+              <a href="05-files-json.html#json" data-toc-section="json">JSON</a>
+              <a href="05-files-json.html#csv" data-toc-section="csv">CSV</a>
               </div>
             </div>
           </div>
           <div class="chapter-group" data-chapter-group>
-            <a class="chapter-link" href="06-errors-env.html">06 报错与环境</a>
+            <a class="chapter-link" href="06-errors-env.html">06 路径与系统</a>
             <div class="chapter-subnav" aria-hidden="true" inert>
               <div class="chapter-subnav-inner">
-              <a href="06-errors-env.html#terms" data-toc-section="terms">必须掌握的术语</a>
-              <a href="06-errors-env.html#core" data-toc-section="core">核心知识</a>
-              <a href="06-errors-env.html#errors" data-toc-section="errors">常见错误</a>
-              <a href="06-errors-env.html#practice" data-toc-section="practice">练习</a>
+              <a href="06-errors-env.html#paths" data-toc-section="paths">构造与查询路径</a>
+              <a href="06-errors-env.html#directory" data-toc-section="directory">目录与文件操作</a>
+              <a href="06-errors-env.html#system" data-toc-section="system">系统与进程</a>
+              <a href="06-errors-env.html#copy" data-toc-section="copy">复制与移动</a>
               </div>
             </div>
           </div>
           <div class="chapter-group" data-chapter-group>
-            <a class="chapter-link" href="07-numpy-vectors.html">07 NumPy 与向量</a>
+            <a class="chapter-link" href="07-numpy-vectors.html">07 NumPy</a>
             <div class="chapter-subnav" aria-hidden="true" inert>
               <div class="chapter-subnav-inner">
-              <a href="07-numpy-vectors.html#terms" data-toc-section="terms">必须掌握的术语</a>
-              <a href="07-numpy-vectors.html#core" data-toc-section="core">核心知识</a>
-              <a href="07-numpy-vectors.html#errors" data-toc-section="errors">常见错误</a>
-              <a href="07-numpy-vectors.html#practice" data-toc-section="practice">练习</a>
+              <a href="07-numpy-vectors.html#create" data-toc-section="create">创建数组</a>
+              <a href="07-numpy-vectors.html#shape" data-toc-section="shape">形状与组合</a>
+              <a href="07-numpy-vectors.html#calculate" data-toc-section="calculate">计算与筛选</a>
+              <a href="07-numpy-vectors.html#random" data-toc-section="random">随机数与保存</a>
               </div>
             </div>
           </div>
           <div class="chapter-group" data-chapter-group>
-            <a class="chapter-link" href="08-api.html">08 API</a>
+            <a class="chapter-link" href="08-api.html">08 Pandas</a>
             <div class="chapter-subnav" aria-hidden="true" inert>
               <div class="chapter-subnav-inner">
-              <a href="08-api.html#terms" data-toc-section="terms">必须掌握的术语</a>
-              <a href="08-api.html#core" data-toc-section="core">核心知识</a>
-              <a href="08-api.html#errors" data-toc-section="errors">常见错误</a>
-              <a href="08-api.html#practice" data-toc-section="practice">练习</a>
+              <a href="08-api.html#read" data-toc-section="read">创建、读取与查看</a>
+              <a href="08-api.html#clean" data-toc-section="clean">选择与清理</a>
+              <a href="08-api.html#analyze" data-toc-section="analyze">计算、分组与排序</a>
+              <a href="08-api.html#combine" data-toc-section="combine">合并与重塑</a>
               </div>
             </div>
           </div>
           <div class="chapter-group" data-chapter-group>
-            <a class="chapter-link" href="09-embedding.html">09 Embedding</a>
+            <a class="chapter-link" href="09-embedding.html">09 Matplotlib</a>
             <div class="chapter-subnav" aria-hidden="true" inert>
               <div class="chapter-subnav-inner">
-              <a href="09-embedding.html#terms" data-toc-section="terms">必须掌握的术语</a>
-              <a href="09-embedding.html#core" data-toc-section="core">核心知识</a>
-              <a href="09-embedding.html#errors" data-toc-section="errors">常见错误</a>
-              <a href="09-embedding.html#practice" data-toc-section="practice">练习</a>
+              <a href="09-embedding.html#figure" data-toc-section="figure">画布</a>
+              <a href="09-embedding.html#plot" data-toc-section="plot">常见图形</a>
+              <a href="09-embedding.html#labels" data-toc-section="labels">标题、坐标与图例</a>
+              <a href="09-embedding.html#export" data-toc-section="export">显示与保存</a>
               </div>
             </div>
           </div>
           <div class="chapter-group" data-chapter-group>
-            <a class="chapter-link" href="10-mini-rag.html">10 迷你 RAG</a>
+            <a class="chapter-link" href="10-mini-rag.html">10 常用标准库</a>
             <div class="chapter-subnav" aria-hidden="true" inert>
               <div class="chapter-subnav-inner">
-              <a href="10-mini-rag.html#terms" data-toc-section="terms">必须掌握的术语</a>
-              <a href="10-mini-rag.html#core" data-toc-section="core">核心知识</a>
-              <a href="10-mini-rag.html#errors" data-toc-section="errors">常见错误</a>
-              <a href="10-mini-rag.html#practice" data-toc-section="practice">练习</a>
+              <a href="10-mini-rag.html#math" data-toc-section="math">数学与统计</a>
+              <a href="10-mini-rag.html#random" data-toc-section="random">随机与计数</a>
+              <a href="10-mini-rag.html#datetime" data-toc-section="datetime">日期与时间</a>
+              <a href="10-mini-rag.html#regex" data-toc-section="regex">正则表达式</a>
               </div>
             </div>
           </div>
         </nav>
       </aside>
       <main class="chapter">
-        <header class="chapter-hero">
-          <div class="chapter-kicker">CHAPTER 03</div>
-          <h1>判断、循环与程序流程</h1>
-          <p class="chapter-summary">
-            控制流让程序根据条件选择路径，并重复处理一组数据。写对控制流的关键不是记语法，而是明确状态、边界和停止条件。
-          </p>
-          <div class="outcomes">
-            <strong>学完你应该能够：</strong>组合
-            if/elif/else；正确遍历容器；使用
-            break、continue、range、enumerate、zip；避免死循环和边界错误。
-          </div>
-        </header>
-        <section class="content-section" id="terms">
-          <h2>必须掌握的术语</h2>
-          <table class="terms">
-            <tr>
-              <th>术语</th>
-              <th>准确理解</th>
-            </tr>
-            <tr>
-              <td>condition</td>
-              <td>求值为真或假的表达式。</td>
-            </tr>
-            <tr>
-              <td>branch</td>
-              <td>根据条件选择的执行分支。</td>
-            </tr>
-            <tr>
-              <td>iteration</td>
-              <td>循环的一次执行。</td>
-            </tr>
-            <tr>
-              <td>iterable</td>
-              <td>可以逐个取出元素的对象。</td>
-            </tr>
-            <tr>
-              <td>break</td>
-              <td>立即退出当前循环。</td>
-            </tr>
-            <tr>
-              <td>continue</td>
-              <td>跳过本次循环剩余代码。</td>
-            </tr>
-            <tr>
-              <td>range</td>
-              <td>惰性产生整数序列。</td>
-            </tr>
-            <tr>
-              <td>enumerate / zip</td>
-              <td>同时取得索引；并行遍历多个序列。</td>
-            </tr>
-            <tr>
-              <td>short-circuit</td>
-              <td><code>and</code>/<code>or</code> 在结果已确定时停止计算。</td>
-            </tr>
-          </table>
-        </section>
-        <section class="content-section" id="core">
-          <h2>1. 条件分支</h2>
-          <pre>
-score = 0.82
-if score >= 0.8:
-    label = "高度相关"
-elif score >= 0.5:
-    label = "可能相关"
-else:
-    label = "不相关"
-print(label)</pre
-          >
-          <p>
-            条件按顺序检查，命中第一个真分支后停止。因此范围更严格的条件通常写在前面。
-          </p>
-          <h3>2. 布尔组合与短路</h3>
-          <pre>
-text = "RAG"
-score = 0.9
-
-if text and score >= 0.8:
-    print("有效的高分结果")
-
-user = None
-name = user.get("name") if user is not None else "匿名"</pre
-          >
-          <h3>3. for：遍历而不是手动管理索引</h3>
-          <pre>
-chunks = ["第一段", "第二段", "第三段"]
-for index, chunk in enumerate(chunks, start=1):
-    print(index, chunk)
-
-scores = [0.7, 0.9, 0.8]
-for chunk, score in zip(chunks, scores):
-    print(chunk, score)</pre
-          >
-          <h3>4. break、continue 和循环 else</h3>
-          <pre>
-results = [0.4, 0.65, 0.92]
-for score in results:
-    if score < 0.5:
-        continue
-    if score >= 0.9:
-        print("找到高置信结果")
-        break
-else:
-    print("没有找到高置信结果")</pre
-          >
-          <p>
-            循环的 <code>else</code> 只在循环没有被
-            <code>break</code> 终止时运行。
-          </p>
-          <h3>5. while：依赖状态停止</h3>
-          <pre>
-attempts = 0
-max_attempts = 3
-success = False
-
-while attempts < max_attempts and not success:
-    attempts += 1
-    success = call_service()
-print("尝试次数：", attempts)</pre
-          >
-          <div class="note">
-            当遍历已知集合时优先使用 for；当重复次数取决于动态状态时才使用
-            while。
-          </div>
-        </section>
-        <section class="content-section" id="errors">
-          <h2>常见错误</h2>
-          <ul class="error-list">
-            <li><code>if score:</code> 只能检查真假，不能代替明确阈值。</li>
-            <li>
-              多个独立 <code>if</code> 与
-              <code>if/elif</code> 语义不同：前者可能执行多个分支。
-            </li>
-            <li>range 右边界不包含在内。</li>
-            <li>while 忘记更新状态，形成死循环。</li>
-            <li>
-              用
-              <code>for i in range(len(items))</code>
-              处理普通遍历，增加越界风险；优先直接遍历或 enumerate。
-            </li>
-          </ul>
-        </section>
-        <section class="content-section" id="practice">
-          <h2>分层练习</h2>
-          <div class="exercise">
-            <strong>基础</strong>
-            <ol>
-              <li>将分数分类为高、中、低三个等级。</li>
-              <li>使用 enumerate 打印文档编号。</li>
-            </ol>
-          </div>
-          <div class="exercise">
-            <strong>进阶</strong>
-            <ol>
-              <li>从检索结果中找第一个超过阈值的结果，否则输出拒答。</li>
-              <li>实现最多三次重试，成功后立即停止。</li>
-            </ol>
-          </div>
-          <div class="exercise">
-            <strong>掌握标准</strong>
-            <ol>
-              <li>解释循环 else 的触发条件。</li>
-              <li>重构一个嵌套三层的条件流程，使其更易读。</li>
-            </ol>
-          </div>
-        </section>
+  <header class="chapter-hero">
+    <div class="chapter-kicker">PYTHON REFERENCE · 03</div>
+    <h1>字符串常用方法</h1>
+    <p class="chapter-summary">常用调用格式与一句用途。s 表示字符串。</p>
+    <p>括号内为传入参数；<code>name=value</code> 为关键字传参，<code>*args</code> / <code>**kwargs</code> 为多个位置 / 关键字参数。以下列出常用调用写法，默认值与示例值以条目说明为准。</p>
+  </header>
+  <section class="content-section" id="case">
+    <h2>大小写与清理</h2>
+    <ul>
+      <li><code>s.lower()</code> — 转小写</li>
+      <li><code>s.upper()</code> — 转大写</li>
+      <li><code>s.capitalize()</code> — 首字母大写，其余小写</li>
+      <li><code>s.title()</code> — 每个单词首字母大写</li>
+      <li><code>s.swapcase()</code> — 交换大小写</li>
+      <li><code>s.casefold()</code> — 用于忽略大小写的文本比较</li>
+      <li><code>s.strip(chars=None)</code> — 去除两端指定字符集合；默认空白</li>
+      <li><code>s.lstrip(chars=None)</code> — 去除左端指定字符集合</li>
+      <li><code>s.rstrip(chars=None)</code> — 去除右端指定字符集合</li>
+      <li><code>s.removeprefix(prefix)</code> — 移除完整前缀（Python 3.9+）</li>
+      <li><code>s.removesuffix(suffix)</code> — 移除完整后缀（Python 3.9+）</li>
+    </ul>
+  </section>
+  <section class="content-section" id="find">
+    <h2>查找与替换</h2>
+    <ul>
+      <li><code>s.find(sub, start, end)</code> — 找首个位置，未找到返回 -1；边界可省略</li>
+      <li><code>s.rfind(sub, start, end)</code> — 从右侧查找；边界可省略</li>
+      <li><code>s.index(sub, start, end)</code> — 找首个位置，未找到报错；边界可省略</li>
+      <li><code>s.count(sub, start, end)</code> — 统计子串次数；边界可省略</li>
+      <li><code>s.startswith(prefix, start, end)</code> — 判断前缀；边界可省略</li>
+      <li><code>s.endswith(suffix, start, end)</code> — 判断后缀；边界可省略</li>
+      <li><code>s.replace(old, new, count)</code> — 替换子串；省略 count 时全部替换</li>
+    </ul>
+  </section>
+  <section class="content-section" id="split">
+    <h2>拆分、拼接与格式化</h2>
+    <ul>
+      <li><code>s.split(sep=None, maxsplit=-1)</code> — 按分隔符拆分；默认按空白</li>
+      <li><code>s.rsplit(sep=None, maxsplit=-1)</code> — 从右侧开始拆分</li>
+      <li><code>s.splitlines(keepends=False)</code> — 按行拆分</li>
+      <li><code>s.partition(sep)</code> — 拆成分隔符前、分隔符、分隔符后</li>
+      <li><code>s.rpartition(sep)</code> — 按最后一个分隔符拆分</li>
+      <li><code>separator.join(strings)</code> — 用分隔符连接字符串序列</li>
+      <li><code>s.format(*args, **kwargs)</code> — 填入花括号占位符</li>
+      <li><code>s.ljust(width, fillchar=&quot; &quot;)</code> — 右侧填充</li>
+      <li><code>s.rjust(width, fillchar=&quot; &quot;)</code> — 左侧填充</li>
+      <li><code>s.center(width, fillchar=&quot; &quot;)</code> — 居中填充</li>
+      <li><code>s.zfill(width)</code> — 左侧补零</li>
+      <li><code>s.encode(encoding=&quot;utf-8&quot;, errors=&quot;strict&quot;)</code> — 编码为 bytes</li>
+      <li><code>b.decode(encoding=&quot;utf-8&quot;, errors=&quot;strict&quot;)</code> — 将 bytes 解码为字符串</li>
+    </ul>
+  </section>
+  <section class="content-section" id="check">
+    <h2>内容判断</h2>
+    <ul>
+      <li><code>s.isalpha()</code> — 是否全部为字母且非空</li>
+      <li><code>s.isdigit()</code> — 是否全部为数字字符且非空</li>
+      <li><code>s.isdecimal()</code> — 是否全部为十进制数字字符且非空</li>
+      <li><code>s.isnumeric()</code> — 是否全部为数值字符且非空</li>
+      <li><code>s.isalnum()</code> — 是否全部为字母或数字且非空</li>
+      <li><code>s.isspace()</code> — 是否全部为空白且非空</li>
+      <li><code>s.islower()</code> — 有大小写的字符是否均为小写</li>
+      <li><code>s.isupper()</code> — 有大小写的字符是否均为大写</li>
+      <li><code>s.isidentifier()</code> — 是否符合标识符格式；不排除关键字</li>
+    </ul>
+  </section>
+  <p><a href="https://docs.python.org/3/library/stdtypes.html" target="_blank" rel="noreferrer">官方 API 参考</a></p>
         <nav class="chapter-nav" aria-label="上一页和下一页">
-          <a href="02-containers.html">← 02 容器</a><a href="04-functions.html">04 函数 →</a>
+          <a href="02-containers.html">← 02 容器方法</a><a href="04-functions.html">04 遍历与函数工具 →</a>
         </nav>
       </main>
     </div>

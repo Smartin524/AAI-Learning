@@ -1,195 +1,70 @@
 <main class="chapter">
-        <header class="chapter-hero">
-          <div class="chapter-kicker">CHAPTER 08</div>
-          <h1>HTTP、API 与模型调用</h1>
-          <p class="chapter-summary">
-            API 是应用连接模型、数据库和外部服务的边界。可靠调用需要理解
-            HTTP、JSON、身份验证、超时、错误码、重试和成本。
-          </p>
-          <div class="outcomes">
-            <strong>学完你应该能够：</strong>解释请求和响应；使用 requests 调用
-            JSON API；安全管理密钥；处理超时、限流、服务端错误与流式响应概念。
-          </div>
-        </header>
-        <section class="content-section" id="terms">
-          <h2>必须掌握的术语</h2>
-          <table class="terms">
-            <tr>
-              <th>术语</th>
-              <th>准确理解</th>
-            </tr>
-            <tr>
-              <td>API</td>
-              <td>软件之间约定的调用接口。</td>
-            </tr>
-            <tr>
-              <td>endpoint</td>
-              <td>某项资源或操作的具体 URL。</td>
-            </tr>
-            <tr>
-              <td>HTTP method</td>
-              <td>GET、POST、PUT、PATCH、DELETE 等请求语义。</td>
-            </tr>
-            <tr>
-              <td>header</td>
-              <td>请求或响应的元数据。</td>
-            </tr>
-            <tr>
-              <td>body / payload</td>
-              <td>发送的数据主体，常为 JSON。</td>
-            </tr>
-            <tr>
-              <td>status code</td>
-              <td>HTTP 结果分类：2xx、4xx、5xx。</td>
-            </tr>
-            <tr>
-              <td>authentication</td>
-              <td>证明调用方身份，常使用 API Key 或 OAuth。</td>
-            </tr>
-            <tr>
-              <td>timeout</td>
-              <td>等待连接或响应的最大时间。</td>
-            </tr>
-            <tr>
-              <td>rate limit</td>
-              <td>服务允许的调用频率或配额。</td>
-            </tr>
-            <tr>
-              <td>idempotency</td>
-              <td>重复执行相同请求是否产生相同副作用。</td>
-            </tr>
-          </table>
-        </section>
-        <section class="content-section" id="core">
-          <h2>1. 请求与响应结构</h2>
-          <pre>
-import requests
-
-response = requests.get(
-    "https://api.github.com/repos/langgenius/dify",
-    headers={"Accept": "application/vnd.github+json"},
-    timeout=10
-)
-response.raise_for_status()
-data = response.json()
-print(data["name"], data["stargazers_count"])</pre
-          >
-          <p>
-            <code>raise_for_status()</code> 会把 4xx/5xx
-            转成异常，避免把错误页面当正常数据继续处理。
-          </p>
-          <h3>2. POST JSON</h3>
-          <pre>
-payload = {
-    "model": "example-model",
-    "messages": [{"role": "user", "content": "解释 RAG"}],
-    "temperature": 0.2
-}
-response = requests.post(
-    "https://example.com/v1/chat",
-    json=payload,
-    headers={"Authorization": f"Bearer {api_key}"},
-    timeout=(3, 30)
-)</pre
-          >
-          <p>
-            使用 <code>json=payload</code> 会自动序列化并设置
-            Content-Type；<code>data=</code> 的语义不同。
-          </p>
-          <h3>3. 环境变量管理密钥</h3>
-          <pre>
-import os
-
-api_key = os.environ.get("MODEL_API_KEY")
-if not api_key:
-    raise RuntimeError("请设置 MODEL_API_KEY 环境变量")</pre
-          >
-          <h3>4. 状态码策略</h3>
-          <table class="terms">
-            <tr>
-              <th>范围</th>
-              <th>含义与处理</th>
-            </tr>
-            <tr>
-              <td>200-299</td>
-              <td>成功，仍需验证响应字段。</td>
-            </tr>
-            <tr>
-              <td>400</td>
-              <td>请求参数错误，修复请求，不应盲目重试。</td>
-            </tr>
-            <tr>
-              <td>401/403</td>
-              <td>认证或权限问题。</td>
-            </tr>
-            <tr>
-              <td>404</td>
-              <td>资源不存在或路径错误。</td>
-            </tr>
-            <tr>
-              <td>429</td>
-              <td>被限流，按 Retry-After 或退避重试。</td>
-            </tr>
-            <tr>
-              <td>500-599</td>
-              <td>服务端暂时错误，可有限重试。</td>
-            </tr>
-          </table>
-          <h3>5. 有限重试与指数退避</h3>
-          <pre>
-import time
-import requests
-
-for attempt in range(3):
-    try:
-        response = requests.get(url, timeout=10)
-        response.raise_for_status()
-        break
-    except (requests.Timeout, requests.ConnectionError):
-        if attempt == 2:
-            raise
-        time.sleep(2 ** attempt)</pre
-          >
-          <div class="note">
-            <strong>LLM 调用还要记录：</strong>模型名、输入/输出
-            token、延迟、费用、请求 ID和错误类型，才能定位质量与成本问题。
-          </div>
-        </section>
-        <section class="content-section" id="errors">
-          <h2>常见错误</h2>
-          <ul class="error-list">
-            <li>不设置 timeout，程序可能无限等待。</li>
-            <li>把 API Key 写入代码并推送 GitHub。</li>
-            <li>对所有 4xx/5xx 无限重试，造成费用和负载问题。</li>
-            <li>只判断 status=200，不验证 JSON schema。</li>
-            <li>日志打印完整请求头，泄漏 Authorization。</li>
-            <li>混淆网络错误、API 错误和模型内容质量问题。</li>
-          </ul>
-        </section>
-        <section class="content-section" id="practice">
-          <h2>分层练习</h2>
-          <div class="exercise">
-            <strong>基础</strong>
-            <ol>
-              <li>调用 GitHub API，打印状态码和三个字段。</li>
-              <li>分别请求一个 404 地址和一个超时地址。</li>
-            </ol>
-          </div>
-          <div class="exercise">
-            <strong>进阶</strong>
-            <ol>
-              <li>
-                封装 <code>request_json(url)</code>，加入超时、错误处理和重试。
-              </li>
-              <li>从环境变量读取密钥，并确认 git status 不包含密钥文件。</li>
-            </ol>
-          </div>
-          <div class="exercise">
-            <strong>掌握标准</strong>
-            <ol>
-              <li>为 LLM API 设计日志字段和错误分类。</li>
-              <li>说明哪些错误可以重试，哪些不能。</li>
-            </ol>
-          </div>
-        </section>
+  <header class="chapter-hero">
+    <div class="chapter-kicker">PYTHON REFERENCE · 08</div>
+    <h1>Pandas 常用方法</h1>
+    <p class="chapter-summary">常用调用格式与一句用途。import pandas as pd；df 为 DataFrame，s 为 Series。以下展示常用参数组合。</p>
+    <p>括号内为传入参数；<code>name=value</code> 为关键字传参，<code>*args</code> / <code>**kwargs</code> 为多个位置 / 关键字参数。以下列出常用调用写法，默认值与示例值以条目说明为准。</p>
+  </header>
+  <section class="content-section" id="read">
+    <h2>创建、读取与查看</h2>
+    <ul>
+      <li><code>pd.DataFrame(data, index=None, columns=None)</code> — 创建表格</li>
+      <li><code>pd.Series(data, index=None, name=None)</code> — 创建一列数据</li>
+      <li><code>pd.read_csv(filepath, sep=&quot;,&quot;, usecols=None, dtype=None)</code> — 读取 CSV</li>
+      <li><code>pd.read_excel(io, sheet_name=0, usecols=None)</code> — 读取 Excel</li>
+      <li><code>df.head(n=5)</code> — 查看前 n 行</li>
+      <li><code>df.tail(n=5)</code> — 查看后 n 行</li>
+      <li><code>df.info()</code> — 查看列类型及非空数量</li>
+      <li><code>df.describe()</code> — 汇总数值列统计</li>
+      <li><code>df.to_csv(path, index=False)</code> — 保存 CSV</li>
+      <li><code>df.to_excel(path, index=False)</code> — 保存 Excel</li>
+    </ul>
+  </section>
+  <section class="content-section" id="clean">
+    <h2>选择与清理</h2>
+    <ul>
+      <li><code>df.loc[row_labels, column_labels]</code> — 按标签选择；这是索引器</li>
+      <li><code>df.iloc[row_positions, column_positions]</code> — 按位置选择；这是索引器</li>
+      <li><code>df.query(expr)</code> — 按表达式筛选行</li>
+      <li><code>df.drop(columns=names)</code> — 删除指定列</li>
+      <li><code>df.rename(columns=mapping)</code> — 重命名列</li>
+      <li><code>df.astype(dtype)</code> — 转换类型或按列类型映射转换</li>
+      <li><code>df.isna()</code> — 判断缺失值</li>
+      <li><code>df.fillna(value)</code> — 填充缺失值</li>
+      <li><code>df.dropna(axis=0, how=&quot;any&quot;, subset=None)</code> — 删除有缺失值的行或列</li>
+      <li><code>df.drop_duplicates(subset=None, keep=&quot;first&quot;)</code> — 删除重复行</li>
+      <li><code>pd.to_numeric(arg, errors=&quot;raise&quot;)</code> — 转换为数值</li>
+      <li><code>pd.to_datetime(arg, errors=&quot;raise&quot;, format=None)</code> — 转换为日期时间</li>
+    </ul>
+  </section>
+  <section class="content-section" id="analyze">
+    <h2>计算、分组与排序</h2>
+    <ul>
+      <li><code>df.sort_values(by, ascending=True)</code> — 按列值排序</li>
+      <li><code>df.sort_index(axis=0, ascending=True)</code> — 按索引排序</li>
+      <li><code>df.groupby(by, dropna=True)</code> — 创建分组对象</li>
+      <li><code>grouped.agg(func)</code> — 汇总分组；func 可为函数名、列表或字典</li>
+      <li><code>df.agg(func, axis=0)</code> — 按列或行汇总</li>
+      <li><code>df.apply(func, axis=0)</code> — 按列或行应用函数</li>
+      <li><code>s.map(arg)</code> — 按映射或函数转换每个值</li>
+      <li><code>s.value_counts(normalize=False, dropna=True)</code> — 统计各值频数或比例</li>
+      <li><code>s.unique()</code> — 取得唯一值</li>
+      <li><code>s.nunique(dropna=True)</code> — 统计唯一值数量</li>
+      <li><code>df.sample(n=1, random_state=None)</code> — 随机抽取行</li>
+    </ul>
+  </section>
+  <section class="content-section" id="combine">
+    <h2>合并与重塑</h2>
+    <ul>
+      <li><code>pd.concat(objs, axis=0, ignore_index=False)</code> — 按行或列拼接</li>
+      <li><code>pd.merge(left, right, how=&quot;inner&quot;, on=None)</code> — 按键连接表格</li>
+      <li><code>df.join(other, on=None, how=&quot;left&quot;)</code> — 连接表格，默认按索引</li>
+      <li><code>df.pivot(index=rows, columns=cols, values=values)</code> — 长表转宽表，重复组合会报错</li>
+      <li><code>df.pivot_table(values=values, index=rows, columns=cols, aggfunc=&quot;mean&quot;)</code> — 透视并汇总重复组合</li>
+      <li><code>df.melt(id_vars=None, value_vars=None, var_name=None, value_name=&quot;value&quot;)</code> — 宽表转长表</li>
+      <li><code>df.set_index(keys, drop=True)</code> — 将列设为索引</li>
+      <li><code>df.reset_index(drop=False)</code> — 重置索引</li>
+    </ul>
+  </section>
+  <p><a href="https://pandas.pydata.org/docs/reference/index.html" target="_blank" rel="noreferrer">官方 API 参考</a></p>
 </main>

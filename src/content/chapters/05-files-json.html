@@ -1,186 +1,51 @@
 <main class="chapter">
-        <header class="chapter-hero">
-          <div class="chapter-kicker">CHAPTER 05</div>
-          <h1>字符串、文件、路径与 JSON</h1>
-          <p class="chapter-summary">
-            知识库首先是文件和数据。你需要可靠地处理路径、编码、文本清洗与 JSON
-            序列化，并保持原始数据可追溯。
-          </p>
-          <div class="outcomes">
-            <strong>学完你应该能够：</strong>使用 pathlib 安全操作路径；读写
-            UTF-8 文本和 JSON；理解序列化、编码、上下文管理器和数据验证。
-          </div>
-        </header>
-        <section class="content-section" id="terms">
-          <h2>必须掌握的术语</h2>
-          <table class="terms">
-            <tr>
-              <th>术语</th>
-              <th>准确理解</th>
-            </tr>
-            <tr>
-              <td>path</td>
-              <td>文件系统中的位置；绝对路径与相对路径语义不同。</td>
-            </tr>
-            <tr>
-              <td>working directory</td>
-              <td>相对路径解析时使用的当前目录。</td>
-            </tr>
-            <tr>
-              <td>encoding</td>
-              <td>字符与字节之间的映射，UTF-8 是通用选择。</td>
-            </tr>
-            <tr>
-              <td>text / bytes</td>
-              <td>str 是字符文本；bytes 是原始字节。</td>
-            </tr>
-            <tr>
-              <td>serialization</td>
-              <td>把内存对象转换成可存储或传输格式。</td>
-            </tr>
-            <tr>
-              <td>JSON</td>
-              <td>
-                跨语言文本数据格式，支持对象、数组、字符串、数字、布尔和 null。
-              </td>
-            </tr>
-            <tr>
-              <td>context manager</td>
-              <td>用 with 确保资源正确打开和关闭。</td>
-            </tr>
-            <tr>
-              <td>metadata</td>
-              <td>描述数据来源、页码、时间等信息的数据。</td>
-            </tr>
-            <tr>
-              <td>glob</td>
-              <td>按文件名模式查找文件。</td>
-            </tr>
-          </table>
-        </section>
-        <section class="content-section" id="core">
-          <h2>1. pathlib 与相对路径</h2>
-          <pre>
-from pathlib import Path
-
-project_dir = Path(__file__).resolve().parent
-data_dir = project_dir / "data"
-data_dir.mkdir(exist_ok=True)
-
-for path in data_dir.glob("*.txt"):
-    print(path.name, path.suffix, path.stat().st_size)</pre
-          >
-          <p>
-            脚本从不同目录启动时，裸写
-            <code>Path("data")</code> 可能指向不同位置。项目代码应明确路径基准。
-          </p>
-          <h3>2. UTF-8 文本读写</h3>
-          <pre>
-path = data_dir / "notes.txt"
-path.write_text("第一章：变量\n第二章：容器", encoding="utf-8")
-text = path.read_text(encoding="utf-8")
-lines = [line.strip() for line in text.splitlines() if line.strip()]</pre
-          >
-          <h3>3. JSON 序列化</h3>
-          <pre>
-import json
-
-document = {
-    "text": "Embedding 是文本向量",
-    "source": "notes.txt",
-    "page": 3,
-    "tags": ["RAG", "NLP"]
-}
-json_path = data_dir / "document.json"
-json_path.write_text(
-    json.dumps(document, ensure_ascii=False, indent=2),
-    encoding="utf-8"
-)
-loaded = json.loads(json_path.read_text(encoding="utf-8"))</pre
-          >
-          <p>
-            <code>dumps/loads</code> 操作字符串；<code>dump/load</code>
-            操作已经打开的文件对象。
-          </p>
-          <h3>4. JSON 类型映射</h3>
-          <table class="terms">
-            <tr>
-              <th>JSON</th>
-              <th>Python</th>
-            </tr>
-            <tr>
-              <td>object</td>
-              <td>dict</td>
-            </tr>
-            <tr>
-              <td>array</td>
-              <td>list</td>
-            </tr>
-            <tr>
-              <td>string</td>
-              <td>str</td>
-            </tr>
-            <tr>
-              <td>number</td>
-              <td>int / float</td>
-            </tr>
-            <tr>
-              <td>true / false</td>
-              <td>True / False</td>
-            </tr>
-            <tr>
-              <td>null</td>
-              <td>None</td>
-            </tr>
-          </table>
-          <h3>5. JSON Lines</h3>
-          <pre>
-# 大量记录适合一行一个 JSON 对象
-with (data_dir / "chunks.jsonl").open("w", encoding="utf-8") as f:
-    for chunk in chunks:
-        f.write(json.dumps(chunk, ensure_ascii=False) + "\n")</pre
-          >
-          <div class="note">
-            RAG 数据应保留 source、page、chunk_id 等
-            metadata，否则答案引用无法追溯。
-          </div>
-        </section>
-        <section class="content-section" id="errors">
-          <h2>常见错误</h2>
-          <ul class="error-list">
-            <li>省略 encoding，在不同系统上出现乱码。</li>
-            <li>
-              把 Windows 反斜杠直接写入普通字符串，触发
-              <code>\n</code> 等转义；使用 pathlib。
-            </li>
-            <li>尝试把 NumPy array、Path、datetime 直接 JSON 序列化。</li>
-            <li>覆盖原始文件，导致清洗过程无法审计。</li>
-            <li>假定 JSON 的键一定存在而不做数据验证。</li>
-            <li>一次性读入超大文件造成内存问题。</li>
-          </ul>
-        </section>
-        <section class="content-section" id="practice">
-          <h2>分层练习</h2>
-          <div class="exercise">
-            <strong>基础</strong>
-            <ol>
-              <li>扫描目录中的所有 txt 文件并统计字符数。</li>
-              <li>将结果保存为 UTF-8 JSON。</li>
-            </ol>
-          </div>
-          <div class="exercise">
-            <strong>进阶</strong>
-            <ol>
-              <li>构造包含 source、page、chunk_id 的 JSONL 数据集。</li>
-              <li>跳过无法解码的文件并记录错误日志。</li>
-            </ol>
-          </div>
-          <div class="exercise">
-            <strong>掌握标准</strong>
-            <ol>
-              <li>解释工作目录变化为何会导致 FileNotFoundError。</li>
-              <li>为知识库设计可追溯的文档数据 schema。</li>
-            </ol>
-          </div>
-        </section>
+  <header class="chapter-hero">
+    <div class="chapter-kicker">PYTHON REFERENCE · 05</div>
+    <h1>文件、JSON 与 CSV</h1>
+    <p class="chapter-summary">常用调用格式与一句用途。文件对象记作 f；先 import json 或 import csv。文件使用 with open(...) as f: 管理关闭。</p>
+    <p>括号内为传入参数；<code>name=value</code> 为关键字传参，<code>*args</code> / <code>**kwargs</code> 为多个位置 / 关键字参数。以下列出常用调用写法，默认值与示例值以条目说明为准。</p>
+  </header>
+  <section class="content-section" id="open">
+    <h2>打开与关闭</h2>
+    <ul>
+      <li><code>open(path, mode=&quot;r&quot;, encoding=&quot;utf-8&quot;)</code> — 打开文本文件；模式 r 读、w 覆盖写、a 追加、x 新建</li>
+      <li><code>open(path, mode=&quot;rb&quot;)</code> — 读取二进制文件；wb 写入二进制</li>
+      <li><code>f.close()</code> — 关闭文件</li>
+      <li><code>f.flush()</code> — 刷新 Python 写入缓冲区</li>
+    </ul>
+  </section>
+  <section class="content-section" id="file">
+    <h2>读写与定位</h2>
+    <ul>
+      <li><code>f.read(size=-1)</code> — 读取指定长度；-1 读取剩余全部内容</li>
+      <li><code>f.readline(size=-1)</code> — 读取一行</li>
+      <li><code>f.readlines(hint=-1)</code> — 读取多行，返回列表</li>
+      <li><code>f.write(text_or_bytes)</code> — 写入内容，类型应与打开模式一致</li>
+      <li><code>f.writelines(lines)</code> — 写入多项内容，不自动补换行</li>
+      <li><code>f.seek(offset, whence=0)</code> — 移动位置；文本模式一般使用 0 或 tell() 返回值</li>
+      <li><code>f.tell()</code> — 返回当前位置</li>
+    </ul>
+  </section>
+  <section class="content-section" id="json">
+    <h2>JSON</h2>
+    <ul>
+      <li><code>json.loads(text)</code> — JSON 字符串转 Python 对象</li>
+      <li><code>json.dumps(obj, ensure_ascii=False, indent=2)</code> — Python 对象转 JSON 字符串</li>
+      <li><code>json.load(f)</code> — 从文件读取 JSON</li>
+      <li><code>json.dump(obj, f, ensure_ascii=False, indent=2)</code> — 将对象写入 JSON 文件</li>
+    </ul>
+  </section>
+  <section class="content-section" id="csv">
+    <h2>CSV</h2>
+    <ul>
+      <li><code>csv.reader(f, delimiter=&quot;,&quot;)</code> — 逐行读取，文件用 newline=&quot;&quot; 打开</li>
+      <li><code>csv.writer(f, delimiter=&quot;,&quot;)</code> — 创建写入器，文件用 newline=&quot;&quot; 打开</li>
+      <li><code>writer.writerow(row)</code> — 写入一行</li>
+      <li><code>writer.writerows(rows)</code> — 写入多行</li>
+      <li><code>csv.DictReader(f, fieldnames=None)</code> — 按列名读取为字典</li>
+      <li><code>csv.DictWriter(f, fieldnames)</code> — 指定字段顺序创建字典写入器</li>
+      <li><code>writer.writeheader()</code> — 写入 DictWriter 的列名行</li>
+    </ul>
+  </section>
+  <p><a href="https://docs.python.org/3/library/json.html" target="_blank" rel="noreferrer">官方 API 参考</a></p>
 </main>

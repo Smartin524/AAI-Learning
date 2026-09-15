@@ -35,7 +35,7 @@
             <nav class="course-switcher" aria-label="课程切换">
               <a class="course-switcher-item active" href="../chapters/01-basics.html" aria-current="page">
                 <span class="course-switcher-dot" aria-hidden="true"></span>
-                <span><strong>Python 通识</strong><small>基础语法、数据结构、API 与 AI 应用基础</small></span>
+                <span><strong>Python 常用方法</strong><small>内置函数、容器、标准库与数据分析常用方法 · 参数格式速查</small></span>
               </a>
               <a class="course-switcher-item" href="../courses/ca6000-module-01.html">
                 <span class="course-switcher-dot" aria-hidden="true"></span>
@@ -53,49 +53,49 @@
     </header>
     <div class="chapter-layout">
       <aside class="toc">
-        <div class="toc-title">PYTHON 通识</div>
-        <nav class="chapter-links" aria-label="Python 通识页面">
+        <div class="toc-title">PYTHON 常用方法</div>
+        <nav class="chapter-links" aria-label="Python 常用方法页面">
           <div class="chapter-group" data-chapter-group>
-            <a class="chapter-link" href="01-basics.html">01 基本类型与 Casting</a>
+            <a class="chapter-link" href="01-basics.html">01 内置函数</a>
             <div class="chapter-subnav" aria-hidden="true" inert>
               <div class="chapter-subnav-inner">
-              <a href="01-basics.html#terms" data-toc-section="terms">必须掌握的术语</a>
-              <a href="01-basics.html#core" data-toc-section="core">核心知识</a>
-              <a href="01-basics.html#errors" data-toc-section="errors">常见错误</a>
-              <a href="01-basics.html#practice" data-toc-section="practice">练习</a>
+              <a href="01-basics.html#convert" data-toc-section="convert">类型转换</a>
+              <a href="01-basics.html#numbers" data-toc-section="numbers">数字与进制</a>
+              <a href="01-basics.html#inspect" data-toc-section="inspect">类型与对象查询</a>
+              <a href="01-basics.html#io-help" data-toc-section="io-help">输入、输出与帮助</a>
               </div>
             </div>
           </div>
           <div class="chapter-group" data-chapter-group>
-            <a class="chapter-link" href="02-containers.html">02 容器</a>
+            <a class="chapter-link" href="02-containers.html">02 容器方法</a>
             <div class="chapter-subnav" aria-hidden="true" inert>
               <div class="chapter-subnav-inner">
-              <a href="02-containers.html#terms" data-toc-section="terms">必须掌握的术语</a>
-              <a href="02-containers.html#core" data-toc-section="core">核心知识</a>
-              <a href="02-containers.html#errors" data-toc-section="errors">常见错误</a>
-              <a href="02-containers.html#practice" data-toc-section="practice">练习</a>
+              <a href="02-containers.html#lists" data-toc-section="lists">列表 list</a>
+              <a href="02-containers.html#dicts" data-toc-section="dicts">字典 dict</a>
+              <a href="02-containers.html#sets" data-toc-section="sets">集合 set</a>
+              <a href="02-containers.html#tuples" data-toc-section="tuples">元组与序列</a>
               </div>
             </div>
           </div>
           <div class="chapter-group" data-chapter-group>
-            <a class="chapter-link" href="03-control-flow.html">03 判断与循环</a>
+            <a class="chapter-link" href="03-control-flow.html">03 字符串</a>
             <div class="chapter-subnav" aria-hidden="true" inert>
               <div class="chapter-subnav-inner">
-              <a href="03-control-flow.html#terms" data-toc-section="terms">必须掌握的术语</a>
-              <a href="03-control-flow.html#core" data-toc-section="core">核心知识</a>
-              <a href="03-control-flow.html#errors" data-toc-section="errors">常见错误</a>
-              <a href="03-control-flow.html#practice" data-toc-section="practice">练习</a>
+              <a href="03-control-flow.html#case" data-toc-section="case">大小写与清理</a>
+              <a href="03-control-flow.html#find" data-toc-section="find">查找与替换</a>
+              <a href="03-control-flow.html#split" data-toc-section="split">拆分、拼接与格式化</a>
+              <a href="03-control-flow.html#check" data-toc-section="check">内容判断</a>
               </div>
             </div>
           </div>
           <div class="chapter-group" data-chapter-group>
-            <a class="chapter-link" href="04-functions.html">04 函数</a>
+            <a class="chapter-link" href="04-functions.html">04 遍历与函数工具</a>
             <div class="chapter-subnav" aria-hidden="true" inert>
               <div class="chapter-subnav-inner">
-              <a href="04-functions.html#terms" data-toc-section="terms">必须掌握的术语</a>
-              <a href="04-functions.html#core" data-toc-section="core">核心知识</a>
-              <a href="04-functions.html#errors" data-toc-section="errors">常见错误</a>
-              <a href="04-functions.html#practice" data-toc-section="practice">练习</a>
+              <a href="04-functions.html#iterate" data-toc-section="iterate">遍历</a>
+              <a href="04-functions.html#aggregate" data-toc-section="aggregate">排序与汇总</a>
+              <a href="04-functions.html#itertools" data-toc-section="itertools">itertools</a>
+              <a href="04-functions.html#functional" data-toc-section="functional">functools 与 operator</a>
               </div>
             </div>
           </div>
@@ -103,235 +103,143 @@
             <a class="chapter-link" href="05-files-json.html">05 文件与 JSON</a>
             <div class="chapter-subnav" aria-hidden="true" inert>
               <div class="chapter-subnav-inner">
-              <a href="05-files-json.html#terms" data-toc-section="terms">必须掌握的术语</a>
-              <a href="05-files-json.html#core" data-toc-section="core">核心知识</a>
-              <a href="05-files-json.html#errors" data-toc-section="errors">常见错误</a>
-              <a href="05-files-json.html#practice" data-toc-section="practice">练习</a>
+              <a href="05-files-json.html#open" data-toc-section="open">打开与关闭</a>
+              <a href="05-files-json.html#file" data-toc-section="file">读写与定位</a>
+              <a href="05-files-json.html#json" data-toc-section="json">JSON</a>
+              <a href="05-files-json.html#csv" data-toc-section="csv">CSV</a>
               </div>
             </div>
           </div>
           <div class="chapter-group" data-chapter-group>
-            <a class="chapter-link" href="06-errors-env.html">06 报错与环境</a>
+            <a class="chapter-link" href="06-errors-env.html">06 路径与系统</a>
             <div class="chapter-subnav" aria-hidden="true" inert>
               <div class="chapter-subnav-inner">
-              <a href="06-errors-env.html#terms" data-toc-section="terms">必须掌握的术语</a>
-              <a href="06-errors-env.html#core" data-toc-section="core">核心知识</a>
-              <a href="06-errors-env.html#errors" data-toc-section="errors">常见错误</a>
-              <a href="06-errors-env.html#practice" data-toc-section="practice">练习</a>
+              <a href="06-errors-env.html#paths" data-toc-section="paths">构造与查询路径</a>
+              <a href="06-errors-env.html#directory" data-toc-section="directory">目录与文件操作</a>
+              <a href="06-errors-env.html#system" data-toc-section="system">系统与进程</a>
+              <a href="06-errors-env.html#copy" data-toc-section="copy">复制与移动</a>
               </div>
             </div>
           </div>
           <div class="chapter-group active" data-chapter-group>
-            <a class="chapter-link active" aria-current="page" href="07-numpy-vectors.html">07 NumPy 与向量</a>
+            <a class="chapter-link active" aria-current="page" href="07-numpy-vectors.html">07 NumPy</a>
             <div class="chapter-subnav">
               <div class="chapter-subnav-inner">
-              <a href="07-numpy-vectors.html#terms" data-toc-section="terms">必须掌握的术语</a>
-              <a href="07-numpy-vectors.html#core" data-toc-section="core">核心知识</a>
-              <a href="07-numpy-vectors.html#errors" data-toc-section="errors">常见错误</a>
-              <a href="07-numpy-vectors.html#practice" data-toc-section="practice">练习</a>
+              <a href="07-numpy-vectors.html#create" data-toc-section="create">创建数组</a>
+              <a href="07-numpy-vectors.html#shape" data-toc-section="shape">形状与组合</a>
+              <a href="07-numpy-vectors.html#calculate" data-toc-section="calculate">计算与筛选</a>
+              <a href="07-numpy-vectors.html#random" data-toc-section="random">随机数与保存</a>
               </div>
             </div>
           </div>
           <div class="chapter-group" data-chapter-group>
-            <a class="chapter-link" href="08-api.html">08 API</a>
+            <a class="chapter-link" href="08-api.html">08 Pandas</a>
             <div class="chapter-subnav" aria-hidden="true" inert>
               <div class="chapter-subnav-inner">
-              <a href="08-api.html#terms" data-toc-section="terms">必须掌握的术语</a>
-              <a href="08-api.html#core" data-toc-section="core">核心知识</a>
-              <a href="08-api.html#errors" data-toc-section="errors">常见错误</a>
-              <a href="08-api.html#practice" data-toc-section="practice">练习</a>
+              <a href="08-api.html#read" data-toc-section="read">创建、读取与查看</a>
+              <a href="08-api.html#clean" data-toc-section="clean">选择与清理</a>
+              <a href="08-api.html#analyze" data-toc-section="analyze">计算、分组与排序</a>
+              <a href="08-api.html#combine" data-toc-section="combine">合并与重塑</a>
               </div>
             </div>
           </div>
           <div class="chapter-group" data-chapter-group>
-            <a class="chapter-link" href="09-embedding.html">09 Embedding</a>
+            <a class="chapter-link" href="09-embedding.html">09 Matplotlib</a>
             <div class="chapter-subnav" aria-hidden="true" inert>
               <div class="chapter-subnav-inner">
-              <a href="09-embedding.html#terms" data-toc-section="terms">必须掌握的术语</a>
-              <a href="09-embedding.html#core" data-toc-section="core">核心知识</a>
-              <a href="09-embedding.html#errors" data-toc-section="errors">常见错误</a>
-              <a href="09-embedding.html#practice" data-toc-section="practice">练习</a>
+              <a href="09-embedding.html#figure" data-toc-section="figure">画布</a>
+              <a href="09-embedding.html#plot" data-toc-section="plot">常见图形</a>
+              <a href="09-embedding.html#labels" data-toc-section="labels">标题、坐标与图例</a>
+              <a href="09-embedding.html#export" data-toc-section="export">显示与保存</a>
               </div>
             </div>
           </div>
           <div class="chapter-group" data-chapter-group>
-            <a class="chapter-link" href="10-mini-rag.html">10 迷你 RAG</a>
+            <a class="chapter-link" href="10-mini-rag.html">10 常用标准库</a>
             <div class="chapter-subnav" aria-hidden="true" inert>
               <div class="chapter-subnav-inner">
-              <a href="10-mini-rag.html#terms" data-toc-section="terms">必须掌握的术语</a>
-              <a href="10-mini-rag.html#core" data-toc-section="core">核心知识</a>
-              <a href="10-mini-rag.html#errors" data-toc-section="errors">常见错误</a>
-              <a href="10-mini-rag.html#practice" data-toc-section="practice">练习</a>
+              <a href="10-mini-rag.html#math" data-toc-section="math">数学与统计</a>
+              <a href="10-mini-rag.html#random" data-toc-section="random">随机与计数</a>
+              <a href="10-mini-rag.html#datetime" data-toc-section="datetime">日期与时间</a>
+              <a href="10-mini-rag.html#regex" data-toc-section="regex">正则表达式</a>
               </div>
             </div>
           </div>
         </nav>
       </aside>
       <main class="chapter">
-        <header class="chapter-hero">
-          <div class="chapter-kicker">CHAPTER 07</div>
-          <h1>NumPy、数组、矩阵与向量</h1>
-          <p class="chapter-summary">
-            NumPy 是 Python 数值计算的基础。深度学习张量、Embedding
-            和数据矩阵都延续了它的 shape、广播和向量化思维。
-          </p>
-          <div class="outcomes">
-            <strong>学完你应该能够：</strong>创建和变换 ndarray；准确追踪
-            shape、axis 和 dtype；使用向量化、广播、矩阵乘法和余弦相似度。
-          </div>
-        </header>
-        <section class="content-section" id="terms">
-          <h2>必须掌握的术语</h2>
-          <table class="terms">
-            <tr>
-              <th>术语</th>
-              <th>准确理解</th>
-            </tr>
-            <tr>
-              <td>ndarray</td>
-              <td>同质、多维 NumPy 数组。</td>
-            </tr>
-            <tr>
-              <td>shape</td>
-              <td>每个维度的长度，例如 (batch, features)。</td>
-            </tr>
-            <tr>
-              <td>ndim</td>
-              <td>数组维度数量。</td>
-            </tr>
-            <tr>
-              <td>dtype</td>
-              <td>元素的数据类型，影响精度和内存。</td>
-            </tr>
-            <tr>
-              <td>axis</td>
-              <td>运算沿哪个维度进行。</td>
-            </tr>
-            <tr>
-              <td>vectorization</td>
-              <td>用底层批量运算替代 Python 循环。</td>
-            </tr>
-            <tr>
-              <td>broadcasting</td>
-              <td>按兼容规则扩展较小数组参与运算。</td>
-            </tr>
-            <tr>
-              <td>dot product</td>
-              <td>对应元素乘积之和。</td>
-            </tr>
-            <tr>
-              <td>norm</td>
-              <td>向量长度，常用 L2 范数。</td>
-            </tr>
-            <tr>
-              <td>cosine similarity</td>
-              <td>用夹角衡量方向相似度。</td>
-            </tr>
-          </table>
-        </section>
-        <section class="content-section" id="core">
-          <h2>1. shape 是第一调试信息</h2>
-          <pre>
-import numpy as np
-
-X = np.array([[1, 2, 3], [4, 5, 6]], dtype=np.float32)
-print(X.shape)   # (2, 3)：2 个样本，每个 3 个特征
-print(X.ndim)    # 2
-print(X.dtype)   # float32
-
-row = X[0]       # shape (3,)
-col = X[:, 0]    # shape (2,)</pre
-          >
-          <h3>2. reshape 与维度</h3>
-          <pre>
-values = np.arange(12)
-matrix = values.reshape(3, 4)
-column = values.reshape(-1, 1)
-print(matrix.shape, column.shape)</pre
-          >
-          <p>
-            <code>-1</code> 让 NumPy 自动推断该维长度。reshape
-            前后元素总数必须一致。
-          </p>
-          <h3>3. axis</h3>
-          <pre>
-X = np.array([[1, 2, 3], [4, 5, 6]])
-print(X.mean(axis=0))  # 每个特征跨样本求均值，shape (3,)
-print(X.mean(axis=1))  # 每个样本跨特征求均值，shape (2,)</pre
-          >
-          <h3>4. 广播</h3>
-          <pre>
-X = np.array([[1., 2.], [3., 4.]])
-mean = X.mean(axis=0)
-std = X.std(axis=0)
-normalized = (X - mean) / (std + 1e-8)</pre
-          >
-          <p>从右向左比较 shape；维度相等或其中一个为 1 时通常可以广播。</p>
-          <h3>5. 点积、矩阵乘法与余弦相似度</h3>
-          <pre>
-a = np.array([1., 2., 3.])
-b = np.array([2., 1., 0.])
-dot = np.dot(a, b)
-length = np.linalg.norm(a)
-
-def cosine_similarity(a, b):
-    denominator = np.linalg.norm(a) * np.linalg.norm(b)
-    if denominator == 0:
-        raise ValueError("零向量没有方向")
-    return np.dot(a, b) / denominator</pre
-          >
-          <h3>6. 批量计算检索分数</h3>
-          <pre>
-doc_vectors = np.array([
-    [0.9, 0.1, 0.2],
-    [0.1, 0.9, 0.2],
-    [0.7, 0.2, 0.3]
-])
-query = np.array([0.8, 0.1, 0.2])
-
-docs_unit = doc_vectors / np.linalg.norm(doc_vectors, axis=1, keepdims=True)
-query_unit = query / np.linalg.norm(query)
-scores = docs_unit @ query_unit
-top_indices = np.argsort(scores)[::-1]</pre
-          >
-        </section>
-        <section class="content-section" id="errors">
-          <h2>常见错误</h2>
-          <ul class="error-list">
-            <li>混淆 (n,) 和 (n,1)，导致矩阵乘法结果意外。</li>
-            <li>axis 选错但代码仍能运行，产生语义错误。</li>
-            <li>整数数组做除法或赋小数时产生 dtype 问题。</li>
-            <li>对零向量归一化，得到 NaN。</li>
-            <li>在大数组上使用 Python for 循环而不是向量化。</li>
-            <li>只看数值不打印 shape，难以定位广播错误。</li>
-          </ul>
-        </section>
-        <section class="content-section" id="practice">
-          <h2>分层练习</h2>
-          <div class="exercise">
-            <strong>基础</strong>
-            <ol>
-              <li>构造 shape=(4,3) 的数组，分别沿 axis 0 和 1 求均值。</li>
-              <li>手算两个向量点积并验证。</li>
-            </ol>
-          </div>
-          <div class="exercise">
-            <strong>进阶</strong>
-            <ol>
-              <li>不使用循环，计算一个 query 与 100 个文档的余弦分数。</li>
-              <li>返回 top 5 的索引和分数。</li>
-            </ol>
-          </div>
-          <div class="exercise">
-            <strong>掌握标准</strong>
-            <ol>
-              <li>为每个中间数组标注 shape。</li>
-              <li>解释广播规则，并修复一个 shape mismatch。</li>
-            </ol>
-          </div>
-        </section>
+  <header class="chapter-hero">
+    <div class="chapter-kicker">PYTHON REFERENCE · 07</div>
+    <h1>NumPy 常用方法</h1>
+    <p class="chapter-summary">常用调用格式与一句用途。import numpy as np；a、b 表示数组。以下展示常用参数组合。</p>
+    <p>括号内为传入参数；<code>name=value</code> 为关键字传参，<code>*args</code> / <code>**kwargs</code> 为多个位置 / 关键字参数。以下列出常用调用写法，默认值与示例值以条目说明为准。</p>
+  </header>
+  <section class="content-section" id="create">
+    <h2>创建数组</h2>
+    <ul>
+      <li><code>np.array(data, dtype=None)</code> — 从数据创建数组</li>
+      <li><code>np.asarray(data, dtype=None)</code> — 转换为数组，尽可能复用已有数据</li>
+      <li><code>np.zeros(shape, dtype=float)</code> — 全零数组</li>
+      <li><code>np.ones(shape, dtype=float)</code> — 全一数组</li>
+      <li><code>np.full(shape, fill_value, dtype=None)</code> — 按指定值填充</li>
+      <li><code>np.arange(start, stop, step=1)</code> — 等步长序列，不包含 stop</li>
+      <li><code>np.linspace(start, stop, num=50, endpoint=True)</code> — 等间隔取 num 个点</li>
+      <li><code>np.eye(N, M=None, k=0)</code> — 创建对角阵</li>
+    </ul>
+  </section>
+  <section class="content-section" id="shape">
+    <h2>形状与组合</h2>
+    <ul>
+      <li><code>a.reshape(shape)</code> — 改变形状；可用一个 -1 自动推断维度</li>
+      <li><code>a.ravel()</code> — 展平，尽可能返回视图</li>
+      <li><code>a.flatten()</code> — 展平并复制</li>
+      <li><code>np.transpose(a, axes=None)</code> — 交换维度</li>
+      <li><code>np.expand_dims(a, axis)</code> — 插入长度为 1 的维度</li>
+      <li><code>np.squeeze(a, axis=None)</code> — 移除长度为 1 的维度</li>
+      <li><code>np.concatenate(arrays, axis=0)</code> — 沿已有轴拼接</li>
+      <li><code>np.stack(arrays, axis=0)</code> — 沿新轴堆叠</li>
+      <li><code>np.split(a, indices_or_sections, axis=0)</code> — 按等份数或索引切分</li>
+      <li><code>a.astype(dtype)</code> — 转换元素类型</li>
+    </ul>
+  </section>
+  <section class="content-section" id="calculate">
+    <h2>计算与筛选</h2>
+    <ul>
+      <li><code>np.sum(a, axis=None, keepdims=False)</code> — 求和</li>
+      <li><code>np.mean(a, axis=None, keepdims=False)</code> — 均值</li>
+      <li><code>np.std(a, axis=None, ddof=0)</code> — 标准差</li>
+      <li><code>np.min(a, axis=None)</code> — 最小值</li>
+      <li><code>np.max(a, axis=None)</code> — 最大值</li>
+      <li><code>np.argmax(a, axis=None)</code> — 最大值索引</li>
+      <li><code>np.argmin(a, axis=None)</code> — 最小值索引</li>
+      <li><code>np.where(condition, x, y)</code> — 按条件选择值</li>
+      <li><code>np.clip(a, a_min, a_max)</code> — 限制数值范围</li>
+      <li><code>np.unique(a, return_counts=False)</code> — 去重，可同时返回计数</li>
+      <li><code>np.sort(a, axis=-1)</code> — 排序后的数组</li>
+      <li><code>np.argsort(a, axis=-1)</code> — 排序索引</li>
+      <li><code>np.isnan(a)</code> — 逐项判断 NaN</li>
+      <li><code>np.dot(a, b)</code> — 点积；二维输入为矩阵乘法</li>
+      <li><code>np.matmul(a, b)</code> — 矩阵乘法</li>
+      <li><code>np.linalg.norm(a, ord=None, axis=None)</code> — 向量或矩阵范数</li>
+    </ul>
+  </section>
+  <section class="content-section" id="random">
+    <h2>随机数与保存</h2>
+    <ul>
+      <li><code>np.random.default_rng(seed=None)</code> — 创建随机数生成器 rng</li>
+      <li><code>rng.random(size=None)</code> — 生成 [0, 1) 均匀随机数</li>
+      <li><code>rng.integers(low, high=None, size=None)</code> — 生成整数，上界不包含</li>
+      <li><code>rng.normal(loc=0.0, scale=1.0, size=None)</code> — 正态分布采样</li>
+      <li><code>rng.choice(a, size=None, replace=True, p=None)</code> — 按概率抽样</li>
+      <li><code>rng.shuffle(a, axis=0)</code> — 原地随机打乱</li>
+      <li><code>rng.permutation(a, axis=0)</code> — 返回打乱后的副本</li>
+      <li><code>np.save(file, a)</code> — 保存 .npy 数组</li>
+      <li><code>np.load(file, allow_pickle=False)</code> — 读取数组文件</li>
+    </ul>
+  </section>
+  <p><a href="https://numpy.org/doc/stable/reference/routines.html" target="_blank" rel="noreferrer">官方 API 参考</a></p>
         <nav class="chapter-nav" aria-label="上一页和下一页">
-          <a href="06-errors-env.html">← 06 报错与环境</a><a href="08-api.html">08 API →</a>
+          <a href="06-errors-env.html">← 06 路径与系统</a><a href="08-api.html">08 Pandas →</a>
         </nav>
       </main>
     </div>
