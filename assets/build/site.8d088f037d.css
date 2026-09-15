@@ -898,7 +898,7 @@ body[data-course-id="python"] .chapter pre {
   overflow-wrap: anywhere;
 }
 
-/* Split each reference category into two independently copyable blocks. */
+/* Split each reference category into two blocks. */
 body[data-course-id="python"] .reference-code-columns {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
@@ -921,4 +921,12 @@ body[data-course-id="python"] .reference-code-columns > .code-block > pre {
   body[data-course-id="python"] .reference-code-columns {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+}
+
+body[data-course-id="python"] .copy-code-button {
+  display: none;
+}
+
+body[data-course-id="python"] .code-block pre {
+  padding-top: 19px;
 }

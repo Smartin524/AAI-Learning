@@ -87,7 +87,8 @@ try {
   assert(await page.evaluate(() => performance.getEntriesByType("navigation").length) === navigationEntries, "Chapter switch performed a full-page navigation");
   assert(await page.locator('link[rel="icon"]').getAttribute("href") === faviconBeforeChapterSwitch, "Chapter switch replaced the favicon");
   assert(await page.locator(".chapter-group.active .chapter-link").innerText() === "02 容器方法", "New chapter did not expand in the table of contents");
-  assert(await page.locator(".code-block").count() === await page.getByRole("button", { name: "复制代码" }).count(), "Code blocks were not enhanced after the chapter switch");
+  assert(await page.locator(".code-block").count() > 0, "Code blocks were not enhanced after the chapter switch");
+  assert(await page.getByRole("button", { name: "复制代码" }).count() === 0, "Python reference copy buttons should be hidden");
 
   await page.goBack();
   await page.waitForURL("**/chapters/01-basics.html");
