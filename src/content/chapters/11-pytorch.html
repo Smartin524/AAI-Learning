@@ -1,0 +1,205 @@
+<main class="chapter">
+  <header class="chapter-hero">
+    <div class="chapter-kicker">PYTHON REFERENCE · 11</div>
+    <h1>PyTorch 常用方法</h1>
+    <p class="chapter-summary">常用调用与参数格式；用途写在注释中。变量为占位名称，各项独立查阅，不应整块顺序运行。</p>
+    <pre>import torch
+from torch import nn, optim
+from torch.utils.data import TensorDataset, DataLoader</pre>
+  </header>
+  <section class="content-section" id="tensors">
+    <h2>张量与形状</h2>
+    <pre># 从数据创建张量；dtype、device 为常用示例
+torch.tensor(data, dtype=torch.float32, device=&quot;cpu&quot;)
+
+# 从 NumPy 数组创建共享内存的 CPU 张量
+torch.from_numpy(array)
+
+# 全零张量，size 为形状元组
+torch.zeros(size, dtype=torch.float32)
+
+# 全一张量
+torch.ones(size, dtype=torch.float32)
+
+# 标准正态随机张量
+torch.randn(size)
+
+# 等步长序列，不含 end
+torch.arange(start, end, step=1)
+
+# 设置随机种子
+torch.manual_seed(seed)
+
+# 转换设备或类型
+x.to(device=device, dtype=torch.float32)
+
+# 调整形状，可用一个 -1 推断维度
+x.reshape(shape)
+
+# 按兼容的内存布局返回新形状视图
+x.view(shape)
+
+# 插入长度为 1 的维度
+x.unsqueeze(dim)
+
+# 移除指定的单例维度；不传 dim 时移除全部
+x.squeeze(dim)
+
+# 重排所有维度
+x.permute(*dims)
+
+# 交换两个维度
+x.transpose(dim0, dim1)
+
+# 示例：保留批次维，展平其余维度
+torch.flatten(x, start_dim=1)
+
+# 沿已有维度拼接
+torch.cat(tensors, dim=0)
+
+# 沿新维度堆叠
+torch.stack(tensors, dim=0)
+
+# 返回脱离梯度图的张量
+x.detach()
+
+# 转为 NumPy 数组
+x.detach().cpu().numpy()
+
+# 单元素张量转 Python 数值
+x.item()</pre>
+  </section>
+  <section class="content-section" id="layers">
+    <h2>网络层与激活</h2>
+    <pre># 全连接层
+nn.Linear(in_features, out_features, bias=True)
+
+# 按顺序组合网络层
+nn.Sequential(*modules)
+
+# ReLU 激活
+nn.ReLU()
+
+# Sigmoid 激活
+nn.Sigmoid()
+
+# Tanh 激活
+nn.Tanh()
+
+# 示例：沿类别维度归一化
+nn.Softmax(dim=1)
+
+# 展平层，默认保留批次维
+nn.Flatten(start_dim=1)
+
+# 训练时随机丢弃元素
+nn.Dropout(p=0.5)
+
+# 一维特征批归一化
+nn.BatchNorm1d(num_features)
+
+# 图像通道批归一化
+nn.BatchNorm2d(num_features)
+
+# 二维卷积，常用输入为 NCHW
+nn.Conv2d(in_channels, out_channels, kernel_size, stride=1, padding=0)
+
+# 二维最大池化
+nn.MaxPool2d(kernel_size, stride=None, padding=0)
+
+# 二维平均池化
+nn.AvgPool2d(kernel_size, stride=None, padding=0)
+
+# 整数索引转向量
+nn.Embedding(num_embeddings, embedding_dim)
+
+# 普通 RNN；示例输入为批次、时间、特征
+nn.RNN(input_size, hidden_size, num_layers=1, batch_first=True)
+
+# LSTM 层
+nn.LSTM(input_size, hidden_size, num_layers=1, batch_first=True)
+
+# GRU 层
+nn.GRU(input_size, hidden_size, num_layers=1, batch_first=True)</pre>
+  </section>
+  <section class="content-section" id="training">
+    <h2>数据、损失与训练</h2>
+    <pre># 包装特征和标签，第一维长度需相同
+TensorDataset(features, targets)
+
+# 示例：按批次打乱训练数据
+DataLoader(dataset, batch_size=32, shuffle=True)
+
+# 均方误差
+nn.MSELoss(reduction=&quot;mean&quot;)
+
+# 平均绝对误差
+nn.L1Loss(reduction=&quot;mean&quot;)
+
+# 二分类；输入原始 logits，目标为浮点 0/1
+nn.BCEWithLogitsLoss(pos_weight=None)
+
+# 多分类；常用输入为 logits，标签为 long 类别索引
+nn.CrossEntropyLoss(weight=None)
+
+# Adam 优化器
+optim.Adam(model.parameters(), lr=0.001, weight_decay=0)
+
+# SGD；数值为常用示例
+optim.SGD(model.parameters(), lr=0.01, momentum=0.9)
+
+# 移动模型到指定设备
+model.to(device)
+
+# 启用训练模式
+model.train()
+
+# 清空上一步梯度
+optimizer.zero_grad()
+
+# 前向计算，得到 predictions
+model(inputs)
+
+# 调用损失函数，得到 loss
+criterion(predictions, targets)
+
+# 反向计算梯度
+loss.backward()
+
+# 更新参数
+optimizer.step()
+
+# 启用评估模式；不会自动关闭梯度
+model.eval()
+
+# 用于 with torch.no_grad():，上下文内停止记录梯度
+torch.no_grad()
+
+# 示例：取预测类别索引
+torch.argmax(logits, dim=1)
+
+# 二分类 logits 转概率
+torch.sigmoid(logits)</pre>
+  </section>
+  <section class="content-section" id="save">
+    <h2>保存与加载</h2>
+    <pre># 取得参数和持久缓冲区字典
+model.state_dict()
+
+# 保存模型权重
+torch.save(model.state_dict(), &quot;model.pt&quot;)
+
+# 加载权重字典，赋给 state_dict
+torch.load(&quot;model.pt&quot;, map_location=&quot;cpu&quot;, weights_only=True)
+
+# 载入结构匹配的模型
+model.load_state_dict(state_dict, strict=True)
+
+# 取得优化器状态
+optimizer.state_dict()
+
+# 恢复优化器状态
+optimizer.load_state_dict(state_dict)</pre>
+  </section>
+  <p><a href="https://docs.pytorch.org/docs/stable/index.html" target="_blank" rel="noreferrer">官方 API 参考</a></p>
+</main>

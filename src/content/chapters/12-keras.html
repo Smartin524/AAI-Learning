@@ -1,0 +1,154 @@
+<main class="chapter">
+  <header class="chapter-hero">
+    <div class="chapter-kicker">PYTHON REFERENCE · 12</div>
+    <h1>Keras 常用方法</h1>
+    <p class="chapter-summary">常用调用与参数格式；用途写在注释中。变量为占位名称，各项独立查阅，不应整块顺序运行。</p>
+<p>以下统一使用 Keras 3 的 import keras 写法；已使用 from tensorflow import keras 的课件，保持其原有导入体系。</p>
+    <pre>import keras
+from keras import layers</pre>
+  </header>
+  <section class="content-section" id="models">
+    <h2>输入与模型</h2>
+    <pre># 定义输入，shape 不含批次维
+keras.Input(shape=(num_features,))
+
+# 顺序模型；layers_list 为层对象列表
+keras.Sequential(layers_list, name=None)
+
+# 函数式模型
+keras.Model(inputs=inputs, outputs=outputs, name=None)
+
+# 向 Sequential 追加一层
+model.add(layer)
+
+# 显示各层形状和参数量
+model.summary()
+
+# 直接前向调用；training=False 用于推理
+model(x, training=False)
+
+# 设置随机种子
+keras.utils.set_random_seed(seed)</pre>
+  </section>
+  <section class="content-section" id="layers">
+    <h2>常用网络层</h2>
+    <pre># 全连接层；activation 可为 &quot;relu&quot;、&quot;sigmoid&quot;、&quot;softmax&quot;
+layers.Dense(units, activation=None, use_bias=True)
+
+# 独立激活层
+layers.Activation(activation)
+
+# ReLU 激活
+layers.ReLU()
+
+# 保留批次维，展平其他维度
+layers.Flatten()
+
+# 调整单个样本形状，不含批次维
+layers.Reshape(target_shape)
+
+# 训练时随机丢弃比例 rate 的输入
+layers.Dropout(rate)
+
+# 批归一化
+layers.BatchNormalization(axis=-1, momentum=0.99)
+
+# 二维卷积；默认常用布局 NHWC
+layers.Conv2D(filters, kernel_size, strides=(1, 1), padding=&quot;valid&quot;, activation=None)
+
+# 二维最大池化
+layers.MaxPooling2D(pool_size=(2, 2), strides=None, padding=&quot;valid&quot;)
+
+# 二维平均池化
+layers.AveragePooling2D(pool_size=(2, 2), strides=None, padding=&quot;valid&quot;)
+
+# 每个通道的空间全局平均
+layers.GlobalAveragePooling2D()
+
+# 整数索引转向量
+layers.Embedding(input_dim, output_dim)
+
+# 普通 RNN；输入为批次、时间、特征
+layers.SimpleRNN(units, return_sequences=False)
+
+# LSTM；return_sequences 控制是否输出每步结果
+layers.LSTM(units, return_sequences=False, return_state=False)
+
+# GRU 层
+layers.GRU(units, return_sequences=False, return_state=False)
+
+# 双向包装 RNN、LSTM 或 GRU
+layers.Bidirectional(layer, merge_mode=&quot;concat&quot;)
+
+# 沿指定维度拼接多个输入
+layers.Concatenate(axis=-1)
+
+# 多个同形状输入逐项相加
+layers.Add()</pre>
+  </section>
+  <section class="content-section" id="training">
+    <h2>损失、编译与训练</h2>
+    <pre># 回归均方误差
+keras.losses.MeanSquaredError()
+
+# 二分类；False 配概率，True 配原始 logits
+keras.losses.BinaryCrossentropy(from_logits=False)
+
+# 多分类，标签为整数类别索引
+keras.losses.SparseCategoricalCrossentropy(from_logits=False)
+
+# 多分类，标签为 one-hot 或类别分布
+keras.losses.CategoricalCrossentropy(from_logits=False)
+
+# Adam 优化器
+keras.optimizers.Adam(learning_rate=0.001)
+
+# SGD；数值为常用示例
+keras.optimizers.SGD(learning_rate=0.01, momentum=0.9)
+
+# 配置训练；accuracy 为分类指标示例
+model.compile(optimizer=optimizer, loss=loss_fn, metrics=[&quot;accuracy&quot;])
+
+# 训练；epochs=10 为示例
+model.fit(x, y, batch_size=32, epochs=10, validation_data=(x_val, y_val), callbacks=callbacks)
+
+# 返回测试损失及指标
+model.evaluate(x_test, y_test, batch_size=32, return_dict=True)
+
+# 批量推理
+model.predict(x, batch_size=32)
+
+# 执行一个批次的训练
+model.train_on_batch(x, y)
+
+# 整数标签转 one-hot
+keras.utils.to_categorical(y, num_classes=None)</pre>
+  </section>
+  <section class="content-section" id="saving">
+    <h2>回调与模型保存</h2>
+    <pre># 示例：验证损失连续 5 轮不改善时停止
+keras.callbacks.EarlyStopping(monitor=&quot;val_loss&quot;, patience=5, restore_best_weights=True)
+
+# 保存验证损失最优模型
+keras.callbacks.ModelCheckpoint(&quot;best.keras&quot;, monitor=&quot;val_loss&quot;, save_best_only=True)
+
+# 示例：验证损失停滞时降低学习率
+keras.callbacks.ReduceLROnPlateau(monitor=&quot;val_loss&quot;, factor=0.1, patience=3)
+
+# 保存完整 Keras 模型
+model.save(&quot;model.keras&quot;)
+
+# 加载完整模型
+keras.models.load_model(&quot;model.keras&quot;)
+
+# 只保存权重
+model.save_weights(&quot;model.weights.h5&quot;)
+
+# 加载结构匹配的模型权重
+model.load_weights(&quot;model.weights.h5&quot;)
+
+# 清理 Keras 全局状态
+keras.backend.clear_session()</pre>
+  </section>
+  <p><a href="https://keras.io/api/" target="_blank" rel="noreferrer">官方 API 参考</a></p>
+</main>

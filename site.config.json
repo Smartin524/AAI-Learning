@@ -261,6 +261,54 @@
               "label": "正则表达式"
             }
           ]
+        },
+        {
+          "output": "chapters/11-pytorch.html",
+          "content": "src/content/chapters/11-pytorch.html",
+          "navLabel": "11 PyTorch",
+          "code": true,
+          "subsections": [
+            {
+              "id": "tensors",
+              "label": "张量与形状"
+            },
+            {
+              "id": "layers",
+              "label": "网络层与激活"
+            },
+            {
+              "id": "training",
+              "label": "数据、损失与训练"
+            },
+            {
+              "id": "save",
+              "label": "保存与加载"
+            }
+          ]
+        },
+        {
+          "output": "chapters/12-keras.html",
+          "content": "src/content/chapters/12-keras.html",
+          "navLabel": "12 Keras",
+          "code": true,
+          "subsections": [
+            {
+              "id": "models",
+              "label": "输入与模型"
+            },
+            {
+              "id": "layers",
+              "label": "常用网络层"
+            },
+            {
+              "id": "training",
+              "label": "损失、编译与训练"
+            },
+            {
+              "id": "saving",
+              "label": "回调与模型保存"
+            }
+          ]
         }
       ]
     },

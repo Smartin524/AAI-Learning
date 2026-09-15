@@ -2,56 +2,100 @@
   <header class="chapter-hero">
     <div class="chapter-kicker">PYTHON REFERENCE · 04</div>
     <h1>遍历、排序与函数工具</h1>
-    <p class="chapter-summary">常用调用格式与一句用途。使用标准库工具前先导入对应模块。</p>
-    <p>括号内为传入参数；<code>name=value</code> 为关键字传参，<code>*args</code> / <code>**kwargs</code> 为多个位置 / 关键字参数。以下列出常用调用写法，默认值与示例值以条目说明为准。</p>
+    <p class="chapter-summary">常用调用格式；用途写在代码注释中。使用标准库工具前先导入对应模块。</p>
+    <p>括号内为传入参数；<code>name=value</code> 为关键字传参，<code>*args</code> / <code>**kwargs</code> 为多个位置 / 关键字参数。以下代码块为独立调用速查，变量需替换为你的数据，不应整块顺序运行；默认值与示例值以注释为准。</p>
   </header>
   <section class="content-section" id="iterate">
     <h2>遍历</h2>
-    <ul>
-      <li><code>range(stop)</code> — 生成从 0 到 stop 前的整数</li>
-      <li><code>range(start, stop, step=1)</code> — 按步长生成整数</li>
-      <li><code>enumerate(iterable, start=0)</code> — 同时取得编号和元素</li>
-      <li><code>zip(*iterables)</code> — 并行配对，长度以最短输入为准</li>
-      <li><code>iter(iterable)</code> — 创建迭代器</li>
-      <li><code>next(iterator, default)</code> — 取得下一项；省略 default 时耗尽会报错</li>
-      <li><code>reversed(sequence)</code> — 返回反向迭代器</li>
-    </ul>
+    <pre># 生成从 0 到 stop 前的整数
+range(stop)
+
+# 按步长生成整数
+range(start, stop, step=1)
+
+# 同时取得编号和元素
+enumerate(iterable, start=0)
+
+# 并行配对，长度以最短输入为准
+zip(*iterables)
+
+# 创建迭代器
+iter(iterable)
+
+# 取得下一项；省略 default 时耗尽会报错
+next(iterator, default)
+
+# 返回反向迭代器
+reversed(sequence)</pre>
   </section>
   <section class="content-section" id="aggregate">
     <h2>排序与汇总</h2>
-    <ul>
-      <li><code>sorted(iterable, key=None, reverse=False)</code> — 返回排序后的新列表</li>
-      <li><code>min(iterable, key=None)</code> — 取得最小项</li>
-      <li><code>min(a, b, *others, key=None)</code> — 取得多个参数中的最小项</li>
-      <li><code>max(iterable, key=None)</code> — 取得最大项</li>
-      <li><code>max(a, b, *others, key=None)</code> — 取得多个参数中的最大项</li>
-      <li><code>sum(iterable, start=0)</code> — 求和</li>
-      <li><code>all(iterable)</code> — 是否全部为真</li>
-      <li><code>any(iterable)</code> — 是否至少一个为真</li>
-      <li><code>map(func, *iterables)</code> — 逐项调用函数，返回迭代器</li>
-      <li><code>filter(func, iterable)</code> — 保留判断为真的元素；func=None 时按元素真假筛选</li>
-    </ul>
+    <pre># 返回排序后的新列表
+sorted(iterable, key=None, reverse=False)
+
+# 取得最小项
+min(iterable, key=None)
+
+# 取得多个参数中的最小项
+min(a, b, *others, key=None)
+
+# 取得最大项
+max(iterable, key=None)
+
+# 取得多个参数中的最大项
+max(a, b, *others, key=None)
+
+# 求和
+sum(iterable, start=0)
+
+# 是否全部为真
+all(iterable)
+
+# 是否至少一个为真
+any(iterable)
+
+# 逐项调用函数，返回迭代器
+map(func, *iterables)
+
+# 保留判断为真的元素；func=None 时按元素真假筛选
+filter(func, iterable)</pre>
   </section>
   <section class="content-section" id="itertools">
     <h2>itertools</h2>
-    <ul>
-      <li><code>itertools.chain(*iterables)</code> — 依次连接多个可迭代对象</li>
-      <li><code>itertools.islice(iterable, start, stop, step=1)</code> — 按范围截取迭代器</li>
-      <li><code>itertools.product(*iterables, repeat=1)</code> — 笛卡尔积</li>
-      <li><code>itertools.combinations(iterable, r)</code> — 取 r 项组合</li>
-      <li><code>itertools.permutations(iterable, r=None)</code> — 取 r 项排列</li>
-      <li><code>itertools.accumulate(iterable, func=operator.add)</code> — 累计计算；默认累计求和</li>
-    </ul>
+    <pre># 依次连接多个可迭代对象
+itertools.chain(*iterables)
+
+# 按范围截取迭代器
+itertools.islice(iterable, start, stop, step=1)
+
+# 笛卡尔积
+itertools.product(*iterables, repeat=1)
+
+# 取 r 项组合
+itertools.combinations(iterable, r)
+
+# 取 r 项排列
+itertools.permutations(iterable, r=None)
+
+# 累计计算；默认累计求和
+itertools.accumulate(iterable, func=operator.add)</pre>
   </section>
   <section class="content-section" id="functional">
     <h2>functools 与 operator</h2>
-    <ul>
-      <li><code>functools.reduce(func, iterable, initial)</code> — 累计归约；可省略 initial</li>
-      <li><code>functools.partial(func, *args, **kwargs)</code> — 预先固定部分参数</li>
-      <li><code>functools.lru_cache(maxsize=128, typed=False)</code> — 缓存函数结果的装饰器</li>
-      <li><code>operator.itemgetter(*items)</code> — 按索引或键生成取值函数</li>
-      <li><code>operator.attrgetter(*attrs)</code> — 按属性名生成取值函数</li>
-    </ul>
+    <pre># 累计归约；可省略 initial
+functools.reduce(func, iterable, initial)
+
+# 预先固定部分参数
+functools.partial(func, *args, **kwargs)
+
+# 缓存函数结果的装饰器
+functools.lru_cache(maxsize=128, typed=False)
+
+# 按索引或键生成取值函数
+operator.itemgetter(*items)
+
+# 按属性名生成取值函数
+operator.attrgetter(*attrs)</pre>
   </section>
   <p><a href="https://docs.python.org/3/library/itertools.html" target="_blank" rel="noreferrer">官方 API 参考</a></p>
 </main>

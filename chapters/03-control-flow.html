@@ -165,74 +165,164 @@
               </div>
             </div>
           </div>
+          <div class="chapter-group" data-chapter-group>
+            <a class="chapter-link" href="11-pytorch.html">11 PyTorch</a>
+            <div class="chapter-subnav" aria-hidden="true" inert>
+              <div class="chapter-subnav-inner">
+              <a href="11-pytorch.html#tensors" data-toc-section="tensors">张量与形状</a>
+              <a href="11-pytorch.html#layers" data-toc-section="layers">网络层与激活</a>
+              <a href="11-pytorch.html#training" data-toc-section="training">数据、损失与训练</a>
+              <a href="11-pytorch.html#save" data-toc-section="save">保存与加载</a>
+              </div>
+            </div>
+          </div>
+          <div class="chapter-group" data-chapter-group>
+            <a class="chapter-link" href="12-keras.html">12 Keras</a>
+            <div class="chapter-subnav" aria-hidden="true" inert>
+              <div class="chapter-subnav-inner">
+              <a href="12-keras.html#models" data-toc-section="models">输入与模型</a>
+              <a href="12-keras.html#layers" data-toc-section="layers">常用网络层</a>
+              <a href="12-keras.html#training" data-toc-section="training">损失、编译与训练</a>
+              <a href="12-keras.html#saving" data-toc-section="saving">回调与模型保存</a>
+              </div>
+            </div>
+          </div>
         </nav>
       </aside>
       <main class="chapter">
   <header class="chapter-hero">
     <div class="chapter-kicker">PYTHON REFERENCE · 03</div>
     <h1>字符串常用方法</h1>
-    <p class="chapter-summary">常用调用格式与一句用途。s 表示字符串。</p>
-    <p>括号内为传入参数；<code>name=value</code> 为关键字传参，<code>*args</code> / <code>**kwargs</code> 为多个位置 / 关键字参数。以下列出常用调用写法，默认值与示例值以条目说明为准。</p>
+    <p class="chapter-summary">常用调用格式；用途写在代码注释中。s 表示字符串。</p>
+    <p>括号内为传入参数；<code>name=value</code> 为关键字传参，<code>*args</code> / <code>**kwargs</code> 为多个位置 / 关键字参数。以下代码块为独立调用速查，变量需替换为你的数据，不应整块顺序运行；默认值与示例值以注释为准。</p>
   </header>
   <section class="content-section" id="case">
     <h2>大小写与清理</h2>
-    <ul>
-      <li><code>s.lower()</code> — 转小写</li>
-      <li><code>s.upper()</code> — 转大写</li>
-      <li><code>s.capitalize()</code> — 首字母大写，其余小写</li>
-      <li><code>s.title()</code> — 每个单词首字母大写</li>
-      <li><code>s.swapcase()</code> — 交换大小写</li>
-      <li><code>s.casefold()</code> — 用于忽略大小写的文本比较</li>
-      <li><code>s.strip(chars=None)</code> — 去除两端指定字符集合；默认空白</li>
-      <li><code>s.lstrip(chars=None)</code> — 去除左端指定字符集合</li>
-      <li><code>s.rstrip(chars=None)</code> — 去除右端指定字符集合</li>
-      <li><code>s.removeprefix(prefix)</code> — 移除完整前缀（Python 3.9+）</li>
-      <li><code>s.removesuffix(suffix)</code> — 移除完整后缀（Python 3.9+）</li>
-    </ul>
+    <pre># 转小写
+s.lower()
+
+# 转大写
+s.upper()
+
+# 首字母大写，其余小写
+s.capitalize()
+
+# 每个单词首字母大写
+s.title()
+
+# 交换大小写
+s.swapcase()
+
+# 用于忽略大小写的文本比较
+s.casefold()
+
+# 去除两端指定字符集合；默认空白
+s.strip(chars=None)
+
+# 去除左端指定字符集合
+s.lstrip(chars=None)
+
+# 去除右端指定字符集合
+s.rstrip(chars=None)
+
+# 移除完整前缀（Python 3.9+）
+s.removeprefix(prefix)
+
+# 移除完整后缀（Python 3.9+）
+s.removesuffix(suffix)</pre>
   </section>
   <section class="content-section" id="find">
     <h2>查找与替换</h2>
-    <ul>
-      <li><code>s.find(sub, start, end)</code> — 找首个位置，未找到返回 -1；边界可省略</li>
-      <li><code>s.rfind(sub, start, end)</code> — 从右侧查找；边界可省略</li>
-      <li><code>s.index(sub, start, end)</code> — 找首个位置，未找到报错；边界可省略</li>
-      <li><code>s.count(sub, start, end)</code> — 统计子串次数；边界可省略</li>
-      <li><code>s.startswith(prefix, start, end)</code> — 判断前缀；边界可省略</li>
-      <li><code>s.endswith(suffix, start, end)</code> — 判断后缀；边界可省略</li>
-      <li><code>s.replace(old, new, count)</code> — 替换子串；省略 count 时全部替换</li>
-    </ul>
+    <pre># 找首个位置，未找到返回 -1；边界可省略
+s.find(sub, start, end)
+
+# 从右侧查找；边界可省略
+s.rfind(sub, start, end)
+
+# 找首个位置，未找到报错；边界可省略
+s.index(sub, start, end)
+
+# 统计子串次数；边界可省略
+s.count(sub, start, end)
+
+# 判断前缀；边界可省略
+s.startswith(prefix, start, end)
+
+# 判断后缀；边界可省略
+s.endswith(suffix, start, end)
+
+# 替换子串；省略 count 时全部替换
+s.replace(old, new, count)</pre>
   </section>
   <section class="content-section" id="split">
     <h2>拆分、拼接与格式化</h2>
-    <ul>
-      <li><code>s.split(sep=None, maxsplit=-1)</code> — 按分隔符拆分；默认按空白</li>
-      <li><code>s.rsplit(sep=None, maxsplit=-1)</code> — 从右侧开始拆分</li>
-      <li><code>s.splitlines(keepends=False)</code> — 按行拆分</li>
-      <li><code>s.partition(sep)</code> — 拆成分隔符前、分隔符、分隔符后</li>
-      <li><code>s.rpartition(sep)</code> — 按最后一个分隔符拆分</li>
-      <li><code>separator.join(strings)</code> — 用分隔符连接字符串序列</li>
-      <li><code>s.format(*args, **kwargs)</code> — 填入花括号占位符</li>
-      <li><code>s.ljust(width, fillchar=&quot; &quot;)</code> — 右侧填充</li>
-      <li><code>s.rjust(width, fillchar=&quot; &quot;)</code> — 左侧填充</li>
-      <li><code>s.center(width, fillchar=&quot; &quot;)</code> — 居中填充</li>
-      <li><code>s.zfill(width)</code> — 左侧补零</li>
-      <li><code>s.encode(encoding=&quot;utf-8&quot;, errors=&quot;strict&quot;)</code> — 编码为 bytes</li>
-      <li><code>b.decode(encoding=&quot;utf-8&quot;, errors=&quot;strict&quot;)</code> — 将 bytes 解码为字符串</li>
-    </ul>
+    <pre># 按分隔符拆分；默认按空白
+s.split(sep=None, maxsplit=-1)
+
+# 从右侧开始拆分
+s.rsplit(sep=None, maxsplit=-1)
+
+# 按行拆分
+s.splitlines(keepends=False)
+
+# 拆成分隔符前、分隔符、分隔符后
+s.partition(sep)
+
+# 按最后一个分隔符拆分
+s.rpartition(sep)
+
+# 用分隔符连接字符串序列
+separator.join(strings)
+
+# 填入花括号占位符
+s.format(*args, **kwargs)
+
+# 右侧填充
+s.ljust(width, fillchar=&quot; &quot;)
+
+# 左侧填充
+s.rjust(width, fillchar=&quot; &quot;)
+
+# 居中填充
+s.center(width, fillchar=&quot; &quot;)
+
+# 左侧补零
+s.zfill(width)
+
+# 编码为 bytes
+s.encode(encoding=&quot;utf-8&quot;, errors=&quot;strict&quot;)
+
+# 将 bytes 解码为字符串
+b.decode(encoding=&quot;utf-8&quot;, errors=&quot;strict&quot;)</pre>
   </section>
   <section class="content-section" id="check">
     <h2>内容判断</h2>
-    <ul>
-      <li><code>s.isalpha()</code> — 是否全部为字母且非空</li>
-      <li><code>s.isdigit()</code> — 是否全部为数字字符且非空</li>
-      <li><code>s.isdecimal()</code> — 是否全部为十进制数字字符且非空</li>
-      <li><code>s.isnumeric()</code> — 是否全部为数值字符且非空</li>
-      <li><code>s.isalnum()</code> — 是否全部为字母或数字且非空</li>
-      <li><code>s.isspace()</code> — 是否全部为空白且非空</li>
-      <li><code>s.islower()</code> — 有大小写的字符是否均为小写</li>
-      <li><code>s.isupper()</code> — 有大小写的字符是否均为大写</li>
-      <li><code>s.isidentifier()</code> — 是否符合标识符格式；不排除关键字</li>
-    </ul>
+    <pre># 是否全部为字母且非空
+s.isalpha()
+
+# 是否全部为数字字符且非空
+s.isdigit()
+
+# 是否全部为十进制数字字符且非空
+s.isdecimal()
+
+# 是否全部为数值字符且非空
+s.isnumeric()
+
+# 是否全部为字母或数字且非空
+s.isalnum()
+
+# 是否全部为空白且非空
+s.isspace()
+
+# 有大小写的字符是否均为小写
+s.islower()
+
+# 有大小写的字符是否均为大写
+s.isupper()
+
+# 是否符合标识符格式；不排除关键字
+s.isidentifier()</pre>
   </section>
   <p><a href="https://docs.python.org/3/library/stdtypes.html" target="_blank" rel="noreferrer">官方 API 参考</a></p>
         <nav class="chapter-nav" aria-label="上一页和下一页">

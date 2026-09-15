@@ -165,67 +165,143 @@
               </div>
             </div>
           </div>
+          <div class="chapter-group" data-chapter-group>
+            <a class="chapter-link" href="11-pytorch.html">11 PyTorch</a>
+            <div class="chapter-subnav" aria-hidden="true" inert>
+              <div class="chapter-subnav-inner">
+              <a href="11-pytorch.html#tensors" data-toc-section="tensors">张量与形状</a>
+              <a href="11-pytorch.html#layers" data-toc-section="layers">网络层与激活</a>
+              <a href="11-pytorch.html#training" data-toc-section="training">数据、损失与训练</a>
+              <a href="11-pytorch.html#save" data-toc-section="save">保存与加载</a>
+              </div>
+            </div>
+          </div>
+          <div class="chapter-group" data-chapter-group>
+            <a class="chapter-link" href="12-keras.html">12 Keras</a>
+            <div class="chapter-subnav" aria-hidden="true" inert>
+              <div class="chapter-subnav-inner">
+              <a href="12-keras.html#models" data-toc-section="models">输入与模型</a>
+              <a href="12-keras.html#layers" data-toc-section="layers">常用网络层</a>
+              <a href="12-keras.html#training" data-toc-section="training">损失、编译与训练</a>
+              <a href="12-keras.html#saving" data-toc-section="saving">回调与模型保存</a>
+              </div>
+            </div>
+          </div>
         </nav>
       </aside>
       <main class="chapter">
   <header class="chapter-hero">
     <div class="chapter-kicker">PYTHON REFERENCE · 06</div>
     <h1>路径、系统与复制</h1>
-    <p class="chapter-summary">常用调用格式与一句用途。from pathlib import Path；其余工具先导入 os、shutil、copy 或 subprocess。</p>
-    <p>括号内为传入参数；<code>name=value</code> 为关键字传参，<code>*args</code> / <code>**kwargs</code> 为多个位置 / 关键字参数。以下列出常用调用写法，默认值与示例值以条目说明为准。</p>
+    <p class="chapter-summary">常用调用格式；用途写在代码注释中。from pathlib import Path；其余工具先导入 os、shutil、copy 或 subprocess。</p>
+    <p>括号内为传入参数；<code>name=value</code> 为关键字传参，<code>*args</code> / <code>**kwargs</code> 为多个位置 / 关键字参数。以下代码块为独立调用速查，变量需替换为你的数据，不应整块顺序运行；默认值与示例值以注释为准。</p>
   </header>
   <section class="content-section" id="paths">
     <h2>构造与查询路径</h2>
-    <ul>
-      <li><code>Path(path)</code> — 创建路径对象</li>
-      <li><code>Path.cwd()</code> — 当前工作目录</li>
-      <li><code>Path.home()</code> — 用户主目录</li>
-      <li><code>p.resolve()</code> — 转为绝对路径并解析符号链接</li>
-      <li><code>p.exists()</code> — 路径是否存在</li>
-      <li><code>p.is_file()</code> — 是否为文件</li>
-      <li><code>p.is_dir()</code> — 是否为目录</li>
-      <li><code>p.joinpath(*parts)</code> — 拼接路径</li>
-      <li><code>p.with_name(name)</code> — 替换文件名</li>
-      <li><code>p.with_suffix(suffix)</code> — 替换扩展名</li>
-    </ul>
+    <pre># 创建路径对象
+Path(path)
+
+# 当前工作目录
+Path.cwd()
+
+# 用户主目录
+Path.home()
+
+# 转为绝对路径并解析符号链接
+p.resolve()
+
+# 路径是否存在
+p.exists()
+
+# 是否为文件
+p.is_file()
+
+# 是否为目录
+p.is_dir()
+
+# 拼接路径
+p.joinpath(*parts)
+
+# 替换文件名
+p.with_name(name)
+
+# 替换扩展名
+p.with_suffix(suffix)</pre>
   </section>
   <section class="content-section" id="directory">
     <h2>目录与文件操作</h2>
-    <ul>
-      <li><code>p.iterdir()</code> — 遍历目录直接子项</li>
-      <li><code>p.glob(pattern)</code> — 按模式查找</li>
-      <li><code>p.rglob(pattern)</code> — 递归查找</li>
-      <li><code>p.mkdir(mode=0o777, parents=False, exist_ok=False)</code> — 创建目录</li>
-      <li><code>p.rename(target)</code> — 重命名或移动</li>
-      <li><code>p.unlink(missing_ok=False)</code> — 删除文件或符号链接</li>
-      <li><code>p.rmdir()</code> — 删除空目录</li>
-      <li><code>p.read_text(encoding=&quot;utf-8&quot;)</code> — 读取文本</li>
-      <li><code>p.write_text(text, encoding=&quot;utf-8&quot;)</code> — 覆盖写入文本</li>
-      <li><code>p.read_bytes()</code> — 读取二进制</li>
-      <li><code>p.write_bytes(data)</code> — 覆盖写入二进制</li>
-    </ul>
+    <pre># 遍历目录直接子项
+p.iterdir()
+
+# 按模式查找
+p.glob(pattern)
+
+# 递归查找
+p.rglob(pattern)
+
+# 创建目录
+p.mkdir(mode=0o777, parents=False, exist_ok=False)
+
+# 重命名或移动
+p.rename(target)
+
+# 删除文件或符号链接
+p.unlink(missing_ok=False)
+
+# 删除空目录
+p.rmdir()
+
+# 读取文本
+p.read_text(encoding=&quot;utf-8&quot;)
+
+# 覆盖写入文本
+p.write_text(text, encoding=&quot;utf-8&quot;)
+
+# 读取二进制
+p.read_bytes()
+
+# 覆盖写入二进制
+p.write_bytes(data)</pre>
   </section>
   <section class="content-section" id="system">
     <h2>系统与进程</h2>
-    <ul>
-      <li><code>os.getenv(key, default=None)</code> — 读取环境变量</li>
-      <li><code>os.getcwd()</code> — 当前工作目录</li>
-      <li><code>os.chdir(path)</code> — 切换工作目录</li>
-      <li><code>os.listdir(path=&quot;.&quot;)</code> — 列出目录项名称</li>
-      <li><code>os.walk(top)</code> — 递归取得目录、子目录与文件名</li>
-      <li><code>subprocess.run(args, capture_output=True, text=True, check=True)</code> — 以参数列表运行命令并取得结果</li>
-    </ul>
+    <pre># 读取环境变量
+os.getenv(key, default=None)
+
+# 当前工作目录
+os.getcwd()
+
+# 切换工作目录
+os.chdir(path)
+
+# 列出目录项名称
+os.listdir(path=&quot;.&quot;)
+
+# 递归取得目录、子目录与文件名
+os.walk(top)
+
+# 以参数列表运行命令并取得结果
+subprocess.run(args, capture_output=True, text=True, check=True)</pre>
   </section>
   <section class="content-section" id="copy">
     <h2>复制与移动</h2>
-    <ul>
-      <li><code>shutil.copy2(src, dst)</code> — 复制文件并尽可能保留元数据</li>
-      <li><code>shutil.copytree(src, dst, dirs_exist_ok=False)</code> — 复制目录树</li>
-      <li><code>shutil.move(src, dst)</code> — 移动文件或目录</li>
-      <li><code>shutil.rmtree(path)</code> — 递归删除目录及全部内容</li>
-      <li><code>copy.copy(obj)</code> — 浅复制</li>
-      <li><code>copy.deepcopy(obj)</code> — 深复制</li>
-    </ul>
+    <pre># 复制文件并尽可能保留元数据
+shutil.copy2(src, dst)
+
+# 复制目录树
+shutil.copytree(src, dst, dirs_exist_ok=False)
+
+# 移动文件或目录
+shutil.move(src, dst)
+
+# 递归删除目录及全部内容
+shutil.rmtree(path)
+
+# 浅复制
+copy.copy(obj)
+
+# 深复制
+copy.deepcopy(obj)</pre>
   </section>
   <p><a href="https://docs.python.org/3/library/pathlib.html" target="_blank" rel="noreferrer">官方 API 参考</a></p>
         <nav class="chapter-nav" aria-label="上一页和下一页">

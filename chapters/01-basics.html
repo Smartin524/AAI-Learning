@@ -165,73 +165,161 @@
               </div>
             </div>
           </div>
+          <div class="chapter-group" data-chapter-group>
+            <a class="chapter-link" href="11-pytorch.html">11 PyTorch</a>
+            <div class="chapter-subnav" aria-hidden="true" inert>
+              <div class="chapter-subnav-inner">
+              <a href="11-pytorch.html#tensors" data-toc-section="tensors">张量与形状</a>
+              <a href="11-pytorch.html#layers" data-toc-section="layers">网络层与激活</a>
+              <a href="11-pytorch.html#training" data-toc-section="training">数据、损失与训练</a>
+              <a href="11-pytorch.html#save" data-toc-section="save">保存与加载</a>
+              </div>
+            </div>
+          </div>
+          <div class="chapter-group" data-chapter-group>
+            <a class="chapter-link" href="12-keras.html">12 Keras</a>
+            <div class="chapter-subnav" aria-hidden="true" inert>
+              <div class="chapter-subnav-inner">
+              <a href="12-keras.html#models" data-toc-section="models">输入与模型</a>
+              <a href="12-keras.html#layers" data-toc-section="layers">常用网络层</a>
+              <a href="12-keras.html#training" data-toc-section="training">损失、编译与训练</a>
+              <a href="12-keras.html#saving" data-toc-section="saving">回调与模型保存</a>
+              </div>
+            </div>
+          </div>
         </nav>
       </aside>
       <main class="chapter">
   <header class="chapter-hero">
     <div class="chapter-kicker">PYTHON REFERENCE · 01</div>
     <h1>内置函数与类型转换</h1>
-    <p class="chapter-summary">常用调用格式与一句用途。</p>
-    <p>括号内为传入参数；<code>name=value</code> 为关键字传参，<code>*args</code> / <code>**kwargs</code> 为多个位置 / 关键字参数。以下列出常用调用写法，默认值与示例值以条目说明为准。</p>
+    <p class="chapter-summary">常用调用格式；用途写在代码注释中。</p>
+    <p>括号内为传入参数；<code>name=value</code> 为关键字传参，<code>*args</code> / <code>**kwargs</code> 为多个位置 / 关键字参数。以下代码块为独立调用速查，变量需替换为你的数据，不应整块顺序运行；默认值与示例值以注释为准。</p>
   </header>
   <section class="content-section" id="convert">
     <h2>类型转换</h2>
-    <ul>
-      <li><code>int(x)</code> — 转整数</li>
-      <li><code>int(text, base=10)</code> — 按进制解析整数文本</li>
-      <li><code>float(x)</code> — 转浮点数</li>
-      <li><code>str(obj)</code> — 转字符串</li>
-      <li><code>bool(x)</code> — 转布尔值</li>
-      <li><code>list(iterable)</code> — 转列表；list() 创建空列表</li>
-      <li><code>tuple(iterable)</code> — 转元组；tuple() 创建空元组</li>
-      <li><code>set(iterable)</code> — 转集合；set() 创建空集合</li>
-      <li><code>dict(mapping_or_pairs)</code> — 转字典；dict() 创建空字典</li>
-      <li><code>bytes(text, encoding=&quot;utf-8&quot;)</code> — 文本转字节</li>
-      <li><code>complex(real, imag=0)</code> — 创建复数</li>
-    </ul>
+    <pre># 转整数
+int(x)
+
+# 按进制解析整数文本
+int(text, base=10)
+
+# 转浮点数
+float(x)
+
+# 转字符串
+str(obj)
+
+# 转布尔值
+bool(x)
+
+# 转列表；list() 创建空列表
+list(iterable)
+
+# 转元组；tuple() 创建空元组
+tuple(iterable)
+
+# 转集合；set() 创建空集合
+set(iterable)
+
+# 转字典；dict() 创建空字典
+dict(mapping_or_pairs)
+
+# 文本转字节
+bytes(text, encoding=&quot;utf-8&quot;)
+
+# 创建复数
+complex(real, imag=0)</pre>
   </section>
   <section class="content-section" id="numbers">
     <h2>数字与进制</h2>
-    <ul>
-      <li><code>abs(x)</code> — 绝对值</li>
-      <li><code>round(number, ndigits=None)</code> — 四舍六入五成双，保留指定位数</li>
-      <li><code>pow(base, exp)</code> — 乘方</li>
-      <li><code>pow(base, exp, mod)</code> — 模幂</li>
-      <li><code>divmod(a, b)</code> — 返回商和余数</li>
-      <li><code>bin(n)</code> — 二进制字符串</li>
-      <li><code>oct(n)</code> — 八进制字符串</li>
-      <li><code>hex(n)</code> — 十六进制字符串</li>
-      <li><code>ord(char)</code> — 字符转 Unicode 码点</li>
-      <li><code>chr(codepoint)</code> — 码点转字符</li>
-    </ul>
+    <pre># 绝对值
+abs(x)
+
+# 四舍六入五成双，保留指定位数
+round(number, ndigits=None)
+
+# 乘方
+pow(base, exp)
+
+# 模幂
+pow(base, exp, mod)
+
+# 返回商和余数
+divmod(a, b)
+
+# 二进制字符串
+bin(n)
+
+# 八进制字符串
+oct(n)
+
+# 十六进制字符串
+hex(n)
+
+# 字符转 Unicode 码点
+ord(char)
+
+# 码点转字符
+chr(codepoint)</pre>
   </section>
   <section class="content-section" id="inspect">
     <h2>类型与对象查询</h2>
-    <ul>
-      <li><code>type(obj)</code> — 查询类型</li>
-      <li><code>isinstance(obj, type_or_tuple)</code> — 判断对象类型</li>
-      <li><code>issubclass(cls, class_or_tuple)</code> — 判断子类关系</li>
-      <li><code>callable(obj)</code> — 判断能否调用</li>
-      <li><code>getattr(obj, name, default)</code> — 读取属性，不存在时返回 default</li>
-      <li><code>setattr(obj, name, value)</code> — 设置属性</li>
-      <li><code>hasattr(obj, name)</code> — 判断属性是否存在</li>
-      <li><code>delattr(obj, name)</code> — 删除属性</li>
-      <li><code>dir(obj)</code> — 列出属性名</li>
-      <li><code>vars(obj)</code> — 取得对象的属性字典</li>
-      <li><code>id(obj)</code> — 取得对象标识</li>
-      <li><code>hash(obj)</code> — 取得可哈希对象的哈希值</li>
-    </ul>
+    <pre># 查询类型
+type(obj)
+
+# 判断对象类型
+isinstance(obj, type_or_tuple)
+
+# 判断子类关系
+issubclass(cls, class_or_tuple)
+
+# 判断能否调用
+callable(obj)
+
+# 读取属性，不存在时返回 default
+getattr(obj, name, default)
+
+# 设置属性
+setattr(obj, name, value)
+
+# 判断属性是否存在
+hasattr(obj, name)
+
+# 删除属性
+delattr(obj, name)
+
+# 列出属性名
+dir(obj)
+
+# 取得对象的属性字典
+vars(obj)
+
+# 取得对象标识
+id(obj)
+
+# 取得可哈希对象的哈希值
+hash(obj)</pre>
   </section>
   <section class="content-section" id="io-help">
     <h2>输入、输出与帮助</h2>
-    <ul>
-      <li><code>print(*objects, sep=&quot; &quot;, end=&quot;\n&quot;, file=None, flush=False)</code> — 打印多个对象</li>
-      <li><code>input(prompt=&quot;&quot;)</code> — 读取一行文本</li>
-      <li><code>repr(obj)</code> — 取得调试用字符串</li>
-      <li><code>format(value, format_spec=&quot;&quot;)</code> — 按格式说明格式化值</li>
-      <li><code>help(obj)</code> — 查看帮助</li>
-      <li><code>breakpoint()</code> — 进入调试器</li>
-    </ul>
+    <pre># 打印多个对象
+print(*objects, sep=&quot; &quot;, end=&quot;\n&quot;, file=None, flush=False)
+
+# 读取一行文本
+input(prompt=&quot;&quot;)
+
+# 取得调试用字符串
+repr(obj)
+
+# 按格式说明格式化值
+format(value, format_spec=&quot;&quot;)
+
+# 查看帮助
+help(obj)
+
+# 进入调试器
+breakpoint()</pre>
   </section>
   <p><a href="https://docs.python.org/3/library/functions.html" target="_blank" rel="noreferrer">官方 API 参考</a></p>
         <nav class="chapter-nav" aria-label="上一页和下一页">

@@ -165,56 +165,110 @@
               </div>
             </div>
           </div>
+          <div class="chapter-group" data-chapter-group>
+            <a class="chapter-link" href="11-pytorch.html">11 PyTorch</a>
+            <div class="chapter-subnav" aria-hidden="true" inert>
+              <div class="chapter-subnav-inner">
+              <a href="11-pytorch.html#tensors" data-toc-section="tensors">张量与形状</a>
+              <a href="11-pytorch.html#layers" data-toc-section="layers">网络层与激活</a>
+              <a href="11-pytorch.html#training" data-toc-section="training">数据、损失与训练</a>
+              <a href="11-pytorch.html#save" data-toc-section="save">保存与加载</a>
+              </div>
+            </div>
+          </div>
+          <div class="chapter-group" data-chapter-group>
+            <a class="chapter-link" href="12-keras.html">12 Keras</a>
+            <div class="chapter-subnav" aria-hidden="true" inert>
+              <div class="chapter-subnav-inner">
+              <a href="12-keras.html#models" data-toc-section="models">输入与模型</a>
+              <a href="12-keras.html#layers" data-toc-section="layers">常用网络层</a>
+              <a href="12-keras.html#training" data-toc-section="training">损失、编译与训练</a>
+              <a href="12-keras.html#saving" data-toc-section="saving">回调与模型保存</a>
+              </div>
+            </div>
+          </div>
         </nav>
       </aside>
       <main class="chapter">
   <header class="chapter-hero">
     <div class="chapter-kicker">PYTHON REFERENCE · 05</div>
     <h1>文件、JSON 与 CSV</h1>
-    <p class="chapter-summary">常用调用格式与一句用途。文件对象记作 f；先 import json 或 import csv。文件使用 with open(...) as f: 管理关闭。</p>
-    <p>括号内为传入参数；<code>name=value</code> 为关键字传参，<code>*args</code> / <code>**kwargs</code> 为多个位置 / 关键字参数。以下列出常用调用写法，默认值与示例值以条目说明为准。</p>
+    <p class="chapter-summary">常用调用格式；用途写在代码注释中。文件对象记作 f；先 import json 或 import csv。文件使用 with open(...) as f: 管理关闭。</p>
+    <p>括号内为传入参数；<code>name=value</code> 为关键字传参，<code>*args</code> / <code>**kwargs</code> 为多个位置 / 关键字参数。以下代码块为独立调用速查，变量需替换为你的数据，不应整块顺序运行；默认值与示例值以注释为准。</p>
   </header>
   <section class="content-section" id="open">
     <h2>打开与关闭</h2>
-    <ul>
-      <li><code>open(path, mode=&quot;r&quot;, encoding=&quot;utf-8&quot;)</code> — 打开文本文件；模式 r 读、w 覆盖写、a 追加、x 新建</li>
-      <li><code>open(path, mode=&quot;rb&quot;)</code> — 读取二进制文件；wb 写入二进制</li>
-      <li><code>f.close()</code> — 关闭文件</li>
-      <li><code>f.flush()</code> — 刷新 Python 写入缓冲区</li>
-    </ul>
+    <pre># 打开文本文件；模式 r 读、w 覆盖写、a 追加、x 新建
+open(path, mode=&quot;r&quot;, encoding=&quot;utf-8&quot;)
+
+# 读取二进制文件；wb 写入二进制
+open(path, mode=&quot;rb&quot;)
+
+# 关闭文件
+f.close()
+
+# 刷新 Python 写入缓冲区
+f.flush()</pre>
   </section>
   <section class="content-section" id="file">
     <h2>读写与定位</h2>
-    <ul>
-      <li><code>f.read(size=-1)</code> — 读取指定长度；-1 读取剩余全部内容</li>
-      <li><code>f.readline(size=-1)</code> — 读取一行</li>
-      <li><code>f.readlines(hint=-1)</code> — 读取多行，返回列表</li>
-      <li><code>f.write(text_or_bytes)</code> — 写入内容，类型应与打开模式一致</li>
-      <li><code>f.writelines(lines)</code> — 写入多项内容，不自动补换行</li>
-      <li><code>f.seek(offset, whence=0)</code> — 移动位置；文本模式一般使用 0 或 tell() 返回值</li>
-      <li><code>f.tell()</code> — 返回当前位置</li>
-    </ul>
+    <pre># 读取指定长度；-1 读取剩余全部内容
+f.read(size=-1)
+
+# 读取一行
+f.readline(size=-1)
+
+# 读取多行，返回列表
+f.readlines(hint=-1)
+
+# 写入内容，类型应与打开模式一致
+f.write(text_or_bytes)
+
+# 写入多项内容，不自动补换行
+f.writelines(lines)
+
+# 移动位置；文本模式一般使用 0 或 tell() 返回值
+f.seek(offset, whence=0)
+
+# 返回当前位置
+f.tell()</pre>
   </section>
   <section class="content-section" id="json">
     <h2>JSON</h2>
-    <ul>
-      <li><code>json.loads(text)</code> — JSON 字符串转 Python 对象</li>
-      <li><code>json.dumps(obj, ensure_ascii=False, indent=2)</code> — Python 对象转 JSON 字符串</li>
-      <li><code>json.load(f)</code> — 从文件读取 JSON</li>
-      <li><code>json.dump(obj, f, ensure_ascii=False, indent=2)</code> — 将对象写入 JSON 文件</li>
-    </ul>
+    <pre># JSON 字符串转 Python 对象
+json.loads(text)
+
+# Python 对象转 JSON 字符串
+json.dumps(obj, ensure_ascii=False, indent=2)
+
+# 从文件读取 JSON
+json.load(f)
+
+# 将对象写入 JSON 文件
+json.dump(obj, f, ensure_ascii=False, indent=2)</pre>
   </section>
   <section class="content-section" id="csv">
     <h2>CSV</h2>
-    <ul>
-      <li><code>csv.reader(f, delimiter=&quot;,&quot;)</code> — 逐行读取，文件用 newline=&quot;&quot; 打开</li>
-      <li><code>csv.writer(f, delimiter=&quot;,&quot;)</code> — 创建写入器，文件用 newline=&quot;&quot; 打开</li>
-      <li><code>writer.writerow(row)</code> — 写入一行</li>
-      <li><code>writer.writerows(rows)</code> — 写入多行</li>
-      <li><code>csv.DictReader(f, fieldnames=None)</code> — 按列名读取为字典</li>
-      <li><code>csv.DictWriter(f, fieldnames)</code> — 指定字段顺序创建字典写入器</li>
-      <li><code>writer.writeheader()</code> — 写入 DictWriter 的列名行</li>
-    </ul>
+    <pre># 逐行读取，文件用 newline=&quot;&quot; 打开
+csv.reader(f, delimiter=&quot;,&quot;)
+
+# 创建写入器，文件用 newline=&quot;&quot; 打开
+csv.writer(f, delimiter=&quot;,&quot;)
+
+# 写入一行
+writer.writerow(row)
+
+# 写入多行
+writer.writerows(rows)
+
+# 按列名读取为字典
+csv.DictReader(f, fieldnames=None)
+
+# 指定字段顺序创建字典写入器
+csv.DictWriter(f, fieldnames)
+
+# 写入 DictWriter 的列名行
+writer.writeheader()</pre>
   </section>
   <p><a href="https://docs.python.org/3/library/json.html" target="_blank" rel="noreferrer">官方 API 参考</a></p>
         <nav class="chapter-nav" aria-label="上一页和下一页">

@@ -2,71 +2,145 @@
   <header class="chapter-hero">
     <div class="chapter-kicker">PYTHON REFERENCE · 02</div>
     <h1>容器：list、dict、set、tuple</h1>
-    <p class="chapter-summary">常用调用格式与一句用途。</p>
-    <p>括号内为传入参数；<code>name=value</code> 为关键字传参，<code>*args</code> / <code>**kwargs</code> 为多个位置 / 关键字参数。以下列出常用调用写法，默认值与示例值以条目说明为准。</p>
+    <p class="chapter-summary">常用调用格式；用途写在代码注释中。</p>
+    <p>括号内为传入参数；<code>name=value</code> 为关键字传参，<code>*args</code> / <code>**kwargs</code> 为多个位置 / 关键字参数。以下代码块为独立调用速查，变量需替换为你的数据，不应整块顺序运行；默认值与示例值以注释为准。</p>
   </header>
   <section class="content-section" id="lists">
     <h2>列表 list</h2>
-    <ul>
-      <li><code>items.append(value)</code> — 末尾追加一个元素</li>
-      <li><code>items.extend(iterable)</code> — 末尾追加多个元素</li>
-      <li><code>items.insert(index, value)</code> — 在索引处插入</li>
-      <li><code>items.remove(value)</code> — 删除首个匹配值</li>
-      <li><code>items.pop(index=-1)</code> — 删除并返回指定元素</li>
-      <li><code>items.index(value, start, stop)</code> — 在指定范围查找首个索引；start、stop 可省略</li>
-      <li><code>items.count(value)</code> — 统计出现次数</li>
-      <li><code>items.sort(key=None, reverse=False)</code> — 原地排序，返回 None</li>
-      <li><code>items.reverse()</code> — 原地反转，返回 None</li>
-      <li><code>items.copy()</code> — 浅复制</li>
-      <li><code>items.clear()</code> — 清空列表</li>
-    </ul>
+    <pre># 末尾追加一个元素
+items.append(value)
+
+# 末尾追加多个元素
+items.extend(iterable)
+
+# 在索引处插入
+items.insert(index, value)
+
+# 删除首个匹配值
+items.remove(value)
+
+# 删除并返回指定元素
+items.pop(index=-1)
+
+# 在指定范围查找首个索引；start、stop 可省略
+items.index(value, start, stop)
+
+# 统计出现次数
+items.count(value)
+
+# 原地排序，返回 None
+items.sort(key=None, reverse=False)
+
+# 原地反转，返回 None
+items.reverse()
+
+# 浅复制
+items.copy()
+
+# 清空列表
+items.clear()</pre>
   </section>
   <section class="content-section" id="dicts">
     <h2>字典 dict</h2>
-    <ul>
-      <li><code>d.get(key, default=None)</code> — 读取键，不存在时返回默认值</li>
-      <li><code>d.keys()</code> — 取得键视图</li>
-      <li><code>d.values()</code> — 取得值视图</li>
-      <li><code>d.items()</code> — 取得键值对视图</li>
-      <li><code>d.update(other, **kwargs)</code> — 合并键值对，原地更新</li>
-      <li><code>d.setdefault(key, default=None)</code> — 键不存在时写入默认值，返回该键的值</li>
-      <li><code>d.pop(key, default)</code> — 删除并返回值；可省略 default，缺键时报错</li>
-      <li><code>d.popitem()</code> — 删除并返回最后插入的键值对</li>
-      <li><code>d.copy()</code> — 浅复制</li>
-      <li><code>d.clear()</code> — 清空字典</li>
-      <li><code>dict.fromkeys(iterable, value=None)</code> — 用多个键创建字典，共享同一个 value</li>
-    </ul>
+    <pre># 读取键，不存在时返回默认值
+d.get(key, default=None)
+
+# 取得键视图
+d.keys()
+
+# 取得值视图
+d.values()
+
+# 取得键值对视图
+d.items()
+
+# 合并键值对，原地更新
+d.update(other, **kwargs)
+
+# 键不存在时写入默认值，返回该键的值
+d.setdefault(key, default=None)
+
+# 删除并返回值；可省略 default，缺键时报错
+d.pop(key, default)
+
+# 删除并返回最后插入的键值对
+d.popitem()
+
+# 浅复制
+d.copy()
+
+# 清空字典
+d.clear()
+
+# 用多个键创建字典，共享同一个 value
+dict.fromkeys(iterable, value=None)</pre>
   </section>
   <section class="content-section" id="sets">
     <h2>集合 set</h2>
-    <ul>
-      <li><code>s.add(value)</code> — 添加一个元素</li>
-      <li><code>s.update(*iterables)</code> — 添加多个集合或可迭代对象的元素</li>
-      <li><code>s.remove(value)</code> — 删除元素，不存在时报错</li>
-      <li><code>s.discard(value)</code> — 删除元素，不存在时忽略</li>
-      <li><code>s.pop()</code> — 删除并返回任意一个元素</li>
-      <li><code>s.union(*others)</code> — 返回并集</li>
-      <li><code>s.intersection(*others)</code> — 返回交集</li>
-      <li><code>s.difference(*others)</code> — 返回差集</li>
-      <li><code>s.symmetric_difference(other)</code> — 返回对称差集</li>
-      <li><code>s.intersection_update(*others)</code> — 原地保留交集</li>
-      <li><code>s.difference_update(*others)</code> — 原地删除其他集合中的元素</li>
-      <li><code>s.symmetric_difference_update(other)</code> — 原地改为对称差集</li>
-      <li><code>s.issubset(other)</code> — 是否为子集</li>
-      <li><code>s.issuperset(other)</code> — 是否为超集</li>
-      <li><code>s.isdisjoint(other)</code> — 是否没有共同元素</li>
-      <li><code>s.copy()</code> — 浅复制</li>
-      <li><code>s.clear()</code> — 清空集合</li>
-    </ul>
+    <pre># 添加一个元素
+s.add(value)
+
+# 添加多个集合或可迭代对象的元素
+s.update(*iterables)
+
+# 删除元素，不存在时报错
+s.remove(value)
+
+# 删除元素，不存在时忽略
+s.discard(value)
+
+# 删除并返回任意一个元素
+s.pop()
+
+# 返回并集
+s.union(*others)
+
+# 返回交集
+s.intersection(*others)
+
+# 返回差集
+s.difference(*others)
+
+# 返回对称差集
+s.symmetric_difference(other)
+
+# 原地保留交集
+s.intersection_update(*others)
+
+# 原地删除其他集合中的元素
+s.difference_update(*others)
+
+# 原地改为对称差集
+s.symmetric_difference_update(other)
+
+# 是否为子集
+s.issubset(other)
+
+# 是否为超集
+s.issuperset(other)
+
+# 是否没有共同元素
+s.isdisjoint(other)
+
+# 浅复制
+s.copy()
+
+# 清空集合
+s.clear()</pre>
   </section>
   <section class="content-section" id="tuples">
     <h2>元组与序列</h2>
-    <ul>
-      <li><code>t.count(value)</code> — 统计元组中的出现次数</li>
-      <li><code>t.index(value, start, stop)</code> — 查找元组中的首个索引；start、stop 可省略</li>
-      <li><code>len(sequence)</code> — 取得元素数量</li>
-      <li><code>sequence[start:stop:step]</code> — 切片；边界不包含 stop，三项均可省略</li>
-    </ul>
+    <pre># 统计元组中的出现次数
+t.count(value)
+
+# 查找元组中的首个索引；start、stop 可省略
+t.index(value, start, stop)
+
+# 取得元素数量
+len(sequence)
+
+# 切片；边界不包含 stop，三项均可省略
+sequence[start:stop:step]</pre>
   </section>
   <p><a href="https://docs.python.org/3/library/stdtypes.html" target="_blank" rel="noreferrer">官方 API 参考</a></p>
 </main>
