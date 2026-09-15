@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCIgcm9sZT0iaW1nIiBhcmlhLWxhYmVsbGVkYnk9InRpdGxlIj4KICA8dGl0bGU+QUFJPC90aXRsZT4KICA8cmVjdCB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHJ4PSIxNiIgZmlsbD0iIzE0MjEzZCIvPgogIDxnIHRyYW5zZm9ybT0ic2tld1goLTYpIj4KICAgIDxwYXRoIGQ9Ik0xMC41IDQ1IDE1LjQgMTdoNy40bDQuOSAyOGgtNmwtLjktNS41aC0zLjdsLS45IDUuNWgtNS43Wm03LjMtMTAuNWgyLjNMMTkgMjQuMmwtMS4yIDEwLjNaIiBmaWxsPSIjZmZmIi8+CiAgICA8cGF0aCBkPSJNMjYgNDUgMzAuOSAxN2g3LjRsNC45IDI4aC02bC0uOS01LjVoLTMuN2wtLjkgNS41SDI2Wm03LjMtMTAuNWgyLjNsLTEuMS0xMC4zLTEuMiAxMC4zWiIgZmlsbD0iI2ZmZiIvPgogICAgPHBhdGggZD0iTTQ1LjIgMTdoNy40djI4aC03LjRWMTdaIiBmaWxsPSIjZmZmIi8+CiAgPC9nPgogIDxyZWN0IHg9IjEwIiB5PSI1MCIgd2lkdGg9IjQ0IiBoZWlnaHQ9IjMuNSIgcng9IjEuNzUiIGZpbGw9IiMxNTVlZWYiLz4KPC9zdmc+Cg==" />
     <script src="../assets/build/theme-init.cef5d9adb5.js"></script>
-    <link rel="stylesheet" href="../assets/build/site.06cf31172f.css" />
+    <link rel="stylesheet" href="../assets/build/site.bc14bf3663.css" />
     <link rel="stylesheet" href="../assets/build/code-blocks.78f9810aa1.css" />
   </head>
   <body data-page-kind="course" data-course-id="python">
@@ -198,7 +198,8 @@
   </header>
   <section class="content-section" id="create">
     <h2>创建数组</h2>
-    <pre># 从数据创建数组
+    <div class="reference-code-columns">
+      <pre># 从数据创建数组
 np.array(data, dtype=None)
 
 # 转换为数组，尽可能复用已有数据
@@ -208,9 +209,8 @@ np.asarray(data, dtype=None)
 np.zeros(shape, dtype=float)
 
 # 全一数组
-np.ones(shape, dtype=float)
-
-# 按指定值填充
+np.ones(shape, dtype=float)</pre>
+      <pre># 按指定值填充
 np.full(shape, fill_value, dtype=None)
 
 # 等步长序列，不包含 stop
@@ -221,10 +221,12 @@ np.linspace(start, stop, num=50, endpoint=True)
 
 # 创建对角阵
 np.eye(N, M=None, k=0)</pre>
+    </div>
   </section>
   <section class="content-section" id="shape">
     <h2>形状与组合</h2>
-    <pre># 改变形状；可用一个 -1 自动推断维度
+    <div class="reference-code-columns">
+      <pre># 改变形状；可用一个 -1 自动推断维度
 a.reshape(shape)
 
 # 展平，尽可能返回视图
@@ -237,9 +239,8 @@ a.flatten()
 np.transpose(a, axes=None)
 
 # 插入长度为 1 的维度
-np.expand_dims(a, axis)
-
-# 移除长度为 1 的维度
+np.expand_dims(a, axis)</pre>
+      <pre># 移除长度为 1 的维度
 np.squeeze(a, axis=None)
 
 # 沿已有轴拼接
@@ -253,10 +254,12 @@ np.split(a, indices_or_sections, axis=0)
 
 # 转换元素类型
 a.astype(dtype)</pre>
+    </div>
   </section>
   <section class="content-section" id="calculate">
     <h2>计算与筛选</h2>
-    <pre># 求和
+    <div class="reference-code-columns">
+      <pre># 求和
 np.sum(a, axis=None, keepdims=False)
 
 # 均值
@@ -278,9 +281,8 @@ np.argmax(a, axis=None)
 np.argmin(a, axis=None)
 
 # 按条件选择值
-np.where(condition, x, y)
-
-# 限制数值范围
+np.where(condition, x, y)</pre>
+      <pre># 限制数值范围
 np.clip(a, a_min, a_max)
 
 # 去重，可同时返回计数
@@ -303,10 +305,12 @@ np.matmul(a, b)
 
 # 向量或矩阵范数
 np.linalg.norm(a, ord=None, axis=None)</pre>
+    </div>
   </section>
   <section class="content-section" id="random">
     <h2>随机数与保存</h2>
-    <pre># 创建随机数生成器 rng
+    <div class="reference-code-columns">
+      <pre># 创建随机数生成器 rng
 np.random.default_rng(seed=None)
 
 # 生成 [0, 1) 均匀随机数
@@ -319,9 +323,8 @@ rng.integers(low, high=None, size=None)
 rng.normal(loc=0.0, scale=1.0, size=None)
 
 # 按概率抽样
-rng.choice(a, size=None, replace=True, p=None)
-
-# 原地随机打乱
+rng.choice(a, size=None, replace=True, p=None)</pre>
+      <pre># 原地随机打乱
 rng.shuffle(a, axis=0)
 
 # 返回打乱后的副本
@@ -332,6 +335,7 @@ np.save(file, a)
 
 # 读取数组文件
 np.load(file, allow_pickle=False)</pre>
+    </div>
   </section>
   <p><a href="https://numpy.org/doc/stable/reference/routines.html" target="_blank" rel="noreferrer">官方 API 参考</a></p>
         <nav class="chapter-nav" aria-label="上一页和下一页">

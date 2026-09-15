@@ -7,7 +7,8 @@
   </header>
   <section class="content-section" id="paths">
     <h2>构造与查询路径</h2>
-    <pre># 创建路径对象
+    <div class="reference-code-columns">
+      <pre># 创建路径对象
 Path(path)
 
 # 当前工作目录
@@ -20,9 +21,8 @@ Path.home()
 p.resolve()
 
 # 路径是否存在
-p.exists()
-
-# 是否为文件
+p.exists()</pre>
+      <pre># 是否为文件
 p.is_file()
 
 # 是否为目录
@@ -36,10 +36,12 @@ p.with_name(name)
 
 # 替换扩展名
 p.with_suffix(suffix)</pre>
+    </div>
   </section>
   <section class="content-section" id="directory">
     <h2>目录与文件操作</h2>
-    <pre># 遍历目录直接子项
+    <div class="reference-code-columns">
+      <pre># 遍历目录直接子项
 p.iterdir()
 
 # 按模式查找
@@ -55,9 +57,8 @@ p.mkdir(mode=0o777, parents=False, exist_ok=False)
 p.rename(target)
 
 # 删除文件或符号链接
-p.unlink(missing_ok=False)
-
-# 删除空目录
+p.unlink(missing_ok=False)</pre>
+      <pre># 删除空目录
 p.rmdir()
 
 # 读取文本
@@ -71,19 +72,20 @@ p.read_bytes()
 
 # 覆盖写入二进制
 p.write_bytes(data)</pre>
+    </div>
   </section>
   <section class="content-section" id="system">
     <h2>系统与进程</h2>
-    <pre># 读取环境变量
+    <div class="reference-code-columns">
+      <pre># 读取环境变量
 os.getenv(key, default=None)
 
 # 当前工作目录
 os.getcwd()
 
 # 切换工作目录
-os.chdir(path)
-
-# 列出目录项名称
+os.chdir(path)</pre>
+      <pre># 列出目录项名称
 os.listdir(path=&quot;.&quot;)
 
 # 递归取得目录、子目录与文件名
@@ -91,19 +93,20 @@ os.walk(top)
 
 # 以参数列表运行命令并取得结果
 subprocess.run(args, capture_output=True, text=True, check=True)</pre>
+    </div>
   </section>
   <section class="content-section" id="copy">
     <h2>复制与移动</h2>
-    <pre># 复制文件并尽可能保留元数据
+    <div class="reference-code-columns">
+      <pre># 复制文件并尽可能保留元数据
 shutil.copy2(src, dst)
 
 # 复制目录树
 shutil.copytree(src, dst, dirs_exist_ok=False)
 
 # 移动文件或目录
-shutil.move(src, dst)
-
-# 递归删除目录及全部内容
+shutil.move(src, dst)</pre>
+      <pre># 递归删除目录及全部内容
 shutil.rmtree(path)
 
 # 浅复制
@@ -111,6 +114,7 @@ copy.copy(obj)
 
 # 深复制
 copy.deepcopy(obj)</pre>
+    </div>
   </section>
   <p><a href="https://docs.python.org/3/library/pathlib.html" target="_blank" rel="noreferrer">官方 API 参考</a></p>
 </main>

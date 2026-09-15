@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCIgcm9sZT0iaW1nIiBhcmlhLWxhYmVsbGVkYnk9InRpdGxlIj4KICA8dGl0bGU+QUFJPC90aXRsZT4KICA8cmVjdCB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHJ4PSIxNiIgZmlsbD0iIzE0MjEzZCIvPgogIDxnIHRyYW5zZm9ybT0ic2tld1goLTYpIj4KICAgIDxwYXRoIGQ9Ik0xMC41IDQ1IDE1LjQgMTdoNy40bDQuOSAyOGgtNmwtLjktNS41aC0zLjdsLS45IDUuNWgtNS43Wm03LjMtMTAuNWgyLjNMMTkgMjQuMmwtMS4yIDEwLjNaIiBmaWxsPSIjZmZmIi8+CiAgICA8cGF0aCBkPSJNMjYgNDUgMzAuOSAxN2g3LjRsNC45IDI4aC02bC0uOS01LjVoLTMuN2wtLjkgNS41SDI2Wm03LjMtMTAuNWgyLjNsLTEuMS0xMC4zLTEuMiAxMC4zWiIgZmlsbD0iI2ZmZiIvPgogICAgPHBhdGggZD0iTTQ1LjIgMTdoNy40djI4aC03LjRWMTdaIiBmaWxsPSIjZmZmIi8+CiAgPC9nPgogIDxyZWN0IHg9IjEwIiB5PSI1MCIgd2lkdGg9IjQ0IiBoZWlnaHQ9IjMuNSIgcng9IjEuNzUiIGZpbGw9IiMxNTVlZWYiLz4KPC9zdmc+Cg==" />
     <script src="../assets/build/theme-init.cef5d9adb5.js"></script>
-    <link rel="stylesheet" href="../assets/build/site.06cf31172f.css" />
+    <link rel="stylesheet" href="../assets/build/site.bc14bf3663.css" />
     <link rel="stylesheet" href="../assets/build/code-blocks.78f9810aa1.css" />
   </head>
   <body data-page-kind="course" data-course-id="python">
@@ -198,7 +198,8 @@
   </header>
   <section class="content-section" id="math">
     <h2>数学与统计</h2>
-    <pre># 平方根
+    <div class="reference-code-columns">
+      <pre># 平方根
 math.sqrt(x)
 
 # 向上取整
@@ -217,9 +218,8 @@ math.log10(x)
 math.exp(x)
 
 # 正弦，输入弧度
-math.sin(x)
-
-# 余弦，输入弧度
+math.sin(x)</pre>
+      <pre># 余弦，输入弧度
 math.cos(x)
 
 # 角度转弧度
@@ -236,10 +236,12 @@ statistics.median(data)
 
 # 样本标准差
 statistics.stdev(data)</pre>
+    </div>
   </section>
   <section class="content-section" id="random">
     <h2>随机与计数</h2>
-    <pre># 设置随机种子
+    <div class="reference-code-columns">
+      <pre># 设置随机种子
 random.seed(a=None)
 
 # 返回 [0, 1) 随机浮点数
@@ -258,9 +260,8 @@ random.uniform(a, b)
 random.choice(sequence)
 
 # 有放回抽样
-random.choices(population, weights=None, k=1)
-
-# 无放回抽样
+random.choices(population, weights=None, k=1)</pre>
+      <pre># 无放回抽样
 random.sample(population, k)
 
 # 原地打乱列表
@@ -277,10 +278,12 @@ collections.defaultdict(default_factory)
 
 # 创建双端队列
 collections.deque(iterable=(), maxlen=None)</pre>
+    </div>
   </section>
   <section class="content-section" id="datetime">
     <h2>日期与时间</h2>
-    <pre># 当前日期时间
+    <div class="reference-code-columns">
+      <pre># 当前日期时间
 datetime.now(tz=None)
 
 # 创建日期时间
@@ -293,9 +296,8 @@ datetime.strptime(text, format)
 dt.strftime(format)
 
 # 解析 ISO 日期时间
-datetime.fromisoformat(text)
-
-# 转 ISO 日期时间文本
+datetime.fromisoformat(text)</pre>
+      <pre># 转 ISO 日期时间文本
 dt.isoformat(sep=&quot;T&quot;, timespec=&quot;auto&quot;)
 
 # 时间戳转日期时间
@@ -306,10 +308,12 @@ dt.timestamp()
 
 # 创建时间间隔
 timedelta(days=0, seconds=0, hours=0, minutes=0)</pre>
+    </div>
   </section>
   <section class="content-section" id="regex">
     <h2>正则表达式</h2>
-    <pre># 查找首个匹配，返回 Match 或 None
+    <div class="reference-code-columns">
+      <pre># 查找首个匹配，返回 Match 或 None
 re.search(pattern, string, flags=0)
 
 # 从字符串开头匹配
@@ -322,9 +326,8 @@ re.fullmatch(pattern, string, flags=0)
 re.findall(pattern, string, flags=0)
 
 # 返回 Match 迭代器
-re.finditer(pattern, string, flags=0)
-
-# 替换匹配内容
+re.finditer(pattern, string, flags=0)</pre>
+      <pre># 替换匹配内容
 re.sub(pattern, repl, string, count=0, flags=0)
 
 # 按正则拆分
@@ -338,6 +341,7 @@ match.group(*groups)
 
 # 转义正则特殊字符
 re.escape(pattern)</pre>
+    </div>
   </section>
   <p><a href="https://docs.python.org/3/library/" target="_blank" rel="noreferrer">官方 API 参考</a></p>
         <nav class="chapter-nav" aria-label="上一页和下一页">

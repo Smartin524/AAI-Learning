@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCIgcm9sZT0iaW1nIiBhcmlhLWxhYmVsbGVkYnk9InRpdGxlIj4KICA8dGl0bGU+QUFJPC90aXRsZT4KICA8cmVjdCB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHJ4PSIxNiIgZmlsbD0iIzE0MjEzZCIvPgogIDxnIHRyYW5zZm9ybT0ic2tld1goLTYpIj4KICAgIDxwYXRoIGQ9Ik0xMC41IDQ1IDE1LjQgMTdoNy40bDQuOSAyOGgtNmwtLjktNS41aC0zLjdsLS45IDUuNWgtNS43Wm03LjMtMTAuNWgyLjNMMTkgMjQuMmwtMS4yIDEwLjNaIiBmaWxsPSIjZmZmIi8+CiAgICA8cGF0aCBkPSJNMjYgNDUgMzAuOSAxN2g3LjRsNC45IDI4aC02bC0uOS01LjVoLTMuN2wtLjkgNS41SDI2Wm03LjMtMTAuNWgyLjNsLTEuMS0xMC4zLTEuMiAxMC4zWiIgZmlsbD0iI2ZmZiIvPgogICAgPHBhdGggZD0iTTQ1LjIgMTdoNy40djI4aC03LjRWMTdaIiBmaWxsPSIjZmZmIi8+CiAgPC9nPgogIDxyZWN0IHg9IjEwIiB5PSI1MCIgd2lkdGg9IjQ0IiBoZWlnaHQ9IjMuNSIgcng9IjEuNzUiIGZpbGw9IiMxNTVlZWYiLz4KPC9zdmc+Cg==" />
     <script src="../assets/build/theme-init.cef5d9adb5.js"></script>
-    <link rel="stylesheet" href="../assets/build/site.06cf31172f.css" />
+    <link rel="stylesheet" href="../assets/build/site.bc14bf3663.css" />
     <link rel="stylesheet" href="../assets/build/code-blocks.78f9810aa1.css" />
   </head>
   <body data-page-kind="course" data-course-id="python">
@@ -198,21 +198,23 @@
   </header>
   <section class="content-section" id="figure">
     <h2>画布</h2>
-    <pre># 创建画布
+    <div class="reference-code-columns">
+      <pre># 创建画布
 plt.figure(figsize=(8, 5), dpi=100)
 
 # 返回画布和坐标轴
-plt.subplots(nrows=1, ncols=1, figsize=(8, 5))
-
-# 添加子图
+plt.subplots(nrows=1, ncols=1, figsize=(8, 5))</pre>
+      <pre># 添加子图
 fig.add_subplot(nrows, ncols, index)
 
 # 自动调整间距
 fig.tight_layout()</pre>
+    </div>
   </section>
   <section class="content-section" id="plot">
     <h2>常见图形</h2>
-    <pre># 折线图
+    <div class="reference-code-columns">
+      <pre># 折线图
 ax.plot(x, y, color=&quot;C0&quot;, linestyle=&quot;-&quot;, marker=&quot;o&quot;, label=&quot;data&quot;)
 
 # 散点图
@@ -225,9 +227,8 @@ ax.bar(x, height, width=0.8, label=&quot;data&quot;)
 ax.barh(y, width, height=0.8)
 
 # 直方图
-ax.hist(x, bins=10, density=False, alpha=0.7)
-
-# 箱线图
+ax.hist(x, bins=10, density=False, alpha=0.7)</pre>
+      <pre># 箱线图
 ax.boxplot(x)
 
 # 饼图
@@ -238,10 +239,12 @@ ax.imshow(X, cmap=&quot;viridis&quot;, aspect=&quot;auto&quot;)
 
 # 填充两条曲线之间区域
 ax.fill_between(x, y1, y2=0, alpha=0.3)</pre>
+    </div>
   </section>
   <section class="content-section" id="labels">
     <h2>标题、坐标与图例</h2>
-    <pre># 设置子图标题
+    <div class="reference-code-columns">
+      <pre># 设置子图标题
 ax.set_title(label)
 
 # 设置 x 轴名称
@@ -257,9 +260,8 @@ ax.set_xlim(left=None, right=None)
 ax.set_ylim(bottom=None, top=None)
 
 # 设置 x 轴刻度及文本
-ax.set_xticks(ticks, labels=None)
-
-# 设置 y 轴刻度及文本
+ax.set_xticks(ticks, labels=None)</pre>
+      <pre># 设置 y 轴刻度及文本
 ax.set_yticks(ticks, labels=None)
 
 # 显示图例
@@ -276,17 +278,19 @@ fig.colorbar(mappable, ax=ax)
 
 # 设置整张画布标题
 fig.suptitle(text)</pre>
+    </div>
   </section>
   <section class="content-section" id="export">
     <h2>显示与保存</h2>
-    <pre># 显示图形
+    <div class="reference-code-columns">
+      <pre># 显示图形
 plt.show()
 
 # 保存图片
-fig.savefig(fname, dpi=300, bbox_inches=&quot;tight&quot;)
-
-# 关闭画布
+fig.savefig(fname, dpi=300, bbox_inches=&quot;tight&quot;)</pre>
+      <pre># 关闭画布
 plt.close(fig)</pre>
+    </div>
   </section>
   <p><a href="https://matplotlib.org/stable/api/pyplot_summary.html" target="_blank" rel="noreferrer">官方 API 参考</a></p>
         <nav class="chapter-nav" aria-label="上一页和下一页">

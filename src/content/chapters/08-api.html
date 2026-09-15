@@ -7,7 +7,8 @@
   </header>
   <section class="content-section" id="read">
     <h2>创建、读取与查看</h2>
-    <pre># 创建表格
+    <div class="reference-code-columns">
+      <pre># 创建表格
 pd.DataFrame(data, index=None, columns=None)
 
 # 创建一列数据
@@ -20,9 +21,8 @@ pd.read_csv(filepath, sep=&quot;,&quot;, usecols=None, dtype=None)
 pd.read_excel(io, sheet_name=0, usecols=None)
 
 # 查看前 n 行
-df.head(n=5)
-
-# 查看后 n 行
+df.head(n=5)</pre>
+      <pre># 查看后 n 行
 df.tail(n=5)
 
 # 查看列类型及非空数量
@@ -36,10 +36,12 @@ df.to_csv(path, index=False)
 
 # 保存 Excel
 df.to_excel(path, index=False)</pre>
+    </div>
   </section>
   <section class="content-section" id="clean">
     <h2>选择与清理</h2>
-    <pre># 按标签选择；这是索引器
+    <div class="reference-code-columns">
+      <pre># 按标签选择；这是索引器
 df.loc[row_labels, column_labels]
 
 # 按位置选择；这是索引器
@@ -55,9 +57,8 @@ df.drop(columns=names)
 df.rename(columns=mapping)
 
 # 转换类型或按列类型映射转换
-df.astype(dtype)
-
-# 判断缺失值
+df.astype(dtype)</pre>
+      <pre># 判断缺失值
 df.isna()
 
 # 填充缺失值
@@ -74,10 +75,12 @@ pd.to_numeric(arg, errors=&quot;raise&quot;)
 
 # 转换为日期时间
 pd.to_datetime(arg, errors=&quot;raise&quot;, format=None)</pre>
+    </div>
   </section>
   <section class="content-section" id="analyze">
     <h2>计算、分组与排序</h2>
-    <pre># 按列值排序
+    <div class="reference-code-columns">
+      <pre># 按列值排序
 df.sort_values(by, ascending=True)
 
 # 按索引排序
@@ -93,9 +96,8 @@ grouped.agg(func)
 df.agg(func, axis=0)
 
 # 按列或行应用函数
-df.apply(func, axis=0)
-
-# 按映射或函数转换每个值
+df.apply(func, axis=0)</pre>
+      <pre># 按映射或函数转换每个值
 s.map(arg)
 
 # 统计各值频数或比例
@@ -109,10 +111,12 @@ s.nunique(dropna=True)
 
 # 随机抽取行
 df.sample(n=1, random_state=None)</pre>
+    </div>
   </section>
   <section class="content-section" id="combine">
     <h2>合并与重塑</h2>
-    <pre># 按行或列拼接
+    <div class="reference-code-columns">
+      <pre># 按行或列拼接
 pd.concat(objs, axis=0, ignore_index=False)
 
 # 按键连接表格
@@ -122,9 +126,8 @@ pd.merge(left, right, how=&quot;inner&quot;, on=None)
 df.join(other, on=None, how=&quot;left&quot;)
 
 # 长表转宽表，重复组合会报错
-df.pivot(index=rows, columns=cols, values=values)
-
-# 透视并汇总重复组合
+df.pivot(index=rows, columns=cols, values=values)</pre>
+      <pre># 透视并汇总重复组合
 df.pivot_table(values=values, index=rows, columns=cols, aggfunc=&quot;mean&quot;)
 
 # 宽表转长表
@@ -135,6 +138,7 @@ df.set_index(keys, drop=True)
 
 # 重置索引
 df.reset_index(drop=False)</pre>
+    </div>
   </section>
   <p><a href="https://pandas.pydata.org/docs/reference/index.html" target="_blank" rel="noreferrer">官方 API 参考</a></p>
 </main>

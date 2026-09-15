@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCIgcm9sZT0iaW1nIiBhcmlhLWxhYmVsbGVkYnk9InRpdGxlIj4KICA8dGl0bGU+QUFJPC90aXRsZT4KICA8cmVjdCB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHJ4PSIxNiIgZmlsbD0iIzE0MjEzZCIvPgogIDxnIHRyYW5zZm9ybT0ic2tld1goLTYpIj4KICAgIDxwYXRoIGQ9Ik0xMC41IDQ1IDE1LjQgMTdoNy40bDQuOSAyOGgtNmwtLjktNS41aC0zLjdsLS45IDUuNWgtNS43Wm03LjMtMTAuNWgyLjNMMTkgMjQuMmwtMS4yIDEwLjNaIiBmaWxsPSIjZmZmIi8+CiAgICA8cGF0aCBkPSJNMjYgNDUgMzAuOSAxN2g3LjRsNC45IDI4aC02bC0uOS01LjVoLTMuN2wtLjkgNS41SDI2Wm03LjMtMTAuNWgyLjNsLTEuMS0xMC4zLTEuMiAxMC4zWiIgZmlsbD0iI2ZmZiIvPgogICAgPHBhdGggZD0iTTQ1LjIgMTdoNy40djI4aC03LjRWMTdaIiBmaWxsPSIjZmZmIi8+CiAgPC9nPgogIDxyZWN0IHg9IjEwIiB5PSI1MCIgd2lkdGg9IjQ0IiBoZWlnaHQ9IjMuNSIgcng9IjEuNzUiIGZpbGw9IiMxNTVlZWYiLz4KPC9zdmc+Cg==" />
     <script src="../assets/build/theme-init.cef5d9adb5.js"></script>
-    <link rel="stylesheet" href="../assets/build/site.06cf31172f.css" />
+    <link rel="stylesheet" href="../assets/build/site.bc14bf3663.css" />
     <link rel="stylesheet" href="../assets/build/code-blocks.78f9810aa1.css" />
   </head>
   <body data-page-kind="course" data-course-id="python">
@@ -198,7 +198,8 @@
   </header>
   <section class="content-section" id="lists">
     <h2>列表 list</h2>
-    <pre># 末尾追加一个元素
+    <div class="reference-code-columns">
+      <pre># 末尾追加一个元素
 items.append(value)
 
 # 末尾追加多个元素
@@ -214,9 +215,8 @@ items.remove(value)
 items.pop(index=-1)
 
 # 在指定范围查找首个索引；start、stop 可省略
-items.index(value, start, stop)
-
-# 统计出现次数
+items.index(value, start, stop)</pre>
+      <pre># 统计出现次数
 items.count(value)
 
 # 原地排序，返回 None
@@ -230,10 +230,12 @@ items.copy()
 
 # 清空列表
 items.clear()</pre>
+    </div>
   </section>
   <section class="content-section" id="dicts">
     <h2>字典 dict</h2>
-    <pre># 读取键，不存在时返回默认值
+    <div class="reference-code-columns">
+      <pre># 读取键，不存在时返回默认值
 d.get(key, default=None)
 
 # 取得键视图
@@ -249,9 +251,8 @@ d.items()
 d.update(other, **kwargs)
 
 # 键不存在时写入默认值，返回该键的值
-d.setdefault(key, default=None)
-
-# 删除并返回值；可省略 default，缺键时报错
+d.setdefault(key, default=None)</pre>
+      <pre># 删除并返回值；可省略 default，缺键时报错
 d.pop(key, default)
 
 # 删除并返回最后插入的键值对
@@ -265,10 +266,12 @@ d.clear()
 
 # 用多个键创建字典，共享同一个 value
 dict.fromkeys(iterable, value=None)</pre>
+    </div>
   </section>
   <section class="content-section" id="sets">
     <h2>集合 set</h2>
-    <pre># 添加一个元素
+    <div class="reference-code-columns">
+      <pre># 添加一个元素
 s.add(value)
 
 # 添加多个集合或可迭代对象的元素
@@ -293,9 +296,8 @@ s.intersection(*others)
 s.difference(*others)
 
 # 返回对称差集
-s.symmetric_difference(other)
-
-# 原地保留交集
+s.symmetric_difference(other)</pre>
+      <pre># 原地保留交集
 s.intersection_update(*others)
 
 # 原地删除其他集合中的元素
@@ -318,20 +320,22 @@ s.copy()
 
 # 清空集合
 s.clear()</pre>
+    </div>
   </section>
   <section class="content-section" id="tuples">
     <h2>元组与序列</h2>
-    <pre># 统计元组中的出现次数
+    <div class="reference-code-columns">
+      <pre># 统计元组中的出现次数
 t.count(value)
 
 # 查找元组中的首个索引；start、stop 可省略
-t.index(value, start, stop)
-
-# 取得元素数量
+t.index(value, start, stop)</pre>
+      <pre># 取得元素数量
 len(sequence)
 
 # 切片；边界不包含 stop，三项均可省略
 sequence[start:stop:step]</pre>
+    </div>
   </section>
   <p><a href="https://docs.python.org/3/library/stdtypes.html" target="_blank" rel="noreferrer">官方 API 参考</a></p>
         <nav class="chapter-nav" aria-label="上一页和下一页">

@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCIgcm9sZT0iaW1nIiBhcmlhLWxhYmVsbGVkYnk9InRpdGxlIj4KICA8dGl0bGU+QUFJPC90aXRsZT4KICA8cmVjdCB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHJ4PSIxNiIgZmlsbD0iIzE0MjEzZCIvPgogIDxnIHRyYW5zZm9ybT0ic2tld1goLTYpIj4KICAgIDxwYXRoIGQ9Ik0xMC41IDQ1IDE1LjQgMTdoNy40bDQuOSAyOGgtNmwtLjktNS41aC0zLjdsLS45IDUuNWgtNS43Wm03LjMtMTAuNWgyLjNMMTkgMjQuMmwtMS4yIDEwLjNaIiBmaWxsPSIjZmZmIi8+CiAgICA8cGF0aCBkPSJNMjYgNDUgMzAuOSAxN2g3LjRsNC45IDI4aC02bC0uOS01LjVoLTMuN2wtLjkgNS41SDI2Wm03LjMtMTAuNWgyLjNsLTEuMS0xMC4zLTEuMiAxMC4zWiIgZmlsbD0iI2ZmZiIvPgogICAgPHBhdGggZD0iTTQ1LjIgMTdoNy40djI4aC03LjRWMTdaIiBmaWxsPSIjZmZmIi8+CiAgPC9nPgogIDxyZWN0IHg9IjEwIiB5PSI1MCIgd2lkdGg9IjQ0IiBoZWlnaHQ9IjMuNSIgcng9IjEuNzUiIGZpbGw9IiMxNTVlZWYiLz4KPC9zdmc+Cg==" />
     <script src="../assets/build/theme-init.cef5d9adb5.js"></script>
-    <link rel="stylesheet" href="../assets/build/site.06cf31172f.css" />
+    <link rel="stylesheet" href="../assets/build/site.bc14bf3663.css" />
     <link rel="stylesheet" href="../assets/build/code-blocks.78f9810aa1.css" />
   </head>
   <body data-page-kind="course" data-course-id="python">
@@ -198,21 +198,23 @@
   </header>
   <section class="content-section" id="open">
     <h2>打开与关闭</h2>
-    <pre># 打开文本文件；模式 r 读、w 覆盖写、a 追加、x 新建
+    <div class="reference-code-columns">
+      <pre># 打开文本文件；模式 r 读、w 覆盖写、a 追加、x 新建
 open(path, mode=&quot;r&quot;, encoding=&quot;utf-8&quot;)
 
 # 读取二进制文件；wb 写入二进制
-open(path, mode=&quot;rb&quot;)
-
-# 关闭文件
+open(path, mode=&quot;rb&quot;)</pre>
+      <pre># 关闭文件
 f.close()
 
 # 刷新 Python 写入缓冲区
 f.flush()</pre>
+    </div>
   </section>
   <section class="content-section" id="file">
     <h2>读写与定位</h2>
-    <pre># 读取指定长度；-1 读取剩余全部内容
+    <div class="reference-code-columns">
+      <pre># 读取指定长度；-1 读取剩余全部内容
 f.read(size=-1)
 
 # 读取一行
@@ -222,9 +224,8 @@ f.readline(size=-1)
 f.readlines(hint=-1)
 
 # 写入内容，类型应与打开模式一致
-f.write(text_or_bytes)
-
-# 写入多项内容，不自动补换行
+f.write(text_or_bytes)</pre>
+      <pre># 写入多项内容，不自动补换行
 f.writelines(lines)
 
 # 移动位置；文本模式一般使用 0 或 tell() 返回值
@@ -232,24 +233,27 @@ f.seek(offset, whence=0)
 
 # 返回当前位置
 f.tell()</pre>
+    </div>
   </section>
   <section class="content-section" id="json">
     <h2>JSON</h2>
-    <pre># JSON 字符串转 Python 对象
+    <div class="reference-code-columns">
+      <pre># JSON 字符串转 Python 对象
 json.loads(text)
 
 # Python 对象转 JSON 字符串
-json.dumps(obj, ensure_ascii=False, indent=2)
-
-# 从文件读取 JSON
+json.dumps(obj, ensure_ascii=False, indent=2)</pre>
+      <pre># 从文件读取 JSON
 json.load(f)
 
 # 将对象写入 JSON 文件
 json.dump(obj, f, ensure_ascii=False, indent=2)</pre>
+    </div>
   </section>
   <section class="content-section" id="csv">
     <h2>CSV</h2>
-    <pre># 逐行读取，文件用 newline=&quot;&quot; 打开
+    <div class="reference-code-columns">
+      <pre># 逐行读取，文件用 newline=&quot;&quot; 打开
 csv.reader(f, delimiter=&quot;,&quot;)
 
 # 创建写入器，文件用 newline=&quot;&quot; 打开
@@ -259,9 +263,8 @@ csv.writer(f, delimiter=&quot;,&quot;)
 writer.writerow(row)
 
 # 写入多行
-writer.writerows(rows)
-
-# 按列名读取为字典
+writer.writerows(rows)</pre>
+      <pre># 按列名读取为字典
 csv.DictReader(f, fieldnames=None)
 
 # 指定字段顺序创建字典写入器
@@ -269,6 +272,7 @@ csv.DictWriter(f, fieldnames)
 
 # 写入 DictWriter 的列名行
 writer.writeheader()</pre>
+    </div>
   </section>
   <p><a href="https://docs.python.org/3/library/json.html" target="_blank" rel="noreferrer">官方 API 参考</a></p>
         <nav class="chapter-nav" aria-label="上一页和下一页">

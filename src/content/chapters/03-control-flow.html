@@ -7,7 +7,8 @@
   </header>
   <section class="content-section" id="case">
     <h2>大小写与清理</h2>
-    <pre># 转小写
+    <div class="reference-code-columns">
+      <pre># 转小写
 s.lower()
 
 # 转大写
@@ -23,9 +24,8 @@ s.title()
 s.swapcase()
 
 # 用于忽略大小写的文本比较
-s.casefold()
-
-# 去除两端指定字符集合；默认空白
+s.casefold()</pre>
+      <pre># 去除两端指定字符集合；默认空白
 s.strip(chars=None)
 
 # 去除左端指定字符集合
@@ -39,10 +39,12 @@ s.removeprefix(prefix)
 
 # 移除完整后缀（Python 3.9+）
 s.removesuffix(suffix)</pre>
+    </div>
   </section>
   <section class="content-section" id="find">
     <h2>查找与替换</h2>
-    <pre># 找首个位置，未找到返回 -1；边界可省略
+    <div class="reference-code-columns">
+      <pre># 找首个位置，未找到返回 -1；边界可省略
 s.find(sub, start, end)
 
 # 从右侧查找；边界可省略
@@ -52,9 +54,8 @@ s.rfind(sub, start, end)
 s.index(sub, start, end)
 
 # 统计子串次数；边界可省略
-s.count(sub, start, end)
-
-# 判断前缀；边界可省略
+s.count(sub, start, end)</pre>
+      <pre># 判断前缀；边界可省略
 s.startswith(prefix, start, end)
 
 # 判断后缀；边界可省略
@@ -62,10 +63,12 @@ s.endswith(suffix, start, end)
 
 # 替换子串；省略 count 时全部替换
 s.replace(old, new, count)</pre>
+    </div>
   </section>
   <section class="content-section" id="split">
     <h2>拆分、拼接与格式化</h2>
-    <pre># 按分隔符拆分；默认按空白
+    <div class="reference-code-columns">
+      <pre># 按分隔符拆分；默认按空白
 s.split(sep=None, maxsplit=-1)
 
 # 从右侧开始拆分
@@ -84,9 +87,8 @@ s.rpartition(sep)
 separator.join(strings)
 
 # 填入花括号占位符
-s.format(*args, **kwargs)
-
-# 右侧填充
+s.format(*args, **kwargs)</pre>
+      <pre># 右侧填充
 s.ljust(width, fillchar=&quot; &quot;)
 
 # 左侧填充
@@ -103,10 +105,12 @@ s.encode(encoding=&quot;utf-8&quot;, errors=&quot;strict&quot;)
 
 # 将 bytes 解码为字符串
 b.decode(encoding=&quot;utf-8&quot;, errors=&quot;strict&quot;)</pre>
+    </div>
   </section>
   <section class="content-section" id="check">
     <h2>内容判断</h2>
-    <pre># 是否全部为字母且非空
+    <div class="reference-code-columns">
+      <pre># 是否全部为字母且非空
 s.isalpha()
 
 # 是否全部为数字字符且非空
@@ -119,9 +123,8 @@ s.isdecimal()
 s.isnumeric()
 
 # 是否全部为字母或数字且非空
-s.isalnum()
-
-# 是否全部为空白且非空
+s.isalnum()</pre>
+      <pre># 是否全部为空白且非空
 s.isspace()
 
 # 有大小写的字符是否均为小写
@@ -132,6 +135,7 @@ s.isupper()
 
 # 是否符合标识符格式；不排除关键字
 s.isidentifier()</pre>
+    </div>
   </section>
   <p><a href="https://docs.python.org/3/library/stdtypes.html" target="_blank" rel="noreferrer">官方 API 参考</a></p>
 </main>

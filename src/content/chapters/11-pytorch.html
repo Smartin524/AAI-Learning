@@ -9,7 +9,8 @@ from torch.utils.data import TensorDataset, DataLoader</pre>
   </header>
   <section class="content-section" id="tensors">
     <h2>张量与形状</h2>
-    <pre># 从数据创建张量；dtype、device 为常用示例
+    <div class="reference-code-columns">
+      <pre># 从数据创建张量；dtype、device 为常用示例
 torch.tensor(data, dtype=torch.float32, device=&quot;cpu&quot;)
 
 # 从 NumPy 数组创建共享内存的 CPU 张量
@@ -37,9 +38,8 @@ x.to(device=device, dtype=torch.float32)
 x.reshape(shape)
 
 # 按兼容的内存布局返回新形状视图
-x.view(shape)
-
-# 插入长度为 1 的维度
+x.view(shape)</pre>
+      <pre># 插入长度为 1 的维度
 x.unsqueeze(dim)
 
 # 移除指定的单例维度；不传 dim 时移除全部
@@ -68,10 +68,12 @@ x.detach().cpu().numpy()
 
 # 单元素张量转 Python 数值
 x.item()</pre>
+    </div>
   </section>
   <section class="content-section" id="layers">
     <h2>网络层与激活</h2>
-    <pre># 全连接层
+    <div class="reference-code-columns">
+      <pre># 全连接层
 nn.Linear(in_features, out_features, bias=True)
 
 # 按顺序组合网络层
@@ -96,9 +98,8 @@ nn.Flatten(start_dim=1)
 nn.Dropout(p=0.5)
 
 # 一维特征批归一化
-nn.BatchNorm1d(num_features)
-
-# 图像通道批归一化
+nn.BatchNorm1d(num_features)</pre>
+      <pre># 图像通道批归一化
 nn.BatchNorm2d(num_features)
 
 # 二维卷积，常用输入为 NCHW
@@ -121,10 +122,12 @@ nn.LSTM(input_size, hidden_size, num_layers=1, batch_first=True)
 
 # GRU 层
 nn.GRU(input_size, hidden_size, num_layers=1, batch_first=True)</pre>
+    </div>
   </section>
   <section class="content-section" id="training">
     <h2>数据、损失与训练</h2>
-    <pre># 包装特征和标签，第一维长度需相同
+    <div class="reference-code-columns">
+      <pre># 包装特征和标签，第一维长度需相同
 TensorDataset(features, targets)
 
 # 示例：按批次打乱训练数据
@@ -152,9 +155,8 @@ optim.SGD(model.parameters(), lr=0.01, momentum=0.9)
 model.to(device)
 
 # 启用训练模式
-model.train()
-
-# 清空上一步梯度
+model.train()</pre>
+      <pre># 清空上一步梯度
 optimizer.zero_grad()
 
 # 前向计算，得到 predictions
@@ -180,19 +182,20 @@ torch.argmax(logits, dim=1)
 
 # 二分类 logits 转概率
 torch.sigmoid(logits)</pre>
+    </div>
   </section>
   <section class="content-section" id="save">
     <h2>保存与加载</h2>
-    <pre># 取得参数和持久缓冲区字典
+    <div class="reference-code-columns">
+      <pre># 取得参数和持久缓冲区字典
 model.state_dict()
 
 # 保存模型权重
 torch.save(model.state_dict(), &quot;model.pt&quot;)
 
 # 加载权重字典，赋给 state_dict
-torch.load(&quot;model.pt&quot;, map_location=&quot;cpu&quot;, weights_only=True)
-
-# 载入结构匹配的模型
+torch.load(&quot;model.pt&quot;, map_location=&quot;cpu&quot;, weights_only=True)</pre>
+      <pre># 载入结构匹配的模型
 model.load_state_dict(state_dict, strict=True)
 
 # 取得优化器状态
@@ -200,6 +203,7 @@ optimizer.state_dict()
 
 # 恢复优化器状态
 optimizer.load_state_dict(state_dict)</pre>
+    </div>
   </section>
   <p><a href="https://docs.pytorch.org/docs/stable/index.html" target="_blank" rel="noreferrer">官方 API 参考</a></p>
 </main>

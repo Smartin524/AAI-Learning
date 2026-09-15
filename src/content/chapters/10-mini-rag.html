@@ -7,7 +7,8 @@
   </header>
   <section class="content-section" id="math">
     <h2>数学与统计</h2>
-    <pre># 平方根
+    <div class="reference-code-columns">
+      <pre># 平方根
 math.sqrt(x)
 
 # 向上取整
@@ -26,9 +27,8 @@ math.log10(x)
 math.exp(x)
 
 # 正弦，输入弧度
-math.sin(x)
-
-# 余弦，输入弧度
+math.sin(x)</pre>
+      <pre># 余弦，输入弧度
 math.cos(x)
 
 # 角度转弧度
@@ -45,10 +45,12 @@ statistics.median(data)
 
 # 样本标准差
 statistics.stdev(data)</pre>
+    </div>
   </section>
   <section class="content-section" id="random">
     <h2>随机与计数</h2>
-    <pre># 设置随机种子
+    <div class="reference-code-columns">
+      <pre># 设置随机种子
 random.seed(a=None)
 
 # 返回 [0, 1) 随机浮点数
@@ -67,9 +69,8 @@ random.uniform(a, b)
 random.choice(sequence)
 
 # 有放回抽样
-random.choices(population, weights=None, k=1)
-
-# 无放回抽样
+random.choices(population, weights=None, k=1)</pre>
+      <pre># 无放回抽样
 random.sample(population, k)
 
 # 原地打乱列表
@@ -86,10 +87,12 @@ collections.defaultdict(default_factory)
 
 # 创建双端队列
 collections.deque(iterable=(), maxlen=None)</pre>
+    </div>
   </section>
   <section class="content-section" id="datetime">
     <h2>日期与时间</h2>
-    <pre># 当前日期时间
+    <div class="reference-code-columns">
+      <pre># 当前日期时间
 datetime.now(tz=None)
 
 # 创建日期时间
@@ -102,9 +105,8 @@ datetime.strptime(text, format)
 dt.strftime(format)
 
 # 解析 ISO 日期时间
-datetime.fromisoformat(text)
-
-# 转 ISO 日期时间文本
+datetime.fromisoformat(text)</pre>
+      <pre># 转 ISO 日期时间文本
 dt.isoformat(sep=&quot;T&quot;, timespec=&quot;auto&quot;)
 
 # 时间戳转日期时间
@@ -115,10 +117,12 @@ dt.timestamp()
 
 # 创建时间间隔
 timedelta(days=0, seconds=0, hours=0, minutes=0)</pre>
+    </div>
   </section>
   <section class="content-section" id="regex">
     <h2>正则表达式</h2>
-    <pre># 查找首个匹配，返回 Match 或 None
+    <div class="reference-code-columns">
+      <pre># 查找首个匹配，返回 Match 或 None
 re.search(pattern, string, flags=0)
 
 # 从字符串开头匹配
@@ -131,9 +135,8 @@ re.fullmatch(pattern, string, flags=0)
 re.findall(pattern, string, flags=0)
 
 # 返回 Match 迭代器
-re.finditer(pattern, string, flags=0)
-
-# 替换匹配内容
+re.finditer(pattern, string, flags=0)</pre>
+      <pre># 替换匹配内容
 re.sub(pattern, repl, string, count=0, flags=0)
 
 # 按正则拆分
@@ -147,6 +150,7 @@ match.group(*groups)
 
 # 转义正则特殊字符
 re.escape(pattern)</pre>
+    </div>
   </section>
   <p><a href="https://docs.python.org/3/library/" target="_blank" rel="noreferrer">官方 API 参考</a></p>
 </main>

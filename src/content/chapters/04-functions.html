@@ -7,7 +7,8 @@
   </header>
   <section class="content-section" id="iterate">
     <h2>遍历</h2>
-    <pre># 生成从 0 到 stop 前的整数
+    <div class="reference-code-columns">
+      <pre># 生成从 0 到 stop 前的整数
 range(stop)
 
 # 按步长生成整数
@@ -17,9 +18,8 @@ range(start, stop, step=1)
 enumerate(iterable, start=0)
 
 # 并行配对，长度以最短输入为准
-zip(*iterables)
-
-# 创建迭代器
+zip(*iterables)</pre>
+      <pre># 创建迭代器
 iter(iterable)
 
 # 取得下一项；省略 default 时耗尽会报错
@@ -27,10 +27,12 @@ next(iterator, default)
 
 # 返回反向迭代器
 reversed(sequence)</pre>
+    </div>
   </section>
   <section class="content-section" id="aggregate">
     <h2>排序与汇总</h2>
-    <pre># 返回排序后的新列表
+    <div class="reference-code-columns">
+      <pre># 返回排序后的新列表
 sorted(iterable, key=None, reverse=False)
 
 # 取得最小项
@@ -43,9 +45,8 @@ min(a, b, *others, key=None)
 max(iterable, key=None)
 
 # 取得多个参数中的最大项
-max(a, b, *others, key=None)
-
-# 求和
+max(a, b, *others, key=None)</pre>
+      <pre># 求和
 sum(iterable, start=0)
 
 # 是否全部为真
@@ -59,19 +60,20 @@ map(func, *iterables)
 
 # 保留判断为真的元素；func=None 时按元素真假筛选
 filter(func, iterable)</pre>
+    </div>
   </section>
   <section class="content-section" id="itertools">
     <h2>itertools</h2>
-    <pre># 依次连接多个可迭代对象
+    <div class="reference-code-columns">
+      <pre># 依次连接多个可迭代对象
 itertools.chain(*iterables)
 
 # 按范围截取迭代器
 itertools.islice(iterable, start, stop, step=1)
 
 # 笛卡尔积
-itertools.product(*iterables, repeat=1)
-
-# 取 r 项组合
+itertools.product(*iterables, repeat=1)</pre>
+      <pre># 取 r 项组合
 itertools.combinations(iterable, r)
 
 # 取 r 项排列
@@ -79,23 +81,25 @@ itertools.permutations(iterable, r=None)
 
 # 累计计算；默认累计求和
 itertools.accumulate(iterable, func=operator.add)</pre>
+    </div>
   </section>
   <section class="content-section" id="functional">
     <h2>functools 与 operator</h2>
-    <pre># 累计归约；可省略 initial
+    <div class="reference-code-columns">
+      <pre># 累计归约；可省略 initial
 functools.reduce(func, iterable, initial)
 
 # 预先固定部分参数
 functools.partial(func, *args, **kwargs)
 
 # 缓存函数结果的装饰器
-functools.lru_cache(maxsize=128, typed=False)
-
-# 按索引或键生成取值函数
+functools.lru_cache(maxsize=128, typed=False)</pre>
+      <pre># 按索引或键生成取值函数
 operator.itemgetter(*items)
 
 # 按属性名生成取值函数
 operator.attrgetter(*attrs)</pre>
+    </div>
   </section>
   <p><a href="https://docs.python.org/3/library/itertools.html" target="_blank" rel="noreferrer">官方 API 参考</a></p>
 </main>

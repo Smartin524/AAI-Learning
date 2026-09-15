@@ -7,7 +7,8 @@
   </header>
   <section class="content-section" id="convert">
     <h2>类型转换</h2>
-    <pre># 转整数
+    <div class="reference-code-columns">
+      <pre># 转整数
 int(x)
 
 # 按进制解析整数文本
@@ -23,9 +24,8 @@ str(obj)
 bool(x)
 
 # 转列表；list() 创建空列表
-list(iterable)
-
-# 转元组；tuple() 创建空元组
+list(iterable)</pre>
+      <pre># 转元组；tuple() 创建空元组
 tuple(iterable)
 
 # 转集合；set() 创建空集合
@@ -39,10 +39,12 @@ bytes(text, encoding=&quot;utf-8&quot;)
 
 # 创建复数
 complex(real, imag=0)</pre>
+    </div>
   </section>
   <section class="content-section" id="numbers">
     <h2>数字与进制</h2>
-    <pre># 绝对值
+    <div class="reference-code-columns">
+      <pre># 绝对值
 abs(x)
 
 # 四舍六入五成双，保留指定位数
@@ -55,9 +57,8 @@ pow(base, exp)
 pow(base, exp, mod)
 
 # 返回商和余数
-divmod(a, b)
-
-# 二进制字符串
+divmod(a, b)</pre>
+      <pre># 二进制字符串
 bin(n)
 
 # 八进制字符串
@@ -71,10 +72,12 @@ ord(char)
 
 # 码点转字符
 chr(codepoint)</pre>
+    </div>
   </section>
   <section class="content-section" id="inspect">
     <h2>类型与对象查询</h2>
-    <pre># 查询类型
+    <div class="reference-code-columns">
+      <pre># 查询类型
 type(obj)
 
 # 判断对象类型
@@ -90,9 +93,8 @@ callable(obj)
 getattr(obj, name, default)
 
 # 设置属性
-setattr(obj, name, value)
-
-# 判断属性是否存在
+setattr(obj, name, value)</pre>
+      <pre># 判断属性是否存在
 hasattr(obj, name)
 
 # 删除属性
@@ -109,19 +111,20 @@ id(obj)
 
 # 取得可哈希对象的哈希值
 hash(obj)</pre>
+    </div>
   </section>
   <section class="content-section" id="io-help">
     <h2>输入、输出与帮助</h2>
-    <pre># 打印多个对象
+    <div class="reference-code-columns">
+      <pre># 打印多个对象
 print(*objects, sep=&quot; &quot;, end=&quot;\n&quot;, file=None, flush=False)
 
 # 读取一行文本
 input(prompt=&quot;&quot;)
 
 # 取得调试用字符串
-repr(obj)
-
-# 按格式说明格式化值
+repr(obj)</pre>
+      <pre># 按格式说明格式化值
 format(value, format_spec=&quot;&quot;)
 
 # 查看帮助
@@ -129,6 +132,7 @@ help(obj)
 
 # 进入调试器
 breakpoint()</pre>
+    </div>
   </section>
   <p><a href="https://docs.python.org/3/library/functions.html" target="_blank" rel="noreferrer">官方 API 参考</a></p>
 </main>

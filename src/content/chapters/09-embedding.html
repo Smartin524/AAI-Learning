@@ -7,21 +7,23 @@
   </header>
   <section class="content-section" id="figure">
     <h2>画布</h2>
-    <pre># 创建画布
+    <div class="reference-code-columns">
+      <pre># 创建画布
 plt.figure(figsize=(8, 5), dpi=100)
 
 # 返回画布和坐标轴
-plt.subplots(nrows=1, ncols=1, figsize=(8, 5))
-
-# 添加子图
+plt.subplots(nrows=1, ncols=1, figsize=(8, 5))</pre>
+      <pre># 添加子图
 fig.add_subplot(nrows, ncols, index)
 
 # 自动调整间距
 fig.tight_layout()</pre>
+    </div>
   </section>
   <section class="content-section" id="plot">
     <h2>常见图形</h2>
-    <pre># 折线图
+    <div class="reference-code-columns">
+      <pre># 折线图
 ax.plot(x, y, color=&quot;C0&quot;, linestyle=&quot;-&quot;, marker=&quot;o&quot;, label=&quot;data&quot;)
 
 # 散点图
@@ -34,9 +36,8 @@ ax.bar(x, height, width=0.8, label=&quot;data&quot;)
 ax.barh(y, width, height=0.8)
 
 # 直方图
-ax.hist(x, bins=10, density=False, alpha=0.7)
-
-# 箱线图
+ax.hist(x, bins=10, density=False, alpha=0.7)</pre>
+      <pre># 箱线图
 ax.boxplot(x)
 
 # 饼图
@@ -47,10 +48,12 @@ ax.imshow(X, cmap=&quot;viridis&quot;, aspect=&quot;auto&quot;)
 
 # 填充两条曲线之间区域
 ax.fill_between(x, y1, y2=0, alpha=0.3)</pre>
+    </div>
   </section>
   <section class="content-section" id="labels">
     <h2>标题、坐标与图例</h2>
-    <pre># 设置子图标题
+    <div class="reference-code-columns">
+      <pre># 设置子图标题
 ax.set_title(label)
 
 # 设置 x 轴名称
@@ -66,9 +69,8 @@ ax.set_xlim(left=None, right=None)
 ax.set_ylim(bottom=None, top=None)
 
 # 设置 x 轴刻度及文本
-ax.set_xticks(ticks, labels=None)
-
-# 设置 y 轴刻度及文本
+ax.set_xticks(ticks, labels=None)</pre>
+      <pre># 设置 y 轴刻度及文本
 ax.set_yticks(ticks, labels=None)
 
 # 显示图例
@@ -85,17 +87,19 @@ fig.colorbar(mappable, ax=ax)
 
 # 设置整张画布标题
 fig.suptitle(text)</pre>
+    </div>
   </section>
   <section class="content-section" id="export">
     <h2>显示与保存</h2>
-    <pre># 显示图形
+    <div class="reference-code-columns">
+      <pre># 显示图形
 plt.show()
 
 # 保存图片
-fig.savefig(fname, dpi=300, bbox_inches=&quot;tight&quot;)
-
-# 关闭画布
+fig.savefig(fname, dpi=300, bbox_inches=&quot;tight&quot;)</pre>
+      <pre># 关闭画布
 plt.close(fig)</pre>
+    </div>
   </section>
   <p><a href="https://matplotlib.org/stable/api/pyplot_summary.html" target="_blank" rel="noreferrer">官方 API 参考</a></p>
 </main>
