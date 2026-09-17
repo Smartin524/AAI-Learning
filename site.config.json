@@ -313,8 +313,91 @@
       ]
     },
     {
-      "id": "ca6000",
+      "id": "sql",
       "index": "02",
+      "name": "SQL 与 MySQL",
+      "menuLabel": "SQL 与 MySQL",
+      "description": "SQL 常用语法与 MySQL 连接、管理、导入导出速查",
+      "entry": "chapters/sql-reference.html",
+      "tocTitle": "SQL 与 MySQL",
+      "pages": [
+        {
+          "output": "chapters/sql-reference.html",
+          "content": "src/content/chapters/sql-reference.html",
+          "navLabel": "01 SQL 语法速查",
+          "code": true,
+          "subsections": [
+            {
+              "id": "select",
+              "label": "查询、去重与分页"
+            },
+            {
+              "id": "where",
+              "label": "筛选与空值"
+            },
+            {
+              "id": "group",
+              "label": "聚合与条件表达式"
+            },
+            {
+              "id": "join",
+              "label": "联表与集合合并"
+            },
+            {
+              "id": "subqueries",
+              "label": "子查询与 CTE"
+            },
+            {
+              "id": "windows",
+              "label": "窗口函数"
+            },
+            {
+              "id": "functions",
+              "label": "字符串、数值与日期"
+            },
+            {
+              "id": "write",
+              "label": "新增、修改、删除与事务"
+            },
+            {
+              "id": "schema",
+              "label": "表、索引与视图"
+            }
+          ]
+        },
+        {
+          "output": "chapters/mysql-reference.html",
+          "content": "src/content/chapters/mysql-reference.html",
+          "navLabel": "02 MySQL 常用命令",
+          "code": true,
+          "subsections": [
+            {
+              "id": "connect",
+              "label": "连接与命令行"
+            },
+            {
+              "id": "database",
+              "label": "数据库与表结构"
+            },
+            {
+              "id": "mysql-syntax",
+              "label": "MySQL 常用写法"
+            },
+            {
+              "id": "backup",
+              "label": "导入与导出（终端）"
+            },
+            {
+              "id": "inspect",
+              "label": "用户、会话与排查"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ca6000",
+      "index": "03",
       "name": "CA6000 · Applied AI Programming",
       "menuLabel": "CA6000 · Applied AI Programming",
       "description": "Python 基础、数据结构、工程工具与数据处理",
@@ -395,7 +478,7 @@
     },
     {
       "id": "ca6002",
-      "index": "03",
+      "index": "04",
       "name": "CA6002 · AI UX & Data Visualisation Design Principles",
       "menuLabel": "CA6002 · AI UX & Data Visualisation",
       "description": "AI 用户体验与数据可视化设计原则",
@@ -468,89 +551,6 @@
             { "id": "chapter-5-2", "label": "5.2 Trust" },
             { "id": "tutorial-m5", "label": "Mid-week 05 Tutorial" },
             { "id": "tutorial-s5", "label": "Saturday 05 Tutorial" }
-          ]
-        }
-      ]
-    },
-    {
-      "id": "sql",
-      "index": "04",
-      "name": "SQL 与 MySQL",
-      "menuLabel": "SQL 与 MySQL",
-      "description": "SQL 常用语法与 MySQL 连接、管理、导入导出速查",
-      "entry": "chapters/sql-reference.html",
-      "tocTitle": "SQL 与 MySQL",
-      "pages": [
-        {
-          "output": "chapters/sql-reference.html",
-          "content": "src/content/chapters/sql-reference.html",
-          "navLabel": "01 SQL 语法速查",
-          "code": true,
-          "subsections": [
-            {
-              "id": "select",
-              "label": "查询、去重与分页"
-            },
-            {
-              "id": "where",
-              "label": "筛选与空值"
-            },
-            {
-              "id": "group",
-              "label": "聚合与条件表达式"
-            },
-            {
-              "id": "join",
-              "label": "联表与集合合并"
-            },
-            {
-              "id": "subqueries",
-              "label": "子查询与 CTE"
-            },
-            {
-              "id": "windows",
-              "label": "窗口函数"
-            },
-            {
-              "id": "functions",
-              "label": "字符串、数值与日期"
-            },
-            {
-              "id": "write",
-              "label": "新增、修改、删除与事务"
-            },
-            {
-              "id": "schema",
-              "label": "表、索引与视图"
-            }
-          ]
-        },
-        {
-          "output": "chapters/mysql-reference.html",
-          "content": "src/content/chapters/mysql-reference.html",
-          "navLabel": "02 MySQL 常用命令",
-          "code": true,
-          "subsections": [
-            {
-              "id": "connect",
-              "label": "连接与命令行"
-            },
-            {
-              "id": "database",
-              "label": "数据库与表结构"
-            },
-            {
-              "id": "mysql-syntax",
-              "label": "MySQL 常用写法"
-            },
-            {
-              "id": "backup",
-              "label": "导入与导出（终端）"
-            },
-            {
-              "id": "inspect",
-              "label": "用户、会话与排查"
-            }
           ]
         }
       ]

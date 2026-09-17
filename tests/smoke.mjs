@@ -58,9 +58,9 @@ try {
   assert(assetUrls.some((url) => /assets\/build\/site\.[a-f0-9]{10}\.css$/.test(url)), "Hashed site stylesheet is missing");
 
   await page.getByRole("link", { name: /CA6002 · AI UX & Data Visualisation Design Principles/ }).click();
-  await page.waitForURL(`**/${config.courses[2].entry}`);
-  assert(await page.locator("body").getAttribute("data-course-id") === config.courses[2].id, "AI UX course identity is incorrect");
-  const aiUxPage = config.courses[2].pages[0];
+  await page.waitForURL(`**/${config.courses.find(course => course.id === "ca6002").entry}`);
+  assert(await page.locator("body").getAttribute("data-course-id") === config.courses.find(course => course.id === "ca6002").id, "AI UX course identity is incorrect");
+  const aiUxPage = config.courses.find(course => course.id === "ca6002").pages[0];
   assert(await page.locator(".chapter-group.active .chapter-subnav a").count() === aiUxPage.subsections.length, "AI UX source chapter subtitles are incomplete");
   assert(new URL(await page.getByRole("link", { name: "1.4 Comparison Plots", exact: true }).getAttribute("href"), page.url()).hash === "#chapter-1-4", "AI UX source chapter anchor is incorrect");
   await page.locator("#chapter-1-7").evaluate((heading) => window.scrollTo(0, heading.offsetTop - 82));
@@ -74,8 +74,8 @@ try {
   await page.waitForURL("**/chapters/01-basics.html");
   assert(await page.getByRole("heading", { name: "内置函数与类型转换" }).isVisible(), "Python first chapter did not render");
   assert(await page.locator(".chapter-group.active").count() === 1, "Exactly one chapter should be expanded");
-  assert(await page.locator(".chapter-group.active .chapter-subnav a").count() === config.courses[0].pages[0].subsections.length, "Current chapter subtitles are incomplete");
-  assert(await page.locator(".chapter-group:not(.active) .chapter-subnav[inert]").count() === config.courses[0].pages.length - 1, "Inactive chapter subtitles are not collapsed");
+  assert(await page.locator(".chapter-group.active .chapter-subnav a").count() === config.courses.find(course => course.id === "python").pages[0].subsections.length, "Current chapter subtitles are incomplete");
+  assert(await page.locator(".chapter-group:not(.active) .chapter-subnav[inert]").count() === config.courses.find(course => course.id === "python").pages.length - 1, "Inactive chapter subtitles are not collapsed");
   const tocTransition = await page.locator(".chapter-group.active .chapter-subnav").evaluate((element) => getComputedStyle(element).transitionDuration);
   assert(tocTransition.includes("0.12s"), "Current chapter subtitle transition is missing");
 
@@ -145,7 +145,7 @@ try {
   };
   try {
     await warm.goto(`${baseUrl}/chapters/01-basics.html`);
-    await until(() => chapterRequests.size === config.courses[0].pages.length && slowStarted, 'Other chapters were not loaded in the background');
+    await until(() => chapterRequests.size === config.courses.find(course => course.id === "python").pages.length && slowStarted, 'Other chapters were not loaded in the background');
     assert(new URL(warm.url()).pathname === '/chapters/01-basics.html', 'Preloading changed the current page');
     await warm.getByRole('link', {name:'04 遍历与函数工具', exact:true}).click();
     await warm.getByRole('link', {name:'01 内置函数', exact:true}).click();
