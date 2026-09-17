@@ -183,9 +183,12 @@ const renderToc = (course, currentPage) => {
           </div>`;
   }).join("");
 
+  const relatedLinks = (course.relatedLinks ?? []).map((link) => `
+          <a class="chapter-link" href="${relativePageHref(currentPage.output, link.output)}">${escapeHtml(link.label)}</a>`).join("");
+
   return `<aside class="toc">
         <div class="toc-title">${escapeHtml(course.tocTitle)}</div>
-        <nav class="chapter-links" aria-label="${escapeHtml(course.name)}页面">${pages}
+        <nav class="chapter-links" aria-label="${escapeHtml(course.name)}页面">${pages}${relatedLinks}
         </nav>
       </aside>`;
 };

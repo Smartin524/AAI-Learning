@@ -178,8 +178,10 @@ try {
     await warmContext.close();
   }
 
-  await page.goto(`${baseUrl}/index.html`);
-  await page.getByRole("link", { name: /SQL 常用语法/ }).click();
+  await page.goto(`${baseUrl}/chapters/07-numpy-vectors.html`);
+  assert(await page.locator('.chapter-hero pre').textContent() === 'import numpy as np', "NumPy import instructions are missing");
+  assert(!(await page.locator('.chapter-hero').textContent()).includes('不应整块顺序运行'), "Removed boilerplate remains");
+  await page.getByRole("link", { name: "13 SQL 常用语法", exact: true }).click();
   await page.getByRole("heading", { name: "SQL 常用语法", exact: true }).waitFor();
   assert(await page.locator('pre[data-language="sql"]').count() === 18, "SQL blocks missing");
   assert(await page.locator('pre .syntax-keyword').filter({hasText: /^SELECT$/}).count() > 0, "SQL keywords not highlighted");
