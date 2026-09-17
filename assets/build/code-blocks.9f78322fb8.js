@@ -58,6 +58,26 @@
     return "operator";
   };
 
+  const sqlKeywords = new Set((
+    "SELECT FROM WHERE AS DISTINCT ORDER BY ASC DESC LIMIT OFFSET AND OR NOT " +
+    "BETWEEN IN LIKE IS NULL GROUP HAVING CASE WHEN THEN ELSE END JOIN INNER " +
+    "LEFT RIGHT CROSS ON UNION ALL EXISTS WITH OVER PARTITION ROWS UNBOUNDED " +
+    "PRECEDING CURRENT ROW INSERT INTO VALUES UPDATE SET DELETE START TRANSACTION " +
+    "COMMIT ROLLBACK TO SAVEPOINT CREATE TABLE PRIMARY KEY VARCHAR INT DECIMAL " +
+    "UNIQUE DEFAULT CHECK ALTER ADD CONSTRAINT FOREIGN REFERENCES COLUMN DROP " +
+    "IF INDEX VIEW EXPLAIN DESCRIBE SHOW INTERVAL DAY MONTH CURRENT_DATE CURRENT_TIMESTAMP"
+  ).split(" "));
+  const sqlTokenPattern = /--[^\n]*|\/\*[\s\S]*?\*\/|'(?:''|\\.|[^'\\])*'|`(?:``|[^`])*`|\b[A-Za-z_]\w*\b|\b\d+(?:\.\d+)?\b|(?:<>|!=|<=|>=|[+\-*\/%<>=])/g;
+  const sqlTokenType = (token, source, end) => {
+    if (token.startsWith("--") || token.startsWith("/*")) return "comment";
+    if (token.startsWith("'")) return "string";
+    if (token.startsWith("`")) return "variable";
+    if (sqlKeywords.has(token.toUpperCase())) return "keyword";
+    if (/^\d/.test(token)) return "number";
+    if (/^[A-Za-z_]/.test(token)) return /^\s*\(/.test(source.slice(end)) ? "function" : null;
+    return "operator";
+  };
+
   const highlightCode = (codeBlock) => {
     const source = codeBlock.textContent;
     const language = codeBlock.dataset.language || config.defaultLanguage;
@@ -70,14 +90,22 @@
     const fragment = document.createDocumentFragment();
     let cursor = 0;
 
-    tokenPattern.lastIndex = 0;
-    for (const match of source.matchAll(tokenPattern)) {
+    const pattern = language === "sql" ? sqlTokenPattern : tokenPattern;
+    pattern.lastIndex = 0;
+    for (const match of source.matchAll(pattern)) {
       if (match.index > cursor) fragment.append(source.slice(cursor, match.index));
 
-      const token = document.createElement("span");
-      token.className = `syntax-${tokenType(match[0])}`;
-      token.textContent = match[0];
-      fragment.append(token);
+      const type = language === "sql"
+        ? sqlTokenType(match[0], source, match.index + match[0].length)
+        : tokenType(match[0]);
+      if (type) {
+        const token = document.createElement("span");
+        token.className = `syntax-${type}`;
+        token.textContent = match[0];
+        fragment.append(token);
+      } else {
+        fragment.append(match[0]);
+      }
       cursor = match.index + match[0].length;
     }
 

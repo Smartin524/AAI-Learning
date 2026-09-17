@@ -178,6 +178,20 @@ try {
     await warmContext.close();
   }
 
+  await page.goto(`${baseUrl}/index.html`);
+  await page.getByRole("link", { name: /SQL 常用语法/ }).click();
+  await page.getByRole("heading", { name: "SQL 常用语法", exact: true }).waitFor();
+  assert(await page.locator('pre[data-language="sql"]').count() === 18, "SQL blocks missing");
+  assert(await page.locator('pre .syntax-keyword').filter({hasText: /^SELECT$/}).count() > 0, "SQL keywords not highlighted");
+  assert(await page.locator('pre .syntax-comment').first().textContent() === "-- 查询指定列；别名", "SQL comment highlighting is incorrect");
+  assert(await page.getByRole("button", { name: "复制代码" }).count() === 0, "SQL reference copy buttons should be hidden");
+  await page.getByRole("link", {name: "窗口函数", exact: true}).click();
+  assert(new URL(page.url()).hash === "#windows", "SQL section navigation failed");
+  const blocks = await page.locator('#windows .code-block').evaluateAll(elements => elements.map(e => {const r=e.getBoundingClientRect(); return {x:r.x,y:r.y};}));
+  assert(blocks.length === 2 && blocks[0].y === blocks[1].y && blocks[1].x > blocks[0].x, "SQL blocks should be side by side");
+  await page.setViewportSize({width:390,height:844});
+  assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), "SQL page overflows on mobile");
+
   assert(browserErrors.length === 0, `Browser errors: ${browserErrors.join(" | ")}`);
   console.log("Smoke test passed: home, course switch, theme, and section navigation.");
 } finally {

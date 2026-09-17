@@ -471,6 +471,61 @@
           ]
         }
       ]
+    },
+    {
+      "id": "sql",
+      "index": "04",
+      "name": "SQL 常用语法",
+      "menuLabel": "SQL 常用语法",
+      "description": "查询、联表、聚合、窗口函数与增删改 · 语法速查",
+      "entry": "chapters/sql-reference.html",
+      "tocTitle": "SQL 常用语法",
+      "pages": [
+        {
+          "output": "chapters/sql-reference.html",
+          "content": "src/content/chapters/sql-reference.html",
+          "navLabel": "SQL 语法速查",
+          "code": true,
+          "subsections": [
+            {
+              "id": "select",
+              "label": "查询、去重与分页"
+            },
+            {
+              "id": "where",
+              "label": "筛选与空值"
+            },
+            {
+              "id": "group",
+              "label": "聚合与条件表达式"
+            },
+            {
+              "id": "join",
+              "label": "联表与集合合并"
+            },
+            {
+              "id": "subqueries",
+              "label": "子查询与 CTE"
+            },
+            {
+              "id": "windows",
+              "label": "窗口函数"
+            },
+            {
+              "id": "functions",
+              "label": "字符串、数值与日期"
+            },
+            {
+              "id": "write",
+              "label": "新增、修改、删除与事务"
+            },
+            {
+              "id": "schema",
+              "label": "表、索引与视图"
+            }
+          ]
+        }
+      ]
     }
   ]
 }

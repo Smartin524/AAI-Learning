@@ -1,0 +1,381 @@
+<main class="chapter">
+  <header class="chapter-hero">
+    <div class="chapter-kicker">SQL REFERENCE</div>
+    <h1>SQL 常用语法</h1>
+    <p class="chapter-summary">常用语句与参数位置速查。以 MySQL 8+ 为例，方言差异在注释中标明。表名、列名和值按实际数据替换；各示例独立查阅。</p>
+  </header>
+  <section class="content-section" id="select">
+    <h2>查询、去重与分页</h2>
+    <div class="reference-code-columns">
+      <pre data-language="sql">-- 查询指定列；别名
+SELECT id, name AS user_name
+FROM users;
+
+-- 所有列
+SELECT * FROM users;
+
+-- 去重
+SELECT DISTINCT city FROM users;
+
+-- 排序；相同分数按 id 排列
+SELECT id, score FROM users
+ORDER BY score DESC, id ASC;</pre>
+      <pre data-language="sql">-- 分页（MySQL / PostgreSQL / SQLite）
+SELECT id, name FROM users
+ORDER BY id
+LIMIT 20 OFFSET 40;
+
+-- 计算列
+SELECT id, price * quantity AS total
+FROM orders;
+
+-- 基本查询组合
+SELECT city, COUNT(*) AS total
+FROM users
+WHERE active = 1
+GROUP BY city
+HAVING COUNT(*) &gt;= 5
+ORDER BY total DESC
+LIMIT 10;</pre>
+    </div>
+  </section>
+  <section class="content-section" id="where">
+    <h2>筛选与空值</h2>
+    <div class="reference-code-columns">
+      <pre data-language="sql">-- 比较、AND / OR / NOT
+SELECT * FROM users
+WHERE age &gt;= 18
+  AND (city = &#x27;Singapore&#x27; OR city = &#x27;Beijing&#x27;);
+
+-- 范围，包含两端
+SELECT * FROM users
+WHERE age BETWEEN 18 AND 30;
+
+-- 多值匹配
+SELECT * FROM users
+WHERE city IN (&#x27;Singapore&#x27;, &#x27;Beijing&#x27;);
+
+-- 排除值
+SELECT * FROM users
+WHERE city NOT IN (&#x27;London&#x27;, &#x27;Paris&#x27;);</pre>
+      <pre data-language="sql">-- 模糊匹配：% 任意长度，_ 单个字符
+SELECT * FROM users WHERE name LIKE &#x27;A%&#x27;;
+SELECT * FROM users WHERE name LIKE &#x27;_an&#x27;;
+
+-- 空值判断；不用 = NULL
+SELECT * FROM users WHERE email IS NULL;
+SELECT * FROM users WHERE email IS NOT NULL;
+
+-- 空值替代；返回首个非 NULL 值
+SELECT COALESCE(nickname, name, &#x27;Unknown&#x27;)
+FROM users;
+
+-- 相等时返回 NULL，常用于避免除零
+SELECT revenue / NULLIF(quantity, 0)
+FROM orders;</pre>
+    </div>
+  </section>
+  <section class="content-section" id="group">
+    <h2>聚合与条件表达式</h2>
+    <div class="reference-code-columns">
+      <pre data-language="sql">-- 行数、非空数量、不同值数量
+SELECT COUNT(*), COUNT(email),
+       COUNT(DISTINCT city)
+FROM users;
+
+-- 求和、均值、最小值、最大值
+SELECT SUM(amount), AVG(amount),
+       MIN(amount), MAX(amount)
+FROM orders;
+
+-- 多列分组
+SELECT city, active, COUNT(*) AS total
+FROM users
+GROUP BY city, active;</pre>
+      <pre data-language="sql">-- 聚合后的分组筛选
+SELECT user_id, SUM(amount) AS total
+FROM orders
+GROUP BY user_id
+HAVING SUM(amount) &gt; 100;
+
+-- 条件分支
+SELECT name,
+  CASE
+    WHEN score &gt;= 80 THEN &#x27;A&#x27;
+    WHEN score &gt;= 60 THEN &#x27;B&#x27;
+    ELSE &#x27;C&#x27;
+  END AS grade
+FROM users;
+
+-- 条件计数
+SELECT SUM(CASE WHEN active = 1
+                THEN 1 ELSE 0 END) AS active_count
+FROM users;</pre>
+    </div>
+  </section>
+  <section class="content-section" id="join">
+    <h2>联表与集合合并</h2>
+    <div class="reference-code-columns">
+      <pre data-language="sql">-- 内连接：仅保留匹配行
+SELECT u.name, o.amount
+FROM users AS u
+INNER JOIN orders AS o ON u.id = o.user_id;
+
+-- 左连接：保留全部左表行
+SELECT u.name, o.amount
+FROM users AS u
+LEFT JOIN orders AS o ON u.id = o.user_id;
+
+-- 查找没有订单的用户
+SELECT u.id, u.name
+FROM users AS u
+LEFT JOIN orders AS o ON u.id = o.user_id
+WHERE o.id IS NULL;</pre>
+      <pre data-language="sql">-- 保留全部左表行，只匹配已付款订单
+SELECT u.name, o.amount
+FROM users AS u
+LEFT JOIN orders AS o
+  ON u.id = o.user_id AND o.status = &#x27;paid&#x27;;
+
+-- 自连接
+SELECT e.name, m.name AS manager_name
+FROM employees AS e
+LEFT JOIN employees AS m ON e.manager_id = m.id;
+
+-- 合并结果且去重；列数与类型需兼容
+SELECT email FROM users
+UNION
+SELECT email FROM subscribers;
+
+-- 合并结果并保留重复行
+SELECT email FROM users
+UNION ALL
+SELECT email FROM subscribers;</pre>
+    </div>
+  </section>
+  <section class="content-section" id="subqueries">
+    <h2>子查询与 CTE</h2>
+    <div class="reference-code-columns">
+      <pre data-language="sql">-- 标量子查询
+SELECT * FROM orders
+WHERE amount &gt; (SELECT AVG(amount) FROM orders);
+
+-- IN 子查询
+SELECT * FROM users
+WHERE id IN (
+  SELECT user_id FROM orders WHERE amount &gt; 100
+);
+
+-- EXISTS：是否存在匹配行
+SELECT * FROM users AS u
+WHERE EXISTS (
+  SELECT 1 FROM orders AS o
+  WHERE o.user_id = u.id
+);</pre>
+      <pre data-language="sql">-- NOT EXISTS：不存在匹配行
+SELECT * FROM users AS u
+WHERE NOT EXISTS (
+  SELECT 1 FROM orders AS o
+  WHERE o.user_id = u.id
+);
+
+-- CTE：为查询结果命名（MySQL 8+）
+WITH totals AS (
+  SELECT user_id, SUM(amount) AS total
+  FROM orders
+  GROUP BY user_id
+)
+SELECT u.name, t.total
+FROM users AS u
+JOIN totals AS t ON u.id = t.user_id;
+
+-- FROM 子查询需提供别名
+SELECT t.user_id, t.total
+FROM (
+  SELECT user_id, COUNT(*) AS total
+  FROM orders GROUP BY user_id
+) AS t
+WHERE t.total &gt; 3;</pre>
+    </div>
+  </section>
+  <section class="content-section" id="windows">
+    <h2>窗口函数</h2>
+    <div class="reference-code-columns">
+      <pre data-language="sql">-- 分组编号；并列时用 id 决定顺序
+SELECT id, city, score,
+  ROW_NUMBER() OVER (
+    PARTITION BY city ORDER BY score DESC, id
+  ) AS row_num
+FROM users;
+
+-- 并列排名：RANK 留空档，DENSE_RANK 不留
+SELECT id, score,
+  RANK() OVER (ORDER BY score DESC) AS rank_num,
+  DENSE_RANK() OVER (ORDER BY score DESC) AS dense_num
+FROM users;
+
+-- 保留每一行并显示分组总额
+SELECT id, user_id, amount,
+  SUM(amount) OVER (PARTITION BY user_id) AS total
+FROM orders;</pre>
+      <pre data-language="sql">-- 按时间累计，id 处理时间相同的行
+SELECT id, amount,
+  SUM(amount) OVER (
+    ORDER BY created_at, id
+    ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+  ) AS running_total
+FROM orders;
+
+-- 前一行 / 后一行的值
+SELECT id, amount,
+  LAG(amount, 1, 0) OVER (ORDER BY id) AS previous,
+  LEAD(amount, 1, 0) OVER (ORDER BY id) AS following
+FROM orders;
+
+-- 每组 Top 3；窗口结果在外层筛选
+WITH ranked AS (
+  SELECT id, city, score,
+    ROW_NUMBER() OVER (
+      PARTITION BY city ORDER BY score DESC, id
+    ) AS rn
+  FROM users
+)
+SELECT * FROM ranked WHERE rn &lt;= 3;</pre>
+    </div>
+  </section>
+  <section class="content-section" id="functions">
+    <h2>字符串、数值与日期</h2>
+    <div class="reference-code-columns">
+      <pre data-language="sql">-- 字符串函数（示例采用 MySQL）
+SELECT LOWER(name), UPPER(name), TRIM(name)
+FROM users;
+
+SELECT CONCAT(first_name, &#x27; &#x27;, last_name)
+FROM users;
+
+-- 从第 1 个字符起取 3 个字符
+SELECT SUBSTRING(name, 1, 3) FROM users;
+
+SELECT REPLACE(name, &#x27;old&#x27;, &#x27;new&#x27;) FROM users;
+
+-- 字符数；MySQL LENGTH() 返回字节数
+SELECT CHAR_LENGTH(name) FROM users;
+
+-- 数值函数
+SELECT ROUND(amount, 2), ABS(amount),
+       CEIL(amount), FLOOR(amount)
+FROM orders;
+
+-- 类型转换
+SELECT CAST(amount AS DECIMAL(10, 2)) FROM orders;</pre>
+      <pre data-language="sql">-- 当前日期 / 时间
+SELECT CURRENT_DATE, CURRENT_TIMESTAMP;
+
+-- 日期部分（MySQL）
+SELECT YEAR(created_at), MONTH(created_at),
+       DAY(created_at)
+FROM orders;
+
+-- 日期运算（MySQL）
+SELECT DATE_ADD(CURRENT_DATE, INTERVAL 7 DAY);
+SELECT DATE_SUB(CURRENT_DATE, INTERVAL 1 MONTH);
+
+-- 相差天数：第一个日期减第二个日期（MySQL）
+SELECT DATEDIFF(&#x27;2026-09-17&#x27;, &#x27;2026-09-01&#x27;);
+
+-- 格式化 / 解析日期（MySQL）
+SELECT DATE_FORMAT(created_at, &#x27;%Y-%m&#x27;) FROM orders;
+SELECT STR_TO_DATE(&#x27;17/09/2026&#x27;, &#x27;%d/%m/%Y&#x27;);
+
+-- 时间范围：左闭右开
+SELECT * FROM orders
+WHERE created_at &gt;= &#x27;2026-09-01&#x27;
+  AND created_at &lt; &#x27;2026-10-01&#x27;;</pre>
+    </div>
+  </section>
+  <section class="content-section" id="write">
+    <h2>新增、修改、删除与事务</h2>
+    <div class="reference-code-columns">
+      <pre data-language="sql">-- 插入一行 / 多行
+INSERT INTO users (id, name, age)
+VALUES (1, &#x27;Alice&#x27;, 20), (2, &#x27;Bob&#x27;, 22);
+
+-- 从查询结果插入
+INSERT INTO archived_orders (id, user_id, amount)
+SELECT id, user_id, amount FROM orders
+WHERE status = &#x27;closed&#x27;;
+
+-- 修改指定行；省略 WHERE 会影响全部行
+UPDATE users SET age = 21 WHERE id = 1;
+
+-- 删除指定行；省略 WHERE 会影响全部行
+DELETE FROM users WHERE id = 2;</pre>
+      <pre data-language="sql">-- 事务（MySQL：使用 InnoDB 等事务引擎）
+START TRANSACTION;
+UPDATE accounts SET balance = balance - 100
+WHERE id = 1;
+UPDATE accounts SET balance = balance + 100
+WHERE id = 2;
+COMMIT;
+
+-- 放弃本次事务的修改
+START TRANSACTION;
+UPDATE users SET age = 99 WHERE id = 1;
+ROLLBACK;
+
+-- 保存点：回滚部分操作
+START TRANSACTION;
+SAVEPOINT before_change;
+UPDATE users SET age = 30 WHERE id = 1;
+ROLLBACK TO SAVEPOINT before_change;
+COMMIT;</pre>
+    </div>
+  </section>
+  <section class="content-section" id="schema">
+    <h2>表、索引与视图</h2>
+    <div class="reference-code-columns">
+      <pre data-language="sql">-- 创建表；类型与约束
+CREATE TABLE users (
+  id INT PRIMARY KEY,
+  name VARCHAR(100) NOT NULL,
+  email VARCHAR(255) UNIQUE,
+  age INT,
+  active INT DEFAULT 1,
+  CHECK (age &gt;= 0)
+);
+
+-- 外键（orders 表及相关列需已存在）
+ALTER TABLE orders
+ADD CONSTRAINT fk_order_user
+FOREIGN KEY (user_id) REFERENCES users(id);
+
+-- 增加 / 删除列
+ALTER TABLE users ADD COLUMN city VARCHAR(100);
+ALTER TABLE users DROP COLUMN city;
+
+-- 删除整张表；MySQL DDL 通常会隐式提交
+DROP TABLE IF EXISTS archived_orders;</pre>
+      <pre data-language="sql">-- 创建索引 / 联合索引
+CREATE INDEX idx_orders_user ON orders(user_id);
+CREATE INDEX idx_orders_user_date
+ON orders(user_id, created_at);
+
+-- 删除索引（MySQL）
+DROP INDEX idx_orders_user ON orders;
+
+-- 创建 / 使用 / 删除视图
+CREATE VIEW active_users AS
+SELECT id, name FROM users WHERE active = 1;
+SELECT * FROM active_users;
+DROP VIEW IF EXISTS active_users;
+
+-- 查看执行计划
+EXPLAIN SELECT * FROM orders WHERE user_id = 1;
+
+-- 查看表结构（MySQL）
+DESCRIBE users;
+SHOW CREATE TABLE users;</pre>
+    </div>
+  </section>
+  <p><a href="https://dev.mysql.com/doc/refman/8.4/en/sql-statements.html" target="_blank" rel="noreferrer">MySQL 官方语法参考</a></p>
+</main>
