@@ -181,7 +181,9 @@ try {
   await page.goto(`${baseUrl}/chapters/07-numpy-vectors.html`);
   assert(await page.locator('.chapter-hero pre').textContent() === 'import numpy as np', "NumPy import instructions are missing");
   assert(!(await page.locator('.chapter-hero').textContent()).includes('不应整块顺序运行'), "Removed boilerplate remains");
-  await page.getByRole("link", { name: "13 SQL 常用语法", exact: true }).click();
+  assert(await page.locator('.toc a[href="sql-reference.html"]').count() === 0, "SQL should not be in the Python sidebar");
+  await page.getByRole("button", {name: "课程切换"}).click();
+  await page.getByRole("link", {name: /SQL 与 MySQL/}).click();
   await page.getByRole("heading", { name: "SQL 常用语法", exact: true }).waitFor();
   assert(await page.locator('pre[data-language="sql"]').count() === 18, "SQL blocks missing");
   assert(await page.locator('pre .syntax-keyword').filter({hasText: /^SELECT$/}).count() > 0, "SQL keywords not highlighted");
@@ -191,6 +193,11 @@ try {
   assert(new URL(page.url()).hash === "#windows", "SQL section navigation failed");
   const blocks = await page.locator('#windows .code-block').evaluateAll(elements => elements.map(e => {const r=e.getBoundingClientRect(); return {x:r.x,y:r.y};}));
   assert(blocks.length === 2 && blocks[0].y === blocks[1].y && blocks[1].x > blocks[0].x, "SQL blocks should be side by side");
+  await page.getByRole("link", {name: "02 MySQL 常用命令", exact:true}).click();
+  await page.getByRole("heading", {name:"MySQL 常用命令", exact:true}).waitFor();
+  assert(await page.locator('.reference-code-columns').count() === 5, "MySQL reference sections missing");
+  assert(await page.locator('pre[data-language="plain"]').count() === 4, "Terminal commands need their own language blocks");
+  assert(await page.getByRole("button", {name:"复制代码"}).count() === 0, "MySQL copy buttons should be hidden");
   await page.setViewportSize({width:390,height:844});
   assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), "SQL page overflows on mobile");
 

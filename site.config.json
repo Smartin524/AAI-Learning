@@ -21,7 +21,6 @@
       "description": "内置函数、容器、标准库与数据分析常用方法 · 参数格式速查",
       "entry": "chapters/01-basics.html",
       "tocTitle": "PYTHON 常用方法",
-      "relatedLinks": [{ "output": "chapters/sql-reference.html", "label": "13 SQL 常用语法" }],
       "pages": [
         {
           "output": "chapters/01-basics.html",
@@ -476,17 +475,16 @@
     {
       "id": "sql",
       "index": "04",
-      "name": "SQL 常用语法",
-      "menuLabel": "SQL 常用语法",
-      "description": "查询、联表、聚合、窗口函数与增删改 · 语法速查",
+      "name": "SQL 与 MySQL",
+      "menuLabel": "SQL 与 MySQL",
+      "description": "SQL 常用语法与 MySQL 连接、管理、导入导出速查",
       "entry": "chapters/sql-reference.html",
-      "tocTitle": "SQL 常用语法",
-      "relatedLinks": [{ "output": "chapters/01-basics.html", "label": "← Python 常用方法" }],
+      "tocTitle": "SQL 与 MySQL",
       "pages": [
         {
           "output": "chapters/sql-reference.html",
           "content": "src/content/chapters/sql-reference.html",
-          "navLabel": "SQL 语法速查",
+          "navLabel": "01 SQL 语法速查",
           "code": true,
           "subsections": [
             {
@@ -524,6 +522,34 @@
             {
               "id": "schema",
               "label": "表、索引与视图"
+            }
+          ]
+        },
+        {
+          "output": "chapters/mysql-reference.html",
+          "content": "src/content/chapters/mysql-reference.html",
+          "navLabel": "02 MySQL 常用命令",
+          "code": true,
+          "subsections": [
+            {
+              "id": "connect",
+              "label": "连接与命令行"
+            },
+            {
+              "id": "database",
+              "label": "数据库与表结构"
+            },
+            {
+              "id": "mysql-syntax",
+              "label": "MySQL 常用写法"
+            },
+            {
+              "id": "backup",
+              "label": "导入与导出（终端）"
+            },
+            {
+              "id": "inspect",
+              "label": "用户、会话与排查"
             }
           ]
         }
