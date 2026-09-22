@@ -8,6 +8,8 @@
 - **CA6000 · Applied AI Programming**：Module 1–3 覆盖 Python 基础、模块与文件、NumPy、Matplotlib、Pandas 与 Python 类；Module 4 进入 Seaborn 探索性分析、数据缩放和 scikit-learn 分类流程；Module 5 系统讲解 Keras、TensorFlow、PyTorch、ANN、CNN 与 MNIST 训练；Module 6 讲解 RNN、时间序列窗口、many-to-one / many-to-many、Keras 实现与 LSTM 入门。
 - **CA6002 · AI UX & Data Visualisation Design Principles**：Module 1–3 覆盖数据属性、图表选择、AI 模型可视化、时间序列与人类视觉感知；Module 4 聚焦 Human-Centred AI、Human + AI 协作和 AI 机会识别；Module 5 深入 AI usability、error handling、trust calibration、explanation、user control 与 feedback。
 
+- **CA6003 · Best Practices in Data Governance, Preparation & Analytics**：Module 1 按第一周课件覆盖数据科学流程、数据类型、数据剖析、清洗、七类缺失值处理和异常值检测，并附健身数据 Notebook 练习提示。
+
 首页是课程选择看板；进入课程后，可通过顶部的“课程”按钮在不同课程之间切换。课程内容页使用左侧目录和右侧正文的阅读布局。
 
 顶部菜单还提供“日间 / 夜间 / 自适应”三种主题模式，默认跟随系统设置，用户选择会保存在本地并应用到所有页面。

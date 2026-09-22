@@ -554,6 +554,61 @@
           ]
         }
       ]
+    },
+    {
+      "id": "ca6003",
+      "index": "05",
+      "name": "CA6003 · Best Practices in Data Governance, Preparation & Analytics",
+      "menuLabel": "CA6003 · Data Governance & Analytics",
+      "description": "数据治理、数据准备与分析 · 数据剖析、缺失值与异常值处理",
+      "entry": "courses/ca6003-module-01.html",
+      "tocTitle": "CA6003 · DATA GOVERNANCE & ANALYTICS",
+      "pages": [
+        {
+          "output": "courses/ca6003-module-01.html",
+          "content": "src/content/courses/ca6003-module-01.html",
+          "navLabel": "Module 1 第一周：数据剖析与清洗",
+          "code": true,
+          "subsections": [
+            {
+              "id": "thinking-process",
+              "label": "Data science thinking process"
+            },
+            {
+              "id": "data-types",
+              "label": "Structured / Unstructured Data"
+            },
+            {
+              "id": "data-profiling",
+              "label": "Data Profiling"
+            },
+            {
+              "id": "golden-rule",
+              "label": "Golden rule in machine learning"
+            },
+            {
+              "id": "data-cleaning",
+              "label": "Data cleaning"
+            },
+            {
+              "id": "missing-values",
+              "label": "Fitness data set example"
+            },
+            {
+              "id": "outlier-detection",
+              "label": "Outlier detection"
+            },
+            {
+              "id": "fitness-notebook",
+              "label": "Notebook：七种缺失值处理"
+            },
+            {
+              "id": "practice",
+              "label": "自测与掌握标准"
+            }
+          ]
+        }
+      ]
     }
   ]
 }
