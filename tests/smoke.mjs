@@ -178,6 +178,21 @@ try {
     await warmContext.close();
   }
 
+  // Adding a new week must retain the earlier week and its course entry.
+  for (const courseId of ["ca6001", "ca6003"]) {
+    await page.goto(`${baseUrl}/index.html`);
+    await page.locator(`.course-row[href="courses/${courseId}-module-01.html"]`).click();
+    await page.waitForURL(`**/courses/${courseId}-module-01.html`);
+    assert(await page.locator("h1").innerText().then(text => text.startsWith("第一周")), `${courseId}: first-week entry is missing`);
+    const weekTwo = page.locator('.chapter-link').filter({ hasText: "Module 2 第二周" });
+    await weekTwo.click();
+    await page.waitForURL(`**/courses/${courseId}-module-02.html`);
+    assert(await page.locator("h1").innerText().then(text => text.startsWith("第二周")), `${courseId}: second week did not render`);
+    await page.locator('.chapter-link').filter({ hasText: "Module 1 第一周" }).click();
+    await page.waitForURL(`**/courses/${courseId}-module-01.html`);
+    assert(await page.locator('.chapter-group.active .chapter-link').innerText().then(text => text.includes("Module 1")), `${courseId}: cannot return to first week`);
+  }
+
   await page.goto(`${baseUrl}/chapters/07-numpy-vectors.html`);
   assert(await page.locator('.chapter-hero pre').textContent() === 'import numpy as np', "NumPy import instructions are missing");
   assert(!(await page.locator('.chapter-hero').textContent()).includes('不应整块顺序运行'), "Removed boilerplate remains");

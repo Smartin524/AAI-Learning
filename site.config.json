@@ -481,10 +481,58 @@
       "index": "04",
       "name": "CA6001 · AI Algorithms Fundamentals & Applications",
       "menuLabel": "CA6001 · AI Algorithms",
-      "description": "强化学习、价值函数、探索与利用及 Lyft 匹配案例",
-      "entry": "courses/ca6001-module-02.html",
+      "description": "监督与无监督学习、模型评价、强化学习及课堂案例",
+      "entry": "courses/ca6001-module-01.html",
       "tocTitle": "CA6001 · AI ALGORITHMS",
       "pages": [
+        {
+          "output": "courses/ca6001-module-01.html",
+          "content": "src/content/courses/ca6001-module-01.html",
+          "navLabel": "Module 1 第一周：监督与无监督学习",
+          "code": true,
+          "subsections": [
+            {
+              "id": "ai-data-science",
+              "label": "What is AI / ML and Data Science?"
+            },
+            {
+              "id": "supervised",
+              "label": "Supervised Learning"
+            },
+            {
+              "id": "linear-regression",
+              "label": "Linear Regression & Mathematics"
+            },
+            {
+              "id": "classification",
+              "label": "Logistic Regression & Classification"
+            },
+            {
+              "id": "unsupervised",
+              "label": "Unsupervised Learning"
+            },
+            {
+              "id": "fitting",
+              "label": "Overfitting vs Underfitting"
+            },
+            {
+              "id": "evaluation",
+              "label": "Learning Evaluation"
+            },
+            {
+              "id": "moderna-case",
+              "label": "Class 1 · Moderna Case"
+            },
+            {
+              "id": "notebook-practice",
+              "label": "Notebook · 房价与客户流失"
+            },
+            {
+              "id": "practice",
+              "label": "自测与第二周衔接"
+            }
+          ]
+        },
         {
           "output": "courses/ca6001-module-02.html",
           "content": "src/content/courses/ca6001-module-02.html",
