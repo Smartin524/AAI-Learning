@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCIgcm9sZT0iaW1nIiBhcmlhLWxhYmVsbGVkYnk9InRpdGxlIj4KICA8dGl0bGU+QUFJPC90aXRsZT4KICA8cmVjdCB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHJ4PSIxNiIgZmlsbD0iIzE0MjEzZCIvPgogIDxnIHRyYW5zZm9ybT0ic2tld1goLTYpIj4KICAgIDxwYXRoIGQ9Ik0xMC41IDQ1IDE1LjQgMTdoNy40bDQuOSAyOGgtNmwtLjktNS41aC0zLjdsLS45IDUuNWgtNS43Wm03LjMtMTAuNWgyLjNMMTkgMjQuMmwtMS4yIDEwLjNaIiBmaWxsPSIjZmZmIi8+CiAgICA8cGF0aCBkPSJNMjYgNDUgMzAuOSAxN2g3LjRsNC45IDI4aC02bC0uOS01LjVoLTMuN2wtLjkgNS41SDI2Wm03LjMtMTAuNWgyLjNsLTEuMS0xMC4zLTEuMiAxMC4zWiIgZmlsbD0iI2ZmZiIvPgogICAgPHBhdGggZD0iTTQ1LjIgMTdoNy40djI4aC03LjRWMTdaIiBmaWxsPSIjZmZmIi8+CiAgPC9nPgogIDxyZWN0IHg9IjEwIiB5PSI1MCIgd2lkdGg9IjQ0IiBoZWlnaHQ9IjMuNSIgcng9IjEuNzUiIGZpbGw9IiMxNTVlZWYiLz4KPC9zdmc+Cg==" />
     <script src="../assets/build/theme-init.cef5d9adb5.js"></script>
-    <link rel="stylesheet" href="../assets/build/site.0dcd3087aa.css" />
+    <link rel="stylesheet" href="../assets/build/site.a41ad8c1b5.css" />
     <link rel="stylesheet" href="../assets/build/code-blocks.78f9810aa1.css" />
   </head>
   <body data-page-kind="course" data-course-id="ca6003">
@@ -45,13 +45,17 @@
                 <span class="course-switcher-dot" aria-hidden="true"></span>
                 <span><strong>CA6000 · Applied AI Programming</strong><small>Python 基础、数据结构、工程工具与数据处理</small></span>
               </a>
+              <a class="course-switcher-item" href="../courses/ca6001-module-02.html">
+                <span class="course-switcher-dot" aria-hidden="true"></span>
+                <span><strong>CA6001 · AI Algorithms</strong><small>强化学习、价值函数、探索与利用及 Lyft 匹配案例</small></span>
+              </a>
               <a class="course-switcher-item" href="../courses/ai-ux-data-visualisation.html">
                 <span class="course-switcher-dot" aria-hidden="true"></span>
                 <span><strong>CA6002 · AI UX &amp; Data Visualisation</strong><small>AI 用户体验与数据可视化设计原则</small></span>
               </a>
               <a class="course-switcher-item active" href="../courses/ca6003-module-01.html" aria-current="page">
                 <span class="course-switcher-dot" aria-hidden="true"></span>
-                <span><strong>CA6003 · Data Governance &amp; Analytics</strong><small>数据治理、数据准备与分析 · 数据剖析、缺失值与异常值处理</small></span>
+                <span><strong>CA6003 · Data Governance &amp; Analytics</strong><small>数据剖析与清洗、特征编码、缩放及偏差缓解</small></span>
               </a>
             </nav>
           </div>
@@ -76,6 +80,22 @@
               <a href="ca6003-module-01.html#outlier-detection" data-toc-section="outlier-detection">Outlier detection</a>
               <a href="ca6003-module-01.html#fitness-notebook" data-toc-section="fitness-notebook">Notebook：七种缺失值处理</a>
               <a href="ca6003-module-01.html#practice" data-toc-section="practice">自测与掌握标准</a>
+              </div>
+            </div>
+          </div>
+          <div class="chapter-group" data-chapter-group>
+            <a class="chapter-link" href="ca6003-module-02.html">Module 2 第二周：特征工程与偏差缓解</a>
+            <div class="chapter-subnav" aria-hidden="true" inert>
+              <div class="chapter-subnav-inner">
+              <a href="ca6003-module-02.html#encoding" data-toc-section="encoding">Data encoding</a>
+              <a href="ca6003-module-02.html#target-encoding" data-toc-section="target-encoding">Target encoding &amp; Regularization</a>
+              <a href="ca6003-module-02.html#scaling" data-toc-section="scaling">Data / Feature scaling</a>
+              <a href="ca6003-module-02.html#power-transformation" data-toc-section="power-transformation">Power transformation</a>
+              <a href="ca6003-module-02.html#advanced-features" data-toc-section="advanced-features">Advanced Feature Engineering</a>
+              <a href="ca6003-module-02.html#bias-fairness" data-toc-section="bias-fairness">Bias, Fairness &amp; Generalization</a>
+              <a href="ca6003-module-02.html#bias-mitigation" data-toc-section="bias-mitigation">Bias mitigation techniques</a>
+              <a href="ca6003-module-02.html#house-prices" data-toc-section="house-prices">Exercise 2 · House Prices</a>
+              <a href="ca6003-module-02.html#evaluation" data-toc-section="evaluation">模型比较与自测</a>
               </div>
             </div>
           </div>
@@ -357,6 +377,9 @@ print(X.assign(flag=flags))  # 1 表示正常，-1 表示模型判定异常</pre
     <p>主内容按 Week 1 PDF 第 2–11、12–20、21–24、25、26–28、29–37 页整理；健身练习按原 Notebook 第 1–7 节整理。保留原课件截图，另将数值不一致与概念简化标为“核对说明”。示例代码与自测为学习整理，不是老师提供的 Notebook 解答。</p>
     <p>API 核对：<a href="https://pandas.pydata.org/docs/reference/api/pandas.Series.quantile.html">Pandas quantile 的插值口径</a>、<a href="https://scikit-learn.org/stable/modules/generated/sklearn.impute.KNNImputer.html">KNNImputer 参数</a>、<a href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.IsolationForest.html">IsolationForest 参数与输出</a>。</p>
   </section>
+        <nav class="chapter-nav" aria-label="上一页和下一页">
+          <span></span><a href="ca6003-module-02.html">Module 2 第二周：特征工程与偏差缓解 →</a>
+        </nav>
       </main>
     </div>
     <script src="../assets/build/header.2844f8e3a5.js" defer></script>

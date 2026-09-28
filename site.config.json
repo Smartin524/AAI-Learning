@@ -477,8 +477,67 @@
       ]
     },
     {
-      "id": "ca6002",
+      "id": "ca6001",
       "index": "04",
+      "name": "CA6001 · AI Algorithms Fundamentals & Applications",
+      "menuLabel": "CA6001 · AI Algorithms",
+      "description": "强化学习、价值函数、探索与利用及 Lyft 匹配案例",
+      "entry": "courses/ca6001-module-02.html",
+      "tocTitle": "CA6001 · AI ALGORITHMS",
+      "pages": [
+        {
+          "output": "courses/ca6001-module-02.html",
+          "content": "src/content/courses/ca6001-module-02.html",
+          "navLabel": "Module 2 第二周：强化学习",
+          "code": true,
+          "subsections": [
+            {
+              "id": "rl-basics",
+              "label": "Types of ML & What Is RL?"
+            },
+            {
+              "id": "rl-model",
+              "label": "Reinforcement Learning Model"
+            },
+            {
+              "id": "rl-use-cases",
+              "label": "Use cases"
+            },
+            {
+              "id": "rl-algorithms",
+              "label": "Implementations & Algorithms"
+            },
+            {
+              "id": "exploration",
+              "label": "Exploration & Discount Factor"
+            },
+            {
+              "id": "bandit",
+              "label": "Multi-Armed Bandit Problem"
+            },
+            {
+              "id": "rlhf",
+              "label": "RL with Human Feedback"
+            },
+            {
+              "id": "rl-challenges",
+              "label": "Challenges & GRPO"
+            },
+            {
+              "id": "lyft-case",
+              "label": "Lyft Case"
+            },
+            {
+              "id": "rl-practice",
+              "label": "Notebook 练习与自测"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ca6002",
+      "index": "05",
       "name": "CA6002 · AI UX & Data Visualisation Design Principles",
       "menuLabel": "CA6002 · AI UX & Data Visualisation",
       "description": "AI 用户体验与数据可视化设计原则",
@@ -557,10 +616,10 @@
     },
     {
       "id": "ca6003",
-      "index": "05",
+      "index": "06",
       "name": "CA6003 · Best Practices in Data Governance, Preparation & Analytics",
       "menuLabel": "CA6003 · Data Governance & Analytics",
-      "description": "数据治理、数据准备与分析 · 数据剖析、缺失值与异常值处理",
+      "description": "数据剖析与清洗、特征编码、缩放及偏差缓解",
       "entry": "courses/ca6003-module-01.html",
       "tocTitle": "CA6003 · DATA GOVERNANCE & ANALYTICS",
       "pages": [
@@ -605,6 +664,50 @@
             {
               "id": "practice",
               "label": "自测与掌握标准"
+            }
+          ]
+        },
+        {
+          "output": "courses/ca6003-module-02.html",
+          "content": "src/content/courses/ca6003-module-02.html",
+          "navLabel": "Module 2 第二周：特征工程与偏差缓解",
+          "code": true,
+          "subsections": [
+            {
+              "id": "encoding",
+              "label": "Data encoding"
+            },
+            {
+              "id": "target-encoding",
+              "label": "Target encoding & Regularization"
+            },
+            {
+              "id": "scaling",
+              "label": "Data / Feature scaling"
+            },
+            {
+              "id": "power-transformation",
+              "label": "Power transformation"
+            },
+            {
+              "id": "advanced-features",
+              "label": "Advanced Feature Engineering"
+            },
+            {
+              "id": "bias-fairness",
+              "label": "Bias, Fairness & Generalization"
+            },
+            {
+              "id": "bias-mitigation",
+              "label": "Bias mitigation techniques"
+            },
+            {
+              "id": "house-prices",
+              "label": "Exercise 2 · House Prices"
+            },
+            {
+              "id": "evaluation",
+              "label": "模型比较与自测"
             }
           ]
         }

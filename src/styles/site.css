@@ -512,6 +512,12 @@ a {
   min-width: 0;
 }
 
+/* Long source filenames and inline formulas must fit narrow reading columns. */
+.chapter cite,
+.chapter :not(pre) > code {
+  overflow-wrap: anywhere;
+}
+
 .chapter-hero {
   padding: 10px 0 38px;
   border-bottom: 1px solid var(--line);
