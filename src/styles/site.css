@@ -639,6 +639,14 @@ a {
   font-size: 15px;
 }
 
+.table-wrap {
+  overflow-x: auto;
+}
+
+.table-wrap > .terms {
+  min-width: 600px;
+}
+
 .terms th,
 .terms td {
   padding: 11px 12px;

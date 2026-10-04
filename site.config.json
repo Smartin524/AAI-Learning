@@ -481,7 +481,7 @@
       "index": "04",
       "name": "CA6001 · AI Algorithms Fundamentals & Applications",
       "menuLabel": "CA6001 · AI Algorithms",
-      "description": "监督与无监督学习、模型评价、强化学习及课堂案例",
+      "description": "监督与无监督学习、强化学习、深度学习与课堂案例",
       "entry": "courses/ca6001-module-01.html",
       "tocTitle": "CA6001 · AI ALGORITHMS",
       "pages": [
@@ -578,6 +578,78 @@
             {
               "id": "rl-practice",
               "label": "Notebook 练习与自测"
+            }
+          ]
+        },
+        {
+          "output": "courses/ca6001-module-03.html",
+          "content": "src/content/courses/ca6001-module-03.html",
+          "navLabel": "Module 3 第三周：深度学习",
+          "code": true,
+          "subsections": [
+            {
+              "id": "deep-learning",
+              "label": "What Is Deep Learning?"
+            },
+            {
+              "id": "resurgence",
+              "label": "Why the Resurgence of Deep Learning?"
+            },
+            {
+              "id": "building-blocks",
+              "label": "Building Blocks: Neural Networks"
+            },
+            {
+              "id": "forward-backward",
+              "label": "Forward and Backward Propagation"
+            },
+            {
+              "id": "gradient-activation",
+              "label": "Gradient Descent & Activation Functions"
+            },
+            {
+              "id": "prediction-dense",
+              "label": "Prediction & Fully Connected Layers"
+            },
+            {
+              "id": "cnn",
+              "label": "Popular Architectures: CNN"
+            },
+            {
+              "id": "transformer",
+              "label": "Popular Architectures: Transformer & Self-Attention"
+            },
+            {
+              "id": "applications-limits",
+              "label": "Applications, Challenges and Limitations"
+            },
+            {
+              "id": "tutorial-basics",
+              "label": "Tutorial 1 · Basic Programming"
+            },
+            {
+              "id": "tutorial-mnist",
+              "label": "Tutorial 2 · Q1: MNIST Architecture"
+            },
+            {
+              "id": "tutorial-backprop",
+              "label": "Tutorial 2 · Q2: Backpropagation Analysis"
+            },
+            {
+              "id": "tutorial-overfitting",
+              "label": "Tutorial 2 · Optional Q3: Overfitting"
+            },
+            {
+              "id": "selena-case",
+              "label": "Week 3 Case · SELENA+"
+            },
+            {
+              "id": "selena-tasks",
+              "label": "SELENA Exhibit · 10,000 Patients"
+            },
+            {
+              "id": "practice",
+              "label": "自测与掌握标准"
             }
           ]
         }
