@@ -63,7 +63,7 @@ body {
   margin: 0;
   background: var(--paper);
   color: var(--ink);
-  font: 16px/1.78 "Microsoft YaHei", "PingFang SC", system-ui, sans-serif;
+  font: 14px/1.6 "Microsoft YaHei", "PingFang SC", system-ui, sans-serif;
 }
 
 a {
@@ -90,8 +90,8 @@ a {
 .header-inner {
   display: flex;
   align-items: center;
-  max-width: 1180px;
-  height: 64px;
+  max-width: 1280px;
+  height: 54px;
   margin: auto;
   padding: 0 28px;
 }
@@ -335,14 +335,14 @@ a {
 .home {
   max-width: 760px;
   margin: auto;
-  padding: 56px 28px 90px;
+  padding: 32px 24px 60px;
 }
 
 .course-dashboard h1 {
   min-height: 1.25em;
-  margin: 0 0 42px;
+  margin: 0 0 26px;
   text-align: center;
-  font-size: 38px;
+  font-size: 30px;
   line-height: 1.18;
   letter-spacing: -0.8px;
 }
@@ -376,8 +376,8 @@ a {
   display: grid;
   grid-template-columns: 52px minmax(0, 1fr);
   align-items: center;
-  gap: 20px;
-  padding: 26px 10px;
+  gap: 16px;
+  padding: 17px 10px;
   border-bottom: 1px solid var(--line);
   color: var(--ink);
   text-decoration: none;
@@ -401,30 +401,30 @@ a {
 }
 
 .course-row-content strong {
-  font-size: 20px;
+  font-size: 17px;
   line-height: 1.35;
 }
 
 .course-row-content small {
-  margin-top: 6px;
+  margin-top: 4px;
   color: var(--muted);
-  font-size: 14px;
+  font-size: 13px;
 }
 
 .chapter-layout {
   display: grid;
-  grid-template-columns: 250px minmax(0, 1fr);
-  gap: 58px;
-  max-width: 1180px;
+  grid-template-columns: 224px minmax(0, 1fr);
+  gap: 32px;
+  max-width: 1280px;
   margin: auto;
-  padding: 42px 28px 90px;
+  padding: 24px 28px 60px;
 }
 
 .toc {
   position: sticky;
-  top: 92px;
+  top: 74px;
   align-self: start;
-  max-height: calc(100vh - 115px);
+  max-height: calc(100vh - 92px);
   padding-right: 10px;
   overflow: auto;
 }
@@ -449,11 +449,11 @@ a {
 .toc a {
   display: block;
   margin-left: -9px;
-  padding: 6px 9px;
+  padding: 4px 8px;
   border-left: 2px solid transparent;
   border-radius: 9px;
   color: var(--muted);
-  font-size: 14px;
+  font-size: 13px;
   text-decoration: none;
   transition: background-color 0.16s ease, color 0.16s ease, border-color 0.16s ease;
 }
@@ -495,7 +495,7 @@ a {
 
 .chapter-subnav-inner {
   min-height: 0;
-  margin: 4px 0 8px 10px;
+  margin: 2px 0 5px 10px;
   padding-left: 9px;
   overflow: hidden;
   border-left: 1px solid var(--line);
@@ -503,9 +503,9 @@ a {
 
 .toc .chapter-subnav a {
   margin-left: 0;
-  padding: 5px 8px;
+  padding: 3px 7px;
   border-left-width: 0;
-  font-size: 13px;
+  font-size: 12px;
 }
 
 .chapter {
@@ -519,19 +519,19 @@ a {
 }
 
 .chapter-hero {
-  padding: 10px 0 38px;
+  padding: 4px 0 20px;
   border-bottom: 1px solid var(--line);
 }
 
 .chapter-kicker {
-  margin-bottom: 9px;
+  margin-bottom: 6px;
   color: var(--blue);
-  font: 750 14px Consolas, monospace;
+  font: 750 12px Consolas, monospace;
 }
 
 .chapter h1 {
-  margin: 0 0 14px;
-  font-size: 42px;
+  margin: 0 0 10px;
+  font-size: 30px;
   line-height: 1.2;
   letter-spacing: -1px;
 }
@@ -540,12 +540,12 @@ a {
   max-width: 760px;
   margin: 0;
   color: var(--muted);
-  font-size: 18px;
+  font-size: 15px;
 }
 
 .outcomes {
-  margin-top: 24px;
-  padding: 16px 19px;
+  margin-top: 14px;
+  padding: 10px 13px;
   border-left: 4px solid var(--blue);
   background: var(--surface-hover);
 }
@@ -556,37 +556,37 @@ a {
 }
 
 .content-section {
-  padding: 38px 0;
+  padding: 22px 0;
   border-bottom: 1px solid var(--line);
-  scroll-margin-top: 82px;
+  scroll-margin-top: 72px;
 }
 
 .chapter h3[id],
 .chapter h4[id] {
-  scroll-margin-top: 82px;
+  scroll-margin-top: 72px;
 }
 
 .content-section h2 {
-  margin: 0 0 11px;
-  font-size: 25px;
+  margin: 0 0 8px;
+  font-size: 21px;
   line-height: 1.35;
 }
 
 .content-section h3 {
-  margin: 28px 0 8px;
-  font-size: 18px;
-}
-
-.content-section h4 {
-  margin: 22px 0 8px;
+  margin: 18px 0 6px;
   font-size: 16px;
 }
 
-.chapter-chart-map {
-  margin: 8px 0 16px;
-  color: var(--muted);
+.content-section h4 {
+  margin: 14px 0 6px;
   font-size: 14px;
-  line-height: 1.7;
+}
+
+.chapter-chart-map {
+  margin: 6px 0 10px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.6;
 }
 
 .chapter-chart-map strong {
@@ -594,11 +594,11 @@ a {
 }
 
 .content-section p {
-  margin: 9px 0;
+  margin: 6px 0;
 }
 
 .chapter details {
-  margin: 14px 0;
+  margin: 10px 0;
   overflow: hidden;
   border: 1px solid var(--line);
   border-radius: 10px;
@@ -606,7 +606,7 @@ a {
 }
 
 .chapter details summary {
-  padding: 12px 15px;
+  padding: 8px 11px;
   color: var(--blue);
   font-weight: 750;
   cursor: pointer;
@@ -634,9 +634,9 @@ a {
 
 .terms {
   width: 100%;
-  margin: 18px 0;
+  margin: 12px 0;
   border-collapse: collapse;
-  font-size: 15px;
+  font-size: 13px;
 }
 
 .table-wrap {
@@ -649,7 +649,7 @@ a {
 
 .terms th,
 .terms td {
-  padding: 11px 12px;
+  padding: 7px 9px;
   border-bottom: 1px solid var(--line);
   text-align: left;
   vertical-align: top;
@@ -669,8 +669,8 @@ a {
 
 .note,
 .warning {
-  margin: 18px 0;
-  padding: 14px 18px;
+  margin: 12px 0;
+  padding: 9px 12px;
 }
 
 .note {
@@ -685,12 +685,12 @@ a {
 
 .error-list li,
 .master-list li {
-  margin: 7px 0;
+  margin: 4px 0;
 }
 
 .exercise {
-  margin-top: 22px;
-  padding: 17px 20px;
+  margin-top: 14px;
+  padding: 10px 13px;
   border-left: 4px solid var(--success);
   background: var(--success-bg);
 }
@@ -710,7 +710,7 @@ a {
   display: flex;
   justify-content: space-between;
   gap: 20px;
-  padding-top: 35px;
+  padding-top: 22px;
 }
 
 .chapter-nav a {
@@ -724,8 +724,8 @@ a {
 }
 
 .course-example {
-  margin: 24px 0 30px;
-  padding: 10px;
+  margin: 16px 0 18px;
+  padding: 7px;
   border: 1px solid var(--line);
   border-radius: 10px;
   background: var(--surface-muted);
@@ -735,6 +735,8 @@ a {
   display: block;
   width: 100%;
   height: auto;
+  max-height: 440px;
+  object-fit: contain;
   border: 1px solid var(--line);
   border-radius: 6px;
   background: #ffffff;
@@ -744,9 +746,9 @@ a {
   display: flex;
   justify-content: space-between;
   gap: 18px;
-  padding: 10px 4px 2px;
+  padding: 6px 3px 1px;
   color: var(--muted);
-  font-size: 13px;
+  font-size: 12px;
   line-height: 1.5;
 }
 
@@ -782,18 +784,18 @@ a {
   }
 
   .home {
-    padding: 32px 18px 70px;
+    padding: 24px 16px 48px;
   }
 
   .course-dashboard h1 {
-    margin-bottom: 28px;
-    font-size: 32px;
+    margin-bottom: 20px;
+    font-size: 26px;
   }
 
   .course-row {
     grid-template-columns: 38px minmax(0, 1fr);
     gap: 12px;
-    padding: 21px 4px;
+    padding: 15px 4px;
   }
 
   .course-row:hover {
@@ -802,7 +804,7 @@ a {
   }
 
   .course-row-content strong {
-    font-size: 17px;
+    font-size: 15px;
   }
 
   .course-row-content small {
@@ -811,14 +813,14 @@ a {
 
   .chapter-layout {
     display: block;
-    padding: 25px 18px 70px;
+    padding: 18px 16px 48px;
   }
 
   .toc {
     position: static;
     max-height: none;
-    margin-bottom: 28px;
-    padding-bottom: 20px;
+    margin-bottom: 18px;
+    padding-bottom: 12px;
     overflow: visible;
     border-bottom: 1px solid var(--line);
   }
@@ -829,19 +831,19 @@ a {
   }
 
   .chapter h1 {
-    font-size: 33px;
+    font-size: 26px;
   }
 
   .chapter-summary {
-    font-size: 16px;
+    font-size: 14px;
   }
 
   .content-section {
-    padding: 32px 0;
+    padding: 20px 0;
   }
 
   .content-section h2 {
-    font-size: 22px;
+    font-size: 19px;
   }
 
   .terms {
@@ -852,7 +854,7 @@ a {
 
   .terms th,
   .terms td {
-    padding: 8px;
+    padding: 6px 8px;
   }
 
   .chapter-nav {
@@ -860,13 +862,13 @@ a {
   }
 
   .course-example {
-    margin: 20px 0 26px;
-    padding: 7px;
+    margin: 14px 0 16px;
+    padding: 6px;
   }
 
   .course-example figcaption {
     display: block;
-    padding: 9px 3px 2px;
+    padding: 6px 3px 1px;
   }
 
   .course-example figcaption strong,
@@ -916,8 +918,8 @@ body:is([data-course-id="python"], [data-course-id="sql"]) .chapter pre {
 body:is([data-course-id="python"], [data-course-id="sql"]) .reference-code-columns {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  gap: 16px;
-  margin: 15px 0 21px;
+  gap: 12px;
+  margin: 10px 0 14px;
 }
 
 body:is([data-course-id="python"], [data-course-id="sql"]) .reference-code-columns > pre,
@@ -942,5 +944,5 @@ body:is([data-course-id="python"], [data-course-id="sql"]) .copy-code-button {
 }
 
 body:is([data-course-id="python"], [data-course-id="sql"]) .code-block pre {
-  padding-top: 19px;
+  padding-top: 12px;
 }

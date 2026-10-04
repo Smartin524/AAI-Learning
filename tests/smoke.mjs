@@ -108,11 +108,12 @@ try {
     hash: location.hash,
     behavior: getComputedStyle(document.documentElement).scrollBehavior,
     targetTop: document.querySelector("#numbers").getBoundingClientRect().top,
+    targetMargin: parseFloat(getComputedStyle(document.querySelector("#numbers")).scrollMarginTop),
   }));
   assert(anchorState.hash === "#numbers", "Section anchor did not update the URL");
   assert(await page.getByRole("link", { name: "数字与进制", exact: true }).getAttribute("aria-current") === "location", "Current subtitle state did not follow the URL hash");
   assert(anchorState.behavior === "auto", "Section navigation is not immediate");
-  assert(Math.abs(anchorState.targetTop - 82) < 3, "Section anchor landed at the wrong offset");
+  assert(Math.abs(anchorState.targetTop - anchorState.targetMargin) < 3, "Section anchor landed at the wrong offset");
 
   // Verify speculative loads, shared requests, retries and stale navigation.
   const warmContext = await browser.newContext();

@@ -12,13 +12,13 @@
 }
 
 pre {
-  margin: 15px 0 21px;
-  padding: 19px 21px;
+  margin: 10px 0 14px;
+  padding: 12px 15px;
   overflow: auto;
   background: var(--code-block-background);
   color: var(--code-block-text);
   border-radius: 7px;
-  font: 14px/1.66 Consolas, "Cascadia Code", monospace;
+  font: 13px/1.55 Consolas, "Cascadia Code", monospace;
   tab-size: 4;
 }
 
@@ -31,17 +31,17 @@ pre {
 .syntax-operator { color: var(--code-token-operator); }
 .syntax-variable { color: var(--code-token-variable); }
 
-.code-block { position: relative; margin: 15px 0 21px; }
-.code-block pre { margin: 0; padding-top: 51px; }
+.code-block { position: relative; margin: 10px 0 14px; }
+.code-block pre { margin: 0; padding-top: 42px; }
 .copy-code-button {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 7px;
+  right: 7px;
   z-index: 1;
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 6px 11px;
+  padding: 5px 9px;
   border: 1px solid #41506a;
   border-radius: 5px;
   background: #1c2940;
@@ -73,7 +73,7 @@ pre {
 }
 
 @media (max-width: 800px) {
-  pre { max-width: 100%; padding: 15px 13px; font-size: 12.5px; }
-  .code-block pre { padding-top: 49px; }
-  .copy-code-button { top: 9px; right: 9px; }
+  pre { max-width: 100%; padding: 11px 12px; font-size: 12.5px; }
+  .code-block pre { padding-top: 40px; }
+  .copy-code-button { top: 6px; right: 6px; }
 }
