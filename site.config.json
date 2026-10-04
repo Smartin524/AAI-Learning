@@ -531,7 +531,8 @@
               "id": "practice",
               "label": "自测与第二周衔接"
             }
-          ]
+          ],
+          "week": 1
         },
         {
           "output": "courses/ca6001-module-02.html",
@@ -579,7 +580,8 @@
               "id": "rl-practice",
               "label": "Notebook 练习与自测"
             }
-          ]
+          ],
+          "week": 2
         },
         {
           "output": "courses/ca6001-module-03.html",
@@ -651,9 +653,14 @@
               "id": "practice",
               "label": "自测与掌握标准"
             }
-          ]
+          ],
+          "week": 3
         }
-      ]
+      ],
+      "schedule": {
+        "firstWeekStart": "2026-09-14",
+        "timeZone": "Asia/Singapore"
+      }
     },
     {
       "id": "ca6002",
@@ -739,7 +746,7 @@
       "index": "06",
       "name": "CA6003 · Best Practices in Data Governance, Preparation & Analytics",
       "menuLabel": "CA6003 · Data Governance & Analytics",
-      "description": "数据剖析与清洗、特征编码、缩放及偏差缓解",
+      "description": "数据剖析与清洗、特征工程、数据分析与决策",
       "entry": "courses/ca6003-module-01.html",
       "tocTitle": "CA6003 · DATA GOVERNANCE & ANALYTICS",
       "pages": [
@@ -785,7 +792,8 @@
               "id": "practice",
               "label": "自测与掌握标准"
             }
-          ]
+          ],
+          "week": 1
         },
         {
           "output": "courses/ca6003-module-02.html",
@@ -829,9 +837,75 @@
               "id": "evaluation",
               "label": "模型比较与自测"
             }
-          ]
+          ],
+          "week": 2
+        },
+        {
+          "output": "courses/ca6003-module-03.html",
+          "content": "src/content/courses/ca6003-module-03.html",
+          "navLabel": "Module 3 第三周：Data Analytics",
+          "code": true,
+          "subsections": [
+            {
+              "id": "analytics-context",
+              "label": "Data Analytics: Where Does It Fit?"
+            },
+            {
+              "id": "analytics-types",
+              "label": "Types of Data Analytics"
+            },
+            {
+              "id": "descriptive",
+              "label": "Descriptive Analytics"
+            },
+            {
+              "id": "diagnostic",
+              "label": "Diagnostic: Relationship & Dependency Analysis"
+            },
+            {
+              "id": "root-cause",
+              "label": "Root Cause: Fishbone & 5 Whys"
+            },
+            {
+              "id": "hypothesis-testing",
+              "label": "Hypothesis Testing & Validation"
+            },
+            {
+              "id": "predictive",
+              "label": "Predictive Analytics"
+            },
+            {
+              "id": "prescriptive",
+              "label": "Prescriptive Analytics"
+            },
+            {
+              "id": "house-examples",
+              "label": "House Prices · Five Questions"
+            },
+            {
+              "id": "analytics-summary",
+              "label": "Data Analytics Summary"
+            },
+            {
+              "id": "pca-notebook",
+              "label": "Notebook Supplement · PCA Dimensionality Reduction"
+            },
+            {
+              "id": "tree-notebook",
+              "label": "Notebook Supplement · Trees & Imbalanced Classification"
+            },
+            {
+              "id": "practice",
+              "label": "自测与掌握标准"
+            }
+          ],
+          "week": 3
         }
-      ]
+      ],
+      "schedule": {
+        "firstWeekStart": "2026-09-14",
+        "timeZone": "Asia/Singapore"
+      }
     }
   ]
 }

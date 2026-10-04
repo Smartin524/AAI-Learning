@@ -19,6 +19,10 @@
 
 项目的设计哲学、信息架构、颜色、排版、响应式、可访问性和新增课程约定统一记录在 [rules/ui-design.md](rules/ui-design.md)。新增课程或章节前应先遵循这份规则，避免产生新的导航和卡片体系。
 
+CA6003 Module 3 按第三周课件整理四类 Data Analytics、相关与根因分析、假设检验和五个 House Prices 场景，附 PCA 与不平衡树分类 Notebook 学习补充。
+
+CA6001 与 CA6003 的首页和顶部课程入口按新加坡时间选择当周页面。课程第一周为 2026-09-14 起的周一至周日；未开课、当周未收录或已超过收录周次时回到第一周。直接链接与课程内目录保留手动选择。后续增加页面时，在 `site.config.json` 的该页填写 `week`；`schedule.firstWeekStart` 和 `schedule.timeZone` 配置日期基准。
+
 ## 在线阅读
 
 https://smartin524.github.io/AAI-Learning/

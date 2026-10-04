@@ -37,6 +37,8 @@ const address = server.address();
 const baseUrl = `http://127.0.0.1:${address.port}`;
 const browser = await chromium.launch({ headless: true });
 const page = await browser.newPage({ viewport: { width: 1280, height: 720 } });
+// Existing navigation checks exercise the stable first-week fallback.
+await page.clock.setFixedTime(new Date("2026-09-13T12:00:00Z"));
 const browserErrors = [];
 
 page.on("console", (message) => {
@@ -216,8 +218,60 @@ try {
   await page.setViewportSize({width:390,height:844});
   assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), "SQL page overflows on mobile");
 
+  const entryPage = await browser.newPage();
+  entryPage.on("pageerror", (error) => browserErrors.push(error.message));
+  const scheduledCourses = config.courses.filter((course) => course.schedule);
+  assert(scheduledCourses.map(course => course.id).join(",") === "ca6001,ca6003", "Only the two current courses should use weekly entries");
+  const dates = [
+    ["2026-09-13T15:59:59Z", 1], // Before teaching starts.
+    ["2026-09-20T16:00:00Z", 2], // Monday midnight in Singapore.
+    ["2026-10-04T15:59:59Z", 3], // Sunday stays in week three.
+    ["2026-10-04T16:00:00Z", 1], // Unpublished week four falls back.
+    ["2027-01-01T00:00:00Z", 1], // Beyond the collected course weeks.
+  ];
+  for (const [date, expectedWeek] of dates) {
+    await entryPage.clock.setFixedTime(new Date(date));
+    for (const course of scheduledCourses) {
+      await entryPage.goto(`${baseUrl}/index.html`);
+      const link = entryPage.locator(".course-row").filter({ hasText: course.name });
+      assert(await link.getAttribute("href") === `courses/${course.id}-module-0${expectedWeek}.html`, `${course.id}: wrong weekly entry at ${date}`);
+      await link.click();
+      await entryPage.waitForURL(`**/courses/${course.id}-module-0${expectedWeek}.html`);
+      assert(await entryPage.locator(".chapter-group.active .chapter-link").innerText().then(text => text.includes(`Module ${expectedWeek}`)), `${course.id}: weekly entry did not render`);
+    }
+  }
+
+  await entryPage.clock.setFixedTime(new Date("2026-10-04T12:00:00Z"));
+  await entryPage.goto(`${baseUrl}/courses/ca6001-module-01.html`);
+  assert(new URL(entryPage.url()).pathname.endsWith("ca6001-module-01.html"), "Direct week-one links must stay on week one");
+  await entryPage.getByRole("button", { name: "课程切换" }).click();
+  await entryPage.locator(".course-switcher-item").filter({ hasText: "CA6001" }).click();
+  await entryPage.waitForURL("**/courses/ca6001-module-03.html");
+  await entryPage.getByRole("button", { name: "课程切换" }).click();
+  await entryPage.locator(".course-switcher-item").filter({ hasText: "CA6003" }).click();
+  await entryPage.waitForURL("**/courses/ca6003-module-03.html");
+  await entryPage.getByRole("heading", { name: "第三周：Data Analytics 数据分析" }).waitFor();
+  await entryPage.locator(".chapter-link").filter({ hasText: "Module 1 第一周" }).click();
+  await entryPage.waitForURL("**/courses/ca6003-module-01.html");
+  assert(await entryPage.locator("h1").innerText().then(text => text.startsWith("第一周")), "Manual week selection should remain available");
+
+  // A tab left open over the week boundary refreshes before navigation.
+  await entryPage.goto(`${baseUrl}/index.html`);
+  await entryPage.clock.setFixedTime(new Date("2026-10-04T16:00:00Z"));
+  await entryPage.locator(".course-row").filter({ hasText: "CA6003" }).click();
+  await entryPage.waitForURL("**/courses/ca6003-module-01.html");
+  await entryPage.close();
+
+  const noJsContext = await browser.newContext({ javaScriptEnabled: false });
+  const noJsPage = await noJsContext.newPage();
+  await noJsPage.goto(`${baseUrl}/index.html`);
+  for (const course of scheduledCourses) {
+    assert(await noJsPage.locator(".course-row").filter({ hasText: course.name }).getAttribute("href") === course.entry, "No-JavaScript entry should fall back to week one");
+  }
+  await noJsContext.close();
+
   assert(browserErrors.length === 0, `Browser errors: ${browserErrors.join(" | ")}`);
-  console.log("Smoke test passed: home, course switch, theme, and section navigation.");
+  console.log("Smoke test passed: home, course switch, theme, section navigation, and dated weekly entries.");
 } finally {
   await browser.close();
   await new Promise((resolve) => server.close(resolve));

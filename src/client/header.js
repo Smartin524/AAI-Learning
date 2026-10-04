@@ -40,6 +40,10 @@
       }
     });
 
+    panel.querySelectorAll(".course-switcher-item").forEach((link) => {
+      link.addEventListener("click", () => closePopover(popover));
+    });
+
     popover.addEventListener("keydown", (event) => {
       if (event.key !== "Escape") return;
       closePopover(popover);

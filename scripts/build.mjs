@@ -52,6 +52,25 @@ const validateConfig = () => {
       throw new Error(`Course entry is not declared as a page: ${course.entry}`);
     }
 
+    if (course.schedule) {
+      const { firstWeekStart, timeZone } = course.schedule;
+      const date = new Date(`${firstWeekStart}T00:00:00Z`);
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(firstWeekStart)
+          || Number.isNaN(date.getTime())
+          || date.toISOString().slice(0, 10) !== firstWeekStart
+          || date.getUTCDay() !== 1) {
+        throw new Error(`${course.id}: firstWeekStart must be a valid Monday`);
+      }
+      if (!timeZone) throw new Error(`${course.id}: schedule timezone is required`);
+      new Intl.DateTimeFormat("en", { timeZone });
+      const weeks = course.pages.map((page) => page.week);
+      if (weeks.some((week) => !Number.isInteger(week) || week < 1)
+          || new Set(weeks).size !== weeks.length
+          || !course.pages.some((page) => page.week === 1 && page.output === course.entry)) {
+        throw new Error(`${course.id}: scheduled pages need unique positive weeks and a week-one entry`);
+      }
+    }
+
     for (const page of course.pages) {
       if (outputs.has(page.output)) throw new Error(`Duplicate page output: ${page.output}`);
       outputs.add(page.output);
@@ -74,6 +93,7 @@ const assetSources = {
   tocJs: "src/client/toc.js",
   homeJs: "src/client/home.js",
   codeJs: "src/client/code-blocks.js",
+  courseEntryJs: "src/client/course-entry.js",
 };
 
 const buildDirectory = fromRoot("assets/build");
@@ -116,9 +136,18 @@ const renderThemeControl = () => `
           </div>
         </div>`;
 
+const courseEntryAttributes = (course, prefix) => {
+  if (!course.schedule) return "";
+  const schedule = {
+    ...course.schedule,
+    pages: course.pages.map((page) => ({ week: page.week, href: `${prefix}${page.output}` })),
+  };
+  return ` data-course-entry="${escapeHtml(JSON.stringify(schedule))}"`;
+};
+
 const renderCourseMenu = (prefix, currentCourse) => {
   const items = config.courses.map((course) => `
-              <a class="course-switcher-item${course.id === currentCourse.id ? " active" : ""}" href="${prefix}${course.entry}"${course.id === currentCourse.id ? ' aria-current="page"' : ""}>
+              <a class="course-switcher-item${course.id === currentCourse.id ? " active" : ""}" href="${prefix}${course.entry}"${courseEntryAttributes(course, prefix)}${course.id === currentCourse.id ? ' aria-current="page"' : ""}>
                 <span class="course-switcher-dot" aria-hidden="true"></span>
                 <span><strong>${escapeHtml(course.menuLabel)}</strong><small>${escapeHtml(course.description)}</small></span>
               </a>`).join("");
@@ -160,6 +189,7 @@ const renderHead = ({ prefix, code = false }) => {
 
 const renderScripts = ({ prefix, home = false, course = false, code = false }) => {
   const scripts = [`<script src="${prefix}${assetManifest.headerJs}" defer></script>`];
+  scripts.push(`<script src="${prefix}${assetManifest.courseEntryJs}" defer></script>`);
   if (home) scripts.push(`<script src="${prefix}${assetManifest.homeJs}" defer></script>`);
   if (course) scripts.push(`<script src="${prefix}${assetManifest.tocJs}" defer></script>`);
   if (code) scripts.push(`<script src="${prefix}${assetManifest.codeJs}" defer></script>`);
@@ -213,7 +243,7 @@ const renderChapterNav = (course, currentPage, prefix) => {
 };
 
 const courseRows = config.courses.map((course) => `
-        <a class="course-row" href="${course.entry}">
+        <a class="course-row" href="${course.entry}"${courseEntryAttributes(course, "")}>
           <span class="course-row-index">${escapeHtml(course.index)}</span>
           <span class="course-row-content"><strong>${escapeHtml(course.name)}</strong><small>${escapeHtml(course.description)}</small></span>
         </a>`).join("");
