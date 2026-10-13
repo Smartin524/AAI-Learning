@@ -1,0 +1,259 @@
+<main class="chapter">
+<header class="chapter-hero">
+  <div class="chapter-kicker">CA6001 · MODULE 05 · WEEK 5</div>
+  <h1>第五周：计算机视觉</h1>
+  <p class="chapter-summary">NLP 让计算机“说”，计算机视觉让计算机“看”。本周从“图片就是数字矩阵”开始，讲卷积怎么算、步幅和补边怎么影响尺寸、CNN 由哪几层组成，再到 LeNet、AlexNet、目标检测和 IoU，最后是图像生成和多模态模型。</p>
+  <div class="outcomes"><strong>学完你应该能够：</strong>手算一次卷积输出；用公式算特征图尺寸；说出 CNN 三种层各自的作用；读懂 LeNet 每层尺寸并算参数量；手算 IoU 并用阈值判断 TP / FP / FN；区分分类、检测、生成；说出 GAN 和扩散模型的原理。</div>
+</header>
+
+<section class="content-section" id="cv-intro">
+  <h2>What is Computer Vision? How do Computers See?｜图片就是数字</h2>
+  <p class="chapter-chart-map"><strong>本章图表 / 方法：</strong>CV 定义；像素矩阵；RGB 三通道；滑动窗口；卷积核（第 3–7 页）。</p>
+  <ul>
+    <li><strong>定义：</strong>让计算机理解和处理视觉信息，“像人一样看”。NLP 让计算机“说”，CV 让计算机“看”。</li>
+    <li>基于深度学习的 CV 需要<strong>海量数据</strong>，模型才能学会看边缘、形状等特征。近年的进展主要来自 <strong>CNN</strong>。</li>
+  </ul>
+  <div class="table-wrap"><table class="terms">
+    <thead><tr><th>概念</th><th>含义</th></tr></thead>
+    <tbody>
+      <tr><td>像素矩阵</td><td>计算机把图片看成数字矩阵，每个数是该像素的颜色强度</td></tr>
+      <tr><td>RGB 三通道</td><td>彩色图有红、绿、蓝三个矩阵，所以是 <strong>3 个通道</strong>；灰度图只有 1 个</td></tr>
+      <tr><td>Sliding window</td><td>不一次看整张图，而是用固定大小的窗口在图上滑动，在不同位置找物体或提取特征；窗口大小可调，适应大小物体</td></tr>
+      <tr><td>Kernel / filter</td><td>在图上滑动的小模板，找和它形状一致的模式；有检测横边、竖边、圆形等的卷积核</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section class="content-section" id="cv-applications">
+  <h2>Applications & Traditional vs Deep Learning｜应用与两种做法</h2>
+  <p class="chapter-chart-map"><strong>本章图表 / 方法：</strong>自动驾驶、Robotaxi、人脸识别、AI 绘图；传统方法与深度学习对比图（第 8–9 页）。</p>
+  <ul>
+    <li><strong>自动驾驶：</strong>改变通勤方式，催生 Robotaxi。</li>
+    <li><strong>人脸识别：</strong>政府能在上百万人中瞬间找到一个人。</li>
+    <li><strong>生成式 AI：</strong>几秒钟生成图片和艺术作品。</li>
+  </ul>
+  <div class="table-wrap"><table class="terms">
+    <thead><tr><th>传统方法</th><th>深度学习</th></tr></thead>
+    <tbody>
+      <tr><td>先<strong>人工提取特征</strong>，再训练分类器</td><td>模型<strong>自动学会提取特征</strong>，并直接完成分类</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section class="content-section" id="convolution">
+  <h2>Convolutional Layers｜卷积怎么算</h2>
+  <p class="chapter-chart-map"><strong>本章图表 / 方法：</strong>8×8 像素与 3×3 卷积核例子；卷积五步；步幅、补边与最大池化示意；特征图热力图（第 7、10–13 页）。</p>
+  <p>每个卷积核本质上是一个<strong>小特征检测器</strong>。训练时卷积核学会识别边缘、曲线、纹理甚至更复杂的形状，这个过程叫<strong>卷积</strong>，CNN 由此得名。深层卷积核学到的东西人往往看不懂。</p>
+  <h3>卷积五步（第 11 页）</h3>
+  <ol>
+    <li><strong>Overlay：</strong>把卷积核放在图像的一块区域上。</li>
+    <li><strong>Element-wise multiplication：</strong>对应位置相乘。</li>
+    <li><strong>Summation：</strong>全部加起来得到一个数。</li>
+    <li><strong>Output：</strong>这个数成为输出图（<strong>feature map / activation map</strong>）的一个像素。</li>
+    <li><strong>Sliding：</strong>按步幅（stride）滑到下一个位置，重复，直到铺满整张图。</li>
+  </ol>
+  <figure class="course-example"><a href="../assets/courseware/ca6001-module-05/kernel.png"><img src="../assets/courseware/ca6001-module-05/kernel.png" alt="第 7 页：8×8 像素矩阵与 3×3 卷积核相乘求和，得到 6×6 卷积结果，第一个值是 22" width="1440" height="809" loading="lazy"></a><figcaption>第 7 页：8×8 图像 × 3×3 卷积核 → 6×6 输出。（点击查看原图）</figcaption></figure>
+  <p><strong>算第一个输出：</strong>左上角 3×3 区域是 [[0,0,0],[0,1,0],[0,8,2]]，卷积核是 [[1,2,1],[2,4,2],[1,2,1]]：</p>
+  <pre><code class="language-text">0×1 + 0×2 + 0×1
++ 0×2 + 1×4 + 0×2
++ 0×1 + 8×2 + 2×1   = 4 + 16 + 2 = 22   ← 输出左上角的 22</code></pre>
+  <p>往右滑一格，区域 [[0,0,0],[1,0,4],[8,2,5]] → 0 + (2 + 8) + (8 + 4 + 5) = <strong>27</strong>，和课件第二个值一致。</p>
+  <h3>Stride 和 Padding（第 12 页）</h3>
+  <figure class="course-example"><a href="../assets/courseware/ca6001-module-05/stride-padding.png"><img src="../assets/courseware/ca6001-module-05/stride-padding.png" alt="第 12 页：7×7 输入补一圈 0 变 9×9，3×3 卷积核步幅 2 得到 4×4，再最大池化得到 2×2" width="1440" height="809" loading="lazy"></a><figcaption>第 12 页：补边 → 步幅 2 卷积 → 最大池化。（点击查看原图）</figcaption></figure>
+  <ul>
+    <li><strong>Stride</strong>：卷积核每次移动的距离。</li>
+    <li><strong>Padding</strong>：在矩阵边缘补数（通常补 0）。</li>
+    <li><strong>尺寸公式：</strong><code>输出 = ⌊(N + 2P − K) / S⌋ + 1</code>（N 输入边长、P 补边、K 卷积核、S 步幅）。</li>
+  </ul>
+  <div class="table-wrap"><table class="terms">
+    <thead><tr><th>例子</th><th>计算</th><th>输出</th></tr></thead>
+    <tbody>
+      <tr><td>第 7 页：8×8，3×3，不补边，步幅 1</td><td>(8 − 3) / 1 + 1</td><td>6×6</td></tr>
+      <tr><td>第 12 页：7×7，3×3，补 1，步幅 2</td><td>(7 + 2 − 3) / 2 + 1</td><td>4×4，再 2×2 最大池化 → 2×2</td></tr>
+      <tr><td>第三周 CNN：28×28，5×5，不补边，步幅 1</td><td>28 − 5 + 1</td><td>24×24</td></tr>
+    </tbody>
+  </table></div>
+  <p><strong>Feature map（第 13 页）：</strong>像热力图一样显示 CNN“看到”并用来分类的区域，卷积核滑过整张图时，匹配的区域会被高亮。</p>
+</section>
+
+<section class="content-section" id="cnn-architecture">
+  <h2>Convolutional Neural Networks｜CNN 三种层</h2>
+  <p class="chapter-chart-map"><strong>本章图表 / 方法：</strong>激活函数作用；ImageNet 数据集；CNN 结构与三种层的说明（第 14–17 页）。</p>
+  <div class="table-wrap"><table class="terms">
+    <thead><tr><th>层</th><th>作用</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Convolution</strong></td><td>CNN 的核心。小而可学习的卷积核像聚光灯一样在图上滑动，每个核专门识别一种特征（边缘、曲线、纹理），算点积得到特征图</td></tr>
+      <tr><td><strong>Pooling</strong></td><td><strong>下采样</strong>特征图：减少信息量但保留最重要的特征，让训练更便宜，也<strong>帮助防止过拟合</strong></td></tr>
+      <tr><td><strong>Fully connected</strong></td><td>多次卷积和池化后，把特征图<strong>展平（flatten）</strong>送进全连接层，用 <strong>softmax</strong> 完成最终分类</td></tr>
+    </tbody>
+  </table></div>
+  <ul>
+    <li><strong>激活函数（第 14 页）：</strong>决定神经元是否“激活”；没有它，网络只能学线性关系。</li>
+    <li><strong>ImageNet（第 15 页）：</strong>2010 年代初，“大量高质量标注数据”是一个<strong>范式转变</strong>。研究者从网上收集了数百万张图片，清洗、标注后用来训练 CNN。</li>
+  </ul>
+</section>
+
+<section class="content-section" id="classic-architectures">
+  <h2>Classification & Classic Architectures｜LeNet、AlexNet</h2>
+  <p class="chapter-chart-map"><strong>本章图表 / 方法：</strong>图像分类任务定义；LeNet 结构；AlexNet 结构；ImageNet 历年最佳准确率（第 18–21 页）。</p>
+  <p><strong>图像分类：</strong>给数百万张图打上类别标签。输入是标好“猫 / 狗”的图（<strong>监督学习</strong>），输出是各类别的概率分布。著名数据集：<strong>ImageNet、CIFAR</strong>。</p>
+  <figure class="course-example"><a href="../assets/courseware/ca6001-module-05/lenet.png"><img src="../assets/courseware/ca6001-module-05/lenet.png" alt="第 19 页：LeNet 结构，32×32 输入，C1 6 张 28×28 特征图，S2 6 张 14×14，C3 16 张 10×10，S4 16 张 5×5，C5 120，F6 84，输出 10" width="1440" height="809" loading="lazy"></a><figcaption>第 19 页：LeNet 结构。（点击查看原图）</figcaption></figure>
+  <div class="table-wrap"><table class="terms">
+    <thead><tr><th>LeNet 层</th><th>操作</th><th>输出</th></tr></thead>
+    <tbody>
+      <tr><td>Input</td><td>—</td><td>32×32×1</td></tr>
+      <tr><td>C1</td><td>6 个 5×5 卷积核</td><td>6 @ 28×28（32 − 5 + 1）</td></tr>
+      <tr><td>S2</td><td>2×2 下采样</td><td>6 @ 14×14</td></tr>
+      <tr><td>C3</td><td>16 个 5×5 卷积核</td><td>16 @ 10×10</td></tr>
+      <tr><td>S4</td><td>2×2 下采样</td><td>16 @ 5×5</td></tr>
+      <tr><td>C5</td><td>120 个 5×5 卷积核（相当于全连接）</td><td>120</td></tr>
+      <tr><td>F6</td><td>全连接</td><td>84</td></tr>
+      <tr><td>Output</td><td>全连接</td><td>10（数字 0–9）</td></tr>
+    </tbody>
+  </table></div>
+  <p><strong>AlexNet（第 20 页）：</strong>更大更深。C1 是 96 个卷积核、输出 55×55；C2 256 个（27×27）；C3、C4 各 384 个，C5 256 个（13×13）；然后 FC6、FC7 各 4,096 个神经元，FC8 输出 <strong>1,000 类</strong>（ImageNet）。</p>
+  <p><strong>ImageNet 准确率（第 21 页）：</strong>2011 年最佳约 50%；<strong>AlexNet（2012）</strong>跳到约 63%；<strong>ResNet（2016 前后）</strong>约 81%；2020 年后超过 90%。</p>
+</section>
+
+<section class="content-section" id="object-detection">
+  <h2>Object Detection & IoU｜检测“在哪里”，用 IoU 打分</h2>
+  <p class="chapter-chart-map"><strong>本章图表 / 方法：</strong>街景检测框（第 22 页）；补充讲义 CA6001_Intersection Over Union.pptx 10 页；Intersection_Over_Union_Tutorial.ipynb。</p>
+  <figure class="course-example"><a href="../assets/courseware/ca6001-module-05/detection.png"><img src="../assets/courseware/ca6001-module-05/detection.png" alt="第 22 页：街景中用彩色框标出车、行人、自行车、红绿灯" width="1440" height="809" loading="lazy"></a><figcaption>第 22 页：检测 = 分类（是什么）+ 定位（框在哪里）。（点击查看原图）</figcaption></figure>
+  <ul>
+    <li><strong>目标检测</strong>在分类之外多了一个维度：找出物体<strong>在哪里</strong>（bounding box）。</li>
+    <li><strong>经典架构：</strong>YOLO（You Only Look Once）、R-CNN（Region-based CNN）。</li>
+    <li><strong>应用：</strong>自动驾驶、监控、制造业缺陷检测。</li>
+  </ul>
+  <h3>IoU：预测框和真实框有多重合</h3>
+  <p>预测框几乎不会和真实框逐像素一致，所以不能只问“对不对”，需要一个分数：完全重合 = 1，不重合 = 0。IoU 就是把 Jaccard 指数用在两个框上。</p>
+  <pre><code class="language-text">IoU(A, B) = |A ∩ B| / |A ∪ B| = |A ∩ B| / (|A| + |B| − |A ∩ B|)      范围 [0, 1]</code></pre>
+  <p><strong>五步算法：</strong>① 交集的角：x、y 各取<strong>最小值里的最大</strong>、<strong>最大值里的最小</strong> ② 宽和高<strong>小于 0 就截成 0</strong>（不重合时面积为 0）③ 交集面积 = 宽 × 高 ④ 两个框各自面积 ⑤ 并集 = |A| + |B| − 交集，再相除。</p>
+  <div class="table-wrap"><table class="terms">
+    <thead><tr><th>例子：真实框 [50, 50, 150, 150]，预测框 [70, 70, 170, 170]</th><th></th></tr></thead>
+    <tbody>
+      <tr><td>交集的角</td><td>(70, 70) 到 (150, 150)</td></tr>
+      <tr><td>交集面积</td><td>80 × 80 = 6,400</td></tr>
+      <tr><td>两个框面积</td><td>100 × 100 = 10,000，各一个</td></tr>
+      <tr><td>并集</td><td>10,000 + 10,000 − 6,400 = 13,600</td></tr>
+      <tr><td><strong>IoU</strong></td><td>6,400 / 13,600 = <strong>0.4706</strong></td></tr>
+    </tbody>
+  </table></div>
+  <p><strong>四种情况：</strong>部分重合 0.47；完全重合 1.00；不重合 0.00；一个框完全包含另一个（70×70 的预测框在 100×100 的真实框里）0.49。</p>
+  <pre><code class="language-python">def calculate_iou(box1, box2):
+    x1, y1 = max(box1[0], box2[0]), max(box1[1], box2[1])   # 最小值里取最大
+    x2, y2 = min(box1[2], box2[2]), min(box1[3], box2[3])   # 最大值里取最小
+    inter = max(0, x2 - x1) * max(0, y2 - y1)               # 截到 0：不重合时为 0
+    area1 = (box1[2] - box1[0]) * (box1[3] - box1[1])
+    area2 = (box2[2] - box2[0]) * (box2[3] - box2[1])
+    union = area1 + area2 - inter
+    return 0.0 if union == 0 else inter / union</code></pre>
+  <h3>从 IoU 到判断：阈值 τ</h3>
+  <div class="table-wrap"><table class="terms">
+    <thead><tr><th>结果</th><th>条件</th></tr></thead>
+    <tbody>
+      <tr><td><strong>TP</strong></td><td>IoU ≥ τ，预测框匹配上真实框且重合够好</td></tr>
+      <tr><td><strong>FP</strong></td><td>IoU &lt; τ，或者框画在没有物体的地方</td></tr>
+      <tr><td><strong>FN</strong></td><td>有真实物体，但没有预测框和它重合得够好</td></tr>
+    </tbody>
+  </table></div>
+  <ul>
+    <li><strong>τ 怎么选：</strong>通用检测（COCO）用 <strong>0.5</strong>；自动驾驶 <strong>0.75</strong>；医学影像更严，如 <strong>0.9</strong>。τ 越高，FP 越少、FN 越多。</li>
+    <li><strong>mAP：</strong>IoU → 按 τ 判 TP / FP / FN → 每类算 precision 和 recall → AP（PR 曲线下面积）→ 对所有类平均得到 mAP。COCO 报告 <strong>mAP@[0.5:0.95]</strong>：在 0.50、0.55 … 0.95 十个阈值上取平均，单个阈值可以被“钻空子”，十个不行。</li>
+  </ul>
+  <p class="warning"><strong>易错：</strong>算交集时漏了 max(0, …)，两个框不重合时会得到负的宽高，IoU 就错了。</p>
+</section>
+
+<section class="content-section" id="generation-multimodal">
+  <h2>Content Generation & Multimodal Models｜生成与多模态</h2>
+  <p class="chapter-chart-map"><strong>本章图表 / 方法：</strong>扩散模型与 GAN；多模态模型、视觉语言模型、Vision LLM；GAN 生成的假名人；Google Photos 误标事件（第 23–30 页）。</p>
+  <div class="table-wrap"><table class="terms">
+    <thead><tr><th>方法</th><th>原理</th><th>例子</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Diffusion models</strong></td><td>逐步往图片加噪声，再学习把这个过程反过来（去噪）</td><td>Stable Diffusion、Midjourney、DALL-E</td></tr>
+      <tr><td><strong>GAN</strong></td><td>两个网络竞争：<strong>生成器</strong>造图，<strong>判别器</strong>找假图；像极小极大游戏，生成器想骗过判别器，判别器想识破</td><td>假名人照片（第 27–28 页）</td></tr>
+    </tbody>
+  </table></div>
+  <ul>
+    <li><strong>多模态深度学习：</strong>融合多种数据类型（文本、图像、视频、音频）。每种模态有专门的网络，输出再合成联合表示。例：mixture of experts、Vision LLM。</li>
+    <li><strong>Vision Language Models（VLM）：</strong>输入图像和文本，输出文本；反过来也能由文本生成图像 / 视频。</li>
+    <li><strong>Vision LLM：</strong>通用多模态 LLM，每对编码器-解码器负责一种任务（图像描述、物体检测、分割、姿态检测），越来越接近人脑处理多种信息的方式。</li>
+  </ul>
+  <p class="warning"><strong>Responsible AI（第 30 页）：</strong>Google Photos 曾把非裔美国人错标为“大猩猩”，引发公关危机，花了很大力气平息。AI 不完美，需要负责任的 AI 工程师来规范它。</p>
+</section>
+
+<section class="content-section" id="lenet-notebook">
+  <h2>Notebook · LeNet-5 on MNIST｜动手训练 LeNet</h2>
+  <p class="chapter-chart-map"><strong>本章图表 / 方法：</strong>Lenet_Demo.ipynb：数据预处理、模型结构与参数量、10 轮训练结果。</p>
+  <p>LeNet-5 是 Yann LeCun 等人 1998 年提出的最早一批 CNN，用来识别邮编和支票上的手写数字。</p>
+  <ul>
+    <li><strong>预处理：</strong>MNIST 是 28×28，LeNet 要 32×32，所以<strong>每边补 2 个像素</strong>；像素除以 255 归一化到 0–1；标签转 one-hot（10 维）。</li>
+    <li><strong>现代改动：</strong>原版用 tanh / sigmoid，这里用 ReLU；池化用平均池化。</li>
+    <li><strong>训练：</strong>Adam、categorical cross-entropy（因为标签是 one-hot）、10 轮、batch 128。</li>
+  </ul>
+  <div class="table-wrap"><table class="terms">
+    <thead><tr><th>层</th><th>输出</th><th>参数</th><th>怎么算</th></tr></thead>
+    <tbody>
+      <tr><td>Conv2D 6 个 5×5</td><td>28×28×6</td><td>156</td><td>6 × (5 × 5 × 1 + 1)</td></tr>
+      <tr><td>AveragePooling 2×2</td><td>14×14×6</td><td>0</td><td>池化没有参数</td></tr>
+      <tr><td>Conv2D 16 个 5×5</td><td>10×10×16</td><td>2,416</td><td>16 × (5 × 5 × 6 + 1)</td></tr>
+      <tr><td>AveragePooling 2×2</td><td>5×5×16</td><td>0</td><td>—</td></tr>
+      <tr><td>Conv2D 120 个 5×5</td><td>1×1×120</td><td>48,120</td><td>120 × (5 × 5 × 16 + 1)</td></tr>
+      <tr><td>Dense 84</td><td>84</td><td>10,164</td><td>84 × (120 + 1)</td></tr>
+      <tr><td>Dense 10（softmax）</td><td>10</td><td>850</td><td>10 × (84 + 1)</td></tr>
+      <tr><td colspan="2"><strong>合计</strong></td><td colspan="2"><strong>61,706</strong></td></tr>
+    </tbody>
+  </table></div>
+  <p><strong>卷积层参数公式：</strong>卷积核个数 × (核宽 × 核高 × 输入通道数 + 1)，“+1”是偏置。</p>
+  <p><strong>结果：</strong>第 1 轮验证准确率 0.9625，第 10 轮 <strong>0.9901</strong>（训练准确率 0.9922，没有明显过拟合）。</p>
+  <pre><code class="language-python">models.Sequential([
+    layers.Conv2D(6, (5, 5), activation="relu", input_shape=(32, 32, 1)),
+    layers.AveragePooling2D((2, 2), strides=(2, 2)),
+    layers.Conv2D(16, (5, 5), activation="relu"),
+    layers.AveragePooling2D((2, 2), strides=(2, 2)),
+    layers.Conv2D(120, (5, 5), activation="relu"),
+    layers.Flatten(),
+    layers.Dense(84, activation="relu"),
+    layers.Dense(10, activation="softmax"),
+])</code></pre>
+</section>
+
+<section class="content-section" id="feature-maps-notebook">
+  <h2>Notebook · Visualizing Feature Maps｜看 CNN 每层学到了什么</h2>
+  <p class="chapter-chart-map"><strong>本章图表 / 方法：</strong>Feature_Maps_Tutorial.ipynb：用 ImageNet 预训练的 VGG16 提取一张猫图在五个卷积层的特征图。</p>
+  <ol>
+    <li><strong>加载 VGG16：</strong>在 ImageNet 上预训练，<code>include_top=False</code> 去掉分类层，只要特征提取部分（14,714,688 个参数）。</li>
+    <li><strong>处理图片：</strong>缩放到 VGG16 要求的 224×224×3，加一个 batch 维度，做 VGG16 专用预处理。</li>
+    <li><strong>建一个新模型：</strong>输入不变，输出改成五个中间层（block1_conv1 到 block5_conv1）的激活值。</li>
+    <li><strong>可视化：</strong>每层画 8 张特征图。</li>
+  </ol>
+  <div class="table-wrap"><table class="terms">
+    <thead><tr><th>层</th><th>学到什么</th></tr></thead>
+    <tbody>
+      <tr><td>浅层（block1、block2）</td><td>边缘、角、简单纹理，看起来像轮廓</td></tr>
+      <tr><td>中层（block3、block4）</td><td>把基础特征组合成物体部件（眼睛、轮子、毛发纹理）</td></tr>
+      <tr><td>深层（block5）</td><td>高度抽象，对复杂模式或整个物体响应；人很难看懂，但包含分类需要的语义信息</td></tr>
+    </tbody>
+  </table></div>
+  <pre><code class="language-python">model = VGG16(weights="imagenet", include_top=False)
+outputs = [model.get_layer(name).output for name in layer_names]
+feature_map_model = Model(inputs=model.input, outputs=outputs)
+feature_maps = feature_map_model.predict(x)          # 每层一个 (1, H, W, 通道数) 数组</code></pre>
+</section>
+
+<section class="content-section" id="practice">
+  <h2>自测</h2>
+  <p class="chapter-chart-map"><strong>本章图表 / 方法：</strong>按考试常见题型整理，先自己答再展开。</p>
+  <details class="exercise"><summary>1. 一张彩色图片在计算机里是什么？几个通道？</summary><p>像素数字矩阵，每个数是颜色强度；彩色图有 R、G、B 三个矩阵，3 个通道。</p></details>
+  <details class="exercise"><summary>2. 区域 [[60, 7, 98], [165, 159, 147], [187, 204, 165]] 和卷积核 [[1, 0, −1], [1, 0, −1], [1, 0, −1]] 的卷积结果？</summary><p>(60 − 98) + (165 − 147) + (187 − 165) = −38 + 18 + 22 = 2。</p></details>
+  <details class="exercise"><summary>3. 32×32 输入，5×5 卷积，不补边，步幅 1，输出多大？64×64、3×3、补 1、步幅 2 呢？</summary><p>32 − 5 + 1 = 28；⌊(64 + 2 − 3) / 2⌋ + 1 = ⌊31.5⌋ + 1 = 31 + 1 = 32。</p></details>
+  <details class="exercise"><summary>4. CNN 三种层各自的作用？</summary><p>卷积：用可学习的卷积核提取特征；池化：下采样，减少计算、帮助防过拟合；全连接：展平后用 softmax 分类。</p></details>
+  <details class="exercise"><summary>5. 一个卷积层有 16 个 5×5 卷积核，输入 6 个通道，参数多少？</summary><p>16 × (5 × 5 × 6 + 1) = 2,416。</p></details>
+  <details class="exercise"><summary>6. LeNet 为什么要把 MNIST 补到 32×32？</summary><p>LeNet 原本设计的输入是 32×32，MNIST 是 28×28，每边补 2 像素。</p></details>
+  <details class="exercise"><summary>7. 分类和目标检测的区别？检测的两个经典架构？</summary><p>检测在“是什么”之外还要找“在哪里”（bounding box）。YOLO 和 R-CNN。</p></details>
+  <details class="exercise"><summary>8. 真实框 [0, 0, 10, 10]，预测框 [5, 0, 15, 10]，IoU 是多少？</summary><p>交集 5 × 10 = 50；并集 100 + 100 − 50 = 150；IoU = 1/3 ≈ 0.33。</p></details>
+  <details class="exercise"><summary>9. τ = 0.5 时，上一题的预测算 TP 还是 FP？自动驾驶为什么用更高的 τ？</summary><p>0.33 &lt; 0.5，算 FP（那个真实物体也就成了 FN）。自动驾驶要求定位更准，τ 设 0.75，减少误报，代价是漏报变多。</p></details>
+  <details class="exercise"><summary>10. COCO 的 mAP@[0.5:0.95] 是什么意思？</summary><p>在 0.50、0.55 … 0.95 十个 IoU 阈值上分别算 mAP 再取平均，比单个阈值更稳健。</p></details>
+  <details class="exercise"><summary>11. GAN 的两个网络是什么？扩散模型怎么生成图片？</summary><p>生成器（造图）和判别器（识别假图），互相对抗。扩散模型逐步加噪声直到变成纯噪声，再学习逐步去噪还原。</p></details>
+  <details class="exercise"><summary>12. VGG16 浅层和深层特征图有什么区别？</summary><p>浅层是边缘、角等简单特征，能看懂；深层是高度抽象的物体级特征，难以看懂，但包含分类需要的语义信息。</p></details>
+</section>
+</main>

@@ -1,198 +1,262 @@
-<main class="chapter"><header class="chapter-hero"><div class="chapter-kicker">CA6001 · MODULE 02 · WEEK 2</div>
-<h1>第二周：强化学习</h1>
-<p class="chapter-summary">从“看见状态、采取动作、收到奖励”开始，沿 Chapter 2 理解价值函数、探索与利用、Q-learning、多臂老虎机、RLHF，并用 Lyft 匹配案例检验长期决策。</p>
-<div class="outcomes"><strong>学完你应该能够：</strong>把场景写成 RL 要素；计算折扣回报与一次价值更新；区分三类参数、on/off-policy；读懂 bandit 实验与 Lyft 案例。</div>
-<p class="note">来源：Dr Zhang Jiehuang，<cite>CA6001 Reinforcement Learning.pdf</cite>（31 页）；<cite>Lyft_RL_Case_Student.pdf</cite>（3 页）；<cite>Week_9_Reinforcement_Learning.ipynb</cite> 与 <cite>Multi_Armed_Bandit_Problem.ipynb</cite>。页码按 PDF 页序；保留老师的主题顺序。“学习补充 / 核对说明”区别于原课件表述。</p>
+<main class="chapter">
+<header class="chapter-hero">
+  <div class="chapter-kicker">CA6001 · MODULE 02 · WEEK 2</div>
+  <h1>第二周：强化学习</h1>
+  <p class="chapter-summary">强化学习没有标签，只有奖励：agent 在环境里试错，学会怎样行动能让<strong>长期累积奖励</strong>最大。本周的计算题集中在三个公式：折扣回报、格子世界的 V 值、老虎机的 Q 值更新；案例是 Lyft 的派单系统。</p>
+  <div class="outcomes"><strong>学完你应该能够：</strong>把一个场景拆成 agent、state、action、reward；区分 value / policy / model-based 和 Q-learning / SARSA；用 ε-greedy 和 γ 做计算；手算格子世界第一轮 V 值和老虎机 Q 值；说出 RLHF 的步骤；算 Lyft 匹配分。</div>
 </header>
 
-<section class="content-section" id="rl-basics"><h2>Types of ML & What Is Reinforcement Learning?</h2>
-<p class="chapter-chart-map"><strong>本章图表 / 方法：</strong>监督、无监督与强化学习对照；骑自行车类比（课件第 3–6 页）。</p>
-<p>强化学习（RL）研究<strong>如何通过与环境交互，学会使预期累计奖励最大的决策策略</strong>。每次选择会影响后面的处境，因此不能只看眼前得分。</p>
-<table class="terms"><thead><tr><th>学习方式</th><th>给模型什么反馈</th><th>学会什么</th></tr>
-</thead>
-<tbody><tr><td>Supervised learning</td><td>输入及对应标签，例如房屋属性 → 房价</td><td>从输入预测目标</td></tr>
-<tr><td>Unsupervised learning</td><td>没有目标标签的样本，例如客户消费记录</td><td>发现分组、结构或表示</td></tr>
-<tr><td>Reinforcement learning</td><td>采取动作后得到的奖励与新状态</td><td>在不同状态下如何行动，改善长期回报</td></tr>
-</tbody>
-</table>
-<p class="note">“RL 不需要 labelled data”指交互式 RL 不要求每一步都有正确动作标签，并不表示不能使用历史轨迹、人类示范或偏好数据。奖励可为正、零或负，也可能延迟出现；“没有奖励”本身也能提供信息。</p>
+<section class="content-section" id="rl-basics">
+  <h2>What Is Reinforcement Learning?｜第三种机器学习</h2>
+  <p class="chapter-chart-map"><strong>本章图表 / 方法：</strong>三种机器学习对照表；课本 / 交朋友 / 骑自行车类比（第 3–6 页）。</p>
+  <ul>
+    <li>RL 是除监督、无监督之外的<strong>第三种</strong>机器学习。</li>
+    <li>目标：学到<strong>最优策略（policy）</strong>，让 agent 在环境中的<strong>累积奖励最大</strong>。</li>
+    <li>方式：<strong>试错（trial and error）</strong>。</li>
+    <li>没有数据标签，唯一的反馈是有没有奖励。也可以用人类反馈来引导奖励（RLHF）。</li>
+  </ul>
+  <div class="table-wrap"><table class="terms">
+    <thead><tr><th>监督学习</th><th>无监督学习</th><th>强化学习</th></tr></thead>
+    <tbody>
+      <tr><td>有结果信息（标签）</td><td>没有结果信息</td><td>靠试错做决策</td></tr>
+      <tr><td>找和结果相关的模式</td><td>不靠标签和人工指导找分组</td><td>决策算法根据“奖励”不断改进</td></tr>
+      <tr><td>用模式预测未知结果</td><td>给出各组特征的洞察</td><td>擅长复杂情境</td></tr>
+      <tr><td>类比：看课本，答案在书后</td><td>类比：找兴趣爱好相同的人</td><td>类比：练骑自行车，每次都进步一点</td></tr>
+    </tbody>
+  </table></div>
 </section>
 
-<section class="content-section" id="rl-model"><h2>Reinforcement Learning Model & Workflow</h2>
-<p class="chapter-chart-map"><strong>本章图表 / 方法：</strong>Agent–Environment 循环、CartPole 变量映射、五步工作流（第 7–8、13 页）。</p>
-<figure class="course-example"><a href="../assets/courseware/ca6001-module-02/agent-loop.png"><img src="../assets/courseware/ca6001-module-02/agent-loop.png" alt="课件第 7 页：状态输入、动作输出、环境反馈形成闭环。" width="1400" height="788" loading="lazy"></a><figcaption>课件第 7 页：状态输入、动作输出、环境反馈形成闭环。（点击查看原图）</figcaption>
-</figure>
-<table class="terms"><thead><tr><th>术语</th><th>直白解释</th><th>CartPole 例子</th></tr>
-</thead>
-<tbody><tr><td>Agent / Environment</td><td>做决定的主体 / 决定结果的世界</td><td>控制程序 / 小车与杆的运动规则</td></tr>
-<tr><td>State / Observation</td><td>状态是环境情况；观测是智能体能看到的信息</td><td>小车位置、速度、杆角度、角速度</td></tr>
-<tr><td>Action</td><td>可执行的选择</td><td>向左推或向右推</td></tr>
-<tr><td>Reward / Return</td><td>单步反馈 / 多步奖励的折扣总和</td><td>每步 +1 / 保持平衡过程的累计得分</td></tr>
-<tr><td>Policy π(a|s)</td><td>给定状态时如何选动作，可是概率分布</td><td>杆向右倾时，各动作的选择概率</td></tr>
-<tr><td>Vπ(s) / Qπ(s,a)</td><td>从状态出发 / 先指定一个动作再继续的预期回报</td><td>当前局面有多好 / 此刻向左推有多好</td></tr>
-<tr><td>Episode</td><td>从开始到结束的一轮交互</td><td>重置小车 → 若干动作 → 失败或时间限制</td></tr>
-</tbody>
-</table>
-<p>工作流：①定义环境与动作边界；②设计奖励，检查是否鼓励了错误行为；③确定 agent 与训练算法；④训练并用独立回合验证；⑤部署策略并持续监测。训练完成不等于已经证明策略全局最优。</p>
-<p>CartPole 用四个观测决定左右动作。<strong>版本核对：</strong>课件中的 200 步对应旧版设置；<a href="https://gymnasium.farama.org/environments/classic_control/cart_pole/">Gymnasium CartPole 文档</a>中 v1 默认上限是 500 步。环境失败终止与达到时间上限截断需要区分，不能把所有回合结束都理解为“倒杆”。</p>
+<section class="content-section" id="rl-model">
+  <h2>Reinforcement Learning Model & Workflow｜RL 的循环和五步流程</h2>
+  <p class="chapter-chart-map"><strong>本章图表 / 方法：</strong>Agent–Environment 循环图；五步工作流；CartPole（第 7–8、13 页）。</p>
+  <figure class="course-example"><a href="../assets/courseware/ca6001-module-02/agent-loop.png"><img src="../assets/courseware/ca6001-module-02/agent-loop.png" alt="第 7 页：agent 在状态 St 采取动作 At，环境返回奖励和新状态" width="1400" height="788" loading="lazy"></a><figcaption>第 7 页：agent 处于状态 Sₜ，采取动作 Aₜ，环境给出奖励或惩罚 R 和新状态。（点击查看原图）</figcaption></figure>
+  <div class="table-wrap"><table class="terms">
+    <thead><tr><th>要素</th><th>含义</th><th>CartPole 例子</th></tr></thead>
+    <tbody>
+      <tr><td>Agent</td><td>做决定的主体</td><td>控制程序</td></tr>
+      <tr><td>Environment</td><td>agent 所在的世界</td><td>小车和杆的物理规则</td></tr>
+      <tr><td>State</td><td>当前处境</td><td><strong>4 个观测</strong>：小车位置、小车速度、杆角度、杆角速度</td></tr>
+      <tr><td>Action</td><td>可以做的选择</td><td><strong>2 个</strong>：向左推、向右推</td></tr>
+      <tr><td>Reward</td><td>环境的反馈</td><td>杆每多立住<strong>一个 timestep 得 1 分</strong></td></tr>
+      <tr><td>Episode 结束</td><td>一轮交互结束</td><td>杆倒下、小车出界，或<strong>撑满 200 个 timestep</strong></td></tr>
+    </tbody>
+  </table></div>
+  <p>CartPole 是 OpenAI 的经典问题，被称为 RL 的 <strong>“hello world”</strong>。小车在无摩擦轨道上移动，目标是不让杆倒下，一轮最多拿 200 分。</p>
+  <h3>五步工作流（第 8 页）</h3>
+  <ol>
+    <li><strong>定义 / 创建环境</strong>（真实或模拟）</li>
+    <li><strong>设定奖励</strong>：奖励是 agent 的表现指标，往往要迭代几次才能定下来</li>
+    <li><strong>定义 agent 和训练算法</strong></li>
+    <li><strong>训练和验证</strong>：调策略、让 agent 探索，可能很耗时耗资源</li>
+    <li><strong>部署策略</strong>：确认最优策略后上线</li>
+  </ol>
 </section>
 
-<section class="content-section" id="rl-use-cases"><h2>Use cases of Reinforcement Learning</h2>
-<p class="chapter-chart-map"><strong>本章图表 / 方法：</strong>AlphaGo、Atari、自动驾驶与动物训练案例（第 9–13 页）。</p>
-<table class="terms"><thead><tr><th>案例</th><th>输入 → 动作 → 奖励</th><th>抓住的知识点</th></tr>
-</thead>
-<tbody><tr><td>AlphaGo / Move 37</td><td>棋局 → 落子 → 最终输赢</td><td>即时看起来不占优的动作，可能改善长远结果</td></tr>
-<tr><td>Atari + DQN</td><td>游戏像素 → 按键 → 游戏得分</td><td>CNN 提取画面特征，Q 网络估计动作价值</td></tr>
-<tr><td>驾驶演示</td><td>道路观测 → 转向 → 行驶目标相关反馈</td><td>奖励、安全接管与交互成本同样重要</td></tr>
-<tr><td>Chicken / 自行车类比</td><td>观察处境 → 尝试行为 → 反馈</td><td>反复尝试会改变行为，但类比不是算法证明</td></tr>
-</tbody>
-</table>
-<p class="note">这些是课件历史案例，不能据此推断任意游戏都超越人类，或少量驾驶演示已经证明真实道路安全。复习重点是把案例拆成状态、动作、奖励及长期目标。</p>
+<section class="content-section" id="rl-use-cases">
+  <h2>Use cases of Reinforcement Learning｜课件里的例子</h2>
+  <p class="chapter-chart-map"><strong>本章图表 / 方法：</strong>AlphaGo Move 37、Atari、自动驾驶、训练小鸡、CartPole（第 9–13 页）。</p>
+  <div class="table-wrap"><table class="terms">
+    <thead><tr><th>例子</th><th>要点</th></tr></thead>
+    <tbody>
+      <tr><td><strong>AlphaGo “Move 37”</strong></td><td>和李世石对局中下出人类从没下过的一步：RL 能发现新解法</td></tr>
+      <tr><td><strong>Atari 游戏</strong></td><td>输入是游戏<strong>原始像素</strong>，送进 <strong>CNN</strong>；用 <strong>Q-learning</strong> 训练，输出估计未来奖励的价值函数；最终超过人类专家（DQN）</td></tr>
+      <tr><td><strong>自动驾驶（Wayve）</strong></td><td>没有硬编码规则，RL + 计算机视觉从零学开车；开始左右乱晃，<strong>第 11 次训练</strong>后能平稳行驶；出错时安全员接管纠正</td></tr>
+      <tr><td><strong>训练小鸡</strong></td><td>视频：用奖励塑造行为</td></tr>
+    </tbody>
+  </table></div>
 </section>
 
-<section class="content-section" id="rl-algorithms"><h2>Reinforcement Learning Implementations and Algorithms</h2>
-<p class="chapter-chart-map"><strong>本章图表 / 方法：</strong>Value-based、Policy-based、Model-based；Q-learning、SARSA 与 DQN（第 14–15 页）。</p>
-<table class="terms"><thead><tr><th>方法</th><th>主要学什么</th><th>如何选择动作</th></tr>
-</thead>
-<tbody><tr><td>Value-based</td><td>V 或 Q 价值函数</td><td>根据价值，例如取 argmax Q(s,a)</td></tr>
-<tr><td>Policy-based</td><td>直接学习策略参数</td><td>由策略输出动作或动作概率；不只限于确定性策略</td></tr>
-<tr><td>Model-based</td><td>使用已知或学习到的状态转移 / 奖励模型</td><td>预测动作后果，再规划；“model”不是泛指神经网络</td></tr>
-</tbody>
-</table>
-<p class="note">学习补充：这是两个分类视角。Value / Policy 关注学什么，Model-based / Model-free 关注是否使用环境模型做规划；它们不是互斥的三选一。</p>
-<h3>Q-learning 的一次更新</h3>
-<p><code>Q(s,a) ← Q(s,a) + α [r + γ max Q(s′,a′) − Q(s,a)]</code></p>
-<p>旧 Q = 2，奖励 r = 1，下一状态最大 Q = 4，α = 0.5，γ = 0.9：目标为 4.6，误差为 2.6，新 Q = 3.3。若下一状态是真正终止状态，未来项为 0，目标只剩即时奖励。</p>
-<pre># 学习补充：单次 Q-learning 更新，输入为数值估计
-old_q, reward, next_best_q = 2.0, 1.0, 4.0
-alpha, gamma, terminated = 0.5, 0.9, False
-target = reward + (0.0 if terminated else gamma * next_best_q)
-new_q = old_q + alpha * (target - old_q)
-print(new_q)  # 3.3</pre><table class="terms"><thead><tr><th>算法</th><th>更新目标 / 表示</th><th>关键区别</th></tr>
-</thead>
-<tbody><tr><td>Q-learning</td><td>r + γ max Q(s′,a′)</td><td>Off-policy：实际探索动作与学习目标中的贪心动作可以不同</td></tr>
-<tr><td>SARSA</td><td>r + γ Q(s′,a′实际)</td><td>On-policy：使用当前行为策略实际选出的下一动作</td></tr>
-<tr><td>DQN</td><td>用神经网络近似 Q(s,a)</td><td>状态太多时无需逐项存表；学习补充：经验回放和目标网络用于缓解训练不稳定</td></tr>
-</tbody>
-</table>
-<p>On-policy 不是“在线”，off-policy 也不是“离线”。判断依据是产生数据的行为策略与被学习的目标策略的关系。Q-learning 能使用 ε-greedy 数据，不等于只从随机动作学习。</p>
+<section class="content-section" id="rl-algorithms">
+  <h2>RL Implementations and Algorithms｜三类方法和三种算法</h2>
+  <p class="chapter-chart-map"><strong>本章图表 / 方法：</strong>Policy / Value / Model-based；Q-learning、SARSA、Deep Q-Network（第 14–15 页）。</p>
+  <div class="table-wrap"><table class="terms">
+    <thead><tr><th>类型</th><th>做法</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Policy-based</strong></td><td>直接优化策略（在某状态下采取什么动作）来最大化奖励</td></tr>
+      <tr><td><strong>Value-based</strong></td><td>用价值函数（如 <strong>Q 表</strong>）估计各状态下各动作的潜在奖励，选最好的</td></tr>
+      <tr><td><strong>Model-based</strong></td><td>先建立环境的内部模型，预测未来状态和奖励，再据此决策</td></tr>
+    </tbody>
+  </table></div>
+  <div class="table-wrap"><table class="terms">
+    <thead><tr><th>算法</th><th>特点</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Q-learning</strong></td><td><strong>Off-policy</strong>、model-free；Q 指动作的“质量”（quality）。更新时假设下一步取最优动作</td></tr>
+      <tr><td><strong>SARSA</strong></td><td>State-Action-Reward-State-Action；<strong>On-policy</strong>，用实际执行的下一个动作来学习</td></tr>
+      <tr><td><strong>Deep Q-Network (DQN)</strong></td><td>“Deep” = 用神经网络；把二维 Q 表换成神经网络，状态太多时也能算</td></tr>
+    </tbody>
+  </table></div>
+  <p><strong>Q-learning 更新公式（补充）：</strong><code>Q(s,a) ← Q(s,a) + α [r + γ·max Q(s′,a′) − Q(s,a)]</code>。例：旧 Q = 2，r = 1，下一状态最大 Q = 4，α = 0.5，γ = 0.9 → 目标 = 1 + 3.6 = 4.6，新 Q = 2 + 0.5 × 2.6 = <strong>3.3</strong>。</p>
+  <p class="warning"><strong>易错：</strong>on-policy / off-policy 不是“在线 / 离线”。区别在于学习时用的是实际执行的动作（SARSA），还是假设的最优动作（Q-learning）。</p>
 </section>
 
-<section class="content-section" id="exploration"><h2>Exploration Exploitation Strategies & Discount Factor</h2>
-<p class="chapter-chart-map"><strong>本章图表 / 方法：</strong>ε-greedy 概率、α / γ / ε 对照与网格价值评估（第 16–20 页）。</p>
-<table class="terms"><thead><tr><th>参数</th><th>控制什么</th><th>调大意味着什么</th></tr>
-</thead>
-<tbody><tr><td>α 学习率</td><td>一次新经验改变旧估计的幅度</td><td>更新更快，但可能更波动</td></tr>
-<tr><td>γ 折扣因子</td><td>未来奖励在当前回报中的权重</td><td>更重视较远的未来；不是探索更多</td></tr>
-<tr><td>ε 探索概率</td><td>随机选择动作的比例</td><td>更多尝试未知选择，短期得分可能降低</td></tr>
-</tbody>
-</table>
-<p>回报 <code>Gₜ = rₜ₊₁ + γrₜ₊₂ + γ²rₜ₊₃ + …</code>。两步奖励为 −1、10，γ = 0.9，回报是 8；不是把第一步也乘 γ。γ = 0 只看即时奖励；持续任务常用 γ &lt; 1。</p>
-<p>ε-greedy：以 1−ε 选当前估计最好的动作，以 ε 在全部动作中均匀随机选择。若只有两个动作且最优动作唯一，ε = 0.2 时，最优动作总概率为 <strong>0.8 + 0.2/2 = 0.9</strong>，另一个为 0.1。探索也可能抽中最优动作。</p>
-<h3>固定策略的价值评估，不是在选最佳动作</h3>
-<p><code>Vnew(s) = Σₐ π(a|s) [r(s,a,s′) + γ Vold(s′)]</code>（此处假设动作后的转移确定）。四个动作等概率时，分别算四个结果再取平均。同步更新时全部使用同一份旧 V 表。</p>
-<figure class="course-example"><a href="../assets/courseware/ca6001-module-02/grid-update.png"><img src="../assets/courseware/ca6001-module-02/grid-update.png" alt="课件第 19 页原式；下方核对其算术结果与终点约定。" width="1400" height="788" loading="lazy"></a><figcaption>课件第 19 页原式；下方核对其算术结果与终点约定。（点击查看原图）</figcaption>
-</figure>
-<div class="warning"><strong>核对说明：</strong>按截图中的四项直接计算，<code>0.25×(−1)+0.25×(−1)+0.25×(−1)+0.25×(−1+0.9×10) = +1.25</code>，不是 −1.25。这只修正截图算术，不替练习决定终点规则。若到达终点获得 +10 后回合结束，应将之后价值设为 0；若题目用固定 V(G)=10 表达边界条件，必须说明即时奖励的约定，避免把终点奖励算两遍。</div>
+<section class="content-section" id="exploration">
+  <h2>Exploration vs Exploitation & Discount Factor｜ε 和 γ</h2>
+  <p class="chapter-chart-map"><strong>本章图表 / 方法：</strong>探索与利用、ε-greedy、贪心算法；折扣因子 γ；格子世界 V 值计算（第 16–20 页）。</p>
+  <div class="table-wrap"><table class="terms">
+    <thead><tr><th>概念</th><th>含义</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Exploration</strong> 探索</td><td>尝试新动作，了解环境和动作-奖励关系，减少不确定性</td></tr>
+      <tr><td><strong>Exploitation</strong> 利用</td><td>用已有知识选当前看起来奖励最大的动作</td></tr>
+      <tr><td><strong>ε-greedy</strong></td><td>概率 <strong>ε 随机选</strong>动作（探索），概率 <strong>1 − ε 选当前最好</strong>的（利用）</td></tr>
+      <tr><td><strong>Greedy</strong> 贪心</td><td>每步只选局部最优，计算快，但需要“先牺牲后收获”时会错过全局最优</td></tr>
+    </tbody>
+  </table></div>
+  <p><strong>ε-greedy 算概率：</strong>k 台机器、ε = 0.2 时，选中当前最佳的概率 = <code>1 − ε + ε/k</code>（探索时也可能随机抽中它）。4 台机器：0.8 + 0.05 = <strong>0.85</strong>；某一台非最佳：0.2 / 4 = 0.05。</p>
+  <h3>折扣因子 γ（0 到 1）</h3>
+  <ul>
+    <li>平衡<strong>眼前奖励和未来奖励</strong>（即时满足 vs 延迟满足）。</li>
+    <li><strong>γ 越大越看重未来</strong>；γ 越小越看重眼前。</li>
+    <li>折扣回报：<code>G = r₁ + γr₂ + γ²r₃ + …</code>。例：奖励 1、0、10，γ = 0.9 → 1 + 0 + 8.1 = <strong>9.1</strong>；γ = 0.5 → 3.5。</li>
+  </ul>
+  <h3>格子世界：第一轮 V 值（第 18–20 页）</h3>
+  <pre><code class="language-text">     1  2  3  4
+row1  S  .  .  .
+row2  .  #  .  .        # = 墙
+row3  .  .  .  G(+10)</code></pre>
+  <p>随机策略（上下左右各 0.25），每走一步奖励 −1，γ = 0.9。第一轮所有格子 V = 0，只有 G = 10。</p>
+  <pre><code class="language-text">V(s) = Σ 四个方向 0.25 × (−1 + 0.9 × 走到那格的 V)
+撞墙或出界 → 留在原地</code></pre>
+  <ul>
+    <li><strong>不挨着 G 的格子：</strong>4 × 0.25 × (−1 + 0) = <strong>−1</strong>（课件图上老师标的都是 −1）</li>
+    <li><strong>挨着 G 的 (2,4) 和 (3,3)：</strong>3 × 0.25 × (−1) + 0.25 × (−1 + 0.9 × 10) = −0.75 + 2 = <strong>+1.25</strong></li>
+  </ul>
+  <figure class="course-example"><a href="../assets/courseware/ca6001-module-02/grid-update.png"><img src="../assets/courseware/ca6001-module-02/grid-update.png" alt="第 19 页：V(2,4) 的计算式" width="1400" height="788" loading="lazy"></a><figcaption>第 19 页：V(2,4) = V(3,3) 的算式。（点击查看原图）</figcaption></figure>
+  <p class="note"><strong>课件勘误：</strong>第 19 页这个算式结果写成 −1.25，按式子算是 <strong>+1.25</strong>。考试时写出完整算式。</p>
+  <p class="warning"><strong>易错：</strong>① γ 只乘下一个格子的 V，不乘这一步的 −1；②“一轮”不是 agent 走一步，而是给<strong>每个格子</strong>都用旧 V 值算一遍；第二轮再用第一轮的结果。</p>
 </section>
 
-<section class="content-section" id="bandit"><h2>Multi-Armed Bandit Problem</h2>
-<p class="chapter-chart-map"><strong>本章图表 / 方法：</strong>三台老虎机、增量均值与累计奖励图（第 21 页；Multi_Armed_Bandit_Problem.ipynb）。</p>
-<p>多臂老虎机的“臂”就是一个可选动作。每个动作的奖励分布未知，要在有限次数中平衡试新选项和使用已知好选项。经典平稳 bandit 没有需要规划的状态转移；它不是完整网格世界 Q-learning。</p>
-<p>Notebook 设真实成功概率为 [0.2, 0.7, 0.4]，每轮返回 0 或 1，ε = 0.1，运行 1000 轮。环境用真实概率产生奖励；agent 只用自己观察到的奖励估计 Q，不能直接读取真实概率来选动作。</p>
-<pre>import numpy as np
-
-# 根据课堂 Notebook 整理：固定种子，使演示可复现。
-rng = np.random.default_rng(42)
-true_probabilities = np.array([0.2, 0.7, 0.4])  # 环境参数
-q_values = np.zeros(3)                        # agent 的估计
-counts = np.zeros(3, dtype=int)
-rewards = []
-epsilon = 0.1
-for _ in range(1000):
-    if rng.random() &lt; epsilon:
-        action = int(rng.integers(3))
-    else:
-        # 平局时随机打破，避免总选数组中第一项。
-        best = np.flatnonzero(q_values == q_values.max())
-        action = int(rng.choice(best))
-    reward = int(rng.random() &lt; true_probabilities[action])
-    counts[action] += 1
-    q_values[action] += (reward - q_values[action]) / counts[action]
-    rewards.append(reward)
-print(&quot;估计 Q:&quot;, q_values)
-print(&quot;选择次数:&quot;, counts)
-print(&quot;累计奖励:&quot;, sum(rewards))</pre><p><code>Q ← Q + (R−Q)/N</code> 是样本均值的增量写法，N 先加 1。例如一个动作前三次奖励为 1、0、1，Q 依次为 1、0.5、2/3。概率、Q 和频次是三种不同数据。</p>
-<p>读图时看：累计奖励曲线的斜率、最终 Q 与真实概率的差、各动作被选择次数。原 Notebook 的柱状图只对比<strong>最终估计</strong>，不能单凭它声称展示了“收敛过程”；1000 次有限采样也不保证每个动作都探索充分。</p>
+<section class="content-section" id="bandit">
+  <h2>Multi-Armed Bandit Problem｜多臂老虎机</h2>
+  <p class="chapter-chart-map"><strong>本章图表 / 方法：</strong>赌徒选老虎机；ε-greedy 策略与 Q 值增量更新（第 21 页；Multi_Armed_Bandit_Problem.ipynb）。</p>
+  <p><strong>问题：</strong>几台老虎机的中奖率各不相同且未知，赌徒想在多次拉杆中赢得最多。核心就是探索与利用的平衡。</p>
+  <p><strong>更新公式：</strong><code>Q(a) ← Q(a) + (1/N(a)) × (R − Q(a))</code>。Q(a) 是动作 a 的估计价值（平均奖励），N(a) 是选它的次数（先加 1 再更新），R 是这次的奖励。</p>
+  <p><strong>算一个：</strong>某臂初始 Q = 0，三次奖励 1、0、1：</p>
+  <ul>
+    <li>N = 1：0 + 1 × (1 − 0) = 1</li>
+    <li>N = 2：1 + ½ × (0 − 1) = 0.5</li>
+    <li>N = 3：0.5 + ⅓ × (1 − 0.5) ≈ <strong>0.67</strong>，正好是平均奖励 2/3。这个公式就是“增量求平均”。</li>
+  </ul>
+  <p>ε 保证每台机器都会被试到，不会因为一开始运气差而错过更好的机器。</p>
+  <h3>Notebook：三台老虎机</h3>
+  <p>真实中奖率 [0.2, 0.7, 0.4]，ε = 0.1，玩 1,000 轮。agent 不知道真实概率，只能根据拿到的奖励估计 Q。结果：估计的 Q 值接近真实概率，<strong>第 2 台（0.7）被拉的次数远多于其他两台</strong>，另外两台只在探索时被选中。</p>
+  <pre><code class="language-python">if rng.random() &lt; epsilon:
+    action = rng.integers(3)                         # 探索：随机选
+else:
+    action = np.argmax(q_values)                     # 利用：选当前最好
+reward = int(rng.random() &lt; true_probabilities[action])
+counts[action] += 1
+q_values[action] += (reward - q_values[action]) / counts[action]   # 增量平均</code></pre>
 </section>
 
-<section class="content-section" id="rlhf"><h2>Reinforcement Learning with Human Feedback</h2>
-<p class="chapter-chart-map"><strong>本章图表 / 方法：</strong>人类示范 → SFT → 偏好排序 → 奖励模型 → 策略优化（第 22–27 页）。</p>
-<p>以问答为例：先收集高质量示范，做监督微调（SFT）；再让人比较同一问题的多个回答，学习一个能预测偏好的奖励模型；最后让语言模型通过 RL 提高回答的预期奖励。语言模型是生成回答的策略，奖励模型负责给反馈，两者不是同一个角色。</p>
-<table class="terms"><thead><tr><th>阶段</th><th>输入</th><th>输出 / 学习目标</th></tr>
-</thead>
-<tbody><tr><td>SFT</td><td>问题与示范答案</td><td>提高示范答案的生成概率</td></tr>
-<tr><td>Reward model</td><td>同题回答及偏好排序</td><td>学习哪个回答更符合标注者偏好</td></tr>
-<tr><td>RL 优化</td><td>策略生成的回答与奖励分数</td><td>更新策略，兼顾奖励及对原策略的偏离约束</td></tr>
-</tbody>
-</table>
-<div class="warning"><strong>核对说明：</strong>RAG 是检索资料后作为上下文提供给模型，本身不等于微调权重；SFT 也不是“按与人类答案相似度直接给 RL 奖励”。RLHF 主要描述训练过程，不意味着每次回答前都在线更新参数。偏好奖励只是近似目标，不能保证事实正确或消除全部偏差。</div>
+<section class="content-section" id="rlhf">
+  <h2>Reinforcement Learning with Human Feedback｜RLHF</h2>
+  <p class="chapter-chart-map"><strong>本章图表 / 方法：</strong>RLHF 流程图；数据收集、监督微调、奖励模型三步（第 22–27 页）。</p>
+  <p><strong>一句话：</strong>把人类反馈放进奖励函数，让模型的行为符合人的目标。是训练 LLM 的行业标准，让输出无害、真实、符合人类价值观。</p>
+  <ol>
+    <li><strong>收集数据：</strong>准备问题（如“NTU 的 HR 部门在哪？”），请专家写出准确自然的回答，组成问答对。</li>
+    <li><strong>监督微调（SFT）：</strong>拿商用预训练模型（GPT、LLaMA、Gemini 等）作底座微调，可用 RAG 接入公司内部知识；和人写的回答比较相似度，越接近人类回答奖励越多。</li>
+    <li><strong>训练单独的奖励模型：</strong>同一问题生成多个回答，<strong>人给回答排序</strong>；用这些偏好训练一个 reward model，它能自动估计“人会给几分”。</li>
+    <li><strong>用奖励模型优化策略：</strong>LLM 内部评估多个候选回答，选预计奖励最高的。</li>
+  </ol>
+  <p class="note">为什么要单独的奖励模型：人工逐条打分太慢太贵，奖励模型能自动、大规模地给分。</p>
 </section>
 
-<section class="content-section" id="rl-challenges"><h2>Challenges, Future Directions & GRPO</h2>
-<p class="chapter-chart-map"><strong>本章图表 / 方法：</strong>交互成本、泛化、多智能体与课件 GRPO 公式（第 28–29 页）。</p>
-<table class="terms"><thead><tr><th>挑战</th><th>为什么难</th><th>应检查什么</th></tr>
-</thead>
-<tbody><tr><td>样本效率 / 计算成本</td><td>大量交互才能学到有效策略</td><td>预算、模拟器差距、学习曲线</td></tr>
-<tr><td>稳定性 / 收敛</td><td>估计目标与数据分布随策略一起变化</td><td>多种随机种子、回报波动、失败率</td></tr>
-<tr><td>奖励与伦理</td><td>代理指标可能被利用</td><td>奖励漏洞、安全边界、群体结果</td></tr>
-<tr><td>泛化</td><td>训练环境表现好不代表新环境好</td><td>新场景、扰动、非平稳变化</td></tr>
-</tbody>
-</table>
-<p>课件提出深度 RL、迁移学习、多智能体协作和稳健泛化等方向。学习补充：多智能体环境中，其他 agent 也在改变策略，因此一个 agent 看到的环境可能随训练变化。</p>
-<figure class="course-example"><a href="../assets/courseware/ca6001-module-02/grpo.png"><img src="../assets/courseware/ca6001-module-02/grpo.png" alt="课件第 29 页：GRPO 的概率比、裁剪与 KL 正则项。" width="1400" height="788" loading="lazy"></a><figcaption>课件第 29 页：GRPO 的概率比、裁剪与 KL 正则项。（点击查看原图）</figcaption>
-</figure>
-<p>读公式先抓四件事：同一问题生成一组回答；用组内奖励均值和标准差得到相对优势；提高相对更好回答的概率；用裁剪与 KL 约束控制更新幅度。G 是组大小，Â 是标准化后的相对优势，ε 是裁剪范围，β 是 KL 权重。<strong>这里 ε 不是 ε-greedy 的探索率。</strong></p>
-<p>GRPO 用组内比较估计基线，不需要单独的 critic 价值模型，但仍需奖励信号。详见课件引用的 <a href="https://arxiv.org/html/2501.12948v1">DeepSeek-R1 论文 §2.2.1</a>；这是概念扩展，不把论文性能数字当作课程实验结果。</p>
+<section class="content-section" id="rl-challenges">
+  <h2>Challenges, Future Directions & GRPO｜挑战与 DeepSeek</h2>
+  <p class="chapter-chart-map"><strong>本章图表 / 方法：</strong>四个挑战和四个未来方向；DeepSeek R1 的 GRPO 公式（第 28–29 页）。</p>
+  <div class="table-wrap"><table class="terms">
+    <thead><tr><th>挑战</th><th>未来方向</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Sample efficiency</strong>：需要和环境大量交互</td><td><strong>Deep RL</strong>：结合神经网络，系统更独立灵活</td></tr>
+      <tr><td><strong>Computation cost</strong>：训练耗资源</td><td><strong>Transfer learning</strong>：把旧技能用到新领域</td></tr>
+      <tr><td><strong>Stability &amp; convergence</strong>：有些算法（尤其神经网络）不稳定、难收敛</td><td><strong>Multi-agent RL</strong>：多个 agent 互动</td></tr>
+      <tr><td><strong>Ethical concerns</strong>：医疗、金融等敏感领域的意外后果</td><td><strong>Robustness &amp; generalization</strong>：学会多种技能</td></tr>
+    </tbody>
+  </table></div>
+  <figure class="course-example"><a href="../assets/courseware/ca6001-module-02/grpo.png"><img src="../assets/courseware/ca6001-module-02/grpo.png" alt="第 29 页：GRPO 目标函数，黄色是主要目标，绿色是截断，蓝色是 KL 正则项" width="1400" height="788" loading="lazy"></a><figcaption>第 29 页：GRPO 公式的三部分。（点击查看原图）</figcaption></figure>
+  <p><strong>GRPO（Group Relative Policy Optimization）：</strong>DeepSeek R1 用的方法。同一个问题生成<strong>一组</strong>（G 个）回答，组内比较打分：比组平均好的回答，优势 Aᵢ 为正，提高它的生成概率。</p>
+  <ul>
+    <li><strong>黄色（主要目标）：</strong>新旧模型生成该回答的概率比 × Aᵢ；奖励大时希望这个比值大。</li>
+    <li><strong>绿色（clip）：</strong>概率比离 1 太远就截断到 [1−ε, 1+ε]，防止一次改太多，保持稳定。</li>
+    <li><strong>蓝色（KL 正则项）：</strong>别离参考模型太远。</li>
+  </ul>
+  <p class="note">这里的 ε 是截断范围，不是 ε-greedy 的探索率。GRPO 用组内平均当基准，省掉了单独的价值模型。</p>
 </section>
 
-<section class="content-section" id="lyft-case"><h2>Lyft Case｜匹配司机时考虑长期价值</h2>
-<p class="chapter-chart-map"><strong>本章图表 / 方法：</strong>案例三页、六个配对评分与 switchback 实验。</p>
-<p>讲义提出：同样的车费，不同终点会影响下一单机会。课堂简化评分为 <code>fare + V(终点) − V(当前位置)</code>。这里 value 是未来收益估计，不能当作这单已经赚到的现金。</p>
-<details><summary>查看案例背景与结果原页</summary>
-<figure class="course-example"><a href="../assets/courseware/ca6001-module-02/lyft-1.png"><img src="../assets/courseware/ca6001-module-02/lyft-1.png" alt="Lyft 讲义第 1 页：问题、价值函数与匹配评分。" width="990" height="1400" loading="lazy"></a><figcaption>Lyft 讲义第 1 页：问题、价值函数与匹配评分。（点击查看原图）</figcaption>
-</figure>
-<figure class="course-example"><a href="../assets/courseware/ca6001-module-02/lyft-2.png"><img src="../assets/courseware/ca6001-module-02/lyft-2.png" alt="Lyft 讲义第 2 页：switchback、报告结果及未回答的问题。" width="990" height="1400" loading="lazy"></a><figcaption>Lyft 讲义第 2 页：switchback、报告结果及未回答的问题。（点击查看原图）</figcaption>
-</figure>
-</details>
-<figure class="course-example"><a href="../assets/courseware/ca6001-module-02/lyft-3.png"><img src="../assets/courseware/ca6001-module-02/lyft-3.png" alt="Lyft 讲义第 3 页：两位司机、三名乘客及原题 1–5；数字为课堂虚构。" width="990" height="1400" loading="lazy"></a><figcaption>Lyft 讲义第 3 页：两位司机、三名乘客及原题 1–5；数字为课堂虚构。（点击查看原图）</figcaption>
-</figure>
-<p>原题路线：①枚举两位司机服务不同乘客的可行配对，最小化接客总时间；②为六个司机—乘客组合算长期评分；③最大化总分，平局用接客时间打破；④比较即时车费与终点价值；⑤解释负分。不能分别替每位司机选最大值后忽略同一乘客不能被服务两次。</p>
-<details><summary>做完后核对：五问解析</summary>
-<table class="terms"><thead><tr><th>司机</th><th>R1：fare 38，终点 V=8</th><th>R2：fare 14，终点 V=55</th><th>R3：fare 16，终点 V=50</th></tr>
-</thead>
-<tbody><tr><td>A，当前 V=50</td><td>−4</td><td>19</td><td>16</td></tr>
-<tr><td>B，当前 V=30</td><td>16</td><td>39</td><td>36</td></tr>
-</tbody>
-</table>
-<ol><li>旧系统：A→R1、B→R3，总接客时间 2+2=4 分钟，R2 等待。</li>
-<li>六项得分如表。例如 A→R1：38+8−50=−4。</li>
-<li>新系统：A→R2、B→R3，总分 19+36=55，接客时间 3+2=5 分钟。另一个 55 分方案 A→R3、B→R2 要 20 分钟，故不选；R1 等待。</li>
-<li>即时车费由 54 降到 30，接客时间多 1 分钟；终点价值总和由 58 升至 105，总评分由 32 升至 55。这是基于估计的未来优势，不是已经实现的净利润。</li>
-<li>负分表示车费不足以弥补当前位置价值的下降，不表示车费为负，也不必然表示这趟行程会亏现金。</li>
-</ol>
-</details>
-<h3>为什么不用普通乘客 A/B 测试？</h3>
-<p>两组乘客共享司机资源，一组匹配改变司机位置，会影响另一组。讲义采用区域整体随时间切换的 switchback，并剔除切换后过渡数据。阅读报告结果时仍要问：不同地区和司机是否都受益？冷门地区是否因缺少探索而长期被低估？司机改变行为后，策略是否仍有效？</p>
-<p class="note">案例中的 2021 年上线、13% 未匹配请求下降等属于讲义报告的历史结果；本页的五问演算只使用课堂虚构数据，不据此推断当前 Lyft 服务表现。</p>
+<section class="content-section" id="lyft-case">
+  <h2>Lyft Case｜派单时考虑司机的长期价值</h2>
+  <p class="chapter-chart-map"><strong>本章图表 / 方法：</strong>Lyft 案例 3 页：问题、司机价值、switchback 测试、结果与局限、两司机三乘客练习。</p>
+  <p><strong>旧系统的问题：</strong>每隔几秒把所有等车乘客和空闲司机配对，只看当下（如总接驾时间最短），不管行程结束后司机在哪。同样车费，一单终点在繁忙市中心，一单在深夜郊区，旧系统看不出区别。司机少时还会陷入 <strong>“wild goose chase”</strong>：接驾越远 → 完成单数越少 → 司机更少。</p>
+  <p><strong>新思路：</strong>算每个位置和时间的<strong>司机价值</strong>（剩余班次预计能赚多少）。</p>
+  <pre><code class="language-text">匹配分 = 车费 + 终点的司机价值 − 司机当前位置的价值</code></pre>
+  <div class="table-wrap"><table class="terms">
+    <thead><tr><th>RL 要素</th><th>Lyft 里是什么</th></tr></thead>
+    <tbody>
+      <tr><td>Agent</td><td>每个司机</td></tr>
+      <tr><td>Action</td><td>接这单 / 等待</td></tr>
+      <tr><td>Reward</td><td>车费</td></tr>
+      <tr><td>Value function</td><td>司机价值</td></tr>
+    </tbody>
+  </table></div>
+  <ul>
+    <li><strong>怎么学：</strong>每单结束后比较预期收入和实际收入，把估计往实际调。<strong>在线持续学习</strong>，全天候、每个城市都在跑（迈阿密跨年夜价值飙升后又回落）。DiDi 是<strong>离线</strong>从历史数据学。</li>
+    <li><strong>选简单模型：</strong>Lyft 认为深度网络对这么关键的系统“不够透明”，选了工程师能检查的简单模型。</li>
+    <li><strong>为什么不用 A/B test：</strong>两组共享同一批司机，新系统把司机安排得更好，对照组也受益，会低估效果。改用 <strong>switchback test</strong>：整个区域按时间段轮流用新旧系统；每次切换后市场要 2–3 小时稳定，所以时间块要超过 4 小时，并丢掉刚切换后的数据。</li>
+  </ul>
+  <div class="table-wrap"><table class="terms">
+    <thead><tr><th>结果（2021 年推广到所有市场）</th><th>变化</th></tr></thead>
+    <tbody>
+      <tr><td>找不到司机的请求</td><td>−13%</td></tr>
+      <tr><td>乘客取消</td><td>−3%</td></tr>
+      <tr><td>五星评价</td><td>+1%</td></tr>
+      <tr><td>额外收入</td><td>每年 3,000 万美元以上（约占营收 1%），不额外花司机激励</td></tr>
+    </tbody>
+  </table></div>
+  <p><strong>案例没告诉我们的：</strong>去冷清地区的乘客是不是等更久（只报了总体结果）；系统只从自己选的行程中学习，可能永远发现不了被低估的区域（缺少探索）；司机发现规律后会改变行为；单次匹配很难向司机解释。</p>
+  <details><summary>查看案例原页</summary>
+    <figure class="course-example"><a href="../assets/courseware/ca6001-module-02/lyft-1.png"><img src="../assets/courseware/ca6001-module-02/lyft-1.png" alt="Lyft 案例第 1 页" width="990" height="1400" loading="lazy"></a><figcaption>案例第 1 页。（点击查看原图）</figcaption></figure>
+    <figure class="course-example"><a href="../assets/courseware/ca6001-module-02/lyft-2.png"><img src="../assets/courseware/ca6001-module-02/lyft-2.png" alt="Lyft 案例第 2 页" width="990" height="1400" loading="lazy"></a><figcaption>案例第 2 页。（点击查看原图）</figcaption></figure>
+    <figure class="course-example"><a href="../assets/courseware/ca6001-module-02/lyft-3.png"><img src="../assets/courseware/ca6001-module-02/lyft-3.png" alt="Lyft 案例第 3 页：两位司机三名乘客的练习" width="990" height="1400" loading="lazy"></a><figcaption>案例第 3 页：课堂练习（数字是编的）。（点击查看原图）</figcaption></figure>
+  </details>
+  <h3>课堂练习：两位司机、三名乘客</h3>
+  <p>A 在 Central（价值 $50），B 在 Riverside（$30）。R1：车费 $38 去远郊（价值 $8）；R2：$14 去夜生活区（$55）；R3：$16 从 Riverside 去 Central（$50）。接驾分钟：A→R1/R2/R3 = 2/3/9，B→R1/R2/R3 = 10/11/2。</p>
+  <div class="table-wrap"><table class="terms">
+    <thead><tr><th>匹配分</th><th>R1</th><th>R2</th><th>R3</th></tr></thead>
+    <tbody>
+      <tr><td>A（$50）</td><td>38 + 8 − 50 = <strong>−4</strong></td><td>14 + 55 − 50 = 19</td><td>16 + 50 − 50 = 16</td></tr>
+      <tr><td>B（$30）</td><td>38 + 8 − 30 = 16</td><td>14 + 55 − 30 = 39</td><td>16 + 50 − 30 = 36</td></tr>
+    </tbody>
+  </table></div>
+  <ol>
+    <li><strong>旧系统</strong>（接驾总时间最短）：A→R1 + B→R3 = 4 分钟，<strong>R2 等待</strong>。</li>
+    <li>六个分数见上表。</li>
+    <li><strong>新系统</strong>（总分最高）：A→R2 + B→R3 = 55 与 A→R3 + B→R2 = 55 打平；前者接驾 5 分钟、后者 20 分钟 → 选 <strong>A→R2 + B→R3，R1 等待</strong>。</li>
+    <li><strong>放弃了什么、得到什么：</strong>放弃了最贵的一单（本轮车费从 $54 降到 $30）和 1 分钟接驾时间；换来 A 被送到高价值的夜生活区而不是困在远郊，后续收入更高。</li>
+    <li><strong>负分（A→R1 = −4）：</strong>接这单后司机未来收入的损失（50 → 8）超过车费本身，还不如不接。也说明司机少时，去偏远地区的乘客可能要多等。</li>
+  </ol>
 </section>
 
-<section class="content-section" id="rl-practice"><h2>Notebook 练习与掌握标准</h2>
-<p class="chapter-chart-map"><strong>本章图表 / 方法：</strong>Week_9_Reinforcement_Learning.ipynb 两题及自主练习；文件名为 Week 9，按本次确认归入第二周强化学习主题。</p>
-<p><strong>网格题：</strong>3×4 网格，中间有墙，随机策略四向各 1/4，γ=0.9。先写转移和奖励表，撞墙留在原地，再用旧 V 同步更新。原 Notebook 的网格文本被放在代码单元中，不是合法 Python，阅读时不要直接运行该单元。</p>
-<p><strong>Safe / Risky 题：</strong>Safe 固定 +2，Risky 各半概率 +5 或 −1。按提示分别计算三个序列的两步折扣回报 <code>r₁+0.8r₂</code>；若要算标准 Q-learning 更新，还缺 α、初始 Q 与状态转移。只有 Safe 起始的样本，也不能唯一判断 Risky 的完整 Q。</p>
-<div class="exercise"><strong>本周自测：</strong>用迷宫解释 state、action、reward、policy、V、Q；手算一次 Q 更新；说明 ε=0.2 不等于最优动作仅 80% 被选；区分 SARSA 与 Q-learning；解释 Lyft 为何接受较低即时车费。能逐项说清输入、计算、输出，才算掌握。</div>
-<p>练习保留在原 Notebook 中，本次只补充网站知识与解题路径。下一步建议自己完成网格中的一个非终点状态，并先写清终点奖励约定。</p>
+<section class="content-section" id="rl-practice">
+  <h2>Notebook 练习与自测</h2>
+  <p class="chapter-chart-map"><strong>本章图表 / 方法：</strong>Week_9_Reinforcement_Learning.ipynb 两题；按考试常见题型整理的自测。</p>
+  <div class="table-wrap"><table class="terms">
+    <thead><tr><th>Notebook 题目</th><th>思路与答案</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Q1 格子世界</strong>：上面的 3×4 网格，γ = 0.9，随机策略，V(G) = 10，写出一轮后每格的 V 并解释</td><td>不挨着 G 的格子都是 −1；(2,4) 和 (3,3) 是 +1.25。原因：第一轮只有一步之内能到 G 的格子“知道”附近有奖励</td></tr>
+      <tr><td><strong>Q2 Safe / Risky</strong>：Safe 固定 +2；Risky 一半 +5、一半 −1；γ = 0.8，算三个序列的回报</td><td>Safe(+2)→Safe(+2)：2 + 0.8 × 2 = 3.6；Safe(+2)→Risky(+5)：2 + 4 = 6.0；Safe(+2)→Risky(−1)：2 − 0.8 = 1.2；三者平均 3.6。Risky 期望奖励 = 0.5 × 5 + 0.5 × (−1) = 2，和 Safe 一样，但方差更大</td></tr>
+    </tbody>
+  </table></div>
+  <details class="exercise"><summary>1. RL 和监督学习最大的区别？</summary><p>没有标签，只有奖励反馈；靠试错学最优策略，目标是长期累积奖励最大。</p></details>
+  <details class="exercise"><summary>2. CartPole 有几个观测、几个动作？奖励怎么给？什么时候结束？</summary><p>4 个观测（小车位置、速度、杆角度、角速度），2 个动作（左 / 右推）。杆每立住一个 timestep 得 1 分；杆倒、出界或满 200 步结束。</p></details>
+  <details class="exercise"><summary>3. 用 Q 表记录每个状态下各动作的价值，属于哪类方法？</summary><p>Value-based。</p></details>
+  <details class="exercise"><summary>4. Q-learning 和 SARSA，哪个是 on-policy？</summary><p>SARSA 是 on-policy；Q-learning 是 off-policy。两者都是 model-free。</p></details>
+  <details class="exercise"><summary>5. 4 台老虎机、ε = 0.2，选中当前最佳机器的概率？</summary><p>0.8 + 0.2 / 4 = 0.85。</p></details>
+  <details class="exercise"><summary>6. 选项 A 第 1 步得 5；选项 B 前两步 0、第 3 步得 10。γ = 0.9 和 0.5 时分别选哪个？</summary><p>B 的价值 = γ² × 10。γ = 0.9：8.1 &gt; 5，选 B；γ = 0.5：2.5 &lt; 5，选 A。</p></details>
+  <details class="exercise"><summary>7. 格子世界中，四个邻格 V 为 0、0、2、10，随机策略、步奖励 −1、γ = 0.9，V(s) 是多少？</summary><p>0.25 × [(−1) + (−1) + (−1 + 1.8) + (−1 + 9)] = 0.25 × 6.8 = 1.7。</p></details>
+  <details class="exercise"><summary>8. 老虎机初始 Q = 0.5，这次拉完 N = 4，奖励 R = 1，新 Q？</summary><p>0.5 + (1/4)(1 − 0.5) = 0.625。</p></details>
+  <details class="exercise"><summary>9. RLHF 为什么要单独训练一个奖励模型？</summary><p>人工逐条打分太慢太贵。用人类对回答的排序训练奖励模型，它就能自动、大规模地估计“人会给几分”，用来优化 LLM。</p></details>
+  <details class="exercise"><summary>10. Lyft：司机在郊区（价值 $20），R4 车费 $25 去机场（$40），R5 车费 $30 去另一个郊区（$20），接哪单？</summary><p>R4 = 25 + 40 − 20 = 45；R5 = 30 + 20 − 20 = 30。接 R4，虽然车费低，但把司机送到了热门地点。</p></details>
+  <details class="exercise"><summary>11. Lyft 为什么用 switchback 而不是 A/B test？</summary><p>两组乘客共享同一批司机，新系统的好处会溢出到对照组，A/B test 会低估效果。</p></details>
+  <details class="exercise"><summary>12. “Lyft 系统只从自己选的行程中学习，可能永远发现不了被低估的区域”，这对应哪个 RL 概念？</summary><p>Exploration vs exploitation：只利用、不探索，就拿不到新区域的信息。可以借鉴 ε-greedy 加入探索。</p></details>
 </section>
-
 </main>

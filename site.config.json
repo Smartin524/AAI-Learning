@@ -481,7 +481,7 @@
       "index": "04",
       "name": "CA6001 · AI Algorithms Fundamentals & Applications",
       "menuLabel": "CA6001 · AI Algorithms",
-      "description": "监督与无监督学习、强化学习、深度学习与课堂案例",
+      "description": "监督与无监督、强化学习、深度学习、NLP、计算机视觉、生成式 AI",
       "entry": "courses/ca6001-module-01.html",
       "tocTitle": "CA6001 · AI ALGORITHMS",
       "pages": [
@@ -501,7 +501,7 @@
             },
             {
               "id": "linear-regression",
-              "label": "Linear Regression & Mathematics"
+              "label": "Linear Regression"
             },
             {
               "id": "classification",
@@ -521,7 +521,7 @@
             },
             {
               "id": "moderna-case",
-              "label": "Class 1 · Moderna Case"
+              "label": "Class 1 Case · Moderna"
             },
             {
               "id": "notebook-practice",
@@ -529,7 +529,7 @@
             },
             {
               "id": "practice",
-              "label": "自测与第二周衔接"
+              "label": "自测"
             }
           ],
           "week": 1
@@ -542,23 +542,23 @@
           "subsections": [
             {
               "id": "rl-basics",
-              "label": "Types of ML & What Is RL?"
+              "label": "What Is Reinforcement Learning?"
             },
             {
               "id": "rl-model",
-              "label": "Reinforcement Learning Model"
+              "label": "Reinforcement Learning Model & Workflow"
             },
             {
               "id": "rl-use-cases",
-              "label": "Use cases"
+              "label": "Use cases of Reinforcement Learning"
             },
             {
               "id": "rl-algorithms",
-              "label": "Implementations & Algorithms"
+              "label": "RL Implementations and Algorithms"
             },
             {
               "id": "exploration",
-              "label": "Exploration & Discount Factor"
+              "label": "Exploration vs Exploitation & Discount Factor"
             },
             {
               "id": "bandit",
@@ -566,11 +566,11 @@
             },
             {
               "id": "rlhf",
-              "label": "RL with Human Feedback"
+              "label": "Reinforcement Learning with Human Feedback"
             },
             {
               "id": "rl-challenges",
-              "label": "Challenges & GRPO"
+              "label": "Challenges, Future Directions & GRPO"
             },
             {
               "id": "lyft-case",
@@ -651,10 +651,161 @@
             },
             {
               "id": "practice",
-              "label": "自测与掌握标准"
+              "label": "自测"
             }
           ],
           "week": 3
+        },
+        {
+          "output": "courses/ca6001-module-04.html",
+          "content": "src/content/courses/ca6001-module-04.html",
+          "navLabel": "Module 4 第四周：自然语言处理",
+          "code": true,
+          "subsections": [
+            {
+              "id": "nlp-intro",
+              "label": "What is Natural Language Processing?"
+            },
+            {
+              "id": "nlp-components",
+              "label": "Key Components & Preprocessing"
+            },
+            {
+              "id": "syntax-semantics",
+              "label": "Syntax, Semantics & Sentiment"
+            },
+            {
+              "id": "word-embeddings",
+              "label": "Word Embeddings & Word2Vec"
+            },
+            {
+              "id": "seq2seq-rnn",
+              "label": "Seq2Seq & RNN"
+            },
+            {
+              "id": "transformer-attention",
+              "label": "Transformers vs RNNs & Self-Attention"
+            },
+            {
+              "id": "llm",
+              "label": "Language Modeling, LLM Pipeline & GPT"
+            },
+            {
+              "id": "rag",
+              "label": "Retrieval Augmented Generation (RAG)"
+            },
+            {
+              "id": "nlp-challenges",
+              "label": "NLP for Social Good & Challenges"
+            },
+            {
+              "id": "nlp-tutorial",
+              "label": "NLP Tutorial"
+            },
+            {
+              "id": "practice",
+              "label": "自测"
+            }
+          ],
+          "week": 4
+        },
+        {
+          "output": "courses/ca6001-module-05.html",
+          "content": "src/content/courses/ca6001-module-05.html",
+          "navLabel": "Module 5 第五周：计算机视觉",
+          "code": true,
+          "subsections": [
+            {
+              "id": "cv-intro",
+              "label": "What is Computer Vision? How do Computers See?"
+            },
+            {
+              "id": "cv-applications",
+              "label": "Applications & Traditional vs Deep Learning"
+            },
+            {
+              "id": "convolution",
+              "label": "Convolutional Layers"
+            },
+            {
+              "id": "cnn-architecture",
+              "label": "Convolutional Neural Networks"
+            },
+            {
+              "id": "classic-architectures",
+              "label": "Classification & Classic Architectures"
+            },
+            {
+              "id": "object-detection",
+              "label": "Object Detection & IoU"
+            },
+            {
+              "id": "generation-multimodal",
+              "label": "Content Generation & Multimodal Models"
+            },
+            {
+              "id": "lenet-notebook",
+              "label": "Notebook · LeNet-5 on MNIST"
+            },
+            {
+              "id": "feature-maps-notebook",
+              "label": "Notebook · Visualizing Feature Maps"
+            },
+            {
+              "id": "practice",
+              "label": "自测"
+            }
+          ],
+          "week": 5
+        },
+        {
+          "output": "courses/ca6001-module-06.html",
+          "content": "src/content/courses/ca6001-module-06.html",
+          "navLabel": "Module 6 第六周：生成式 AI",
+          "code": true,
+          "subsections": [
+            {
+              "id": "genai-intro",
+              "label": "What is Generative AI?"
+            },
+            {
+              "id": "gen-vs-pred",
+              "label": "GenAI vs Predictive AI"
+            },
+            {
+              "id": "gan-vae",
+              "label": "GANs & VAEs"
+            },
+            {
+              "id": "diffusion",
+              "label": "Diffusion Models, DiT & ViT"
+            },
+            {
+              "id": "llm-adaptation",
+              "label": "LLM Architecture, Pre-training & Adaptation"
+            },
+            {
+              "id": "prompting-rag",
+              "label": "Prompt Engineering, RAG & Hallucinations"
+            },
+            {
+              "id": "evaluation",
+              "label": "Evaluating Generative AI"
+            },
+            {
+              "id": "training-ethics",
+              "label": "Data Distribution, Training, Energy & Ethics"
+            },
+            {
+              "id": "llm-notebook",
+              "label": "Notebook · LLM Pretraining and Fine-tuning"
+            },
+            {
+              "id": "practice",
+              "label": "自测"
+            }
+          ],
+          "week": 6
         }
       ],
       "schedule": {

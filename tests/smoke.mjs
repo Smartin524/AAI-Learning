@@ -227,8 +227,10 @@ try {
     ["2026-09-13T15:59:59Z", 1], // Before teaching starts.
     ["2026-09-20T16:00:00Z", 2], // Monday midnight in Singapore.
     ["2026-10-04T15:59:59Z", 3], // Sunday stays in week three.
-    ["2026-10-04T16:00:00Z", { ca6001: 1, ca6003: 4 }], // Only CA6003 has published week four.
-    ["2026-10-11T16:00:00Z", 1], // Unpublished week five falls back.
+    ["2026-10-04T16:00:00Z", 4], // Both courses have published week four.
+    ["2026-10-11T16:00:00Z", { ca6001: 5, ca6003: 1 }], // Only CA6001 has week five.
+    ["2026-10-18T16:00:00Z", { ca6001: 6, ca6003: 1 }], // Only CA6001 has week six.
+    ["2026-10-25T16:00:00Z", 1], // Unpublished week seven falls back.
     ["2027-01-01T00:00:00Z", 1], // Beyond the collected course weeks.
   ];
   for (const [date, expected] of dates) {

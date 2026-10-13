@@ -6,7 +6,7 @@
 
 - **Python 通识**：基础语法、数据结构、文件与环境、NumPy、API、Embedding 和 RAG 相关章节。
 - **CA6000 · Applied AI Programming**：Module 1–3 覆盖 Python 基础、模块与文件、NumPy、Matplotlib、Pandas 与 Python 类；Module 4 进入 Seaborn 探索性分析、数据缩放和 scikit-learn 分类流程；Module 5 系统讲解 Keras、TensorFlow、PyTorch、ANN、CNN 与 MNIST 训练；Module 6 讲解 RNN、时间序列窗口、many-to-one / many-to-many、Keras 实现与 LSTM 入门。
-- **CA6001 · AI Algorithms Fundamentals & Applications**：Module 1 覆盖监督与无监督学习、线性与逻辑回归、模型评价、Moderna 案例及房价 / 客户流失练习；Module 2 按第二周强化学习课件整理 RL 要素、价值函数、Q-learning / SARSA / DQN、探索与利用、多臂老虎机、RLHF 与 GRPO，包含 Lyft 案例及 Notebook 练习提示；Module 3 覆盖深度学习、神经网络、前向与反向传播、梯度下降、CNN、Transformer，附两份 Tutorial 与 SELENA 阈值计算案例。
+- **CA6001 · AI Algorithms Fundamentals & Applications**：Module 1 监督与无监督学习、模型评价与 Moderna 案例；Module 2 强化学习、格子世界与老虎机计算、RLHF / GRPO 与 Lyft 案例；Module 3 深度学习、CNN、Transformer、两份 Tutorial 与 SELENA 案例；Module 4 NLP、Word2Vec、RNN 与 Transformer、self-attention 数值演示、LLM 与 RAG；Module 5 计算机视觉、卷积计算、LeNet / AlexNet、目标检测与 IoU；Module 6 生成式 AI、GAN / VAE / 扩散、SFT / RLHF / LoRA、prompt、RAG、评估与能耗。每个 Module 用具体例子和数字讲解，末尾附自测题。
 - **CA6002 · AI UX & Data Visualisation Design Principles**：Module 1–3 覆盖数据属性、图表选择、AI 模型可视化、时间序列与人类视觉感知；Module 4 聚焦 Human-Centred AI、Human + AI 协作和 AI 机会识别；Module 5 深入 AI usability、error handling、trust calibration、explanation、user control 与 feedback。
 
 - **CA6003 · Best Practices in Data Governance, Preparation & Analytics**：Module 1 数据剖析、清洗、缺失值与异常值；Module 2 编码、缩放、幂变换与偏差缓解，含 House Prices 十步练习和 SMOTE Notebook；Module 3 四类数据分析、根因分析、假设检验，以及 PCA 与树模型 Notebook；Module 4 EDA 三层风险（泄漏、采样偏差、概念漂移、多重共线性等）与五个悖论，并附小组作业要求。每个 Module 用具体例子和数字讲解，末尾附自测题。
