@@ -255,7 +255,7 @@ try {
   await entryPage.getByRole("button", { name: "课程切换" }).click();
   await entryPage.locator(".course-switcher-item").filter({ hasText: "CA6003" }).click();
   await entryPage.waitForURL("**/courses/ca6003-module-03.html");
-  await entryPage.getByRole("heading", { name: "第三周：Data Analytics 数据分析" }).waitFor();
+  await entryPage.getByRole("heading", { name: "第三周：数据分析与假设检验" }).waitFor();
   await entryPage.locator(".chapter-link").filter({ hasText: "Module 1 第一周" }).click();
   await entryPage.waitForURL("**/courses/ca6003-module-01.html");
   assert(await entryPage.locator("h1").innerText().then(text => text.startsWith("第一周")), "Manual week selection should remain available");
