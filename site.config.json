@@ -746,7 +746,7 @@
       "index": "06",
       "name": "CA6003 · Best Practices in Data Governance, Preparation & Analytics",
       "menuLabel": "CA6003 · Data Governance & Analytics",
-      "description": "数据剖析与清洗、特征工程、数据分析与决策",
+      "description": "数据剖析与清洗、特征工程、数据分析、EDA 陷阱与悖论",
       "entry": "courses/ca6003-module-01.html",
       "tocTitle": "CA6003 · DATA GOVERNANCE & ANALYTICS",
       "pages": [
@@ -785,12 +785,8 @@
               "label": "Outlier detection"
             },
             {
-              "id": "fitness-notebook",
-              "label": "Notebook：七种缺失值处理"
-            },
-            {
               "id": "practice",
-              "label": "自测与掌握标准"
+              "label": "自测"
             }
           ],
           "week": 1
@@ -835,7 +831,7 @@
             },
             {
               "id": "evaluation",
-              "label": "模型比较与自测"
+              "label": "自测"
             }
           ],
           "week": 2
@@ -896,10 +892,79 @@
             },
             {
               "id": "practice",
-              "label": "自测与掌握标准"
+              "label": "自测"
             }
           ],
           "week": 3
+        },
+        {
+          "output": "courses/ca6003-module-04.html",
+          "content": "src/content/courses/ca6003-module-04.html",
+          "navLabel": "Module 4 第四周：EDA 陷阱与悖论",
+          "code": true,
+          "subsections": [
+            {
+              "id": "tiers",
+              "label": "Three tiers of EDA risks"
+            },
+            {
+              "id": "target-leakage",
+              "label": "Target Leakage & Target Validity"
+            },
+            {
+              "id": "sampling-bias",
+              "label": "Data Representativeness & Sampling Bias"
+            },
+            {
+              "id": "temporal-drift",
+              "label": "Temporal Leakage & Concept Drift"
+            },
+            {
+              "id": "multicollinearity",
+              "label": "Multicollinearity"
+            },
+            {
+              "id": "label-noise-outliers",
+              "label": "Label Noise & Outlier Semantics"
+            },
+            {
+              "id": "tier3",
+              "label": "Tier 3: Scaling & Dimensionality"
+            },
+            {
+              "id": "correlation-causation",
+              "label": "Correlation vs Causation"
+            },
+            {
+              "id": "simpson",
+              "label": "Simpson’s Paradox"
+            },
+            {
+              "id": "berkson",
+              "label": "Berkson’s Paradox"
+            },
+            {
+              "id": "metric-paradoxes",
+              "label": "Accuracy & False Prediction Paradox"
+            },
+            {
+              "id": "ecological-fallacy",
+              "label": "Ecological Fallacy"
+            },
+            {
+              "id": "detect-paradoxes",
+              "label": "How to Detect Paradoxes in EDA"
+            },
+            {
+              "id": "assignment",
+              "label": "Assignment 要求"
+            },
+            {
+              "id": "practice",
+              "label": "自测"
+            }
+          ],
+          "week": 4
         }
       ],
       "schedule": {

@@ -9,7 +9,7 @@
 - **CA6001 · AI Algorithms Fundamentals & Applications**：Module 1 覆盖监督与无监督学习、线性与逻辑回归、模型评价、Moderna 案例及房价 / 客户流失练习；Module 2 按第二周强化学习课件整理 RL 要素、价值函数、Q-learning / SARSA / DQN、探索与利用、多臂老虎机、RLHF 与 GRPO，包含 Lyft 案例及 Notebook 练习提示；Module 3 覆盖深度学习、神经网络、前向与反向传播、梯度下降、CNN、Transformer，附两份 Tutorial 与 SELENA 阈值计算案例。
 - **CA6002 · AI UX & Data Visualisation Design Principles**：Module 1–3 覆盖数据属性、图表选择、AI 模型可视化、时间序列与人类视觉感知；Module 4 聚焦 Human-Centred AI、Human + AI 协作和 AI 机会识别；Module 5 深入 AI usability、error handling、trust calibration、explanation、user control 与 feedback。
 
-- **CA6003 · Best Practices in Data Governance, Preparation & Analytics**：Module 1 按第一周课件覆盖数据科学流程、数据类型、数据剖析、清洗、七类缺失值处理和异常值检测，并附健身数据 Notebook 练习提示；Module 2 覆盖六类编码、目标编码防泄漏、缩放、幂变换、特征构造与偏差缓解，纳入 House Prices 十步练习及同尺度模型比较。
+- **CA6003 · Best Practices in Data Governance, Preparation & Analytics**：Module 1 数据剖析、清洗、缺失值与异常值；Module 2 编码、缩放、幂变换与偏差缓解，含 House Prices 十步练习和 SMOTE Notebook；Module 3 四类数据分析、根因分析、假设检验，以及 PCA 与树模型 Notebook；Module 4 EDA 三层风险（泄漏、采样偏差、概念漂移、多重共线性等）与五个悖论，并附小组作业要求。每个 Module 用具体例子和数字讲解，末尾附自测题。
 
 首页是课程选择看板；进入课程后，可通过顶部的“课程”按钮在不同课程之间切换。课程内容页使用左侧目录和右侧正文的阅读布局。
 

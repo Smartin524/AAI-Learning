@@ -1,107 +1,292 @@
-<main class="chapter"><header class="chapter-hero"><div class="chapter-kicker">CA6003 · MODULE 03 · WEEK 3</div><h1>第三周：Data Analytics 数据分析</h1><p class="chapter-summary">先明确问题，再选择描述、诊断、预测或处方分析；用销售看板、假设检验和五个房价场景，分清数据能支持的结论与行动。</p><div class="outcomes"><strong>学完你应该能够：</strong>按问题选择分析类型；解释 Pearson / Spearman 的边界；用鱼骨图与 5 Whys 提出并验证根因；正确解读 p 值；区分预测与决策，并读懂 PCA 和树模型示例。</div><p class="note">来源：Dr. Smitha K G，<cite>Week3_Saturday _data analytics_summary.pdf</cite>（20 页）。前十节沿主课件顺序整理；PCA 与树模型段落是相关 Notebook 学习补充，来源为 <cite>PCA_dimensionality_reduction.ipynb</cite> 与 <cite>Decision tree and XGboost_中文讲解.ipynb</cite>，不把它们当作主课件原始分章。未找到独立的第三周练习单；主课件中的销售看板和五个房价场景在本页逐项保留。代码为学习补充，使用自造数据或内置数据，不代表课件报告的实测结果。</p></header><section class="content-section" id="analytics-context"><h2>Data Analytics: Where Does It Fit?</h2><p class="chapter-chart-map"><strong>本章图表 / 方法：</strong>第 2–3 页：Prepare / Process / Analyze 与三项分析要求。</p><p>Data Analytics 用统计、数学和计算方法解释模式、识别趋势，支持决策；它不只出现在最后的 Analyze 阶段。Prepare 中探索数据，Process 中评估转换影响，Analyze 中回答数据科学问题。</p><ol><li><strong>Define the Question：</strong>先定义问题，再选择分析，不从“我会哪个模型”出发。</li><li><strong>Ensure Good Data：</strong>洞察受数据质量制约。检查缺失、重复、时间覆盖和口径。</li><li><strong>Interpret Critically：</strong>理解方法、假设和限制；得到一个数还不等于回答了问题。</li></ol><p>衔接前两周：剖析与清洗让数据可用，编码与缩放让方法能正确处理数据；第三周判断该用什么分析，以及结果意味着什么。</p></section>
+<main class="chapter">
+<header class="chapter-hero">
+  <div class="chapter-kicker">CA6003 · MODULE 03 · WEEK 3</div>
+  <h1>第三周：Data Analytics 数据分析</h1>
+  <p class="chapter-summary">问题决定分析类型。本周的主线是四种分析：Descriptive（发生了什么）→ Diagnostic（为什么）→ Predictive（会怎样）→ Prescriptive（该怎么做），并用房价的五个场景练习“看问题选分析”。</p>
+  <div class="outcomes"><strong>学完你应该能够：</strong>看到一个问题就判断属于哪种分析；分清 Pearson 和 Spearman；按五步做根因分析（鱼骨图 + 5 Whys）；按数据类型选检验方法并正确解读 p 值；说出回归、分类、聚类的区别；读懂 PCA 和树模型两个 Notebook 的结论。</div>
+  <p class="note">来源：Dr. Smitha K G，<cite>Week3_Saturday _data analytics_summary.pdf</cite>（20 页），以及 Notebook <cite>PCA_dimensionality_reduction_中文讲解.ipynb</cite>、<cite>Decision tree and XGboost_中文讲解.ipynb</cite>。</p>
+</header>
 
-<section class="content-section" id="analytics-types"><h2>Types of Data Analytics</h2><p class="chapter-chart-map"><strong>本章图表 / 方法：</strong>第 4 页：四类分析的关键问题。</p><figure class="course-example"><a href="../assets/courseware/ca6003-module-03/analytics-types.png"><img src="../assets/courseware/ca6003-module-03/analytics-types.png" alt="第 4 页：分析类型随问题变化；描述、诊断、预测与处方分析。" width="1440" height="810" loading="lazy"></a><figcaption>第 4 页：分析类型随问题变化；描述、诊断、预测与处方分析。（点击查看原图）</figcaption></figure><div class="table-wrap"><table class="terms"><thead><tr><th>类型</th><th>关键问题</th><th>输出</th></tr></thead><tbody><tr><td>Descriptive 描述</td><td>发生了什么？现在是什么情况？</td><td>统计摘要、模式、趋势</td></tr><tr><td>Diagnostic 诊断</td><td>为什么出现这个现象？哪些因素有关？</td><td>可能解释、关系与经验证的根因</td></tr><tr><td>Predictive 预测</td><td>未知或未来的结果是什么？</td><td>数值、类别或其他模型输出</td></tr><tr><td>Prescriptive 处方</td><td>在目标和约束下应该做什么？</td><td>可执行的行动建议</td></tr></tbody></table></div><p class="note">图中“价值 / 复杂度”是概念示意，不意味着处方分析在所有问题上都比描述分析好。选择取决于问题、证据和行动需求。</p></section>
+<section class="content-section" id="analytics-context">
+  <h2>Data Analytics: Where Does It Fit?｜在流程中的位置</h2>
+  <p class="chapter-chart-map"><strong>本章图表 / 方法：</strong>Ask → Prepare → Process → Analyze → Share → Act 流程图；三条关键要求（第 2–3 页）。</p>
+  <p><strong>定义：</strong>用统计、数学和计算方法分析数据，<strong>解释模式、识别趋势、提供可执行的洞察</strong>，支持决策。数据可以是结构化或非结构化的。</p>
+  <p>它覆盖流程中的三步（课件用红圈圈出）：</p>
+  <ul>
+    <li><strong>Prepare：</strong>探索性分析，理解数据。</li>
+    <li><strong>Process：</strong>评估并改进数据转换的影响。</li>
+    <li><strong>Analyze：</strong>回答数据科学问题的核心方法。</li>
+  </ul>
+  <div class="table-wrap"><table class="terms">
+    <thead><tr><th>三条关键要求</th><th>含义</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Define the Question → Choose the Analysis</strong></td><td>先有清楚的问题；问题决定用哪种分析；先定义分析，再动手</td></tr>
+      <tr><td><strong>Ensure Good Data → Get Good Insights</strong></td><td>洞察的质量取决于数据质量；在 Prepare 和 Process 上多花力气（garbage in → garbage out）</td></tr>
+      <tr><td><strong>Interpret Results → Think Critically</strong></td><td>结果反映的是数据告诉我们的东西；了解方法、假设和局限之后再下结论</td></tr>
+    </tbody>
+  </table></div>
+</section>
 
-<section class="content-section" id="descriptive"><h2>Descriptive Analytics</h2><p class="chapter-chart-map"><strong>本章图表 / 方法：</strong>第 5–6 页：摘要统计、聚合、可视化、时序与空间分析。</p><p>描述分析总结历史或当前数据：平均值 / 中位数、按地区聚合、价格分布和时间趋势。发现“某地区价格更高”描述了现象，尚未证明地区造成价格差异。</p><div class="table-wrap"><table class="terms"><thead><tr><th>方法 / 工具</th><th>回答什么</th><th>使用边界</th></tr></thead><tbody><tr><td>Summary statistics / aggregation</td><td>典型房价、分组销售额</td><td>均值可能受极端值影响；先确认单位及每行含义</td></tr><tr><td>Geospatial：GeoPandas / Folium</td><td>事情发生在哪里？空间分布如何？</td><td>坐标、地理单位与人口基数必须一致</td></tr><tr><td>Time series：Statsmodels / SciPy</td><td>趋势、季节性与异常变化</td><td>确认频率、缺口和时间顺序；预测时避免未来信息</td></tr></tbody></table></div><pre><code class="language-python"># 学习补充：每行一套房屋，价格单位统一
-import pandas as pd
-houses = pd.DataFrame({
-    &quot;Neighbourhood&quot;: [&quot;A&quot;, &quot;A&quot;, &quot;B&quot;, &quot;B&quot;],
-    &quot;GrLivArea&quot;: [1000, 1500, 1200, 1800],
-    &quot;SalePrice&quot;: [200000, 300000, 240000, 360000],
-})
-print(houses[&quot;SalePrice&quot;].describe())
-print(houses.groupby(&quot;Neighbourhood&quot;)[&quot;SalePrice&quot;].agg([&quot;count&quot;, &quot;mean&quot;, &quot;median&quot;]))</code></pre><p>输出每个地区的样本数、均值和中位数；示例中 A 均价 250,000，B 均价 300,000。两组面积也不同，不能直接把差价归因于地区。</p></section>
+<section class="content-section" id="analytics-types">
+  <h2>Types of Data Analytics｜四种分析</h2>
+  <p class="chapter-chart-map"><strong>本章图表 / 方法：</strong>四种分析的价值 / 复杂度阶梯图（第 4 页）。</p>
+  <figure class="course-example"><a href="../assets/courseware/ca6003-module-03/analytics-types.png"><img src="../assets/courseware/ca6003-module-03/analytics-types.png" alt="第 4 页：描述、诊断、预测与处方分析，价值和复杂度依次升高" width="1440" height="810" loading="lazy"></a><figcaption>第 4 页：问题变了，分析类型就变了（The analytics type changes because the question changes）。（点击查看原图）</figcaption></figure>
+  <div class="table-wrap"><table class="terms">
+    <thead><tr><th>类型</th><th>回答的问题</th><th>目的</th><th>典型方法</th><th>输出</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Descriptive</strong></td><td>What happened?</td><td>总结模式</td><td>聚合、可视化</td><td>模式与趋势</td></tr>
+      <tr><td><strong>Diagnostic</strong></td><td>Why did it happen?</td><td>找可能的原因</td><td>相关分析、根因分析、假设检验</td><td>关系与解释</td></tr>
+      <tr><td><strong>Predictive</strong></td><td>What will happen?</td><td>估计未知结果</td><td>回归、分类、聚类</td><td>预测</td></tr>
+      <tr><td><strong>Prescriptive</strong></td><td>What should we do?</td><td>推荐行动</td><td>规则、优化、决策树</td><td>行动建议</td></tr>
+    </tbody>
+  </table></div>
+  <p class="warning"><strong>判断技巧：</strong>看问句的关键词。“多少 / 分布 / 趋势” → 描述；“为什么 / 哪些因素” → 诊断；“会卖多少 / 会不会违约” → 预测；“该买哪套 / 该怎么改 / 预算内选什么” → 处方。</p>
+</section>
 
-<section class="content-section" id="diagnostic"><h2>Diagnostic: Relationship & Dependency Analysis</h2><p class="chapter-chart-map"><strong>本章图表 / 方法：</strong>第 7–8 页：异常与销量问题；相关、回归和特征重要性。</p><p>诊断问题包括：为什么时序里有异常？为什么销量下降？哪些因素与结果关联？关联分析帮助筛选解释，但需要进一步验证原因。</p><div class="table-wrap"><table class="terms"><thead><tr><th>技术</th><th>适合的数据 / 关系</th><th>解释与误区</th></tr></thead><tbody><tr><td>Pearson correlation</td><td>连续数值；线性关联</td><td>r∈[−1,1]，符号是方向、绝对值是线性强度；对异常值敏感</td></tr><tr><td>Spearman correlation</td><td>有序 / 数值；单调关联</td><td>按排名计算；可捕捉非线性的单调关系，不涵盖任意曲线</td></tr><tr><td>Linear regression</td><td>连续结果与一个 / 多个预测变量</td><td>系数描述在模型条件下的变化；不能直接解释为干预效果</td></tr><tr><td>Polynomial regression</td><td>具有弯曲关系的连续结果</td><td>通过多项式项表达曲线；次数太高可能过拟合</td></tr><tr><td>Feature importance</td><td>已训练模型中的多个特征</td><td>表示模型依赖程度；不是原因的排名，也不一定给出影响方向</td></tr></tbody></table></div><pre><code class="language-python"># 学习补充：沿用上节 houses，比较 Pearson 与 Spearman
-print(houses[[&quot;GrLivArea&quot;, &quot;SalePrice&quot;]].corr(method=&quot;pearson&quot;))
-print(houses[[&quot;GrLivArea&quot;, &quot;SalePrice&quot;]].corr(method=&quot;spearman&quot;))</code></pre><p>这个自造例子把价格设为面积的 200 倍，两种相关都为 1；结果来自生成规则，并非真实房价规律。学习补充：Pearson 接近 0 不排除 U 形关联，相关也不等于因果。</p></section>
+<section class="content-section" id="descriptive">
+  <h2>Descriptive Analytics｜发生了什么</h2>
+  <p class="chapter-chart-map"><strong>本章图表 / 方法：</strong>描述分析四大类技术图；地理可视化与时间序列的 Python 库对照表（第 5–6 页）。</p>
+  <p><strong>一句话：</strong>总结历史数据，描述已经发生或正在发生的事。</p>
+  <div class="table-wrap"><table class="terms">
+    <thead><tr><th>技术</th><th>包括</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Summary statistics</strong></td><td>集中趋势（均值、中位数、众数）；离散程度（标准差、IQR）</td></tr>
+      <tr><td><strong>Aggregation</strong></td><td>按类别聚合（各地区平均房价）；滚动聚合（7 日移动平均）</td></tr>
+      <tr><td><strong>Visualization</strong></td><td>图表；直方图和箱线图；地理可视化</td></tr>
+      <tr><td><strong>Time series analysis</strong></td><td>季节性；趋势分析</td></tr>
+    </tbody>
+  </table></div>
+  <div class="table-wrap"><table class="terms">
+    <thead><tr><th>分析</th><th>帮助理解什么</th><th>Python 库</th><th>典型用途</th></tr></thead>
+    <tbody>
+      <tr><td>Geospatial visualization</td><td>事情发生在哪里、规律如何随地点变化</td><td>GeoPandas（空间数据和地图）、Folium（交互地图）</td><td>分地区销售、人口分布、出行路线</td></tr>
+      <tr><td>Time series analysis</td><td>随时间如何变化：趋势、季节性、异常波动</td><td>Statsmodels（时间序列模型与分解）、SciPy（滤波、降噪、信号处理）</td><td>销售趋势、需求预测、季节模式</td></tr>
+    </tbody>
+  </table></div>
+  <pre><code class="language-python">houses["SalePrice"].describe()                                    # 整体分布
+houses.groupby("Neighbourhood")["SalePrice"].agg(["count", "mean", "median"])  # 按地区聚合</code></pre>
+</section>
 
-<section class="content-section" id="root-cause"><h2>Root Cause: Fishbone & 5 Whys</h2><p class="chapter-chart-map"><strong>本章图表 / 方法：</strong>第 9–10 页：销售看板收入偏低，五步诊断和鱼骨图。</p><figure class="course-example"><a href="../assets/courseware/ca6003-module-03/fishbone.png"><img src="../assets/courseware/ca6003-module-03/fishbone.png" alt="第 10 页：Data、Process、People、Tools 四类可能原因。" width="1440" height="810" loading="lazy"></a><figcaption>第 10 页：Data、Process、People、Tools 四类可能原因。（点击查看原图）</figcaption></figure><div class="table-wrap"><table class="terms"><thead><tr><th>步骤</th><th>课件销售看板场景</th><th>需要的证据</th></tr></thead><tbody><tr><td>1 定义现象</td><td>过去三天看板收入异常偏低</td><td>明确日期、门店、金额口径与基准</td></tr><tr><td>2 探索原因</td><td>按数据、流程、人员、工具列假说</td><td>鱼骨图组织可能原因，尚未定论</td></tr><tr><td>3 深入调查</td><td>晚到交易遗漏 → 导入过早 → 无后续刷新 → 工具 / 流程限制</td><td>5 Whys 每一步都需记录与日志支持</td></tr><tr><td>4 验证根因</td><td>比较源系统与看板，核对交易到达和刷新时间</td><td>验证缺失交易能否解释差额</td></tr><tr><td>5 修复并跟踪</td><td>更晚 / 增量刷新，增加完整性检查</td><td>读回金额、监测后续结果</td></tr></tbody></table></div><p class="warning">鱼骨图用于提出候选原因，5 Whys 用于深入追问；二者不能代替证据。不要看见收入下降就认定真实销量下降，也不要为凑五次“为什么”编造原因。</p><details class="exercise"><summary>练习：源系统收入正常，看板缺少 20:05 后的交易。下一步是什么？</summary><p>核对导入时间、源交易到达时间和刷新日志；确认缺失金额与差额是否对应，再测试晚间 / 增量刷新并检查回补结果。</p></details></section>
+<section class="content-section" id="diagnostic">
+  <h2>Diagnostic: Relationship & Dependency Analysis｜为什么发生</h2>
+  <p class="chapter-chart-map"><strong>本章图表 / 方法：</strong>诊断分析三步图（关系分析 → 根因 → 假设检验）；五种关系分析技术对照表（第 7–8 页）。</p>
+  <p><strong>典型问题：</strong>时间序列里为什么有异常值？销量为什么涨 / 跌？哪些因素和结果有关？</p>
+  <p><strong>三步：</strong>① 关系与依赖分析（变量之间怎么关联）→ ② 根因识别（结合领域知识和数据找主要原因）→ ③ 假设检验与验证（用统计检验确认证据是否支持解释）。</p>
+  <div class="table-wrap"><table class="terms">
+    <thead><tr><th>技术</th><th>适合的数据</th><th>捕捉的关系</th><th>输出怎么读</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Pearson correlation</strong></td><td>连续数值变量</td><td><strong>线性</strong>关联</td><td>r 在 −1 到 +1；符号 = 方向，绝对值 = 强度</td></tr>
+      <tr><td><strong>Spearman correlation</strong></td><td>有序 / 排名变量，或数值变量</td><td><strong>单调</strong>关联，不一定线性</td><td>ρ 在 −1 到 +1，<strong>基于排名</strong>计算</td></tr>
+      <tr><td><strong>Linear regression</strong></td><td>连续结果 + 一个或多个预测变量</td><td>预测变量与结果的线性关系</td><td>系数表示方向和结果的估计变化量</td></tr>
+      <tr><td><strong>Polynomial regression</strong></td><td>结果与预测变量呈曲线关系</td><td>用多项式项表示非线性关系</td><td>捕捉直线拟合不了的弯曲</td></tr>
+      <tr><td><strong>Feature importance</strong></td><td>已训练模型里的多个预测变量</td><td>各特征对预测的相对贡献</td><td>模型最依赖哪些变量（不是因果排名）</td></tr>
+    </tbody>
+  </table></div>
+  <p class="warning"><strong>易错：</strong>Pearson ≈ 0 只说明没有<strong>线性</strong>关系，可能还有 U 形关系。Spearman 能抓“越大越大”的单调曲线，但抓不了 U 形。相关不等于因果（第四周细讲）。</p>
+</section>
 
-<section class="content-section" id="hypothesis-testing"><h2>Hypothesis Testing & Validation</h2><p class="chapter-chart-map"><strong>本章图表 / 方法：</strong>第 11–12 页：认知游戏前后注意力评分；p 值、显著性水平与检验选择。</p><p>课件问题：认知游戏能否改善注意力？设 H₀：没有改善，H₁：有改善；选择符合设计的检验，计算 p 值，与预先设定的 α 比较，再检查效果大小和假设。</p><p>课件例子 p=0.03 &lt; α=0.05，因此拒绝 H₀。<strong>学习补充：</strong>p 值是在 H₀ 和检验假设成立时，得到当前或更极端结果的概率；不是 H₀ 为真的概率，也不是“有 97% 概率游戏有效”。不拒绝 H₀ 不等于证明没有作用。</p><div class="table-wrap"><table class="terms"><thead><tr><th>方法</th><th>适用场景</th><th>选择前要核对</th></tr></thead><tbody><tr><td>t-test</td><td>比较两个组 / 条件的均值</td><td>同一人前后为配对；独立两组用独立样本设计</td></tr><tr><td>ANOVA</td><td>比较三组或以上均值</td><td>总体显著不说明哪两组不同</td></tr><tr><td>Chi-square</td><td>类别变量是否有关联</td><td>检查计数与期望频数，而非连续值均值</td></tr><tr><td>Correlation test</td><td>两变量是否存在指定形式关联</td><td>Pearson / Spearman 假设与关系形态</td></tr><tr><td>Regression significance</td><td>预测变量与结果是否关联</td><td>残差、模型设定与混杂因素</td></tr><tr><td>Non-parametric</td><td>参数检验假设不合适</td><td>Mann–Whitney U 用于独立组；Wilcoxon signed-rank 用于配对</td></tr></tbody></table></div><pre><code class="language-python"># 学习补充：同一组参与者的前后评分，双侧配对 t 检验
-import numpy as np
-from scipy.stats import ttest_rel
-before = np.array([50, 52, 48, 60, 55, 58, 49, 54], dtype=float)
-after = np.array([53, 54, 52, 61, 58, 60, 51, 57], dtype=float)
-result = ttest_rel(after, before)
-print(&quot;平均变化:&quot;, (after - before).mean())
-print(&quot;t:&quot;, result.statistic, &quot;p:&quot;, result.pvalue)</code></pre><p>这段自造数据代码不是课件 p=0.03 的计算来源。先看配对差值、分布和设计；若事先设定“改善”的单侧假设，应匹配单侧检验，不能看到结果后切换方向。没有对照组和合适研究设计，前后差异也不能排除练习效应等解释。</p></section>
+<section class="content-section" id="root-cause">
+  <h2>Root Cause: Fishbone & 5 Whys｜根因分析五步</h2>
+  <p class="chapter-chart-map"><strong>本章图表 / 方法：</strong>销售看板收入异常偏低：五步根因表、Ishikawa 鱼骨图（第 9–10 页）。</p>
+  <p><strong>案例：</strong>销售看板显示过去 3 天收入异常低。</p>
+  <div class="table-wrap"><table class="terms">
+    <thead><tr><th>步骤</th><th>要回答</th><th>案例做法</th></tr></thead>
+    <tbody>
+      <tr><td>1. Define the phenomenon</td><td>发生了什么？在哪里、什么时候？</td><td>看板过去 3 天收入异常低</td></tr>
+      <tr><td>2. Explore possible causes</td><td>有哪些可能的解释？</td><td>用<strong>鱼骨图</strong>按 <strong>Data、Process、People、Tools</strong> 四类列出原因</td></tr>
+      <tr><td>3. Investigate &amp; determine</td><td>为什么？反复追问</td><td><strong>5 Whys</strong>：晚间交易缺失 → 导入太早 → 之后没有刷新 → 工具 / 流程限制</td></tr>
+      <tr><td>4. Validate root cause</td><td>证据支持吗？</td><td>对比源系统和看板；核对交易到达时间和刷新时间</td></tr>
+      <tr><td>5. Remediate &amp; follow up</td><td>能修吗？修好了吗？</td><td>增加晚间 / 增量刷新 + 完整性检查；持续监控</td></tr>
+    </tbody>
+  </table></div>
+  <figure class="course-example"><a href="../assets/courseware/ca6003-module-03/fishbone.png"><img src="../assets/courseware/ca6003-module-03/fishbone.png" alt="第 10 页鱼骨图：Data、Process、People、Tools 四类可能原因，指向看板收入异常偏低" width="1440" height="810" loading="lazy"></a><figcaption>第 10 页：鱼头是问题，四根鱼骨是四类原因。（点击查看原图）</figcaption></figure>
+  <div class="table-wrap"><table class="terms">
+    <thead><tr><th>鱼骨</th><th>课件里的原因</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Data</strong></td><td>源数据缺少当天晚些时候的交易；交易记录不正确或不完整；门店 / 地区数据延迟到达；重复和错误</td></tr>
+      <tr><td><strong>Process</strong></td><td>导入安排得太早（如 8:05 PM）；每天只导入一次；不检查晚到的数据；更新看板前不做完整性验证</td></tr>
+      <tr><td><strong>People</strong></td><td>以为 8 点后数据就完整了；数据团队和业务团队缺乏沟通；分析师以为看板是最新的；监控和责任不足</td></tr>
+      <tr><td><strong>Tools</strong></td><td>工具只支持批量导入（不能增量）；没有配置处理晚到数据；不能自动重跑；没有完整性告警</td></tr>
+    </tbody>
+  </table></div>
+  <p><strong>课件总结：</strong>鱼骨图找出<strong>可能</strong>原因 → 5 Whys 往<strong>深处</strong>追问 → 用<strong>证据</strong>验证根因 → 整改并跟进确认有效。</p>
+</section>
 
-<section class="content-section" id="predictive"><h2>Predictive Analytics</h2><p class="chapter-chart-map"><strong>本章图表 / 方法：</strong>第 13 页：学习已有模式 → 新数据 → 未知结果；回归、分类、聚类。</p><figure class="course-example"><a href="../assets/courseware/ca6003-module-03/predictive.png"><img src="../assets/courseware/ca6003-module-03/predictive.png" alt="第 13 页：三种任务及预测模型的训练、独立评价流程。" width="1440" height="810" loading="lazy"></a><figcaption>第 13 页：三种任务及预测模型的训练、独立评价流程。（点击查看原图）</figcaption></figure><p>用已有观察拟合模型，再估计未见样本或未来结果。回归预测连续数值（房价），分类预测类别（垃圾邮件），聚类发现相似群组（客户行为）。课件把聚类纳入分析工具；聚类是无监督分组，不能直接等同于带标签的未来结果预测。</p><p>评价重点是泛化，而非只在训练集拟合得好。学习补充：先划分数据，在训练集拟合缺失处理、编码、缩放和降维；验证 / 测试只 transform。时间预测按时间划分，分类可在适当条件下分层抽样。</p></section>
+<section class="content-section" id="hypothesis-testing">
+  <h2>Hypothesis Testing & Validation｜假设检验</h2>
+  <p class="chapter-chart-map"><strong>本章图表 / 方法：</strong>认知游戏能否提高注意力：五步检验；六种常用检验方法表（第 11–12 页）。</p>
+  <p><strong>目的：</strong>判断观察到的效应是有统计证据支持的，还是可以用随机波动解释。</p>
+  <div class="table-wrap"><table class="terms">
+    <thead><tr><th>步骤</th><th>做什么</th><th>认知游戏例子</th></tr></thead>
+    <tbody>
+      <tr><td>1. State hypotheses</td><td>写出要检验的假设</td><td>H₀：认知游戏<strong>不能</strong>提高注意力；H₁：能提高</td></tr>
+      <tr><td>2. Select a test</td><td>按研究设计和数据选检验</td><td>比较玩游戏前后的注意力分数</td></tr>
+      <tr><td>3. Calculate p-value</td><td>看观察到的结果和 H₀ 有多相容</td><td>p = 0.03</td></tr>
+      <tr><td>4. Make a decision</td><td>p 值和显著性水平 α 比较</td><td>0.03 &lt; 0.05 → <strong>拒绝 H₀</strong></td></tr>
+      <tr><td>5. Validate &amp; interpret</td><td>检查假设，判断改进是否有实际意义</td><td>证据支持有改进；还要看改进有多大、是否稳定</td></tr>
+    </tbody>
+  </table></div>
+  <div class="table-wrap"><table class="terms">
+    <thead><tr><th>方法</th><th>用途</th><th>课件例子</th></tr></thead>
+    <tbody>
+      <tr><td><strong>t-test</strong></td><td>比较<strong>两组 / 两种条件</strong>的均值</td><td>玩游戏前 vs 后的注意力分数</td></tr>
+      <tr><td><strong>ANOVA</strong></td><td>比较<strong>三组及以上</strong>的均值</td><td>三种训练方法的分数</td></tr>
+      <tr><td><strong>Chi-square test</strong></td><td>两个<strong>类别变量</strong>是否有关联</td><td>房屋类型 vs 社区</td></tr>
+      <tr><td><strong>Correlation test</strong></td><td>两个变量是否相关</td><td>GrLivArea 和 SalePrice</td></tr>
+      <tr><td><strong>Regression significance test</strong></td><td>预测变量是否和结果有关</td><td>OverallQual 能否帮助解释 SalePrice</td></tr>
+      <tr><td><strong>Non-parametric tests</strong></td><td>参数检验的假设（如正态）不成立时比较组</td><td>Mann–Whitney U / Wilcoxon</td></tr>
+    </tbody>
+  </table></div>
+  <ul>
+    <li><strong>p &lt; α：</strong>拒绝 H₀，证据支持 H₁。</li>
+    <li><strong>p ≥ α：</strong>不拒绝 H₀。这只说明证据不够，<strong>不等于证明 H₀ 是真的</strong>。</li>
+    <li><strong>p 值不是“H₀ 为真的概率”</strong>，而是假设 H₀ 成立时，得到当前或更极端结果的概率。</li>
+    <li>同一批人前后测用<strong>配对 t 检验</strong>，两批不同的人用<strong>独立样本 t 检验</strong>。</li>
+  </ul>
+  <pre><code class="language-python">from scipy.stats import ttest_rel, ttest_ind, f_oneway, chi2_contingency, mannwhitneyu
+ttest_rel(after, before)            # 同一批人前后对比（配对）
+ttest_ind(group_a, group_b)         # 两批不同的人
+f_oneway(method1, method2, method3) # 三组及以上 → ANOVA</code></pre>
+</section>
 
-<section class="content-section" id="prescriptive"><h2>Prescriptive Analytics</h2><p class="chapter-chart-map"><strong>本章图表 / 方法：</strong>第 14 页：房屋改造目标、成本和约束；规则、优化与决策树。</p><figure class="course-example"><a href="../assets/courseware/ca6003-module-03/prescriptive.png"><img src="../assets/courseware/ca6003-module-03/prescriptive.png" alt="第 14 页：从预测价格走向成本、约束与行动选择。" width="1440" height="810" loading="lazy"></a><figcaption>第 14 页：从预测价格走向成本、约束与行动选择。（点击查看原图）</figcaption></figure><p>预测回答“可能卖多少钱”，处方回答“应该采取什么行动”。先写出目标、可选行动、成本与限制，再比较不行动、加车库、扩大面积、装修等方案。</p><div class="table-wrap"><table class="terms"><thead><tr><th>方法</th><th>课件案例</th><th>边界</th></tr></thead><tbody><tr><td>Rule-based</td><td>没有车库且预算 ≥30,000、空间足够 → 考虑加车库</td><td>规则需要领域依据和例外处理</td></tr><tr><td>Optimization</td><td>在预算 ≤50,000 等约束下选择预期收益最佳的改造</td><td>明确决策变量、目标函数与约束</td></tr><tr><td>Decision trees</td><td>依面积、车库和预算条件逐步推荐</td><td>用于行动的规则树，不自动等同于预测分类树</td></tr></tbody></table></div><p class="warning">模型看到“有车库的房子更贵”，并不证明给任意房屋加车库都会增加同样的价格。处方建议需要验证行动效果、可行性与不确定性。</p></section>
+<section class="content-section" id="predictive">
+  <h2>Predictive Analytics｜会怎样</h2>
+  <p class="chapter-chart-map"><strong>本章图表 / 方法：</strong>预测分析流程图：回归、分类、聚类与通用训练流程（第 13 页）。</p>
+  <p><strong>目标：</strong>用从已有数据学到的模式，估计未知或未来的结果。流程：已有数据 → 用算法学习模式（拟合模型）→ 用到新数据 → 估计结果。</p>
+  <figure class="course-example"><a href="../assets/courseware/ca6003-module-03/predictive.png"><img src="../assets/courseware/ca6003-module-03/predictive.png" alt="第 13 页：回归、分类、聚类三种任务及训练、测试、评估流程" width="1440" height="810" loading="lazy"></a><figcaption>第 13 页：预测模型不能只拟合见过的数据，要能泛化到没见过的数据。（点击查看原图）</figcaption></figure>
+  <div class="table-wrap"><table class="terms">
+    <thead><tr><th>任务</th><th>做什么</th><th>学习方式</th><th>课件例子</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Regression</strong></td><td>预测<strong>数值</strong></td><td>监督（有目标值）</td><td>用面积、位置、房龄预测房价</td></tr>
+      <tr><td><strong>Classification</strong></td><td>预测<strong>类别</strong>，从带标签数据学决策边界</td><td>监督</td><td>判断邮件是否为垃圾邮件</td></tr>
+      <tr><td><strong>Clustering</strong></td><td>发现相似观测组成的<strong>群组</strong></td><td><strong>无监督</strong>（没有预设标签）</td><td>按消费和交易行为给客户分群</td></tr>
+    </tbody>
+  </table></div>
+  <p><strong>训练流程：</strong>训练数据（已知结果）→ 拟合模型 → 在没见过的数据上测试（看泛化）→ 评估（准确率、误差等）。</p>
+</section>
 
-<section class="content-section" id="house-examples"><h2>House Prices · Five Questions</h2><p class="chapter-chart-map"><strong>本章图表 / 方法：</strong>第 15–19 页：买房、便宜房、翻修转卖、开发投资、银行贷款五个场景。</p><div class="table-wrap"><table class="terms"><thead><tr><th>原始场景</th><th>描述 / 诊断</th><th>预测</th><th>处方</th></tr></thead><tbody><tr><td>1 我要买房，看什么？</td><td>典型价位；面积、质量、地区与差价的关联</td><td>按房屋属性估价</td><td>按预算与个人目标排序特征</td></tr><tr><td>2 便宜房是否划算？</td><td>相似房正常价格；便宜是否因面积、年龄、质量或地区</td><td>估计该房合理售价</td><td>结合风险和支出判断是否考虑购买</td></tr><tr><td>3 买入、翻修、转卖</td><td>高价房特征；哪些属性与价值有关</td><td>翻修后预期售价</td><td>比较各方案预期利润</td></tr><tr><td>4 开发商在哪里投资？</td><td>地区 / 房屋类型的历史价差及可能解释</td><td>新项目预期价格</td><td>在预算、需求与限制下选择方案</td></tr><tr><td>5 银行是否发住房贷款？</td><td>抵押物业历史价格与属性</td><td>估计抵押物价值</td><td>结合贷款约束讨论额度和条款</td></tr></tbody></table></div><figure class="course-example"><a href="../assets/courseware/ca6003-module-03/house-profit.png"><img src="../assets/courseware/ca6003-module-03/house-profit.png" alt="第 17 页：买入、翻修、转卖场景与预期利润公式。" width="1440" height="810" loading="lazy"></a><figcaption>第 17 页：买入、翻修、转卖场景与预期利润公式。（点击查看原图）</figcaption></figure><p><strong>Expected Profit = Expected Sale Price − Purchase Price − Renovation Cost − Other Costs。</strong>学习补充：假设售价 500,000、买价 380,000、改造 60,000、其他成本 30,000，预期利润 30,000；售价少 10% 则变为 −20,000。此为课堂假设，说明预测误差会改变行动判断。</p><p>第五个场景中，抵押物估值只是决策的一项输入，不能替代还款能力等贷款评估。相同数据集可以回答五种不同问题：先写清问题，再确定方法和输出。</p></section>
+<section class="content-section" id="prescriptive">
+  <h2>Prescriptive Analytics｜该怎么做</h2>
+  <p class="chapter-chart-map"><strong>本章图表 / 方法：</strong>房屋改造推荐流程；规则、优化、决策树三种方法（第 14 页）。</p>
+  <p><strong>目标：</strong>在考虑预测结果、成本和约束的情况下，推荐最好的行动。</p>
+  <p><strong>流程：</strong>房屋现状（GrLivArea、GarageCars、OverallQual…）→ 用训练好的模型预测房价 → 列出可能的改造（加车库、扩面积、翻新）→ 用决策方法评估（预测涨价、成本、预算和空间限制）→ 推荐行动（加车库、扩面积或不改）。</p>
+  <figure class="course-example"><a href="../assets/courseware/ca6003-module-03/prescriptive.png"><img src="../assets/courseware/ca6003-module-03/prescriptive.png" alt="第 14 页：从预测房价到推荐改造行动，三种方法：规则、优化模型、决策树" width="1440" height="810" loading="lazy"></a><figcaption>第 14 页：处方分析用预测结果来决定行动，同时考虑目标、成本和现实约束。（点击查看原图）</figcaption></figure>
+  <div class="table-wrap"><table class="terms">
+    <thead><tr><th>方法</th><th>原理</th><th>房价例子</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Rule-based</strong></td><td>固定的 IF-THEN 规则，可由专家定或从数据中得出</td><td>IF 没有车库 AND 预算 ≥ $30,000 AND 空间足够 → 建议加车库</td></tr>
+      <tr><td><strong>Optimization</strong></td><td>用数学方法在选项中找最优；包含<strong>目标函数、决策变量、约束</strong></td><td>在加车库、扩面积、翻新厨房中选择，使预测涨价最大，且总花费 ≤ $50,000</td></tr>
+      <tr><td><strong>Decision trees</strong></td><td>一层层的规则 / 条件，逐步缩小选项直到得出推荐</td><td>面积 &lt; 1500 且没有车库 → 考虑加车库；否则预算有限 → 小翻新；否则 → 不改</td></tr>
+    </tbody>
+  </table></div>
+</section>
 
-<section class="content-section" id="analytics-summary"><h2>Data Analytics Summary</h2><p class="chapter-chart-map"><strong>本章图表 / 方法：</strong>第 20 页：四类方法、House Prices 输出与答题路径。</p><div class="table-wrap"><table class="terms"><thead><tr><th>类型</th><th>典型方法</th><th>房价场景的输出</th></tr></thead><tbody><tr><td>描述</td><td>Aggregation、visualization</td><td>SalePrice 分布、模式与趋势</td></tr><tr><td>诊断</td><td>Correlation、root-cause analysis、hypothesis testing</td><td>有关因素与经过核验的解释</td></tr><tr><td>预测</td><td>Regression、classification、clustering</td><td>未见房屋的价格等估计</td></tr><tr><td>处方</td><td>Rules、optimization、decision trees</td><td>预算内的行动推荐</td></tr></tbody></table></div><p>答题路径：<strong>问题 → 类型 → 方法 → 输入和假设 → 输出 → 边界。</strong>一个算法可能用于多个阶段；不能仅凭“用了决策树”判断一定是处方分析。</p></section>
+<section class="content-section" id="house-examples">
+  <h2>House Prices · Five Questions｜同一份数据，五种问题</h2>
+  <p class="chapter-chart-map"><strong>本章图表 / 方法：</strong>五个房价场景，每个按四种分析拆解（第 15–19 页）。</p>
+  <div class="table-wrap"><table class="terms">
+    <thead><tr><th>场景</th><th>Descriptive</th><th>Diagnostic</th><th>Predictive</th><th>Prescriptive</th></tr></thead>
+    <tbody>
+      <tr><td><strong>1. 我想买房，该看什么？</strong></td><td>典型房价多少？按社区、面积、质量怎么变？</td><td>为什么有些房子贵很多？主要是面积、质量、位置、房龄还是车库？</td><td>给定房屋特征，预计能卖多少？</td><td>按我的预算，该优先看哪些特征？</td></tr>
+      <tr><td><strong>2. 找到一套便宜房，划算吗？</strong></td><td>类似房子的正常价格是多少？</td><td>为什么便宜？更小、更旧、质量差还是社区不同？</td><td>按它的特征，预期售价多少？</td><td>按价格和预期价值，要不要买？</td></tr>
+      <tr><td><strong>3. 买入、翻修、转卖</strong></td><td>高价房有哪些特征？</td><td>哪些特征和高售价有关？</td><td>翻修后能卖多少？</td><td>买哪套、怎么翻修能让预期利润最大？</td></tr>
+      <tr><td><strong>4. 开发商该在哪投资？</strong></td><td>哪些社区和房型历史价格更高？</td><td>什么特征解释了社区间的价差？</td><td>具有某些特征的新房能卖多少？</td><td>在预算和约束下，开发 / 投资什么类型？</td></tr>
+      <tr><td><strong>5. 银行要不要给这个人房贷？</strong></td><td>房产的历史价格和特征？</td><td>哪些特征和价值高低有关？</td><td>作为抵押物的房产预期值多少？</td><td>按预测价值和贷款约束，可以给多少额度、什么条件？</td></tr>
+    </tbody>
+  </table></div>
+  <figure class="course-example"><a href="../assets/courseware/ca6003-module-03/house-profit.png"><img src="../assets/courseware/ca6003-module-03/house-profit.png" alt="第 17 页：买入翻修转卖场景和预期利润公式" width="1440" height="810" loading="lazy"></a><figcaption>第 17 页：场景 3 和预期利润公式。（点击查看原图）</figcaption></figure>
+  <p><strong>预期利润公式（第 17 页）：</strong><code>Expected Profit = Expected Sale Price − Purchase Price − Renovation Cost − Other Costs</code></p>
+  <p><strong>算一个：</strong>预期售价 500,000，买价 380,000，翻修 60,000，其他费用 30,000 → 利润 30,000。如果售价预测低估 10%（实际 450,000），利润变成 −20,000。预测误差会直接改变决策。</p>
+</section>
 
-<section class="content-section" id="pca-notebook"><h2>Notebook Supplement · PCA Dimensionality Reduction</h2><p class="chapter-chart-map"><strong>本章图表 / 方法：</strong>相关 Notebook：8×8 digits、标准化、二维投影、累计方差、重建、分类比较。</p><p>每张 digits 图片是 8×8 的 64 个像素特征。PCA 找到方差较大的正交方向，用较少主成分表示数据；类别标签用于给散点着色或后续分类，PCA 本身不依靠标签学习。</p><p>原 Notebook 展示 2 维投影、累计 explained variance、2/10/20/40 个主成分重建，再比较 64 维与 20 维 Logistic Regression。<strong>核对：</strong>它先对全数据 StandardScaler，再划分训练 / 测试，这不适合作为独立分类评价；以下代码先划分、用 Pipeline 在训练集拟合。</p><pre><code class="language-python"># 学习补充：修正全数据先缩放的泄漏，并避免已弃用的 multi_class 参数
-import numpy as np
-from sklearn.datasets import load_digits
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
-from sklearn.decomposition import PCA
-from sklearn.linear_model import LogisticRegression
-from sklearn.pipeline import make_pipeline
-from sklearn.metrics import accuracy_score
+<section class="content-section" id="analytics-summary">
+  <h2>Data Analytics Summary｜一张表总结</h2>
+  <p class="chapter-chart-map"><strong>本章图表 / 方法：</strong>四种分析的目的、方法、房价例子与输出（第 20 页）。</p>
+  <div class="table-wrap"><table class="terms">
+    <thead><tr><th>类型</th><th>目的</th><th>典型方法</th><th>房价例子</th><th>输出</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Descriptive</strong><br>What happened?</td><td>总结模式</td><td>聚合、可视化</td><td>SalePrice 在房屋间怎么变化？</td><td>模式与趋势</td></tr>
+      <tr><td><strong>Diagnostic</strong><br>Why did it happen?</td><td>探索可能原因</td><td>相关、根因分析、假设检验</td><td>哪些因素和 SalePrice 有关？</td><td>关系与解释</td></tr>
+      <tr><td><strong>Predictive</strong><br>What will happen?</td><td>估计未知结果</td><td>回归、分类、聚类</td><td>这套房可能卖多少？</td><td>预测</td></tr>
+      <tr><td><strong>Prescriptive</strong><br>What should we do?</td><td>推荐行动</td><td>规则、优化、决策树</td><td>预算内选哪种改造？</td><td>行动建议</td></tr>
+    </tbody>
+  </table></div>
+  <p class="warning"><strong>易错：</strong>决策树出现在两处。用来<strong>预测</strong>房价或类别时属于 predictive；用来按条件<strong>推荐行动</strong>时属于 prescriptive。看它输出的是“预测值”还是“该做什么”。</p>
+</section>
 
-X, y = load_digits(return_X_y=True)
-X_train, X_test, y_train, y_test = train_test_split(
-    X, y, test_size=0.3, stratify=y, random_state=42
-)
-for components in [None, 2, 20, 40]:
-    steps = [StandardScaler()]
-    if components is not None:
-        steps.append(PCA(n_components=components, random_state=42))
-    steps.append(LogisticRegression(max_iter=2000, solver=&quot;lbfgs&quot;))
-    model = make_pipeline(*steps)
-    model.fit(X_train, y_train)
-    print(components, accuracy_score(y_test, model.predict(X_test)))
+<section class="content-section" id="pca-notebook">
+  <h2>Notebook Supplement · PCA Dimensionality Reduction｜PCA 降维</h2>
+  <p class="chapter-chart-map"><strong>本章图表 / 方法：</strong>8×8 手写数字；标准化；二维投影；累计解释方差曲线；2 / 10 / 20 / 40 个主成分重建图；64 维 vs 20 维逻辑回归对比。</p>
+  <p><strong>一句话：</strong>PCA 把很多特征压缩成少数几个“综合特征”（主成分），尽量保留原始信息。主成分是原特征的线性组合，是数据中变化（方差）最大的方向；PC1 最重要，PC2 次之，彼此垂直。</p>
+  <ul>
+    <li><strong>数据：</strong>1797 张 8×8 数字图片，每张 64 个像素 = 64 个特征。</li>
+    <li><strong>为什么先标准化：</strong>PCA 找方差最大的方向，数值范围大的特征方差大，会“抢走”主成分；PCA 还要求数据以 0 为中心。</li>
+  </ul>
+  <div class="table-wrap"><table class="terms">
+    <thead><tr><th>保留主成分数</th><th>2</th><th>10</th><th>20</th><th>30</th><th>40</th></tr></thead>
+    <tbody>
+      <tr><td>累计解释方差</td><td>21.6%</td><td>58.9%</td><td>79.3%</td><td>89.3%</td><td>95.1%</td></tr>
+      <tr><td>重建效果</td><td>模糊、细节全丢</td><td colspan="2">能认出数字</td><td>—</td><td>接近原图</td></tr>
+    </tbody>
+  </table></div>
+  <div class="table-wrap"><table class="terms">
+    <thead><tr><th>逻辑回归</th><th>准确率</th><th>训练时间</th></tr></thead>
+    <tbody>
+      <tr><td>原始 64 维</td><td>0.980</td><td>0.04 秒</td></tr>
+      <tr><td>PCA 20 维（保留 80.8% 方差）</td><td>0.954</td><td>0.048 秒</td></tr>
+    </tbody>
+  </table></div>
+  <p><strong>结论：</strong>维度越少，压缩越强，信息丢失越多。准确率略降；Notebook 认为 PCA 的主要好处是训练时间，但这个小数据集上实测并没有更快。选多少个主成分，常见做法是找累计方差曲线的拐点，或设定目标（如保留 90%）。</p>
+  <pre><code class="language-python">pca = PCA(n_components=20, random_state=42)
+X_train_pca = pca.fit_transform(X_train)   # 只在训练集上 fit
+X_test_pca  = pca.transform(X_test)
+pca.explained_variance_ratio_.sum()        # 保留的方差比例：0.808</code></pre>
+  <p class="note">保留 80% 方差不等于准确率 80%，方差是“信息量”，准确率要在带标签的测试集上算。Notebook 先在全数据上 StandardScaler 再划分，严格来说缩放器也应只在训练集上 fit。</p>
+</section>
 
-# 仅在训练集探查投影、累计方差与重建
-scaler = StandardScaler().fit(X_train)
-scaled = scaler.transform(X_train)
-pca = PCA(n_components=20, random_state=42).fit(scaled)
-reduced = pca.transform(scaled)
-reconstructed = scaler.inverse_transform(pca.inverse_transform(reduced))
-print(&quot;形状:&quot;, X_train.shape, reduced.shape, reconstructed.shape)
-print(&quot;保留方差:&quot;, pca.explained_variance_ratio_.sum())
-cumulative = np.cumsum(PCA().fit(scaled).explained_variance_ratio_)
-print(&quot;2/10/20/40 个主成分的累计方差:&quot;, cumulative[[1, 9, 19, 39]])</code></pre><p>n_components 越小，压缩更强，也可能丢失分类所需信息；方差保留率不是准确率，更不是公平性。PCA 需要中心化，但不强制一定用 StandardScaler；不同量纲时标准化通常合理，也会改变各特征的重要程度。原 Notebook 标准化图像的重建应先逆缩放再解释像素；运行时间也应实际测量，不能保证降维一定更快。</p></section>
+<section class="content-section" id="tree-notebook">
+  <h2>Notebook Supplement · Trees & Imbalanced Classification｜三种树模型处理不平衡</h2>
+  <p class="chapter-chart-map"><strong>本章图表 / 方法：</strong>two moons 非线性数据、只保留 10% 的类别 1；决策树、随机森林、XGBoost 的决策边界和分类报告。</p>
+  <p><strong>数据：</strong>4000 个月牙形点（noise = 0.25），类别 0 全保留，类别 1 只留 10%，得到 2000 : 200；分层划分 70 / 30（测试集 600 : 60）。一条直线分不开两类，所以逻辑回归不适合。</p>
+  <div class="table-wrap"><table class="terms">
+    <thead><tr><th>模型</th><th>处理不平衡</th><th>Accuracy</th><th>少数类 precision</th><th>少数类 recall</th><th>少数类 F1</th></tr></thead>
+    <tbody>
+      <tr><td>决策树（max_depth=5）</td><td><code>class_weight="balanced"</code></td><td>0.948</td><td>0.65</td><td><strong>0.92</strong></td><td>0.76</td></tr>
+      <tr><td>随机森林（300 棵，max_depth=6）</td><td><code>class_weight="balanced"</code></td><td><strong>0.971</strong></td><td><strong>0.84</strong></td><td>0.85</td><td><strong>0.84</strong></td></tr>
+      <tr><td>XGBoost（400 棵，max_depth=4）</td><td><code>scale_pos_weight = 负 / 正 ≈ 10</code></td><td>0.956</td><td>0.76</td><td>0.75</td><td>0.76</td></tr>
+    </tbody>
+  </table></div>
+  <div class="table-wrap"><table class="terms">
+    <thead><tr><th>模型</th><th>特点</th></tr></thead>
+    <tbody>
+      <tr><td><strong>决策树</strong></td><td>用很多矩形逼近曲线，边界锯齿状；对噪声敏感，<strong>方差高</strong>，recall 提高但不稳定</td></tr>
+      <tr><td><strong>随机森林</strong></td><td>每棵树用不同的 bootstrap 样本，局部过拟合各不相同，<strong>投票平均后边界变平滑</strong>，方差降低，准确率和 F1 更平衡</td></tr>
+      <tr><td><strong>XGBoost</strong></td><td>树<strong>一棵接一棵</strong>训练，每棵新树专门纠正前面的错误；重叠区域的细小调整是纠错，不是过拟合</td></tr>
+    </tbody>
+  </table></div>
+  <p><strong><code>class_weight="balanced"</code> 怎么算：</strong><code>weight_c = N / (K × N_c)</code>，N 是总样本数，K 是类别数，N_c 是该类样本数。训练集 1400 : 140 时，少数类权重 = 1540 / (2 × 140) = 5.5，多数类 = 1540 / (2 × 1400) = 0.55，相当于少数类分错的惩罚是多数类的 10 倍。</p>
+  <p><strong><code>scale_pos_weight</code>：</strong>XGBoost 二分类的参数，把正类（少数类）的损失放大，常用经验值 = 负类数 / 正类数。</p>
+  <pre><code class="language-python">tree = DecisionTreeClassifier(max_depth=5, class_weight="balanced", random_state=42)
+rf   = RandomForestClassifier(n_estimators=300, max_depth=6, class_weight="balanced", random_state=42)
+xgb_model = xgb.XGBClassifier(n_estimators=400, max_depth=4, learning_rate=0.05,
+                              scale_pos_weight=neg / pos, random_state=42)</code></pre>
+  <p class="note">这个 Notebook 不生成合成数据，而是通过调整模型的类别权重来处理不平衡，和第二周的 SMOTE 是两种思路。</p>
+</section>
 
-<section class="content-section" id="tree-notebook"><h2>Notebook Supplement · Trees & Imbalanced Classification</h2><p class="chapter-chart-map"><strong>本章图表 / 方法：</strong>相关 Notebook：two moons、类别权重、决策边界、Decision Tree / Random Forest / XGBoost。</p><p>原例生成 4,000 个非线性月牙点，保留全部类别 0 和 10% 类别 1，得到 2,000:200 的不平衡数据；再按 70% / 30% 分层划分。全判 0 就有约 90.9% accuracy，因此要比较少数类 precision、recall、F1 和混淆矩阵。</p><pre><code class="language-python">import numpy as np
-from sklearn.datasets import make_moons
-from sklearn.model_selection import train_test_split
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import classification_report, confusion_matrix
-
-X, y = make_moons(n_samples=4000, noise=0.25, random_state=42)
-rng = np.random.RandomState(42)
-idx0, idx1 = np.flatnonzero(y == 0), np.flatnonzero(y == 1)
-keep = np.concatenate([idx0, rng.choice(idx1, int(0.1 * len(idx1)), replace=False)])
-X, y = X[keep], y[keep]
-X_train, X_test, y_train, y_test = train_test_split(
-    X, y, test_size=0.3, stratify=y, random_state=42
-)
-models = {
-    &quot;Decision Tree&quot;: DecisionTreeClassifier(max_depth=5, class_weight=&quot;balanced&quot;, random_state=42),
-    &quot;Random Forest&quot;: RandomForestClassifier(n_estimators=300, max_depth=6, class_weight=&quot;balanced&quot;, random_state=42),
-}
-for name, model in models.items():
-    model.fit(X_train, y_train)
-    predicted = model.predict(X_test)
-    print(name, classification_report(y_test, predicted, zero_division=0))
-    print(confusion_matrix(y_test, predicted))</code></pre><div class="table-wrap"><table class="terms"><thead><tr><th>参数 / 方法</th><th>含义</th><th>误区</th></tr></thead><tbody><tr><td>max_depth</td><td>限制单棵树深度</td><td>更深通常更复杂，但边界形状不能单独证明过拟合</td></tr><tr><td>class_weight="balanced"</td><td>权重 N/(K×N_c)，由训练标签计算</td><td>加权不是增加少数类样本，也不保证每类准确率相同</td></tr><tr><td>Random Forest / 300 trees</td><td>bootstrap 样本和随机特征训练多树，再聚合概率</td><td>通常降低方差；不保证任何数据上都优于单树</td></tr><tr><td>XGBoost</td><td>树按序拟合目标函数的梯度信息，逐步改进预测</td><td>不是简单重训全部错误样本；最终要看独立评价</td></tr><tr><td>scale_pos_weight</td><td>二分类正类损失相对权重，示例用 neg/pos≈10</td><td>正类不一定总是少数类；比例是起点而非最佳值</td></tr></tbody></table></div><pre><code class="language-python"># 可选：需要安装 xgboost；沿用上节的训练 / 测试变量
-from xgboost import XGBClassifier
-model = XGBClassifier(
-    n_estimators=400, max_depth=4, learning_rate=0.05,
-    subsample=0.9, colsample_bytree=0.9, reg_lambda=1.0,
-    scale_pos_weight=(y_train == 0).sum() / (y_train == 1).sum(),
-    eval_metric=&quot;logloss&quot;, random_state=42,
-)
-model.fit(X_train, y_train)
-print(classification_report(y_test, model.predict(X_test), zero_division=0))
-print(confusion_matrix(y_test, model.predict(X_test)))</code></pre><p>learning_rate 控制每棵树贡献；subsample 是样本采样比例，colsample_bytree 是特征采样比例，reg_lambda 是 L2 正则强度。该示例只有两个特征，特征采样的影响要结合实际维度理解。</p><p>原 plot_boundary 在平面铺 350×350 网格，用 predict 后 contourf，再叠加样本点；这是可视化，不是泛化证据。不要仅凭细碎边界就断言“不是过拟合”或“XGBoost 最佳”。降低正类决策阈值通常提高召回并增加预测为正的数量，precision 是否下降取决于实际数据；阈值应在验证集选择，测试集用于最后评价。</p></section>
-
-<section class="content-section" id="practice"><h2>自测与掌握标准</h2><p class="chapter-chart-map"><strong>本章图表 / 方法：</strong>按课件问题选择方法，并指出证据限制。</p><details class="exercise"><summary>1. 想知道各地区典型房价，用什么分析？</summary><p>描述分析：分组统计、分布和可视化；先确认口径、样本量及极端值。</p></details><details class="exercise"><summary>2. “面积与房价相关，所以扩建一定赚更多”哪里有问题？</summary><p>关联不是干预效果，其他因素可能混杂；处方分析还需成本、约束和行动效果证据。</p></details><details class="exercise"><summary>3. p=0.03 能说原假设为真的概率是 3% 吗？</summary><p>不能。p 值是在原假设及检验假设成立时，得到当前或更极端结果的概率。</p></details><details class="exercise"><summary>4. 销售看板异常低，鱼骨图画完就找到了根因吗？</summary><p>没有。鱼骨图列候选原因；追问后仍要比较源数据和刷新日志验证，并检查修复效果。</p></details><details class="exercise"><summary>5. PCA 保留 90% 方差，模型就有 90% accuracy 吗？</summary><p>不是。保留方差衡量表示压缩，accuracy 需对带标签的独立样本评价。</p></details><p><strong>掌握标准：</strong>分别为五个房价场景写出问题 → 类型 → 方法 → 输出；解释根因验证路径；正确选择配对 / 独立检验；说明预测为何不能直接给出行动；运行 Notebook 补充时先分割再拟合预处理。</p></section></main>
+<section class="content-section" id="practice">
+  <h2>自测</h2>
+  <p class="chapter-chart-map"><strong>本章图表 / 方法：</strong>按考试常见题型整理，先自己答再展开。</p>
+  <details class="exercise"><summary>1. 下面各属于哪种分析？a 上季度各地区销售额多少 b 为什么上季度销量下降 c 下季度能卖多少 d 预算内该投放哪个渠道</summary><p>a 描述；b 诊断；c 预测；d 处方。</p></details>
+  <details class="exercise"><summary>2. 两个变量是单调但非线性的关系，用 Pearson 还是 Spearman？</summary><p>Spearman，它基于排名，能捕捉单调关系；Pearson 只看线性关系。Spearman 也适合有序（ordinal）变量。</p></details>
+  <details class="exercise"><summary>3. 鱼骨图的四类原因是什么？“导入时间安排在 8:05 PM”属于哪类？</summary><p>Data、Process、People、Tools。导入时间安排属于 Process；“工具只支持批量导入”属于 Tools；“以为看板是最新的”属于 People。</p></details>
+  <details class="exercise"><summary>4. 根因分析五步的顺序？</summary><p>定义现象 → 探索可能原因（鱼骨图）→ 深入调查（5 Whys）→ 用证据验证 → 整改并跟进。</p></details>
+  <details class="exercise"><summary>5. 比较三种训练方法的平均分用什么检验？房屋类型和社区是否有关联呢？</summary><p>三组均值 → ANOVA；两个类别变量的关联 → 卡方检验。</p></details>
+  <details class="exercise"><summary>6. p = 0.08，α = 0.05，结论是什么？能说“证明了游戏无效”吗？</summary><p>不拒绝 H₀。不能说证明无效，只能说证据不足。</p></details>
+  <details class="exercise"><summary>7. 客户分群属于回归、分类还是聚类？它是监督还是无监督？</summary><p>聚类，无监督（没有预设标签）。</p></details>
+  <details class="exercise"><summary>8. 处方分析中优化模型包含哪三个要素？</summary><p>目标函数、决策变量、约束（如预算 ≤ $50,000）。</p></details>
+  <details class="exercise"><summary>9. 预期售价 600,000，买价 450,000，翻修 80,000，其他 20,000，预期利润是多少？</summary><p>600,000 − 450,000 − 80,000 − 20,000 = 50,000。</p></details>
+  <details class="exercise"><summary>10. PCA 前为什么要标准化？保留 20 个主成分得到 80% 方差，模型准确率就是 80% 吗？</summary><p>PCA 找方差最大的方向，不标准化时数值范围大的特征会主导主成分，并且 PCA 要求数据以 0 为中心。80% 是保留的信息量，不是准确率（Notebook 中 20 维的准确率是 0.954）。</p></details>
+  <details class="exercise"><summary>11. 随机森林为什么比单棵决策树稳定？XGBoost 和随机森林的训练方式有什么不同？</summary><p>随机森林的每棵树在不同的 bootstrap 样本上训练，各自的过拟合不同，平均后方差降低、边界更平滑。随机森林的树是并行独立训练的；XGBoost 是顺序训练，每棵新树纠正前面的错误。</p></details>
+  <details class="exercise"><summary>12. 训练集 900 个负类、100 个正类，class_weight="balanced" 时正类权重多少？XGBoost 的 scale_pos_weight 设多少？</summary><p>正类权重 = 1000 / (2 × 100) = 5；负类 = 1000 / (2 × 900) ≈ 0.56。scale_pos_weight = 900 / 100 = 9。</p></details>
+</section>
+</main>

@@ -227,12 +227,14 @@ try {
     ["2026-09-13T15:59:59Z", 1], // Before teaching starts.
     ["2026-09-20T16:00:00Z", 2], // Monday midnight in Singapore.
     ["2026-10-04T15:59:59Z", 3], // Sunday stays in week three.
-    ["2026-10-04T16:00:00Z", 1], // Unpublished week four falls back.
+    ["2026-10-04T16:00:00Z", { ca6001: 1, ca6003: 4 }], // Only CA6003 has published week four.
+    ["2026-10-11T16:00:00Z", 1], // Unpublished week five falls back.
     ["2027-01-01T00:00:00Z", 1], // Beyond the collected course weeks.
   ];
-  for (const [date, expectedWeek] of dates) {
+  for (const [date, expected] of dates) {
     await entryPage.clock.setFixedTime(new Date(date));
     for (const course of scheduledCourses) {
+      const expectedWeek = typeof expected === "number" ? expected : expected[course.id];
       await entryPage.goto(`${baseUrl}/index.html`);
       const link = entryPage.locator(".course-row").filter({ hasText: course.name });
       assert(await link.getAttribute("href") === `courses/${course.id}-module-0${expectedWeek}.html`, `${course.id}: wrong weekly entry at ${date}`);
@@ -260,7 +262,7 @@ try {
   await entryPage.goto(`${baseUrl}/index.html`);
   await entryPage.clock.setFixedTime(new Date("2026-10-04T16:00:00Z"));
   await entryPage.locator(".course-row").filter({ hasText: "CA6003" }).click();
-  await entryPage.waitForURL("**/courses/ca6003-module-01.html");
+  await entryPage.waitForURL("**/courses/ca6003-module-04.html");
   await entryPage.close();
 
   const noJsContext = await browser.newContext({ javaScriptEnabled: false });
