@@ -825,7 +825,7 @@
         {
           "output": "courses/ai-ux-data-visualisation.html",
           "content": "src/content/courses/ai-ux-data-visualisation.html",
-          "navLabel": "Module 1 数据可视化基础",
+          "navLabel": "Module 1 第一周：数据可视化基础",
           "code": true,
           "subsections": [
             { "id": "chapter-1-1", "label": "1.1 Introduction" },
@@ -841,7 +841,7 @@
         {
           "output": "courses/ca6002-module-02.html",
           "content": "src/content/courses/ca6002-module-02.html",
-          "navLabel": "Module 2 分析、AI 与时间序列",
+          "navLabel": "Module 2 第二周：分析、AI 与时间序列",
           "code": true,
           "subsections": [
             { "id": "chapter-2-1", "label": "2.1 Correlation Analysis" },
@@ -856,7 +856,7 @@
         {
           "output": "courses/ca6002-module-03.html",
           "content": "src/content/courses/ca6002-module-03.html",
-          "navLabel": "Module 3 感知与有效图形",
+          "navLabel": "Module 3 第三周：感知与有效图形",
           "code": false,
           "subsections": [
             { "id": "chapter-3-1", "label": "3.1 Gestalt Principles in Visualisation" },
@@ -868,7 +868,7 @@
         {
           "output": "courses/ca6002-module-04.html",
           "content": "src/content/courses/ca6002-module-04.html",
-          "navLabel": "Module 4 Human-Centred AI",
+          "navLabel": "Module 4 第四周：以人为本的 AI",
           "code": false,
           "subsections": [
             { "id": "chapter-4-1", "label": "4.1 Human-Centred AI" },
@@ -881,7 +881,7 @@
         {
           "output": "courses/ca6002-module-05.html",
           "content": "src/content/courses/ca6002-module-05.html",
-          "navLabel": "Module 5 HCAI UX：Usability & Trust",
+          "navLabel": "Module 5 第五周：可用性、信任与控制",
           "code": false,
           "subsections": [
             { "id": "chapter-5-1", "label": "5.1 Usability" },
