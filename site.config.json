@@ -897,7 +897,7 @@
       "index": "06",
       "name": "CA6003 · Best Practices in Data Governance, Preparation & Analytics",
       "menuLabel": "CA6003 · Data Governance & Analytics",
-      "description": "数据剖析与清洗、特征工程、数据分析、EDA 陷阱与悖论",
+      "description": "数据剖析与清洗、特征工程、数据分析、EDA 陷阱与悖论、数据治理",
       "entry": "courses/ca6003-module-01.html",
       "tocTitle": "CA6003 · DATA GOVERNANCE & ANALYTICS",
       "pages": [
@@ -1116,6 +1116,75 @@
             }
           ],
           "week": 4
+        },
+        {
+          "output": "courses/ca6003-module-05.html",
+          "content": "src/content/courses/ca6003-module-05.html",
+          "navLabel": "Module 5 第五周：数据治理与负责任 AI",
+          "code": false,
+          "subsections": [
+            {
+              "id": "what-is-governance",
+              "label": "What is Data Governance?"
+            },
+            {
+              "id": "principles",
+              "label": "Core Principles & Roles"
+            },
+            {
+              "id": "governance-program",
+              "label": "Why it matters & a Good Program"
+            },
+            {
+              "id": "legal-frameworks",
+              "label": "Legal Frameworks"
+            },
+            {
+              "id": "case-studies",
+              "label": "Case Studies"
+            },
+            {
+              "id": "responsible-ai",
+              "label": "Responsible AI Frameworks"
+            },
+            {
+              "id": "ai-storage",
+              "label": "AI Data Storage"
+            },
+            {
+              "id": "secure-storage",
+              "label": "Secure Data Storage"
+            },
+            {
+              "id": "non-compliance",
+              "label": "Risks of Regulatory Non-Compliance"
+            },
+            {
+              "id": "advanced-topics",
+              "label": "Advanced Topics in Data Governance"
+            },
+            {
+              "id": "ethical-pipeline",
+              "label": "End-to-end Ethical Pipeline"
+            },
+            {
+              "id": "governance-artifacts",
+              "label": "Explainability through Documentation"
+            },
+            {
+              "id": "good-datasets",
+              "label": "Datasets with Good Governance"
+            },
+            {
+              "id": "data-science-reading",
+              "label": "Reading: Data Science"
+            },
+            {
+              "id": "practice",
+              "label": "自测"
+            }
+          ],
+          "week": 5
         }
       ],
       "schedule": {

@@ -9,7 +9,7 @@
 - **CA6001 · AI Algorithms Fundamentals & Applications**：Module 1 监督与无监督学习、模型评价与 Moderna 案例；Module 2 强化学习、格子世界与老虎机计算、RLHF / GRPO 与 Lyft 案例；Module 3 深度学习、CNN、Transformer、两份 Tutorial 与 SELENA 案例；Module 4 NLP、Word2Vec、RNN 与 Transformer、self-attention 数值演示、LLM 与 RAG；Module 5 计算机视觉、卷积计算、LeNet / AlexNet、目标检测与 IoU；Module 6 生成式 AI、GAN / VAE / 扩散、SFT / RLHF / LoRA、prompt、RAG、评估与能耗。每个 Module 用具体例子和数字讲解，末尾附自测题。
 - **CA6002 · AI UX & Data Visualisation Design Principles**：Module 1–3 覆盖数据属性、图表选择、AI 模型可视化、时间序列与人类视觉感知；Module 4 聚焦 Human-Centred AI、Human + AI 协作和 AI 机会识别；Module 5 深入 AI usability、error handling、trust calibration、explanation、user control 与 feedback。
 
-- **CA6003 · Best Practices in Data Governance, Preparation & Analytics**：Module 1 数据剖析、清洗、缺失值与异常值；Module 2 编码、缩放、幂变换与偏差缓解，含 House Prices 十步练习和 SMOTE Notebook；Module 3 四类数据分析、根因分析、假设检验，以及 PCA 与树模型 Notebook；Module 4 EDA 三层风险（泄漏、采样偏差、概念漂移、多重共线性等）与五个悖论，并附小组作业要求。每个 Module 用具体例子和数字讲解，末尾附自测题。
+- **CA6003 · Best Practices in Data Governance, Preparation & Analytics**：Module 1 数据剖析、清洗、缺失值与异常值；Module 2 编码、缩放、幂变换与偏差缓解，含 House Prices 十步练习和 SMOTE Notebook；Module 3 四类数据分析、根因分析、假设检验，以及 PCA 与树模型 Notebook；Module 4 EDA 三层风险（泄漏、采样偏差、概念漂移、多重共线性等）与五个悖论，并附小组作业要求；Module 5 数据治理原则与角色、GDPR / PDPA / HIPAA、Cambridge Analytica 与 Tay、负责任 AI、AI 数据存储与安全、合成数据 / 差分隐私 / 联邦学习，以及学生预警模型的伦理流水线和治理文档。每个 Module 用具体例子和数字讲解，末尾附自测题。
 
 首页是课程选择看板；进入课程后，可通过顶部的“课程”按钮在不同课程之间切换。课程内容页使用左侧目录和右侧正文的阅读布局。
 
