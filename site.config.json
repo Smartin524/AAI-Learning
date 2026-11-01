@@ -433,6 +433,7 @@
           "navLabel": "Module 3 第三周：工具与数据处理",
           "code": true,
           "subsections": [
+            { "id": "library-practice", "label": "基础库：导入、正态分布与画图" },
             { "id": "topic-8-numpy", "label": "Topic 8 NumPy" },
             { "id": "topic-8-matplotlib", "label": "Topic 8 Matplotlib" },
             { "id": "topic-10-pandas", "label": "Topic 10 Pandas" },
@@ -455,6 +456,7 @@
           "navLabel": "Module 5 第五周：深度学习框架",
           "code": true,
           "subsections": [
+            { "id": "concept-questions", "label": "概念辨析：特征、标签、参数与池化" },
             { "id": "conceptual-map", "label": "概念地图：神经网络与 CNN" },
             { "id": "topic-13", "label": "Topic 13 Keras & TensorFlow" },
             { "id": "topic-12-14", "label": "Topic 12/14 PyTorch" },
@@ -467,6 +469,7 @@
           "navLabel": "Module 6 第六周：RNN 与时间序列",
           "code": true,
           "subsections": [
+            { "id": "rnn-walkthrough", "label": "RNN 逐步理解：三天天气到一个预测" },
             { "id": "topic-15-architecture", "label": "Topic 15 RNN Architecture" },
             { "id": "topic-15-input", "label": "Topic 15 Features & Input Shape" },
             { "id": "topic-15-many-to-one", "label": "Topic 15 Many-to-One" },

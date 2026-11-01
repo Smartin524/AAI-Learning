@@ -88,6 +88,7 @@
             <a class="chapter-link active" aria-current="page" href="ca6000-module-03.html">Module 3 第三周：工具与数据处理</a>
             <div class="chapter-subnav">
               <div class="chapter-subnav-inner">
+              <a href="ca6000-module-03.html#library-practice" data-toc-section="library-practice">基础库：导入、正态分布与画图</a>
               <a href="ca6000-module-03.html#topic-8-numpy" data-toc-section="topic-8-numpy">Topic 8 NumPy</a>
               <a href="ca6000-module-03.html#topic-8-matplotlib" data-toc-section="topic-8-matplotlib">Topic 8 Matplotlib</a>
               <a href="ca6000-module-03.html#topic-10-pandas" data-toc-section="topic-10-pandas">Topic 10 Pandas</a>
@@ -108,6 +109,7 @@
             <a class="chapter-link" href="ca6000-module-05.html">Module 5 第五周：深度学习框架</a>
             <div class="chapter-subnav" aria-hidden="true" inert>
               <div class="chapter-subnav-inner">
+              <a href="ca6000-module-05.html#concept-questions" data-toc-section="concept-questions">概念辨析：特征、标签、参数与池化</a>
               <a href="ca6000-module-05.html#conceptual-map" data-toc-section="conceptual-map">概念地图：神经网络与 CNN</a>
               <a href="ca6000-module-05.html#topic-13" data-toc-section="topic-13">Topic 13 Keras &amp; TensorFlow</a>
               <a href="ca6000-module-05.html#topic-12-14" data-toc-section="topic-12-14">Topic 12/14 PyTorch</a>
@@ -119,6 +121,7 @@
             <a class="chapter-link" href="ca6000-module-06.html">Module 6 第六周：RNN 与时间序列</a>
             <div class="chapter-subnav" aria-hidden="true" inert>
               <div class="chapter-subnav-inner">
+              <a href="ca6000-module-06.html#rnn-walkthrough" data-toc-section="rnn-walkthrough">RNN 逐步理解：三天天气到一个预测</a>
               <a href="ca6000-module-06.html#topic-15-architecture" data-toc-section="topic-15-architecture">Topic 15 RNN Architecture</a>
               <a href="ca6000-module-06.html#topic-15-input" data-toc-section="topic-15-input">Topic 15 Features &amp; Input Shape</a>
               <a href="ca6000-module-06.html#topic-15-many-to-one" data-toc-section="topic-15-many-to-one">Topic 15 Many-to-One</a>
@@ -1152,6 +1155,46 @@ class Square(Rectangle):
             <strong>掌握标准：</strong>你能说明数组、图表、DataFrame 与类各自解决什么问题；能写出最小可运行代码，并指出数据泄漏、图表误用、未记录的清洗规则与错误继承关系等风险。
           </div>
         </section>
+
+<section class="content-section" id="library-practice">
+<h2>补充理解：常用库、随机数与最小绘图</h2>
+<p>下面是课程学习后的概念补充。先知道工具解决什么问题，再通过最小例子理解函数参数；无需把所有 API 都靠记忆保存。</p>
+<table class="terms"><tr><th>库 / 常用导入</th><th>用途</th></tr>
+<tr><td><code>import numpy as np</code></td><td>多维数组、reshape、数值计算。</td></tr>
+<tr><td><code>import pandas as pd</code></td><td>DataFrame 表格、读取 CSV、清洗数据；pd.read_csv 读取，df.to_csv 保存。</td></tr>
+<tr><td><code>import matplotlib.pyplot as plt</code></td><td>基础绘图；也可写 from matplotlib import pyplot as plt。plt 是别名，pyplot 才是模块。</td></tr>
+<tr><td><code>import seaborn as sns</code></td><td>统计可视化；sns.heatmap 把矩阵画成热力图。</td></tr>
+<tr><td><code>from sklearn.model_selection import train_test_split</code></td><td>Scikit-learn 的导入名称是 sklearn；提供传统机器学习、预处理、数据划分与评估。</td></tr>
+<tr><td><code>import tensorflow as tf</code></td><td>Tensor 运算、自动微分与深度学习框架。</td></tr>
+<tr><td><code>from tensorflow import keras</code></td><td>高层网络接口；Dense、Conv2D、compile、fit。也有独立 keras 导入方式，跟随所用代码的体系。</td></tr>
+<tr><td><code>import torch<br>import torch.nn as nn<br>import torch.optim as optim</code></td><td>torch 管 Tensor，nn 提供网络层和损失函数，optim 提供 Adam、SGD 等优化器。</td></tr></table>
+<h3>np.random.normal 的三个主要参数</h3>
+<pre>np.random.normal(loc=0.0, scale=1.0, size=None)
+# loc：均值，分布中心
+# scale：标准差，必须非负；不是方差
+# size：要生成的数据形状</pre>
+<p>正态分布可以理解为“多数值靠近中心，偏离中心很远的值较少”。标准差决定分布的宽窄，不是最大偏差，也不是数值范围。</p>
+<pre>import numpy as np
+samples = np.random.normal(loc=170, scale=5, size=100)
+# 生成 100 个数，shape 为 (100,)
+# 抽样分布的均值 170、标准差 5；实际样本均值不保证恰好为 170
+
+matrix = np.random.normal(0, 1, size=(2, 3))
+# 生成 2 行 3 列，shape 为 (2, 3)</pre>
+<p><strong>易错：</strong>scale=5 表示标准差 5、方差 25；170±5 不是硬边界。size=None 且均值、标准差均为标量时返回一个数。新代码也常使用 <code>rng = np.random.default_rng(42)</code>，再调用 <code>rng.normal(170, 5, size=100)</code>；42 是随机种子，方便复现。</p>
+<h3>Matplotlib：从数据到图的四步</h3>
+<pre>import matplotlib.pyplot as plt  # 1. 导入绘图模块
+
+x = [1, 2, 3]                    # 2. 准备横轴数据
+y = [2, 4, 3]                    #    准备纵轴数据
+plt.plot(x, y, marker="o")        # 3. 画折线，标出数据点
+plt.xlabel("Day")
+plt.ylabel("Value")
+plt.title("Three days")
+plt.show()                       # 4. 显示图形</pre>
+<p>plot 画折线，scatter 画散点，bar 比较类别数值，hist 看一个数值变量的分布。例如 <code>plt.hist(samples, bins=10)</code> 将随机样本分成 10 个区间，统计落入各区间的数量。画直方图不需要自己提供配对的 y 数组。</p>
+<p><strong>区分计算和展示：</strong><code>sklearn.metrics.confusion_matrix</code> 计算分类计数矩阵；<code>sns.heatmap(cm, annot=True)</code> 将矩阵可视化。</p>
+</section>
         <nav class="chapter-nav" aria-label="上一页和下一页">
           <a href="ca6000-module-02.html">← Module 2 第二周：模块、文件与异常</a><a href="ca6000-module-04.html">Module 4 第四周：EDA 与机器学习 →</a>
         </nav>

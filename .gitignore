@@ -3,3 +3,10 @@ outputs/*.png
 .DS_Store
 Thumbs.db
 node_modules/
+
+# Local analysis and generated verification artifacts
+.venv/
+.jupyter-runtime/
+.pptx-*/
+.tmp-*/
+tmp/

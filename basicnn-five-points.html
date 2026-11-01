@@ -1,0 +1,58 @@
+<div id="basicnn-five-points">
+  <h2>BasicNN 五个输入点：目标与预测</h2>
+  <div class="viz-row" aria-label="图例">
+    <span><strong>●</strong> 目标 Y</span>
+    <span><strong>◆</strong> 模型预测</span>
+  </div>
+  <svg viewBox="0 0 720 410" role="img" aria-labelledby="bn-title bn-desc">
+    <title id="bn-title">BasicNN 目标值与预测值折线图</title>
+    <desc id="bn-desc">五个输入点中，目标值依次为零、零、一、零、零；模型预测依次为零、零、一点零一、零、零。</desc>
+    <rect data-chart-frame x="72" y="30" width="610" height="300" fill="none" stroke="var(--border)" />
+    <g fill="none" stroke="var(--border)" stroke-width="1">
+      <path d="M72 330H682 M72 194H682 M72 58H682" />
+    </g>
+    <g fill="var(--foreground)" font-size="12">
+      <text x="60" y="334" text-anchor="end">0</text>
+      <text x="60" y="198" text-anchor="end">0.5</text>
+      <text x="60" y="62" text-anchor="end">1.0</text>
+      <text x="72" y="352" text-anchor="middle">0</text>
+      <text x="224.5" y="352" text-anchor="middle">0.25</text>
+      <text x="377" y="352" text-anchor="middle">0.5</text>
+      <text x="529.5" y="352" text-anchor="middle">0.75</text>
+      <text x="682" y="352" text-anchor="middle">1</text>
+      <text class="axis-title" data-axis="x" x="377" y="385" text-anchor="middle">输入 X</text>
+      <text class="axis-title" data-axis="y" transform="translate(20 180) rotate(-90)" text-anchor="middle">输出值</text>
+    </g>
+    <path d="M72 330 L224.5 330 L377 58 L529.5 330 L682 330" fill="none" stroke="var(--viz-series-1)" stroke-width="3" />
+    <path d="M72 330 L224.5 330 L377 55.3 L529.5 330 L682 330" fill="none" stroke="var(--viz-series-2)" stroke-width="2" stroke-dasharray="7 5" />
+    <g fill="var(--viz-series-1)" stroke="var(--background)" stroke-width="2">
+      <circle cx="72" cy="330" r="6"><title>X 0，目标 0</title></circle>
+      <circle cx="224.5" cy="330" r="6"><title>X 0.25，目标 0</title></circle>
+      <circle cx="377" cy="58" r="6"><title>X 0.5，目标 1</title></circle>
+      <circle cx="529.5" cy="330" r="6"><title>X 0.75，目标 0</title></circle>
+      <circle cx="682" cy="330" r="6"><title>X 1，目标 0</title></circle>
+    </g>
+    <g fill="var(--viz-series-2)" stroke="var(--background)" stroke-width="2">
+      <rect x="67" y="325" width="10" height="10"><title>X 0，预测 0</title></rect>
+      <rect x="219.5" y="325" width="10" height="10"><title>X 0.25，预测 0</title></rect>
+      <rect x="372" y="50.3" width="10" height="10"><title>X 0.5，预测 1.01</title></rect>
+      <rect x="524.5" y="325" width="10" height="10"><title>X 0.75，预测 0</title></rect>
+      <rect x="677" y="325" width="10" height="10"><title>X 1，预测 0</title></rect>
+    </g>
+    <g fill="var(--foreground)" font-size="12" font-weight="500">
+      <text x="377" y="38" text-anchor="middle">目标 1.00 / 预测 1.01</text>
+    </g>
+  </svg>
+  <div class="table-responsive">
+    <table class="table table-sm">
+      <thead><tr><th>X</th><th class="text-end">上支路</th><th class="text-end">下支路</th><th class="text-end">合并后</th><th class="text-end">ReLU 预测</th><th class="text-end">目标 Y</th></tr></thead>
+      <tbody>
+        <tr><td>0</td><td class="text-end">0</td><td class="text-end">0</td><td class="text-end">−16</td><td class="text-end">0</td><td class="text-end">0</td></tr>
+        <tr><td>0.25</td><td class="text-end">0</td><td class="text-end">8.505</td><td class="text-end">−7.495</td><td class="text-end">0</td><td class="text-end">0</td></tr>
+        <tr><td>0.5</td><td class="text-end">0</td><td class="text-end">17.01</td><td class="text-end">1.01</td><td class="text-end">1.01</td><td class="text-end">1</td></tr>
+        <tr><td>0.75</td><td class="text-end">−17.34</td><td class="text-end">25.515</td><td class="text-end">−7.825</td><td class="text-end">0</td><td class="text-end">0</td></tr>
+        <tr><td>1</td><td class="text-end">−34.68</td><td class="text-end">34.02</td><td class="text-end">−16.66</td><td class="text-end">0</td><td class="text-end">0</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>

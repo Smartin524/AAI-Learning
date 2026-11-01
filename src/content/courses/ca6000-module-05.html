@@ -758,4 +758,47 @@ test_result = model.evaluate(X_test, y_test)</pre>
     <h3>考前一分钟清单</h3>
     <div class="outcomes"><strong>必须能默写：</strong><code>z=wᵀx+b</code>；ReLU / Sigmoid / Softmax 用途；MNIST 的 60k/10k、28×28、0–9；Keras 的 <code>Sequential → compile → fit → evaluate → predict</code>；CNN 的 <code>Conv → ReLU → Pool → Flatten → Dense</code>；PyTorch 的六步训练流程与 <code>forward → loss → zero_grad → backward → step</code>；<code>eval + no_grad</code>；<code>state_dict</code> 保存加载；confusion matrix 的行 Truth、列 Predicted。</div>
   </section>
+
+<section class="content-section" id="concept-questions">
+<h2>补充理解：把容易混淆的概念分开</h2>
+<h3>特征数到底怎么看？</h3>
+<p>先定义“一个样本是什么”，再问描述它输入了多少项信息。例如一朵花有花萼长宽、花瓣长宽，共 4 个输入特征；物种是目标 Y，不计入这 4 个特征。</p>
+<table class="terms"><tr><th>输入形状</th><th>含义 / 当前层怎么看</th></tr>
+<tr><td>(32,4)</td><td>32 个样本，每个 4 个特征；Linear 的 in_features=4。</td></tr>
+<tr><td>(16,7,3)</td><td>batch_first=True 的 RNN：16 段序列、每段 7 步、每步 3 个特征，input_size=3。</td></tr>
+<tr><td>(32,3,28,28)</td><td>PyTorch 常见 NCHW 图像布局：3 是 Conv2d 输入通道数；按样本展平后是 3×28×28=2352 个数。</td></tr>
+<tr><td>(32,16,14,14)</td><td>Flatten(1) 后是 (32,3136)。接 Linear(3136,10)，输出 (32,10)。不乘 batch 的 32。</td></tr></table>
+<p>特征也可以是模型计算出的表示：Linear(4,10) 将每个样本从 4 个特征映射为 10 个新特征，下一层接收的就是 10。</p>
+<h3>包含隐藏层，参数怎样加总？</h3>
+<p>每个全连接输出节点都需要“全部输入的权重 + 自己的一个 bias”。因此每层参数量为 <code>I×O+O</code>（启用 bias 时）。对相邻两层逐段计算，再相加。</p>
+<pre>输入 4 → 隐藏层 3（ReLU）→ 输出 2
+第一层：4×3 + 3 = 15
+第二层：3×2 + 2 = 8
+总参数量：15 + 8 = 23
+普通 ReLU 不增加参数；batch size 不参与参数量计算。</pre>
+<h3>Categorical 与 sparse categorical：区别在 Y，不在预测</h3>
+<p>猫、狗、鸟的编号为 0、1、2，真实照片是狗。两种标签表达同一个答案：</p>
+<table class="terms"><tr><th></th><th>Categorical</th><th>Sparse categorical</th></tr><tr><td>真实标签 Y</td><td>[0,1,0]（one-hot）</td><td>1（类别编号）</td></tr><tr><td>模型预测概率示例</td><td>[0.1,0.7,0.2]</td><td>[0.1,0.7,0.2]</td></tr></table>
+<p>Sparse 不是“返回所有概率”，categorical 也不是“只返回最高概率”。模型在两种设置中都能输出所有类别；argmax 才是取最大得分位置、生成预测类别的操作。32 个样本、10 个类别时，预测 shape 为 (32,10)，sparse 标签通常为 (32,)。</p>
+<p>Logits 是原始得分，可为负、不要求和为 1；softmax 把它变成概率。单标签交叉熵可以理解为 <code>−ln(真实类别的预测概率)</code>：概率 0.9 时约 0.105，概率 0.1 时约 2.303。PyTorch CrossEntropyLoss 接收 logits；Keras 损失的 from_logits 设置须与输出匹配。</p>
+<h3>Forward、backward、step：谁修改参数？</h3>
+<table class="terms"><tr><th>阶段</th><th>改变什么</th><th>更新模型权重？</th></tr><tr><td>model(X) / forward</td><td>计算中间表示与预测；RNN 会计算新隐藏状态</td><td>普通前向计算不更新权重</td></tr><tr><td>loss.backward()</td><td>计算并累积参数梯度</td><td>不更新权重</td></tr><tr><td>optimizer.step()</td><td>根据梯度与优化器规则更新参数</td><td>是</td></tr></table>
+<p>权重 w=2，梯度 0.5，学习率 0.1：普通 SGD 更新后 w=1.95。zero_grad 清旧梯度，不清权重。训练模式下 BatchNorm 的运行统计量等状态可能在 forward 中更新；这与优化器学习权重是不同的事情。</p>
+<h3>Pooling 与 max pooling 是什么关系？</h3>
+<p>Pooling 是局部汇总操作的总称。对区域 <code>[[1,5],[3,2]]</code>，max pooling 取最大值得 5，average pooling 取平均值得 2.75。普通池化没有可训练参数，每个通道分别处理。</p>
+<pre>(32,16,14,14) → MaxPool2d(2) → (32,16,7,7)
+默认 kernel=2、stride=2：高宽减半，样本数、通道数不变。</pre>
+<p>最大池化保留局部最强响应，并舍弃一些细节和精确位置信息。是否缩小尺寸取决于窗口和步幅，不是所有池化设置都恰好减半。</p>
+<h3>一个输入特征会交给多个 kernel 吗？</h3>
+<p>会。普通 groups=1 的 <code>Conv2d(3,16,3)</code> 中，16 组卷积核分别观察相同的输入，每组覆盖全部 3 个输入通道，再输出一张特征图。不是把一个输入通道只分配给一个 kernel。</p>
+<pre>同一张 RGB 图片 → kernel 1  → 特征图 1
+               → kernel 2  → 特征图 2
+               → …
+               → kernel 16 → 特征图 16</pre>
+<p>不同 kernel 的关注模式是训练学到的，也可能有所重叠；分组卷积和深度卷积有不同的连接规则。</p>
+<h3>人脸识别、物种识别怎样选模型？</h3>
+<p>照片中的人脸与物种识别都可用 CNN 提取空间特征；人脸验证常比较特征向量的相似度，物种分类常接分类输出层。若输入是花瓣长宽等表格数值，FCNN 或传统分类器也适合。选择取决于数据结构，不只看任务名称。</p>
+<p>下一步：<a href="ca6000-module-06.html#rnn-walkthrough">用三天天气，逐步理解 RNN 的状态与预测</a>。</p>
+</section>
+
 </main>

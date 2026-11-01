@@ -88,6 +88,7 @@
             <a class="chapter-link" href="ca6000-module-03.html">Module 3 第三周：工具与数据处理</a>
             <div class="chapter-subnav" aria-hidden="true" inert>
               <div class="chapter-subnav-inner">
+              <a href="ca6000-module-03.html#library-practice" data-toc-section="library-practice">基础库：导入、正态分布与画图</a>
               <a href="ca6000-module-03.html#topic-8-numpy" data-toc-section="topic-8-numpy">Topic 8 NumPy</a>
               <a href="ca6000-module-03.html#topic-8-matplotlib" data-toc-section="topic-8-matplotlib">Topic 8 Matplotlib</a>
               <a href="ca6000-module-03.html#topic-10-pandas" data-toc-section="topic-10-pandas">Topic 10 Pandas</a>
@@ -108,6 +109,7 @@
             <a class="chapter-link" href="ca6000-module-05.html">Module 5 第五周：深度学习框架</a>
             <div class="chapter-subnav" aria-hidden="true" inert>
               <div class="chapter-subnav-inner">
+              <a href="ca6000-module-05.html#concept-questions" data-toc-section="concept-questions">概念辨析：特征、标签、参数与池化</a>
               <a href="ca6000-module-05.html#conceptual-map" data-toc-section="conceptual-map">概念地图：神经网络与 CNN</a>
               <a href="ca6000-module-05.html#topic-13" data-toc-section="topic-13">Topic 13 Keras &amp; TensorFlow</a>
               <a href="ca6000-module-05.html#topic-12-14" data-toc-section="topic-12-14">Topic 12/14 PyTorch</a>
@@ -119,6 +121,7 @@
             <a class="chapter-link active" aria-current="page" href="ca6000-module-06.html">Module 6 第六周：RNN 与时间序列</a>
             <div class="chapter-subnav">
               <div class="chapter-subnav-inner">
+              <a href="ca6000-module-06.html#rnn-walkthrough" data-toc-section="rnn-walkthrough">RNN 逐步理解：三天天气到一个预测</a>
               <a href="ca6000-module-06.html#topic-15-architecture" data-toc-section="topic-15-architecture">Topic 15 RNN Architecture</a>
               <a href="ca6000-module-06.html#topic-15-input" data-toc-section="topic-15-input">Topic 15 Features &amp; Input Shape</a>
               <a href="ca6000-module-06.html#topic-15-many-to-one" data-toc-section="topic-15-many-to-one">Topic 15 Many-to-One</a>
@@ -137,6 +140,40 @@
     <div class="outcomes"><strong>学完你应该能够：</strong>解释 RNN 每一步的两个输入；区分 sample、timestep、feature、unit 和 layer；手工构造“过去 5 天预测下一天”的样本；读懂 SimpleRNN 的输入输出；分清训练拟合与未来预测；说明梯度消失/爆炸以及 LSTM 的改进思路。</div>
     <p class="chapter-chart-map"><strong>来源：</strong>本周新增的 <cite>CA6000 - Topic 15 (RNN ).pdf</cite>（16 页）及 <cite>CA6000 RNN (Ex).ipynb</cite>。目录按课件主题分组；标为“补充”或“修正”的内容用于解释概念、修正代码，不代表课件另有完整推导。</p>
   </header>
+
+<section class="content-section" id="rnn-walkthrough">
+<h2>补充理解：RNN 从什么一步一步到什么？</h2>
+<p>用一个教学例子走完整条流程：看过去 3 天的温度、湿度，预测第 4 天用电量。下面用原始单位帮助理解；实际训练一般还需要根据训练集统计量缩放输入。</p>
+<pre>第 1 天 x₁ = [30°C, 70%]
+第 2 天 x₂ = [32°C, 65%]
+第 3 天 x₃ = [34°C, 60%]
+输入 X：这三天的天气；目标 Y：第 4 天真实用电量。</pre>
+<h3>第 1 步：读取第 1 天，形成 h₁</h3>
+<p>模型同时接收当天的 x₁ 和初始状态 h₀（通常全 0）。通过同一套带参数的计算，得到 h₁。h₁ 是一组数字，表示模型读完第 1 天后留下的信息，不是文字记录，也不是最终用电量。</p>
+<h3>第 2 步：读取第 2 天，带上 h₁</h3>
+<p>x₂ 与 h₁ 一起计算得到 h₂。所以第 2 步不仅受当天输入影响，也受此前状态影响。这不是简单拼接并永久保存历史，而是重新计算一个固定宽度的表示。</p>
+<h3>第 3 步：读取第 3 天，得到 h₃</h3>
+<p>x₃ 与 h₂ 一起得到 h₃。这一状态可能保留有用的趋势信息，比如连续升温；是否真的学会这种规律取决于训练，不能假设每个状态分量都有固定可读含义。</p>
+<pre>（x₁, h₀）→ 同一个 RNN cell → h₁
+（x₂, h₁）→ 同一个 RNN cell → h₂
+（x₃, h₂）→ 同一个 RNN cell → h₃</pre>
+<p>简化数学表达：<code>hₜ = tanh(Wₓxₜ + Wₕhₜ₋₁ + b)</code>。每一步使用同一组 Wₓ、Wₕ、b；更新的是 hₜ，不是每读一天就训练一套新权重。</p>
+<h3>第 4 步：输出层把 h₃ 变成预测</h3>
+<pre>读完三天后的 h₃ → Linear / Dense 输出层 → 第 4 天用电量预测</pre>
+<p>若一批有 16 段序列，hidden_size=8，采用 batch_first=True、单层单向 PyTorch RNN：</p>
+<table class="terms"><tr><th>数据</th><th>Shape</th><th>含义</th></tr><tr><td>X</td><td>(16,3,2)</td><td>16 个样本，每个 3 天、每天 2 个特征</td></tr><tr><td>RNN output</td><td>(16,3,8)</td><td>各时间步的 8 维表示</td></tr><tr><td>h_n</td><td>(1,16,8)</td><td>单层单向的末尾隐藏状态；batch_first 不改变它的排列</td></tr><tr><td>最后时间步表示</td><td>(16,8)</td><td>交给 Linear(8,1)</td></tr><tr><td>预测</td><td>(16,1)</td><td>每个样本预测一个用电量</td></tr></table>
+<h3>第 5 步：训练时比较答案，再更新参数</h3>
+<pre>预测与真实用电量 Y → loss
+loss → 沿输出层及时间步反向求梯度 → optimizer.step()
+下一次 forward 使用更新后的参数。</pre>
+<p><strong>状态与参数是两件事：</strong>即使在推理阶段、不学习新权重，RNN 也会随着输入计算新状态。反向传播计算共享权重的梯度，优化器才更新它们。独立样本通常从自己的初始状态开始，不会自动把上一个人的序列记忆传给下一个人。</p>
+<h3>为什么叫 many-to-one？many-to-many 又是什么？</h3>
+<p>三天天气 → 一个用电量，是 many-to-one。整条评论 → 一个情感类别也属于此类。若每个时间步都产生一个输出，例如给每个词标注词性，就是 many-to-many；编码器—解码器还可以让输入、输出序列长度不同。</p>
+<h3>RNN 的缺点怎样从流程理解？</h3>
+<ul><li><strong>长期依赖难学：</strong>早期信息经过多次状态更新可能被淡化，固定宽度状态也不会完整保存所有历史。</li><li><strong>梯度消失或爆炸：</strong>反向计算跨多个时间步，需要导数连乘。简化地看，每次乘 0.5，10 步后约为 0.00098；每次放大也可能造成爆炸。</li><li><strong>时间步有顺序依赖：</strong>h₂ 依赖 h₁，h₃ 依赖 h₂，同一序列的普通循环计算难以完全并行；batch 中不同样本仍可并行处理。</li></ul>
+<p>LSTM、GRU 用门控等机制改善长期信息传递，但不保证无限记忆。梯度裁剪常用于控制梯度爆炸，不是梯度消失的通用解决方案。LSTM 比普通 RNN 多一个 cell state；PyTorch 返回 <code>output, (h_n, c_n)</code>。</p>
+<p>检查理解时只问自己：当前输入是什么、状态里传递什么、最终输出是什么、哪一步才在学习参数。先把这四件事分清，再看完整代码。</p>
+</section>
 
   <section class="content-section" id="terms">
     <h2>必须掌握的术语</h2>

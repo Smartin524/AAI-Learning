@@ -1,0 +1,13 @@
+{
+  "status": "pass",
+  "checkedAt": "2026-08-30T15:09:06.192Z",
+  "workspace": "/Users/smartin_mba/Desktop/Codex Projects/AAI-Learning",
+  "finalPptx": "/Users/smartin_mba/Desktop/Codex Projects/AAI-Learning/.pptx-layout-check.KjJExU/Group 27.pptx",
+  "starterPptx": "/Users/smartin_mba/Desktop/Codex Projects/AAI-Learning/.pptx-layout-check.KjJExU/template-starter.pptx",
+  "mapPath": "/Users/smartin_mba/Desktop/Codex Projects/AAI-Learning/.pptx-layout-check.KjJExU/template-frame-map.json",
+  "starterLayoutDir": "/Users/smartin_mba/Desktop/Codex Projects/AAI-Learning/.pptx-layout-check.KjJExU/source-inspect/layouts",
+  "finalLayoutDir": "/Users/smartin_mba/Desktop/Codex Projects/AAI-Learning/.pptx-layout-check.KjJExU/final-layout",
+  "editDir": "/Users/smartin_mba/Desktop/Codex Projects/AAI-Learning/.pptx-layout-check.KjJExU",
+  "issueCount": 0,
+  "issues": []
+}
